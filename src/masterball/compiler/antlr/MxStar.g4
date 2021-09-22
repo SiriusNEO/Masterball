@@ -223,12 +223,10 @@ ThisPointer: 'this' ;
 // 3 Blank
 WhitespaceEater: [ \t]+ -> skip ;
 NewlineEater: ('\r' '\n'?| '\n') -> skip ;
-TAB: '\t' ;
-Enter: '\n' ;
 
 // 4 Comment
-SingleLineCommentEater: '//' ~[\r\n]* -> skip ;
-MultiLineCommentEater: '/*' .*? '*/' -> skip ;
+LineCommentEater: '//' ~[\r\n]* -> skip ;
+BlockCommentEater: '/*' .*? '*/' -> skip ;
 
 // 5 Identifier
 Identifier: [a-zA-Z] [a-zA-Z_0-9]* ;
@@ -242,8 +240,14 @@ IntegerConstant
     ;
 
 // 6.2 String Constant
+
+EscapeEnter: '\\n';
+EscapeBackslash: '\\\\';
+EscapeQuote: '\\"';
+StringContent: [ -~] ; // is this all printable character?
+
 StringConstant
-    :   QuoteOp ('\n' | '\\\\' | '\\"' | [ -~])* QuoteOp
+    :   QuoteOp (EscapeEnter | EscapeBackslash | EscapeQuote | StringContent)* QuoteOp
     ;
 
 // 6.3 Bool Constant -> Keyword
