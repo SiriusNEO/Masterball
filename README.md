@@ -12,7 +12,7 @@ If you get some ideas from here, please **CREDIT**
 
 ## TO DO
 
-- [ ] .g4
+- [x] .g4
 - [ ] AST Design
 - [ ] AST Builder
 - [ ] Scope
