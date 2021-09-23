@@ -1,5 +1,8 @@
 // Generated from src/masterball/compiler/frontend/parser/MxStar.g4 by ANTLR 4.7.2
 
+    package masterball.compiler.frontend.parser;
+
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -34,18 +37,6 @@ public class MxStarBaseListener implements MxStarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitClassDef(MxStarParser.ClassDefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterClassDefSuite(MxStarParser.ClassDefSuiteContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassDefSuite(MxStarParser.ClassDefSuiteContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -207,6 +198,30 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterControlStmt(MxStarParser.ControlStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitControlStmt(MxStarParser.ControlStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBlockStmtL(MxStarParser.BlockStmtLContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlockStmtL(MxStarParser.BlockStmtLContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIfStmtL(MxStarParser.IfStmtLContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -255,25 +270,13 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBreakStmtL(MxStarParser.BreakStmtLContext ctx) { }
+	@Override public void enterControlStmtL(MxStarParser.ControlStmtLContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBreakStmtL(MxStarParser.BreakStmtLContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterContinueStmtL(MxStarParser.ContinueStmtLContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitContinueStmtL(MxStarParser.ContinueStmtLContext ctx) { }
+	@Override public void exitControlStmtL(MxStarParser.ControlStmtLContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -291,25 +294,13 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSingleExpStmtL(MxStarParser.SingleExpStmtLContext ctx) { }
+	@Override public void enterPureStmtL(MxStarParser.PureStmtLContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSingleExpStmtL(MxStarParser.SingleExpStmtLContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEmptyStmtL(MxStarParser.EmptyStmtLContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEmptyStmtL(MxStarParser.EmptyStmtLContext ctx) { }
+	@Override public void exitPureStmtL(MxStarParser.PureStmtLContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -339,25 +330,37 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSuffixOps(MxStarParser.SuffixOpsContext ctx) { }
+	@Override public void enterPrefixExp(MxStarParser.PrefixExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSuffixOps(MxStarParser.SuffixOpsContext ctx) { }
+	@Override public void exitPrefixExp(MxStarParser.PrefixExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrefixOps(MxStarParser.PrefixOpsContext ctx) { }
+	@Override public void enterPostfixOps(MxStarParser.PostfixOpsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrefixOps(MxStarParser.PrefixOpsContext ctx) { }
+	@Override public void exitPostfixOps(MxStarParser.PostfixOpsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnaryOps(MxStarParser.UnaryOpsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnaryOps(MxStarParser.UnaryOpsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -435,18 +438,6 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSuffixExpL(MxStarParser.SuffixExpLContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSuffixExpL(MxStarParser.SuffixExpLContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterLogicOrExpL(MxStarParser.LogicOrExpLContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -490,6 +481,18 @@ public class MxStarBaseListener implements MxStarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBitOrExpL(MxStarParser.BitOrExpLContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnaryExpL(MxStarParser.UnaryExpLContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnaryExpL(MxStarParser.UnaryExpLContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -574,6 +577,18 @@ public class MxStarBaseListener implements MxStarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEqualExpL(MxStarParser.EqualExpLContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPostfixExpL(MxStarParser.PostfixExpLContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPostfixExpL(MxStarParser.PostfixExpLContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

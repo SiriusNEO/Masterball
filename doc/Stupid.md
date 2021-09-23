@@ -7,3 +7,9 @@
 将 `src` 设置为 `Source`
 
 不要把其它目录也设成 source ...
+
+
+
+## 找不到 Package
+
+尝试刷新 `File -> Invalidate Caches/Restart`

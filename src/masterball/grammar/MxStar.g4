@@ -1,5 +1,10 @@
 grammar MxStar;
 
+// Add Package Automatically
+@header {
+    package masterball.compiler.frontend.parser;
+}
+
 // Parser
 
 // 0 Code
@@ -52,7 +57,7 @@ varDefType
 // 11 Statement
 
 suite
-    : LeftBrace (suite | statement)* RightBrace
+    : LeftBrace (statement)* RightBrace
     ;
 
 varDefStmt
@@ -65,7 +70,8 @@ returnStmt: ReturnKw expression? SemiColon;
 controlStmt: (BreakKw | ContinueKw);
 
 statement
-    :   ifStmt                                                                         #ifStmtL
+    :   suite                                                                          #blockStmtL
+    |   ifStmt                                                                         #ifStmtL
     |   whileStmt                                                                      #whileStmtL
     |   forStmt                                                                        #forStmtL
     |   returnStmt                                                                     #returnStmtL
@@ -119,8 +125,8 @@ expression
     |   expression BitOrOp expression                                                   #bitOrExpL     // 12
     |   expression LogicAndOp expression                                                #logicAndExpL  // 13
     |   expression LogicOrOp expression                                                 #logicOrExpL   // 14
-    |   <asso=right> expression AssignOp expression                                     #assignExpL    // 16
-    //|   expression Comma expression                                                     #commaExpL     // 18
+    |   <assoc=right> expression AssignOp expression                                     #assignExpL    // 16
+    //|   expression Comma expression                                                   #commaExpL     // 18
     ;
 
 atom
