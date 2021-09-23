@@ -11,11 +11,9 @@ mxStarCode
 // 8 Class
 
 classDef
-    :   ClassKw Identifier classDefSuite SemiColon
-    ;
-
-classDefSuite
-    :   LeftBrace (classConstructorDef | varDefStmt | funcDef)* RightBrace
+    :   ClassKw Identifier LeftBrace
+        (classConstructorDef | varDefStmt | funcDef)*
+        RightBrace SemiColon
     ;
 
 classConstructorDef
@@ -54,7 +52,7 @@ varDefType
 // 11 Statement
 
 suite
-    : LeftBrace statement* RightBrace
+    : LeftBrace (suite | statement)* RightBrace
     ;
 
 varDefStmt
@@ -64,17 +62,16 @@ ifStmt: IfKw LeftParen expression RightParen suite;
 whileStmt: WhileKw LeftParen expression RightParen suite;
 forStmt: ForKw LeftParen expression? SemiColon expression? SemiColon RightParen suite;
 returnStmt: ReturnKw expression? SemiColon;
+controlStmt: (BreakKw | ContinueKw);
 
 statement
     :   ifStmt                                                                         #ifStmtL
     |   whileStmt                                                                      #whileStmtL
     |   forStmt                                                                        #forStmtL
     |   returnStmt                                                                     #returnStmtL
-    |   BreakKw                                                                        #breakStmtL
-    |   ContinueKw                                                                     #continueStmtL
+    |   controlStmt                                                                    #controlStmtL
     |   varDefStmt                                                                     #varDefStmtL
-    |   expression SemiColon                                                           #singleExpStmtL
-    |   SemiColon                                                                      #emptyStmtL
+    |   expression? SemiColon                                                          #pureStmtL
     ;
 
 // 10 Expression
@@ -84,11 +81,12 @@ statement
 
 funcCallExp: Identifier LeftParen expression (Comma expression)* RightParen;
 newExp: NewKw varDefType (LeftParen RightParen)?;
+prefixExp: (IncrementOp | DecrementOp) expression;
 
 // 10.2 Op Set
 
-suffixOps: (IncrementOp | DecrementOp);
-prefixOps: (IncrementOp | DecrementOp | BitNotOp | LogicNotOp | AddOp | SubOp);
+postfixOps: (IncrementOp | DecrementOp);
+unaryOps: (BitNotOp | LogicNotOp | AddOp | SubOp);
 shiftOps: (ArithShiftLeftOp | ArithShiftRightOp);
 mulLevelOps: (MulOp | DivOp | ModOp);
 addLevelOps: (AddOp | SubOp);
@@ -103,9 +101,10 @@ expression
     |   expression MemberOp Identifier                                                  #memberExpL    // 1
     |   funcCallExp                                                                     #funcCallExpL  // 1
 
-    |   expression suffixOps                                                            #suffixExpL    // 2
+    |   expression postfixOps                                                           #postfixExpL    // 2
 
-    |   prefixOps expression                                                            #prefixExpL    // 3
+    |   prefixExp                                                                       #prefixExpL
+    |   unaryOps expression                                                             #unaryExpL    // 3
     |   newExp                                                                          #newExpL       // 3
 
     |   expression shiftOps expression                                                  #logicExpL     // 4
