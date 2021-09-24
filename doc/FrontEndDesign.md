@@ -9,10 +9,10 @@
 graph LR
 I(Input) -->|code string| B(Lexer&Parser)
 B -->|parse tree| A(ASTBuilder)
-A(ASTBuilder) --> |AST| S(SemanticChecker)
+C--> |AST| S(SemanticChecker)
+A --> |AST| C(RegistryCollector)
 S --> |Exception| H(ExceptionHandler)
-A --> |AST| F(FrontEnd.ScopeBuilder)
-F --> |Scope| S
+A--> |Scope| S
 
 ```
 
@@ -29,60 +29,72 @@ We use:
 
 ### Node Pack
 
-- BaseNode
+A Node usually contains
 
-  ```
-  Position
-  ```
+- `CodePos`  used in throw Exception. All Nodes.
 
-- RootNode
+- `Scope`  used to manage namespace. Only three types of nodes have:
 
-  ```
-  List <ClassDefNode>
-  List <FuncDefNode>
-  List <VarDefStmtNode>
-  ```
+  - `RootNode`		
+  - `ClassDefNode` 
+  - `SuiteNode`
 
-- ClassDefNode
+  And the visitor will pull the scope into the scope stack when they meeting a node with Scope.
 
-  ```
-  classIdentifier
-  List <VarDefStmtNode> memberVar
-  List <FuncDefNode> mermberFunc
-  ```
+- `Registry`  Only in "Def" Type Node.
 
-- FuncDefNode
+  A Registry records the information need in define a variable/func/class, recorded in Scope to do semantic check.
 
-  ```
-  funcIdentifier
-  List funcArgs
-  SuiteNode suiteNode
-  ```
+- `<some son Nodes>`
+
+  vary from different Nodes.
+
+- `<some must information>`
+
+  enum type or integer etc.
+
+
+
+#### Node List
+
+- `BaseNode`
+
+- `RootNode`
+
+- `ClassDefNode`
+
+- `FuncDefNode`
+
+- `SuiteNode`
+
+- `VarDefNode`
+
+- `StmtNode/`
+
+  - `StmtBaseNode`
+
+  - `IfStmtNode`
+  - `ForStmtNode`
+  - `WhileStmtNode`
+  - `ReturnStmtNode`
+  - `ControlStmtNode`
+  - `VarDefStmtNode`
+  - `PureStmtNode`
+
+- `ExpNode/`
+
+  - `ExpBaseNode`
+  - `FuncCallExpNode`
+  - `IndexExpNode`
+  - `MemberExpNode`
+  - `NewExpNode`
   
-- StmtNode/
-
-  - StmtBaseNode
-
-  - IfStmtNode
-  - ForStmtNode
-  - WhileStmtNode
-  - ReturnStmtNode
-  - ControlStmtNode
-  - VarDefStmtNode
-  - PureStmtNode
-
-- ExpNode/
-
-  - ExpBaseNode
-  - FuncCallExpNode
-  - IndexExpNode
-  - MemberExpNode
-  - NewExpNode
-- PrefixExpNode
-  - PostfixExpNode
-  - BinaryExpNode
-  - UnaryExpNode
-  - AssignNode
+  - `PrefixExpNode`
+  
+  - `PostfixExpNode`
+  - `BinaryExpNode`
+  - `UnaryExpNode`
+  - `AssignNode`
 
 
 
@@ -111,21 +123,19 @@ Semantic Exception
 
 ### Scope
 
-Attatched to Node (?)
+- `Base Scope`
 
-- Base Scope
-
-- Global Scope
+- `Global Scope`
 
   Able to register: class, var, func
 
-- Locality Scope
+- `Locality Scope`
 
   Able to regiser: var
 
   Use in: func def, if/while/for stmt, scope in scope
 
-- Class Scope
+- `Class Scope`
 
   Use in: class def
 

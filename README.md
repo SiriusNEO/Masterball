@@ -10,10 +10,22 @@ If you get some ideas from here, please **CREDIT**
 
 
 
+## Design
+
+Click the following links to read the project design.
+
+- [General Design](doc/GeneralDesign.md)
+
+- [FrontEnd Design](doc/FrontendDesign.md)
+
+
+
 ## TO DO
 
+### Semantic
+
 - [x] .g4
-- [ ] AST Design
-- [ ] AST Builder
-- [ ] Scope
-- [ ] Sema Checker
+- [x] AST Design
+- [ ] AST Builder & Scope Build
+- [ ] Semantic Checker
+- [ ] Data Oriented Debug

@@ -1,4 +1,4 @@
-package masterball.compiler.frontend.ast;
+package masterball.compiler.frontend;
 
 import masterball.compiler.frontend.parser.MxStarBaseVisitor;
 import masterball.compiler.frontend.ast.node.BaseNode;

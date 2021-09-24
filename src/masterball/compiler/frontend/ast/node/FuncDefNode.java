@@ -2,6 +2,7 @@ package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.exception.CodePos;
+import masterball.compiler.frontend.scope.LocalityScope;
 import masterball.compiler.frontend.scope.Registry;
 import masterball.compiler.frontend.type.FuncType;
 
