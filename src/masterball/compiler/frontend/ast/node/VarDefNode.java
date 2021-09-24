@@ -1,15 +1,13 @@
-package masterball.compiler.frontend.ast.node.stmtnode;
+package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
-import masterball.compiler.frontend.ast.node.StmtBaseNode;
-import masterball.compiler.frontend.ast.node.VarDefNode;
 import masterball.compiler.frontend.exception.CodePos;
 import masterball.compiler.frontend.scope.Registry;
 
-public class VarDefStmtNode extends StmtBaseNode {
-    VarDefNode varDefNode;
+public class VarDefNode extends BaseNode {
+    public Registry varRegistry;
 
-    public VarDefStmtNode(CodePos codePos) {
+    public VarDefNode(CodePos codePos) {
         super(codePos);
     }
 

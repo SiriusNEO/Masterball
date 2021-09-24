@@ -2,15 +2,17 @@ package masterball.compiler.frontend.ast.node.expnode;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
+import masterball.compiler.frontend.ast.node.SuiteNode;
+import masterball.compiler.frontend.ast.node.VarDefNode;
 import masterball.compiler.frontend.exception.CodePos;
 
 import java.util.ArrayList;
 
-public class FuncCallExpNode extends ExpBaseNode {
-    public String callIdentifier;
-    public ArrayList<ExpBaseNode> callArgExpNodes;
+public class LambdaExpNode extends ExpBaseNode {
+    public ArrayList<VarDefNode> argsDefNodes;
+    public SuiteNode suiteNode;
 
-    public FuncCallExpNode(CodePos codePos) {
+    public LambdaExpNode(CodePos codePos) {
         super(codePos);
     }
 

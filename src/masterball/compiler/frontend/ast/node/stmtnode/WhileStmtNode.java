@@ -7,6 +7,7 @@ import masterball.compiler.frontend.exception.CodePos;
 
 public class WhileStmtNode extends StmtBaseNode {
     ExpBaseNode conditionExpNode;
+    StmtBaseNode bodyStmtNode;
 
     public WhileStmtNode(CodePos codePos, ExpBaseNode conditionExpNode) {
         super(codePos);

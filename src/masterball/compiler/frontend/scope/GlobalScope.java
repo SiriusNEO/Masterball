@@ -4,9 +4,14 @@ import masterball.compiler.frontend.type.Type;
 
 import java.util.HashMap;
 
-public class GlobalScope extends Scope {
+public class GlobalScope extends BaseScope {
 
     public HashMap<String, Registry> classRegTable, funcRegTable, varRegTable;
+
+    @Override
+    void query(String name) {
+
+    }
 
     @Override
     void register(Registry registry) {

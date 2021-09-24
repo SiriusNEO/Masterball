@@ -98,11 +98,20 @@ Semantic Exception
 
 ## ScopeDesign
 
-SymbolCollector
+### ClassRegister
 
-- Register All Class First
+- Register All Class First -- To avoid:
+
+  ```
+  class A {B b;};
+  class B {A a;};
+  ```
+
+  
 
 ### Scope
+
+Attatched to Node (?)
 
 - Base Scope
 

@@ -7,12 +7,10 @@ import masterball.compiler.frontend.exception.CodePos;
 
 public class ForStmtNode extends StmtBaseNode {
     ExpBaseNode initExpNode, conditionExpNode, incrExpNode;
+    StmtBaseNode bodyStmtNode;
 
-    public ForStmtNode(CodePos codePos, ExpBaseNode initExpNode, ExpBaseNode conditionExpNode, ExpBaseNode incrExpNode) {
+    public ForStmtNode(CodePos codePos) {
         super(codePos);
-        this.initExpNode = initExpNode;
-        this.conditionExpNode = conditionExpNode;
-        this.incrExpNode = incrExpNode;
     }
 
     @Override

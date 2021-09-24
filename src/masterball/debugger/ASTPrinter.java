@@ -1,13 +1,10 @@
 package masterball.debugger;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
-import masterball.compiler.frontend.ast.node.ClassDefNode;
-import masterball.compiler.frontend.ast.node.FuncDefNode;
+import masterball.compiler.frontend.ast.node.*;
 import masterball.compiler.frontend.ast.node.stmtnode.PureStmtNode;
-import masterball.compiler.frontend.ast.node.RootNode;
 import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.*;
-import masterball.compiler.frontend.ast.node.SuiteNode;
 
 public class ASTPrinter implements ASTVisitor {
 
@@ -27,7 +24,17 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
+    public void visit(VarDefNode node) {
+
+    }
+
+    @Override
     public void visit(SuiteNode node) {
+
+    }
+
+    @Override
+    public void visit(SuiteStmtNode node) {
 
     }
 
@@ -108,6 +115,11 @@ public class ASTPrinter implements ASTVisitor {
 
     @Override
     public void visit(UnaryExpNode node) {
+
+    }
+
+    @Override
+    public void visit(LambdaExpNode node) {
 
     }
 }

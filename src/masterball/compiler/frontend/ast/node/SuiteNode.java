@@ -10,6 +10,7 @@ public class SuiteNode extends BaseNode {
 
     public SuiteNode(CodePos codePos) {
         super(codePos);
+        this.stmtNodes = new ArrayList<>();
     }
 
     @Override

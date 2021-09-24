@@ -28,7 +28,7 @@ classConstructorDef
 // 9 Function
 
 funcDef
-    :   funcRetType Identifier LeftParen funcDefArgs* RightParen suite
+    :   funcRetType Identifier LeftParen funcDefArgs? RightParen suite
     ;
 
 funcDefArgs
@@ -40,19 +40,32 @@ funcRetType
     |   varDefType
     ;
 
+
+funcCallExp: Identifier funcCallArgs;
+
+funcCallArgs
+    :   LeftParen (expression (Comma expression)*)? RightParen
+    ;
+
+lambdaExp
+    :   LambdaStartSymbol (LeftParen funcDefArgs? RightParen)? LambdaArrowSymbol suite funcCallArgs
+    ;
+
 // 7 Variable
 
 // 7.1 BuiltinType
 
 builtinType: IntType | StringType | BoolType; // not include void because void can only use in func declaration
 
-arrayType: LeftBracket RightBracket;
+arrayType: LeftBracket expression* RightBracket;
 
 varDefType
     :   builtinType
     |   Identifier
     |   varDefType arrayType+
     ;
+
+varDefBody: varDefType Identifier (AssignOp expression)? (Comma Identifier (AssignOp expression)?)*;
 
 // 11 Statement
 
@@ -61,11 +74,19 @@ suite
     ;
 
 varDefStmt
-    : varDefType Identifier (AssignOp expression)?
-      (Comma Identifier (AssignOp expression)?)* SemiColon;
-ifStmt: IfKw LeftParen expression RightParen suite;
-whileStmt: WhileKw LeftParen expression RightParen suite;
-forStmt: ForKw LeftParen expression? SemiColon expression? SemiColon RightParen suite;
+    : varDefBody SemiColon
+    ;
+
+ifStmt: IfKw LeftParen expression RightParen statement;
+
+whileStmt: WhileKw LeftParen expression? RightParen statement;
+
+forInit: (varDefBody | expression);
+forStmt: ForKw LeftParen forInit? SemiColon
+         forCondition = expression? SemiColon
+         forIncr = expression?
+         RightParen statement;
+
 returnStmt: ReturnKw expression? SemiColon;
 controlStmt: (BreakKw | ContinueKw);
 
@@ -85,8 +106,7 @@ statement
 
 // 10.1 Some Exp
 
-funcCallExp: Identifier LeftParen expression (Comma expression)* RightParen;
-newExp: NewKw varDefType (LeftParen RightParen)?;
+newExp: NewKw varDefType;
 prefixExp: (IncrementOp | DecrementOp) expression;
 
 // 10.2 Op Set
@@ -104,28 +124,29 @@ expression
     |   LeftParen expression RightParen                                                 #parenExpL     // 1
 
     |   expression LeftBracket expression RightBracket                                  #indexExpL     // 1
-    |   expression MemberOp Identifier                                                  #memberExpL    // 1
+    |   expression MemberOp expression                                                  #memberExpL    // 1
     |   funcCallExp                                                                     #funcCallExpL  // 1
+    |   lambdaExp                                                                       #lambdaExpL    // 1
 
-    |   expression postfixOps                                                           #postfixExpL    // 2
+    |   expression postfixOps                                                           #postfixExpL   // 2
 
     |   prefixExp                                                                       #prefixExpL
-    |   unaryOps expression                                                             #unaryExpL    // 3
+    |   unaryOps expression                                                             #unaryExpL     // 3
     |   newExp                                                                          #newExpL       // 3
 
-    |   expression shiftOps expression                                                  #logicExpL     // 4
+    |   expression shiftOps expression                                                  #binaryExpL    // 4
 
-    |   expression mulLevelOps expression                                               #mulLevelExpL       // 5
-    |   expression addLevelOps expression                                               #addLevelExpL       // 6
+    |   expression mulLevelOps expression                                               #binaryExpL    // 5
+    |   expression addLevelOps expression                                               #binaryExpL    // 6
 
-    |   expression compareOps expression                                                #compareExpL   // 8
-    |   expression equalOps expression                                                  #equalExpL     // 9
-    |   expression BitAndOp expression                                                  #bitAndExpL    // 10
-    |   expression BitXorOp expression                                                  #bitXorExpL    // 11
-    |   expression BitOrOp expression                                                   #bitOrExpL     // 12
-    |   expression LogicAndOp expression                                                #logicAndExpL  // 13
-    |   expression LogicOrOp expression                                                 #logicOrExpL   // 14
-    |   <assoc=right> expression AssignOp expression                                     #assignExpL    // 16
+    |   expression compareOps expression                                                #binaryExpL    // 8
+    |   expression equalOps expression                                                  #binaryExpL    // 9
+    |   expression BitAndOp expression                                                  #binaryExpL    // 10
+    |   expression BitXorOp expression                                                  #binaryExpL    // 11
+    |   expression BitOrOp expression                                                   #binaryExpL    // 12
+    |   expression LogicAndOp expression                                                #binaryExpL    // 13
+    |   expression LogicOrOp expression                                                 #binaryExpL    // 14
+    |   <assoc=right> expression AssignOp expression                                    #assignExpL    // 16
     //|   expression Comma expression                                                   #commaExpL     // 18
     ;
 
@@ -197,6 +218,11 @@ RightBrace: '}';
 
 // 1.11 String Op
 QuoteOp: '"';
+
+// 1.12 Lambda
+
+LambdaStartSymbol: '[&]';
+LambdaArrowSymbol: '->' ;
 
 // 2.Keyword
 

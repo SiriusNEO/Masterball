@@ -5,7 +5,7 @@ import masterball.compiler.frontend.ast.node.StmtBaseNode;
 import masterball.compiler.frontend.exception.CodePos;
 
 public class ControlStmtNode extends StmtBaseNode {
-    enum Command {BREAK, CONTINUE};
+    public enum Command {BREAK, CONTINUE};
     public Command command;
 
     public ControlStmtNode(CodePos codePos, Command command) {

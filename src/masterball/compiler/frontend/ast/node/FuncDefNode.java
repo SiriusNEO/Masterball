@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class FuncDefNode extends BaseNode {
     public Registry funcRegistry;
-    public ArrayList<String> argsIdentifiers;
+    public ArrayList<VarDefNode> argsDefNodes;
     public SuiteNode suiteNode;
 
     public FuncDefNode(CodePos codePos) {

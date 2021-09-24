@@ -1,18 +1,16 @@
 package masterball.compiler.frontend.ast;
 
-import masterball.compiler.frontend.ast.node.ClassDefNode;
-import masterball.compiler.frontend.ast.node.FuncDefNode;
+import masterball.compiler.frontend.ast.node.*;
 import masterball.compiler.frontend.ast.node.stmtnode.PureStmtNode;
-import masterball.compiler.frontend.ast.node.RootNode;
 import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.*;
-import masterball.compiler.frontend.ast.node.SuiteNode;
 
 public interface ASTVisitor {
-    // Entry Node
+    // General Node
     void visit(RootNode node);
     void visit(ClassDefNode node);
     void visit(FuncDefNode node);
+    void visit(VarDefNode node);
 
     // Suite
     void visit(SuiteNode node);
@@ -37,4 +35,5 @@ public interface ASTVisitor {
     void visit(PostfixExpNode node);
     void visit(PrefixExpNode node);
     void visit(UnaryExpNode node);
+    void visit(LambdaExpNode node);
 }
