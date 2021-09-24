@@ -1,9 +1,9 @@
 package masterball.compiler.frontend.exception;
 
-public class SyntaxException extends Exception {
+public class SyntaxException extends BaseException {
 
-    public SyntaxException(CodePos codePos) {
-        super(codePos);
+    public SyntaxException(CodePos codePos, String message) {
+        super(codePos, message);
     }
 
     @Override

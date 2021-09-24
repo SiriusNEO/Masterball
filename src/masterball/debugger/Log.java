@@ -1,19 +1,13 @@
 package masterball.debugger;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 public class Log {
     private static final boolean isOpen = true;
 
-    private final PrintStream ps;
+    private static final PrintStream ps = System.out;
 
-    public Log(PrintStream ps) {
-        this.ps = ps;
-        ps.println("Hello, the Log is open now.");
-    }
-
-    public void report(VarPair... vars) {
+    public static void report(VarPair... vars) {
         if (!isOpen) {
             return;
         }
@@ -25,14 +19,14 @@ public class Log {
         ps.println(info);
     }
 
-    public void track(String msg) {
+    public static void track(String msg) {
         if (!isOpen) {
             return;
         }
         ps.println("Log:[Track] Tracking... " + msg);
     }
 
-    public void stackTrace(Throwable throwable) {
+    public static void stackTrace(Throwable throwable) {
         if (!isOpen) {
             return;
         }
