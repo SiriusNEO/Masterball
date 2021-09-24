@@ -16,7 +16,7 @@ Click the following links to read the project design.
 
 - [General Design](doc/GeneralDesign.md)
 
-- [FrontEnd Design](doc/FrontendDesign.md)
+- [FrontEnd Design](doc/FrontEndDesign.md)
 
 
 
