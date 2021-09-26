@@ -1,7 +1,5 @@
 # General
 
-Now in: `semantic check`
-
 
 
 ## Design Rules
@@ -16,7 +14,7 @@ Now in: `semantic check`
 
 ```
 src
-- org
+- org (from antlr)
 - masterball
     - compiler (core)
       - frontend

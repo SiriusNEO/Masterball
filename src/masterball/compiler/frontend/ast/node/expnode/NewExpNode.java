@@ -1,10 +1,9 @@
 package masterball.compiler.frontend.ast.node.expnode;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
-import masterball.compiler.frontend.ast.node.BaseNode;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
-import masterball.compiler.frontend.exception.CodePos;
-import masterball.compiler.frontend.type.Type;
+import masterball.compiler.frontend.info.CodePos;
+import masterball.compiler.frontend.info.Type;
 
 import java.util.ArrayList;
 

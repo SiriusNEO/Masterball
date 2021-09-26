@@ -1,6 +1,6 @@
 package masterball.engine;
 
-import masterball.compiler.frontend.SyntaxExceptionListener;
+import masterball.compiler.frontend.error.ParseErrorListener;
 import masterball.compiler.frontend.parser.MxStarLexer;
 import masterball.compiler.frontend.parser.MxStarParser;
 import masterball.debugger.Log;
@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 public class ParseEngine {
@@ -17,18 +16,18 @@ public class ParseEngine {
     public final MxStarParser mxStarParser;
     public final ParseTree parseTreeRoot;
 
-    public ParseEngine(InputStream is) throws Exception {
-        mxStarLexer = new MxStarLexer(CharStreams.fromStream(is));
+    public ParseEngine(IOEngine ioe) throws Exception {
+        mxStarLexer = new MxStarLexer(CharStreams.fromStream(ioe.is));
         mxStarLexer.removeErrorListeners();
-        mxStarLexer.addErrorListener(new SyntaxExceptionListener());
+        mxStarLexer.addErrorListener(new ParseErrorListener());
 
         mxStarParser = new MxStarParser(new CommonTokenStream(mxStarLexer));
         mxStarParser.removeErrorListeners();
-        mxStarParser.addErrorListener(new SyntaxExceptionListener());
+        mxStarParser.addErrorListener(new ParseErrorListener());
 
         parseTreeRoot = mxStarParser.mxStarCode();
 
-        Log.track("ParseEngine start successfully.");
+        Log.track("ParseEngine started successfully.");
     }
 
 }

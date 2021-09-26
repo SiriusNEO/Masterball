@@ -1,7 +1,7 @@
 package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
-import masterball.compiler.frontend.exception.CodePos;
+import masterball.compiler.frontend.info.CodePos;
 
 public abstract class BaseNode {
     public CodePos codePos;

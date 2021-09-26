@@ -1,16 +1,19 @@
 package masterball.compiler.frontend.ast.node.stmtnode;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
-import masterball.compiler.frontend.ast.node.StmtBaseNode;
-import masterball.compiler.frontend.ast.node.VarDefNode;
-import masterball.compiler.frontend.exception.CodePos;
-import masterball.compiler.frontend.scope.Registry;
+import masterball.compiler.frontend.ast.node.BaseNode;
+import masterball.compiler.frontend.ast.node.VarDefSingleNode;
+import masterball.compiler.frontend.info.CodePos;
 
-public class VarDefStmtNode extends StmtBaseNode {
-    VarDefNode varDefNode;
+import java.util.ArrayList;
+
+public class VarDefStmtNode extends BaseNode {
+
+    public ArrayList<VarDefSingleNode> varDefSingleNodes;
 
     public VarDefStmtNode(CodePos codePos) {
         super(codePos);
+        varDefSingleNodes = new ArrayList<>();
     }
 
     @Override

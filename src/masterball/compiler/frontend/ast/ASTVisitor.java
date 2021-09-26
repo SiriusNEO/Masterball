@@ -10,19 +10,19 @@ public interface ASTVisitor {
     void visit(RootNode node);
     void visit(ClassDefNode node);
     void visit(FuncDefNode node);
-    void visit(VarDefNode node);
+    void visit(VarDefSingleNode node);
 
     // Suite
     void visit(SuiteNode node);
 
     //Stmt
+    void visit(VarDefStmtNode node);
     void visit(SuiteStmtNode node);
     void visit(IfStmtNode node);
     void visit(WhileStmtNode node);
     void visit(ForStmtNode node);
     void visit(ReturnStmtNode node);
     void visit(ControlStmtNode node);
-    void visit(VarDefStmtNode node);
     void visit(PureStmtNode node);
 
     //Exp

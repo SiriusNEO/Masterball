@@ -43,12 +43,6 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncDefArgs(MxStarParser.FuncDefArgsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxStarParser#funcRetType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncRetType(MxStarParser.FuncRetTypeContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MxStarParser#funcCallExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -90,6 +84,12 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVarDefBody(MxStarParser.VarDefBodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxStarParser#varDefSingle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarDefSingle(MxStarParser.VarDefSingleContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxStarParser#suite}.
 	 * @param ctx the parse tree

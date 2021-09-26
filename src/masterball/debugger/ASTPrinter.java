@@ -10,12 +10,20 @@ public class ASTPrinter implements ASTVisitor {
 
     @Override
     public void visit(RootNode node) {
+        System.out.println("* --- RootNode --- *");
 
+        System.out.println("GlobalScope VarTable: " + node.scope.varTable.toString());
+        System.out.println("GlobalScope FuncTable: " + node.scope.funcTable.toString());
+        System.out.println("GlobalScope ClassTable: " + node.scope.classTable.toString());
+
+        for (ClassDefNode classDefNode : node.classDefNodes) visit(classDefNode);
+        for (FuncDefNode funcDefNode : node.globalFuncDefNodes) visit(funcDefNode);
+        for (VarDefStmtNode varDefStmtNode : node.globalVarDefStmtNodes) visit(varDefStmtNode);
     }
 
     @Override
     public void visit(ClassDefNode node) {
-
+        System.out.println("* --- ClassDefNode --- *");
     }
 
     @Override
@@ -24,7 +32,12 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visit(VarDefNode node) {
+    public void visit(VarDefSingleNode node) {
+
+    }
+
+    @Override
+    public void visit(VarDefStmtNode node) {
 
     }
 
@@ -60,11 +73,6 @@ public class ASTPrinter implements ASTVisitor {
 
     @Override
     public void visit(ControlStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(VarDefStmtNode node) {
 
     }
 

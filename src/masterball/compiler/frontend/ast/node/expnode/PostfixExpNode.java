@@ -2,7 +2,7 @@ package masterball.compiler.frontend.ast.node.expnode;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
-import masterball.compiler.frontend.exception.CodePos;
+import masterball.compiler.frontend.info.CodePos;
 
 public class PostfixExpNode extends ExpBaseNode {
     public enum PostfixOp {AddOp, SubOp};

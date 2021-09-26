@@ -1,5 +1,6 @@
-package masterball.compiler.frontend.exception;
+package masterball.compiler.frontend.info;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 
 public class CodePos {
@@ -8,6 +9,10 @@ public class CodePos {
     public CodePos(int codeLine, int codePosInline) {
         this.codeLine = codeLine;
         this.codePosInline = codePosInline;
+    }
+
+    public CodePos(ParserRuleContext ctx) {
+        this(ctx.getStart());
     }
 
     public CodePos(Token token) {

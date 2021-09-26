@@ -28,16 +28,11 @@ classConstructorDef
 // 9 Function
 
 funcDef
-    :   funcRetType Identifier LeftParen funcDefArgs? RightParen suite
+    :   varDefType Identifier LeftParen funcDefArgs? RightParen suite
     ;
 
 funcDefArgs
     :   varDefType Identifier (Comma varDefType Identifier)*
-    ;
-
-funcRetType
-    :   VoidType
-    |   varDefType
     ;
 
 
@@ -55,7 +50,9 @@ lambdaExp
 
 // 7.1 BuiltinType
 
-builtinType: IntType | StringType | BoolType; // not include void because void can only use in func declaration
+builtinType: IntType | StringType | BoolType | VoidType;
+
+// 7.2 ArrayType
 
 arrayType: LeftBracket expression* RightBracket;
 
@@ -65,7 +62,9 @@ varDefType
     |   varDefType arrayType+
     ;
 
-varDefBody: varDefType Identifier (AssignOp expression)? (Comma Identifier (AssignOp expression)?)*;
+varDefBody: varDefType varDefSingle (Comma varDefSingle)*;
+
+varDefSingle: Identifier (AssignOp expression)?;
 
 // 11 Statement
 

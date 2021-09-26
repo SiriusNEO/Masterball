@@ -4,7 +4,7 @@
 
 ![](https://img.shields.io/badge/implementation-Java-red) 
 
-**Still under developing ...**
+**Still under developing ...**  Now in: `semantic check`
 
 If you get some ideas from here, please **CREDIT**
 
@@ -15,7 +15,7 @@ If you get some ideas from here, please **CREDIT**
 Click the following links to read the project design.
 
 - [General Design](doc/GeneralDesign.md)
-
+- [Grammar Design](src/masterball/grammar/MxStar.g4)
 - [FrontEnd Design](doc/FrontEndDesign.md)
 
 
@@ -26,6 +26,7 @@ Click the following links to read the project design.
 
 - [x] .g4
 - [x] AST Design
-- [ ] AST Builder & Scope Build
+- [x] Scope & Registry
+- [ ] AST Builder
 - [ ] Semantic Checker
 - [ ] Data Oriented Debug

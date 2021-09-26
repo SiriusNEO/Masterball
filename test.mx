@@ -1,3 +1,5 @@
+void func(int a, int b, int c) {
+}
+
 int main() {
-    if (123) a = 1;
 }

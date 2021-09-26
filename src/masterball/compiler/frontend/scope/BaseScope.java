@@ -1,7 +1,8 @@
 package masterball.compiler.frontend.scope;
 
+import masterball.compiler.frontend.info.Registry;
+
 public abstract class BaseScope {
-    public BaseScope parentScope;
 
     abstract void query(String name);
 

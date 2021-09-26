@@ -1,18 +1,19 @@
 package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
-import masterball.compiler.frontend.exception.CodePos;
-import masterball.compiler.frontend.scope.LocalityScope;
+import masterball.compiler.frontend.info.CodePos;
+import masterball.compiler.frontend.scope.NormalScope;
 
 import java.util.ArrayList;
 
 public class SuiteNode extends BaseNode {
     public ArrayList<StmtBaseNode> stmtNodes;
 
-    public LocalityScope scope;
+    public NormalScope scope;
 
     public SuiteNode(CodePos codePos) {
         super(codePos);
+        this.scope = new NormalScope();
         this.stmtNodes = new ArrayList<>();
     }
 

@@ -31,7 +31,7 @@ public class IOEngine {
         is = (inputPath != null) ? new FileInputStream(inputPath) : System.in;
         os = (outputPath != null) ? new PrintStream(outputPath) : System.out;
 
-        Log.track("IOEngine start successfully.");
+        Log.track("IOEngine started successfully.");
         Log.report(new VarPair("is", is), new VarPair("os", os));
     }
 

@@ -3,13 +3,13 @@ package masterball.compiler.frontend.ast.node.expnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.ast.node.SuiteNode;
-import masterball.compiler.frontend.ast.node.VarDefNode;
-import masterball.compiler.frontend.exception.CodePos;
+import masterball.compiler.frontend.ast.node.stmtnode.VarDefStmtNode;
+import masterball.compiler.frontend.info.CodePos;
 
 import java.util.ArrayList;
 
 public class LambdaExpNode extends ExpBaseNode {
-    public ArrayList<VarDefNode> argsDefNodes;
+    public ArrayList<VarDefStmtNode> argsDefNodes;
     public SuiteNode suiteNode;
 
     public LambdaExpNode(CodePos codePos) {

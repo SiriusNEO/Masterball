@@ -3,7 +3,7 @@ package masterball.compiler.frontend.ast.node.stmtnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.ast.node.StmtBaseNode;
-import masterball.compiler.frontend.exception.CodePos;
+import masterball.compiler.frontend.info.CodePos;
 
 public class WhileStmtNode extends StmtBaseNode {
     ExpBaseNode conditionExpNode;

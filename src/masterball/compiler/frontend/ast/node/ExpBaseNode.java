@@ -1,7 +1,7 @@
 package masterball.compiler.frontend.ast.node;
 
-import masterball.compiler.frontend.exception.CodePos;
-import masterball.compiler.frontend.type.Type;
+import masterball.compiler.frontend.info.CodePos;
+import masterball.compiler.frontend.info.Type;
 
 public abstract class ExpBaseNode extends BaseNode {
     public Type type;

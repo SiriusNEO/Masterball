@@ -1,27 +1,29 @@
 package masterball;
 
-import masterball.compiler.frontend.exception.SyntaxException;
+import masterball.compiler.frontend.error.BaseError;
+import masterball.compiler.frontend.error.SyntaxError;
+import masterball.debugger.ASTPrinter;
 import masterball.debugger.Log;
 import masterball.engine.IOEngine;
 import masterball.engine.ParseEngine;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-
-import java.io.FileInputStream;
-import java.io.InputStream;
+import masterball.engine.SemanticEngine;
 
 public class TestEntry {
 
     public static void main(String[] args) throws Exception {
         Log.track("Test Func Start...");
+
         try {
             IOEngine ioEngine = new IOEngine(args);
-            ParseEngine parseEngine = new ParseEngine(ioEngine.is);
+
+            ParseEngine parseEngine = new ParseEngine(ioEngine);
+
+            SemanticEngine semanticEngine = new SemanticEngine(parseEngine);
+
+            new ASTPrinter().visit(semanticEngine.ASTRoot);
         }
-        catch (SyntaxException e) {
+        catch (BaseError e) {
             e.tell();
-            return;
         }
         catch (Exception e) {
             System.err.println();

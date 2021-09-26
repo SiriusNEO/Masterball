@@ -3,6 +3,8 @@ package masterball.debugger;
 import java.io.*;
 
 public class Log {
+    private static int markCnt = 0;
+
     private static final boolean isOpen = true;
 
     private static final PrintStream ps = System.out;
@@ -17,6 +19,13 @@ public class Log {
             info.append(" ");
         }
         ps.println(info);
+    }
+
+    public static void mark() {
+        if (isOpen) {
+            ps.println("Log:[mark] mark " + markCnt);
+            markCnt++;
+        }
     }
 
     public static void track(String msg) {

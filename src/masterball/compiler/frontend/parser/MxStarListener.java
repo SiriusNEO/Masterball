@@ -60,16 +60,6 @@ public interface MxStarListener extends ParseTreeListener {
 	 */
 	void exitFuncDefArgs(MxStarParser.FuncDefArgsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxStarParser#funcRetType}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncRetType(MxStarParser.FuncRetTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxStarParser#funcRetType}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncRetType(MxStarParser.FuncRetTypeContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MxStarParser#funcCallExp}.
 	 * @param ctx the parse tree
 	 */
@@ -139,6 +129,16 @@ public interface MxStarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarDefBody(MxStarParser.VarDefBodyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxStarParser#varDefSingle}.
+	 * @param ctx the parse tree
+	 */
+	void enterVarDefSingle(MxStarParser.VarDefSingleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxStarParser#varDefSingle}.
+	 * @param ctx the parse tree
+	 */
+	void exitVarDefSingle(MxStarParser.VarDefSingleContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxStarParser#suite}.
 	 * @param ctx the parse tree

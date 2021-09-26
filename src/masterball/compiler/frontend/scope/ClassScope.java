@@ -1,4 +1,15 @@
 package masterball.compiler.frontend.scope;
 
-public class ClassScope {
+import masterball.compiler.frontend.info.Registry;
+
+public class ClassScope extends BaseScope {
+    @Override
+    void query(String name) {
+
+    }
+
+    @Override
+    void register(Registry registry) {
+
+    }
 }

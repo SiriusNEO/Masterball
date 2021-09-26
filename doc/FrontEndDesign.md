@@ -1,4 +1,4 @@
-# Architecture
+# FrontEnd Design
 
 
 
@@ -33,10 +33,12 @@ A Node usually contains
 
 - `CodePos`  used in throw Exception. All Nodes.
 
-- `Scope`  used to manage namespace. Only three types of nodes have:
+- `Scope`  used to manage namespace. Only five types of nodes have:
 
   - `RootNode`		
   - `ClassDefNode` 
+  - `FuncDefNode` (Parameters)
+  - `ForStmtNode` (init)
   - `SuiteNode`
 
   And the visitor will pull the scope into the scope stack when they meeting a node with Scope.
@@ -98,30 +100,34 @@ A Node usually contains
 
 
 
-## Exception Design
+## Registry Design
 
-### ExceptionType
+Registry is like a Object's Household Register. It records information of a declaration.
 
-Syntax Exception
+- `Class Registry`
+- `Func Registry`
+- `Var Registry`
 
-Semantic Exception
+
+
+## Error Design
+
+Error, or Exception (In fact there are some difference, but I think Error is more suitable to describe this wrong.)
+
+- `Syntax Error`
+  - `Parse Failed`
+  - `MainFunc Error`
+- `Semantic Error`
+  - `Name Undefined`
+  - `Name Redefined`
 
 
 
-## ScopeDesign
+## Scope Design
 
-### ClassRegister
+Scope, for managing a "namespace".
 
-- Register All Class First -- To avoid:
-
-  ```
-  class A {B b;};
-  class B {A a;};
-  ```
-
-  
-
-### Scope
+Provide the necessary interfaces to register a variable / function / class.
 
 - `Base Scope`
 
