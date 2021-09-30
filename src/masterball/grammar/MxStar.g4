@@ -10,7 +10,7 @@ grammar MxStar;
 // 0 Code
 
 mxStarCode
-    :   (classDef | funcDef | varDefStmt)*
+    :   (classDef | funcDef | varDefStmt)* EOF
     ;
 
 // 8 Class
@@ -35,15 +35,8 @@ funcDefArgs
     :   varDefType Identifier (Comma varDefType Identifier)*
     ;
 
-
-funcCallExp: Identifier funcCallArgs;
-
 funcCallArgs
     :   LeftParen (expression (Comma expression)*)? RightParen
-    ;
-
-lambdaExp
-    :   LambdaStartSymbol (LeftParen funcDefArgs? RightParen)? LambdaArrowSymbol suite funcCallArgs
     ;
 
 // 7 Variable
@@ -54,12 +47,18 @@ builtinType: IntType | StringType | BoolType | VoidType;
 
 // 7.2 ArrayType
 
-arrayType: LeftBracket expression* RightBracket;
-
 varDefType
     :   builtinType
     |   Identifier
-    |   varDefType arrayType+
+    |   varDefType (LeftBracket RightBracket)+
+    ;
+
+newExpSizeDeclaration: LeftBracket expression? RightBracket;
+
+newExpType
+    :   builtinType
+    |   Identifier
+    |   newExpType newExpSizeDeclaration+
     ;
 
 varDefBody: varDefType varDefSingle (Comma varDefSingle)*;
@@ -76,9 +75,10 @@ varDefStmt
     : varDefBody SemiColon
     ;
 
-ifStmt: IfKw LeftParen expression RightParen statement;
+ifStmt: IfKw LeftParen expression RightParen statement
+        (ElseKw statement) ?;
 
-whileStmt: WhileKw LeftParen expression? RightParen statement;
+whileStmt: WhileKw LeftParen expression RightParen statement;
 
 forInit: (varDefBody | expression);
 forStmt: ForKw LeftParen forInit? SemiColon
@@ -88,28 +88,26 @@ forStmt: ForKw LeftParen forInit? SemiColon
 
 returnStmt: ReturnKw expression? SemiColon;
 controlStmt: (BreakKw | ContinueKw);
+pureStmt: expression? SemiColon;
+suiteStmt: suite;
 
 statement
-    :   suite                                                                          #blockStmtL
-    |   ifStmt                                                                         #ifStmtL
-    |   whileStmt                                                                      #whileStmtL
-    |   forStmt                                                                        #forStmtL
-    |   returnStmt                                                                     #returnStmtL
-    |   controlStmt                                                                    #controlStmtL
-    |   varDefStmt                                                                     #varDefStmtL
-    |   expression? SemiColon                                                          #pureStmtL
+    :   suiteStmt
+    |   ifStmt
+    |   whileStmt
+    |   forStmt
+    |   returnStmt
+    |   controlStmt
+    |   varDefStmt
+    |   pureStmt
     ;
 
 // 10 Expression
 // Warning: Avoid Mutual Left Recursion!!!
 
-// 10.1 Some Exp
+// 10.1 Op Set
 
-newExp: NewKw varDefType;
-prefixExp: (IncrementOp | DecrementOp) expression;
-
-// 10.2 Op Set
-
+prefixOps: (IncrementOp | DecrementOp);
 postfixOps: (IncrementOp | DecrementOp);
 unaryOps: (BitNotOp | LogicNotOp | AddOp | SubOp);
 shiftOps: (ArithShiftLeftOp | ArithShiftRightOp);
@@ -119,44 +117,45 @@ compareOps: (GreaterOp | GreaterEqualOp | LessOp | LessEqualOp);
 equalOps: (EqualOp | NotEqualOp);
 
 expression
-    :   atom                                                                            #singleAtomL   // 0
-    |   LeftParen expression RightParen                                                 #parenExpL     // 1
+    :   atom                                                                            #atomExp       // 0
+    |   LeftParen expression RightParen                                                 #parenExp      // 1
 
-    |   expression LeftBracket expression RightBracket                                  #indexExpL     // 1
-    |   expression MemberOp expression                                                  #memberExpL    // 1
-    |   funcCallExp                                                                     #funcCallExpL  // 1
-    |   lambdaExp                                                                       #lambdaExpL    // 1
+    |   expression LeftBracket expression RightBracket                                  #indexExp      // 1
+    |   expression MemberOp expression                                                  #memberExp     // 1
+    |   Identifier funcCallArgs                                                         #funcCallExp   // 1
+    |   LambdaStartSymbol (LeftParen funcDefArgs? RightParen)?
+        LambdaArrowSymbol suite funcCallArgs                                            #lambdaExp     // 1
 
-    |   expression postfixOps                                                           #postfixExpL   // 2
+    |   expression postfixOps                                                           #postfixExp    // 2
 
-    |   prefixExp                                                                       #prefixExpL
-    |   unaryOps expression                                                             #unaryExpL     // 3
-    |   newExp                                                                          #newExpL       // 3
+    |   prefixOps expression                                                            #prefixExp
+    |   unaryOps expression                                                             #unaryExp      // 3
+    |   NewKw newExpType (LeftParen RightParen)?                                        #newExp        // 3
 
-    |   expression shiftOps expression                                                  #binaryExpL    // 4
+    |   expression shiftOps expression                                                  #binaryExp     // 4
 
-    |   expression mulLevelOps expression                                               #binaryExpL    // 5
-    |   expression addLevelOps expression                                               #binaryExpL    // 6
+    |   expression mulLevelOps expression                                               #binaryExp     // 5
+    |   expression addLevelOps expression                                               #binaryExp     // 6
 
-    |   expression compareOps expression                                                #binaryExpL    // 8
-    |   expression equalOps expression                                                  #binaryExpL    // 9
-    |   expression BitAndOp expression                                                  #binaryExpL    // 10
-    |   expression BitXorOp expression                                                  #binaryExpL    // 11
-    |   expression BitOrOp expression                                                   #binaryExpL    // 12
-    |   expression LogicAndOp expression                                                #binaryExpL    // 13
-    |   expression LogicOrOp expression                                                 #binaryExpL    // 14
-    |   <assoc=right> expression AssignOp expression                                    #assignExpL    // 16
+    |   expression compareOps expression                                                #binaryExp     // 8
+    |   expression equalOps expression                                                  #binaryExp     // 9
+    |   expression BitAndOp expression                                                  #binaryExp     // 10
+    |   expression BitXorOp expression                                                  #binaryExp     // 11
+    |   expression BitOrOp expression                                                   #binaryExp     // 12
+    |   expression LogicAndOp expression                                                #binaryExp     // 13
+    |   expression LogicOrOp expression                                                 #binaryExp     // 14
+    |   <assoc=right> expression AssignOp expression                                    #assignExp     // 16
     //|   expression Comma expression                                                   #commaExpL     // 18
     ;
 
 atom
-    :   Identifier                            #identifierL
-    |   IntegerConstant                       #intL
-    |   StringConstant                        #stringL
-    |   FalseConstant                         #falseL
-    |   TrueConstant                          #trueL
-    |   NullConstant                          #nullL
-    |   ThisPointer                           #thisL
+    :   Identifier
+    |   IntegerConstant
+    |   StringConstant
+    |   FalseConstant
+    |   TrueConstant
+    |   NullConstant
+    |   ThisPointer
     ;
 
 // Lexer

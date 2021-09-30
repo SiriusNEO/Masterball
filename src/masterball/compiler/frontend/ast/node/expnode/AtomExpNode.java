@@ -3,14 +3,14 @@ package masterball.compiler.frontend.ast.node.expnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
+import masterball.compiler.frontend.parser.MxStarParser;
 
-public class AssignExpNode extends ExpBaseNode {
-    public ExpBaseNode lhsExpNode, rhsExpNode;
+public class AtomExpNode extends ExpBaseNode {
+    public MxStarParser.AtomContext ctx;
 
-    public AssignExpNode(CodePos codePos, ExpBaseNode lhsExpNode, ExpBaseNode rhsExpNode) {
+    public AtomExpNode(CodePos codePos, MxStarParser.AtomContext ctx) {
         super(codePos);
-        this.lhsExpNode = lhsExpNode;
-        this.rhsExpNode = rhsExpNode;
+        this.ctx = ctx;
     }
 
     @Override

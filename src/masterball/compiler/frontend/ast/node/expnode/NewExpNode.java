@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class NewExpNode extends ExpBaseNode {
     public Type newType;
-    public ArrayList<Integer> dimensionSize;
 
-    public NewExpNode(CodePos codePos) {
+    public NewExpNode(CodePos codePos, Type newType) {
         super(codePos);
+        this.newType = newType;
     }
 
     @Override

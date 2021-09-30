@@ -7,11 +7,12 @@ import masterball.compiler.frontend.info.CodePos;
 
 public class IfStmtNode extends StmtBaseNode {
     public ExpBaseNode conditionExpNode;
-    StmtBaseNode bodyStmtNode;
+    public StmtBaseNode ifTrueStmtNode, elseStmtNode;
 
-    public IfStmtNode(CodePos codePos, ExpBaseNode conditionExpNode) {
+    public IfStmtNode(CodePos codePos, ExpBaseNode conditionExpNode, StmtBaseNode ifTrueStmtNode) {
         super(codePos);
         this.conditionExpNode = conditionExpNode;
+        this.ifTrueStmtNode = ifTrueStmtNode;
     }
 
     @Override

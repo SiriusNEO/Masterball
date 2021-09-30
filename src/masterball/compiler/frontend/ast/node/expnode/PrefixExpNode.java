@@ -5,12 +5,13 @@ import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
 
 public class PrefixExpNode extends ExpBaseNode {
-    public enum PrefixOp {AddOp, SubOp};
-    public PrefixOp op;
-    ExpBaseNode selfExpNode;
+    public String op;
+    public ExpBaseNode selfExpNode;
 
-    public PrefixExpNode(CodePos codePos) {
+    public PrefixExpNode(CodePos codePos, String op, ExpBaseNode selfExpNode) {
         super(codePos);
+        this.op = op;
+        this.selfExpNode = selfExpNode;
     }
 
     @Override

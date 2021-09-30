@@ -8,6 +8,7 @@ public abstract class ExpBaseNode extends BaseNode {
 
     public ExpBaseNode(CodePos codePos) {
         super(codePos);
+        this.type = null;
     }
 
     public abstract boolean isLeftValue();

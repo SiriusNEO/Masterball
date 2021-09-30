@@ -43,23 +43,11 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncDefArgs(MxStarParser.FuncDefArgsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxStarParser#funcCallExp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncCallExp(MxStarParser.FuncCallExpContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MxStarParser#funcCallArgs}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFuncCallArgs(MxStarParser.FuncCallArgsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxStarParser#lambdaExp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLambdaExp(MxStarParser.LambdaExpContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxStarParser#builtinType}.
 	 * @param ctx the parse tree
@@ -67,17 +55,23 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBuiltinType(MxStarParser.BuiltinTypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxStarParser#arrayType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayType(MxStarParser.ArrayTypeContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MxStarParser#varDefType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitVarDefType(MxStarParser.VarDefTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxStarParser#newExpSizeDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewExpSizeDeclaration(MxStarParser.NewExpSizeDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxStarParser#newExpType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewExpType(MxStarParser.NewExpTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxStarParser#varDefBody}.
 	 * @param ctx the parse tree
@@ -139,73 +133,29 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitControlStmt(MxStarParser.ControlStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code blockStmtL}
-	 * labeled alternative in {@link MxStarParser#statement}.
+	 * Visit a parse tree produced by {@link MxStarParser#pureStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBlockStmtL(MxStarParser.BlockStmtLContext ctx);
+	T visitPureStmt(MxStarParser.PureStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ifStmtL}
-	 * labeled alternative in {@link MxStarParser#statement}.
+	 * Visit a parse tree produced by {@link MxStarParser#suiteStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIfStmtL(MxStarParser.IfStmtLContext ctx);
+	T visitSuiteStmt(MxStarParser.SuiteStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code whileStmtL}
-	 * labeled alternative in {@link MxStarParser#statement}.
+	 * Visit a parse tree produced by {@link MxStarParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhileStmtL(MxStarParser.WhileStmtLContext ctx);
+	T visitStatement(MxStarParser.StatementContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code forStmtL}
-	 * labeled alternative in {@link MxStarParser#statement}.
+	 * Visit a parse tree produced by {@link MxStarParser#prefixOps}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForStmtL(MxStarParser.ForStmtLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code returnStmtL}
-	 * labeled alternative in {@link MxStarParser#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReturnStmtL(MxStarParser.ReturnStmtLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code controlStmtL}
-	 * labeled alternative in {@link MxStarParser#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitControlStmtL(MxStarParser.ControlStmtLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code varDefStmtL}
-	 * labeled alternative in {@link MxStarParser#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVarDefStmtL(MxStarParser.VarDefStmtLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code pureStmtL}
-	 * labeled alternative in {@link MxStarParser#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPureStmtL(MxStarParser.PureStmtLContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxStarParser#newExp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNewExp(MxStarParser.NewExpContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxStarParser#prefixExp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrefixExp(MxStarParser.PrefixExpContext ctx);
+	T visitPrefixOps(MxStarParser.PrefixOpsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxStarParser#postfixOps}.
 	 * @param ctx the parse tree
@@ -249,136 +199,93 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEqualOps(MxStarParser.EqualOpsContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code memberExpL}
+	 * Visit a parse tree produced by the {@code atomExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMemberExpL(MxStarParser.MemberExpLContext ctx);
+	T visitAtomExp(MxStarParser.AtomExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code singleAtomL}
+	 * Visit a parse tree produced by the {@code prefixExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSingleAtomL(MxStarParser.SingleAtomLContext ctx);
+	T visitPrefixExp(MxStarParser.PrefixExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code postfixExpL}
+	 * Visit a parse tree produced by the {@code memberExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPostfixExpL(MxStarParser.PostfixExpLContext ctx);
+	T visitMemberExp(MxStarParser.MemberExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code indexExpL}
+	 * Visit a parse tree produced by the {@code binaryExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIndexExpL(MxStarParser.IndexExpLContext ctx);
+	T visitBinaryExp(MxStarParser.BinaryExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code prefixExpL}
+	 * Visit a parse tree produced by the {@code assignExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrefixExpL(MxStarParser.PrefixExpLContext ctx);
+	T visitAssignExp(MxStarParser.AssignExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code assignExpL}
+	 * Visit a parse tree produced by the {@code unaryExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignExpL(MxStarParser.AssignExpLContext ctx);
+	T visitUnaryExp(MxStarParser.UnaryExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code parenExpL}
+	 * Visit a parse tree produced by the {@code newExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParenExpL(MxStarParser.ParenExpLContext ctx);
+	T visitNewExp(MxStarParser.NewExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code unaryExpL}
+	 * Visit a parse tree produced by the {@code lambdaExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUnaryExpL(MxStarParser.UnaryExpLContext ctx);
+	T visitLambdaExp(MxStarParser.LambdaExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code newExpL}
+	 * Visit a parse tree produced by the {@code parenExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNewExpL(MxStarParser.NewExpLContext ctx);
+	T visitParenExp(MxStarParser.ParenExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code funcCallExpL}
+	 * Visit a parse tree produced by the {@code funcCallExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFuncCallExpL(MxStarParser.FuncCallExpLContext ctx);
+	T visitFuncCallExp(MxStarParser.FuncCallExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code lambdaExpL}
+	 * Visit a parse tree produced by the {@code postfixExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLambdaExpL(MxStarParser.LambdaExpLContext ctx);
+	T visitPostfixExp(MxStarParser.PostfixExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code binaryExpL}
+	 * Visit a parse tree produced by the {@code indexExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBinaryExpL(MxStarParser.BinaryExpLContext ctx);
+	T visitIndexExp(MxStarParser.IndexExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code identifierL}
-	 * labeled alternative in {@link MxStarParser#atom}.
+	 * Visit a parse tree produced by {@link MxStarParser#atom}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIdentifierL(MxStarParser.IdentifierLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code intL}
-	 * labeled alternative in {@link MxStarParser#atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIntL(MxStarParser.IntLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code stringL}
-	 * labeled alternative in {@link MxStarParser#atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStringL(MxStarParser.StringLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code falseL}
-	 * labeled alternative in {@link MxStarParser#atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFalseL(MxStarParser.FalseLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code trueL}
-	 * labeled alternative in {@link MxStarParser#atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTrueL(MxStarParser.TrueLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code nullL}
-	 * labeled alternative in {@link MxStarParser#atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNullL(MxStarParser.NullLContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code thisL}
-	 * labeled alternative in {@link MxStarParser#atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitThisL(MxStarParser.ThisLContext ctx);
+	T visitAtom(MxStarParser.AtomContext ctx);
 }

@@ -1,6 +1,8 @@
 package masterball.compiler.frontend.scope;
 
-import masterball.compiler.frontend.error.semantic.NameReDefined;
+import masterball.compiler.frontend.error.semantic.NameError;
+import masterball.compiler.frontend.info.ClassRegistry;
+import masterball.compiler.frontend.info.FuncRegistry;
 import masterball.compiler.frontend.info.Registry;
 import masterball.compiler.frontend.info.VarRegistry;
 
@@ -10,16 +12,35 @@ public class NormalScope extends BaseScope {
 
     public HashMap<String, VarRegistry> varTable;
 
-    @Override
-    void query(String name) {
-
+    public NormalScope() {
+        varTable = new HashMap<>();
     }
 
     @Override
-    void register(Registry registry) {
+    public ClassRegistry queryClass(String name) {
+        return null;
+    }
+
+    @Override
+    public FuncRegistry queryFunc(String name) {
+        return null;
+    }
+
+    public VarRegistry queryVar(String name) {
+        return varTable.get(name);
+    }
+
+    @Override
+    public void register(Registry registry) {
         String name = registry.name;
         if (varTable.containsKey(name))
-            throw new NameReDefined(registry.codePos, name);
+            throw new NameError(registry.codePos, NameError.redefined, name);
         varTable.put(name, (VarRegistry) registry);
+    }
+
+    public String toString() {
+        StringBuilder ret = new StringBuilder("[NormalScope]\n");
+        ret.append("VarTable: ").append(varTable.toString());
+        return ret.toString();
     }
 }

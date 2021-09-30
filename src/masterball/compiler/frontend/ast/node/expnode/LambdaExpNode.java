@@ -5,11 +5,12 @@ import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.ast.node.SuiteNode;
 import masterball.compiler.frontend.ast.node.stmtnode.VarDefStmtNode;
 import masterball.compiler.frontend.info.CodePos;
+import masterball.compiler.frontend.info.FuncRegistry;
 
 import java.util.ArrayList;
 
 public class LambdaExpNode extends ExpBaseNode {
-    public ArrayList<VarDefStmtNode> argsDefNodes;
+    public FuncRegistry funcRegistry;
     public SuiteNode suiteNode;
 
     public LambdaExpNode(CodePos codePos) {

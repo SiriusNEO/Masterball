@@ -9,6 +9,12 @@ public class Log {
 
     private static final PrintStream ps = System.out;
 
+    public static void report(Object var) {
+        StringBuilder info = new StringBuilder("Log:[Report] ");
+        info.append(var.toString());
+        ps.println(info);
+    }
+
     public static void report(VarPair... vars) {
         if (!isOpen) {
             return;

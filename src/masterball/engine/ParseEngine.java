@@ -20,7 +20,7 @@ public class ParseEngine {
         mxStarLexer = new MxStarLexer(CharStreams.fromStream(ioe.is));
         mxStarLexer.removeErrorListeners();
         mxStarLexer.addErrorListener(new ParseErrorListener());
-
+        
         mxStarParser = new MxStarParser(new CommonTokenStream(mxStarLexer));
         mxStarParser.removeErrorListeners();
         mxStarParser.addErrorListener(new ParseErrorListener());

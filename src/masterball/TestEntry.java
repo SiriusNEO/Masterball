@@ -8,6 +8,8 @@ import masterball.engine.IOEngine;
 import masterball.engine.ParseEngine;
 import masterball.engine.SemanticEngine;
 
+import java.util.HashMap;
+
 public class TestEntry {
 
     public static void main(String[] args) throws Exception {
@@ -22,11 +24,12 @@ public class TestEntry {
 
             new ASTPrinter().visit(semanticEngine.ASTRoot);
         }
-        catch (BaseError e) {
-            e.tell();
-        }
         catch (Exception e) {
-            System.err.println();
+            if (e instanceof BaseError) {
+                ((BaseError) e).tell();
+            } else {
+                e.printStackTrace();
+            }
             return;
         }
     }

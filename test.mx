@@ -1,5 +1,19 @@
-void func(int a, int b, int c) {
+
+class ClassA {
+    ClassA() {
+
+    }
+
+    int memberFunc(int a1, int a2) {
+        return a1 + a2;
+    }
+};
+
+int func(int a1, int a2) {
+    return a1 + a2;
 }
 
 int main() {
+    int a = "123";
+    return 0;
 }

@@ -8,18 +8,14 @@ import masterball.compiler.frontend.scope.GlobalScope;
 import java.util.ArrayList;
 
 public class RootNode extends BaseNode {
-    public ArrayList<ClassDefNode> classDefNodes;
-    public ArrayList<VarDefStmtNode> globalVarDefStmtNodes;
-    public ArrayList<FuncDefNode> globalFuncDefNodes;
+    public ArrayList<BaseNode> sonNodes;
 
     public GlobalScope scope;
 
     public RootNode(CodePos pos) {
         super(pos);
         this.scope = new GlobalScope();
-        this.classDefNodes = new ArrayList<>();
-        this.globalVarDefStmtNodes = new ArrayList<>();
-        this.globalFuncDefNodes = new ArrayList<>();
+        this.sonNodes = new ArrayList<>();
     }
 
     @Override

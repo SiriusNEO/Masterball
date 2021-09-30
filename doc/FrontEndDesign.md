@@ -4,17 +4,31 @@
 
 ## Work Pipe
 
-### Semantic
 ```mermaid
 graph LR
 I(Input) -->|code string| B(Lexer&Parser)
 B -->|parse tree| A(ASTBuilder)
-C--> |AST| S(SemanticChecker)
-A --> |AST| C(RegistryCollector)
-S --> |Exception| H(ExceptionHandler)
-A--> |Scope| S
+A --> |AST| S(SemanticChecker)
+S --> |Semantic Error| H(ExceptionHandler)
+A --> |Scope| S
+A --> |Syntax Error| H
 
 ```
+
+the semantic check contains two steps:
+
+- First, the `ASTBuilder`
+  - Build the AST
+  - Register all classes and functions
+  - throw some `Syntax Error` ( also some basic `Semantic Error` )
+- Second, the `SemanticChecker`
+  - Register the others (Scope Stack)
+  - Assign types to All Exp Nodes
+  - Semantic check, throw `Semantic Error`
+
+This is because Mx* should implement the forwarding reference of classes and global functions.
+
+
 
 ## AST Design
 
@@ -33,15 +47,18 @@ A Node usually contains
 
 - `CodePos`  used in throw Exception. All Nodes.
 
-- `Scope`  used to manage namespace. Only five types of nodes have:
+- `Scope`  used to manage namespace. Only there types of nodes have:
 
   - `RootNode`		
-  - `ClassDefNode` 
-  - `FuncDefNode` (Parameters)
   - `ForStmtNode` (init)
   - `SuiteNode`
 
   And the visitor will pull the scope into the scope stack when they meeting a node with Scope.
+
+  The following two Node types contains Registry with Scope:
+
+  - `ClassDefNode` 
+  - `FuncDefNode` (Parameters)
 
 - `Registry`  Only in "Def" Type Node.
 
@@ -84,8 +101,7 @@ A Node usually contains
   - `PureStmtNode`
 
 - `ExpNode/`
-
-  - `ExpBaseNode`
+- `ExpBaseNode`
   - `FuncCallExpNode`
   - `IndexExpNode`
   - `MemberExpNode`
@@ -103,6 +119,10 @@ A Node usually contains
 ## Registry Design
 
 Registry is like a Object's Household Register. It records information of a declaration.
+
+Mainly for "match":
+
+For class, there is no need to match; For func, match a valid func-call; For variable, match type.
 
 - `Class Registry`
 - `Func Registry`
@@ -128,6 +148,8 @@ Error, or Exception (In fact there are some difference, but I think Error is mor
 Scope, for managing a "namespace".
 
 Provide the necessary interfaces to register a variable / function / class.
+
+And give response to a variable / function / class call 
 
 - `Base Scope`
 

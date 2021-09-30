@@ -1,7 +1,12 @@
 package masterball.compiler.frontend.info;
 
+import masterball.compiler.frontend.ast.node.ExpBaseNode;
+import masterball.compiler.frontend.error.BaseError;
+import masterball.compiler.frontend.error.semantic.FuncCallError;
 import masterball.compiler.frontend.info.Type;
 import masterball.compiler.frontend.parser.MxStarParser;
+import masterball.compiler.frontend.scope.FuncArgScope;
+import masterball.compiler.frontend.scope.NormalScope;
 import masterball.debugger.Log;
 import masterball.debugger.VarPair;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -14,8 +19,12 @@ public class FuncRegistry extends Registry {
     public Type retType;
     public ArrayList<VarRegistry> funcArgs;
 
+    public FuncArgScope scope;
+
     public FuncRegistry(MxStarParser.FuncDefContext ctx) {
         super(ctx.Identifier().toString(), ctx);
+
+        this.scope = new FuncArgScope();
 
         retType = new Type(ctx.varDefType());
         funcArgs = new ArrayList<>();
@@ -23,26 +32,36 @@ public class FuncRegistry extends Registry {
         MxStarParser.FuncDefArgsContext funcDefArgsContext = ctx.funcDefArgs();
 
         if (funcDefArgsContext != null) {
-            List<MxStarParser.VarDefTypeContext> varDefTypeContextList = funcDefArgsContext.varDefType();
-            List<TerminalNode> identifierList = funcDefArgsContext.Identifier();
-
-            for (int i = 0; i < varDefTypeContextList.size(); ++i) {
-                funcArgs.add(new VarRegistry(identifierList.get(i).toString(),
-                             varDefTypeContextList.get(i)));
+            for (int i = 0; i < funcDefArgsContext.varDefType().size(); ++i) {
+                funcArgs.add(new VarRegistry(funcDefArgsContext.Identifier(i).toString(),
+                        funcDefArgsContext.varDefType(i)));
             }
         }
+    }
 
-        Log.report(new VarPair("fname", ctx.Identifier().toString()),
-                   new VarPair("rettype", retType.basicType == Type.BasicType.VOID),
-                   new VarPair("argsize", funcArgs.size())
-        );
+    public FuncRegistry(MxStarParser.ClassConstructorDefContext ctx) {
+        super(ctx.Identifier().toString(), ctx);
+        funcArgs = new ArrayList<>();
+    }
+
+    public boolean funcCallMatch(ArrayList<ExpBaseNode> args) {
+        if (funcArgs.size() != args.size()) {
+            throw new FuncCallError(codePos, FuncCallError.argcNotMatch, name);
+        }
+        for (int i = 0; i < funcArgs.size(); i++) {
+            if (!funcArgs.get(i).type.match(args.get(i).type)) {
+                throw new FuncCallError(funcArgs.get(i).codePos, FuncCallError.argTypeNotMatch, name);
+            }
+        }
+        return true;
     }
 
     public String toString() {
-        StringBuilder ret = new StringBuilder();
-        ret.append("ret:").append(retType);
+        StringBuilder ret = new StringBuilder("[FuncRegistry] ");
+        ret.append("name:" + name + " ");
+        ret.append("ret:").append(retType).append(" args:");
         for (int i = 0; i < funcArgs.size(); ++i) {
-            ret.append(funcArgs.get(i).toString());
+            ret.append(funcArgs.get(i).toString() + " ");
         }
         return ret.toString();
     }

@@ -7,11 +7,13 @@ import masterball.compiler.frontend.info.CodePos;
 import java.util.ArrayList;
 
 public class FuncCallExpNode extends ExpBaseNode {
-    public String callIdentifier;
+    public String callFuncName;
     public ArrayList<ExpBaseNode> callArgExpNodes;
 
-    public FuncCallExpNode(CodePos codePos) {
+    public FuncCallExpNode(CodePos codePos, String callFuncName) {
         super(codePos);
+        this.callFuncName = callFuncName;
+        this.callArgExpNodes = new ArrayList<ExpBaseNode>();
     }
 
     @Override

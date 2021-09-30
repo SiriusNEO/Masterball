@@ -6,11 +6,11 @@ import masterball.compiler.frontend.ast.node.StmtBaseNode;
 import masterball.compiler.frontend.info.CodePos;
 
 public class ReturnStmtNode extends StmtBaseNode {
-    ExpBaseNode retExpNode;
+    public ExpBaseNode retExpNode;
 
-    public ReturnStmtNode(CodePos codePos, ExpBaseNode retExpNode) {
+    public ReturnStmtNode(CodePos codePos) {
         super(codePos);
-        this.retExpNode = retExpNode;
+        this.retExpNode = null;
     }
 
     @Override

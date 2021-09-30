@@ -36,4 +36,7 @@ public interface ASTVisitor {
     void visit(PrefixExpNode node);
     void visit(UnaryExpNode node);
     void visit(LambdaExpNode node);
+
+    //Literal
+    void visit(AtomExpNode node);
 }

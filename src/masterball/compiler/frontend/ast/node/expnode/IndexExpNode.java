@@ -5,11 +5,13 @@ import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
 
 public class IndexExpNode extends ExpBaseNode {
-    ExpBaseNode arrayExpNode;
-    ExpBaseNode indexExpNode;
+    public ExpBaseNode arrayExpNode;
+    public ExpBaseNode indexExpNode;
 
-    public IndexExpNode(CodePos codePos) {
+    public IndexExpNode(CodePos codePos, ExpBaseNode arrayExpNode, ExpBaseNode indexExpNode) {
         super(codePos);
+        this.arrayExpNode = arrayExpNode;
+        this.indexExpNode = indexExpNode;
     }
 
     @Override

@@ -2,20 +2,26 @@ package masterball.compiler.frontend.info;
 
 import masterball.compiler.frontend.parser.MxStarParser;
 
-import java.util.Objects;
-
-import static masterball.compiler.utils.KeywordTable.*;
+import java.util.ArrayList;
 
 public class VarRegistry extends Registry {
     public Type type;
+    public ArrayList<VarRegistry> eachDimSize;
 
-    // this registry is only for single var, so the parameter is not VarDefBodyContext.
+    public VarRegistry(String name, MxStarParser.VarDefSingleContext ctx) {
+        super(name, ctx);
+        eachDimSize = new ArrayList<>();
+    }
+
     public VarRegistry(String name, MxStarParser.VarDefTypeContext ctx) {
         super(name, ctx);
-        type = new Type(ctx);
+        this.type = new Type(ctx);
+        eachDimSize = new ArrayList<>();
     }
 
     public String toString() {
-        return type + "|" + name;
+        StringBuilder ret = new StringBuilder("[VarRegistry] ");
+        ret.append(type + "|" + name);
+        return ret.toString();
     }
 }

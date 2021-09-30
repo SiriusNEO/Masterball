@@ -15,14 +15,11 @@ public class ClassDefNode extends BaseNode {
     public ArrayList<VarDefStmtNode> varDefStmtNodes;
     public ArrayList<FuncDefNode> funcDefNodes;
 
-    public ClassScope scope;
-
     public ClassDefNode(CodePos codePos) {
         super(codePos);
         this.constructorDefNode = null;
-        this.scope = new ClassScope();
-        varDefStmtNodes = new ArrayList<>();
-        funcDefNodes = new ArrayList<>();
+        this.varDefStmtNodes = new ArrayList<>();
+        this.funcDefNodes = new ArrayList<>();
     }
 
     @Override

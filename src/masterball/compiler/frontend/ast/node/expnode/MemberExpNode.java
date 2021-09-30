@@ -9,8 +9,10 @@ public class MemberExpNode extends ExpBaseNode {
     public ExpBaseNode memberExpNode;
     public boolean isMemberVar; // true: var, false: func
 
-    public MemberExpNode(CodePos codePos) {
+    public MemberExpNode(CodePos codePos, ExpBaseNode superExpNode, ExpBaseNode memberExpNode) {
         super(codePos);
+        this.superExpNode = superExpNode;
+        this.memberExpNode = memberExpNode;
     }
 
     @Override

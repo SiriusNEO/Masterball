@@ -8,9 +8,9 @@ import masterball.compiler.frontend.info.CodePos;
 public class PureStmtNode extends StmtBaseNode {
     public ExpBaseNode expNode;
 
-    public PureStmtNode(CodePos codePos, ExpBaseNode expNode) {
+    public PureStmtNode(CodePos codePos) {
         super(codePos);
-        this.expNode = expNode;
+        this.expNode = null;
     }
 
     @Override

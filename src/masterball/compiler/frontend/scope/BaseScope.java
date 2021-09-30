@@ -1,10 +1,17 @@
 package masterball.compiler.frontend.scope;
 
+import masterball.compiler.frontend.info.ClassRegistry;
+import masterball.compiler.frontend.info.FuncRegistry;
 import masterball.compiler.frontend.info.Registry;
+import masterball.compiler.frontend.info.VarRegistry;
 
 public abstract class BaseScope {
 
-    abstract void query(String name);
+    public abstract ClassRegistry queryClass(String name);
 
-    abstract void register(Registry registry);
+    public abstract FuncRegistry queryFunc(String name);
+
+    public abstract VarRegistry queryVar(String name);
+
+    public abstract void register(Registry registry);
 }

@@ -5,13 +5,15 @@ import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
 
 public class UnaryExpNode extends ExpBaseNode {
-    public UnaryExpNode(CodePos codePos) {
-        super(codePos);
-    }
 
-    public enum UnaryOp {BitNotOp, LogicNotOp, PositiveOp, NegativeOp};
-    public UnaryOp op;
-    ExpBaseNode selfExpNode;
+    public String op;
+    public ExpBaseNode selfExpNode;
+
+    public UnaryExpNode(CodePos codePos, String op, ExpBaseNode selfExpNode) {
+        super(codePos);
+        this.op = op;
+        this.selfExpNode = selfExpNode;
+    }
 
     @Override
     public void accept(ASTVisitor visitor) {

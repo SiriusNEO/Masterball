@@ -3,22 +3,16 @@ package masterball.compiler.frontend.ast.node.expnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
+import masterball.compiler.utils.GrammarTable;
 
 public class BinaryExpNode extends ExpBaseNode {
-    ExpBaseNode lhsExpNode, rhsExpNode;
-    public enum BinaryOp {
-        AddOp, SubOp, MulOp, DivOp, ModOp,
-        ArithShiftLeftOp, ArithShiftRightOp,
-        GreaterOp, GreaterEqualOp, LessOp, LessEqualOp,
-        EqualOp, NotEqualOp,
-        BitAndOp, BitOrOp, BitXorOp,
-        LogicAndOp, LogicOrOp
-    };
+    public ExpBaseNode lhsExpNode, rhsExpNode;
+    public String op;
 
-    BinaryOp op;
-
-    public BinaryExpNode(CodePos codePos) {
+    public BinaryExpNode(CodePos codePos, ExpBaseNode lhsExpNode, ExpBaseNode rhsExpNode) {
         super(codePos);
+        this.lhsExpNode = lhsExpNode;
+        this.rhsExpNode = rhsExpNode;
     }
 
     @Override

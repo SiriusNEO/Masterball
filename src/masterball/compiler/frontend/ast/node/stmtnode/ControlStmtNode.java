@@ -3,14 +3,16 @@ package masterball.compiler.frontend.ast.node.stmtnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.StmtBaseNode;
 import masterball.compiler.frontend.info.CodePos;
+import masterball.compiler.utils.GrammarTable;
+
+import java.util.Objects;
 
 public class ControlStmtNode extends StmtBaseNode {
-    public enum Command {BREAK, CONTINUE};
-    public Command command;
+    public String controlWord;
 
-    public ControlStmtNode(CodePos codePos, Command command) {
+    public ControlStmtNode(CodePos codePos, String controlWord) {
         super(codePos);
-        this.command = command;
+        this.controlWord = controlWord;
     }
 
     @Override
