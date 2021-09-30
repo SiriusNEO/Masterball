@@ -3,8 +3,7 @@ package masterball.compiler.frontend.ast.node;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.stmtnode.VarDefStmtNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.info.ClassRegistry;
-import masterball.compiler.frontend.scope.ClassScope;
+import masterball.compiler.frontend.info.registry.ClassRegistry;
 
 import java.util.ArrayList;
 

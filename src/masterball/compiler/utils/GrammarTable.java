@@ -34,6 +34,8 @@ public class GrammarTable {
     public static final String BitAndOp = "&";
     public static final String BitOrOp = "|";
     public static final String BitXorOp = "^";
+    public static final String BitNotOp = "~";
     public static final String LogicAndOp = "&&";
     public static final String LogicOrOp = "||";
+    public static final String LogicNotOp = "~";
 }

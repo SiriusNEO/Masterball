@@ -3,11 +3,8 @@ package masterball.compiler.frontend.ast.node.expnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.ast.node.SuiteNode;
-import masterball.compiler.frontend.ast.node.stmtnode.VarDefStmtNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.info.FuncRegistry;
-
-import java.util.ArrayList;
+import masterball.compiler.frontend.info.registry.FuncRegistry;
 
 public class LambdaExpNode extends ExpBaseNode {
     public FuncRegistry funcRegistry;

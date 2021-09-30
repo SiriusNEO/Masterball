@@ -1,12 +1,13 @@
-package masterball.compiler.frontend.info;
+package masterball.compiler.frontend.info.registry;
 
+import masterball.compiler.frontend.info.CodePos;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class Registry {
+public abstract class BaseRegistry {
     public final String name;
     public final CodePos codePos;
 
-    Registry(String name, ParserRuleContext ctx) {
+    BaseRegistry(String name, ParserRuleContext ctx) {
         this.name = name;
         this.codePos = new CodePos(ctx);
     }

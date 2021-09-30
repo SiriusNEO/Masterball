@@ -3,9 +3,12 @@ package masterball.compiler.frontend;
 import masterball.compiler.frontend.ast.node.*;
 import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.*;
-import masterball.compiler.frontend.error.syntax.AssignmentError;
 import masterball.compiler.frontend.info.*;
 import masterball.compiler.frontend.error.syntax.MainFuncError;
+import masterball.compiler.frontend.info.registry.ClassRegistry;
+import masterball.compiler.frontend.info.registry.FuncRegistry;
+import masterball.compiler.frontend.info.registry.VarRegistry;
+import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.parser.MxStarBaseVisitor;
 import masterball.compiler.frontend.parser.MxStarParser;
 import masterball.compiler.utils.GrammarTable;
@@ -90,7 +93,6 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
         Log.track("func def");
         FuncDefNode ret = new FuncDefNode(new CodePos(ctx));
         ret.funcRegistry = new FuncRegistry(ctx);
-        Log.report(new VarPair("registry", ret.funcRegistry));
         ret.suiteNode = (SuiteNode) visit(ctx.suite());
         return ret;
     }
@@ -101,7 +103,7 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
 
         for (int i = 0; i < ctx.varDefBody().varDefSingle().size(); i++) {
             VarDefSingleNode varDefSingleNode = (VarDefSingleNode) visit(ctx.varDefBody().varDefSingle(i));
-            varDefSingleNode.varRegistry.type = new Type(ctx.varDefBody().varDefType());
+            varDefSingleNode.varRegistry.type = new VarType(ctx.varDefBody().varDefType());
             ret.varDefSingleNodes.add(varDefSingleNode);
         }
 
@@ -132,7 +134,7 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
                 for (int i = 0; i < ctx.forInit().varDefBody().varDefSingle().size(); i++) {
                     VarDefSingleNode varDefSingleNode = (VarDefSingleNode)
                             visit(ctx.forInit().varDefBody().varDefSingle(i));
-                    varDefSingleNode.varRegistry.type = new Type(ctx.forInit().varDefBody().varDefType());
+                    varDefSingleNode.varRegistry.type = new VarType(ctx.forInit().varDefBody().varDefType());
                     ret.initVarDefSingleNodes.add(varDefSingleNode);
                 }
             } else if (ctx.forInit().expression() != null) {
@@ -210,16 +212,11 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
     @Override public BaseNode visitAssignExp(MxStarParser.AssignExpContext ctx) {
         AssignExpNode ret =  new AssignExpNode(new CodePos(ctx),
                 (ExpBaseNode) visit(ctx.expression(0)), (ExpBaseNode) visit(ctx.expression(1)));
-        if (!ret.lhsExpNode.isLeftValue())
-            throw new AssignmentError(
-                    new CodePos(ctx.expression(0)),
-                    AssignmentError.expectLeftValue
-            );
         return ret;
     }
 
     @Override public BaseNode visitFuncCallExp(MxStarParser.FuncCallExpContext ctx) {
-        FuncCallExpNode ret = new FuncCallExpNode(new CodePos(ctx), ctx.Identifier().toString());
+        FuncCallExpNode ret = new FuncCallExpNode(new CodePos(ctx), (ExpBaseNode) visit(ctx.expression()));
         if (ctx.funcCallArgs() != null) {
             ctx.funcCallArgs().expression().forEach(sonctx -> {
                 ret.callArgExpNodes.add((ExpBaseNode) visit(sonctx));
@@ -240,10 +237,7 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
     }*/
 
     @Override public BaseNode visitMemberExp(MxStarParser.MemberExpContext ctx) {
-        return new MemberExpNode(new CodePos(ctx),
-                (ExpBaseNode) visit(ctx.expression(0)),
-                (ExpBaseNode) visit(ctx.expression(1))
-        );
+        return new MemberExpNode(new CodePos(ctx), (ExpBaseNode) visit(ctx.expression()), ctx.Identifier().getText());
     }
 
     @Override public BaseNode visitPostfixExp(MxStarParser.PostfixExpContext ctx) {
@@ -259,7 +253,7 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
     }
 
     @Override public BaseNode visitNewExp(MxStarParser.NewExpContext ctx) {
-        return new NewExpNode(new CodePos(ctx), new Type(ctx.newExpType()));
+        return new NewExpNode(new CodePos(ctx), new VarType(ctx.newExpType()));
     }
 
     @Override public BaseNode visitAtomExp(MxStarParser.AtomExpContext ctx) {

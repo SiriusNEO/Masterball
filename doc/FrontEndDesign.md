@@ -21,6 +21,7 @@ the semantic check contains two steps:
   - Build the AST
   - Register all classes and functions
   - throw some `Syntax Error` ( also some basic `Semantic Error` )
+  - Assign types to New
 - Second, the `SemanticChecker`
   - Register the others (Scope Stack)
   - Assign types to All Exp Nodes
@@ -116,17 +117,24 @@ A Node usually contains
 
 
 
-## Registry Design
+## Type & Registry Design
 
-Registry is like a Object's Household Register. It records information of a declaration.
+Type is mainly for "match":
 
-Mainly for "match":
+For class, there is no need to match; For func, match a valid func-call; For variable, match their builtin-type and dimension.
 
-For class, there is no need to match; For func, match a valid func-call; For variable, match type.
+- `BaseType`
+- `VarType`
+- `FuncType`
 
-- `Class Registry`
-- `Func Registry`
-- `Var Registry`
+
+
+Registry is like a Object's Household Register. It records information of a declaration. (Type + name + scope)
+
+- `BaseRegistry`
+- `VarRegistry`
+- `FuncRegistry`
+- `ClassRegistry`
 
 
 
@@ -135,11 +143,17 @@ For class, there is no need to match; For func, match a valid func-call; For var
 Error, or Exception (In fact there are some difference, but I think Error is more suitable to describe this wrong.)
 
 - `Syntax Error`
-  - `Parse Failed`
-  - `MainFunc Error`
+  - `ParseFailedError`
+  - `MainFuncError`
+  - `ArrayDeclarationError`
 - `Semantic Error`
-  - `Name Undefined`
-  - `Name Redefined`
+  - `AssignmentError`
+  - `FuncCallError`
+  - `FuncReturnError`
+  - `NameError`
+  - `ScopeError`
+  - `TypeError`
+  - `UndefinedBehaviourError`
 
 
 
@@ -151,20 +165,28 @@ Provide the necessary interfaces to register a variable / function / class.
 
 And give response to a variable / function / class call 
 
-- `Base Scope`
+- `BaseScope`
 
-- `Global Scope`
+- `GlobalScope`
 
   Able to register: class, var, func
 
-- `Locality Scope`
+- `NormalScope`
 
   Able to regiser: var
 
-  Use in: func def, if/while/for stmt, scope in scope
+  Use in: suite
 
-- `Class Scope`
+- `ClassScope`
 
   Use in: class def
 
   Able to regiser: func var
+  
+- `FuncScope`
+
+  Use in: func def
+
+- `LoopScope`
+
+  Use in: for-loop, while-loop

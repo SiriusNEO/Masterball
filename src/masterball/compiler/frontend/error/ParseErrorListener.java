@@ -1,5 +1,6 @@
 package masterball.compiler.frontend.error;
 
+import masterball.compiler.frontend.error.syntax.ParseFailedError;
 import masterball.compiler.frontend.info.CodePos;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
@@ -12,6 +13,6 @@ public class ParseErrorListener extends BaseErrorListener {
                             int line, int charPositionInLine,
                             String message,
                             RecognitionException exception) {
-        throw new SyntaxError(new CodePos(line, charPositionInLine), message, "Parse Failed");
+        throw new ParseFailedError(new CodePos(line, charPositionInLine), message);
     }
 }

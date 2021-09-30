@@ -3,16 +3,17 @@ package masterball.compiler.frontend.ast.node.expnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
+import masterball.compiler.frontend.info.type.BaseType;
 
 public class MemberExpNode extends ExpBaseNode {
     public ExpBaseNode superExpNode;
-    public ExpBaseNode memberExpNode;
-    public boolean isMemberVar; // true: var, false: func
 
-    public MemberExpNode(CodePos codePos, ExpBaseNode superExpNode, ExpBaseNode memberExpNode) {
+    public String memberName;
+
+    public MemberExpNode(CodePos codePos, ExpBaseNode superExpNode, String memberName) {
         super(codePos);
         this.superExpNode = superExpNode;
-        this.memberExpNode = memberExpNode;
+        this.memberName = memberName;
     }
 
     @Override
@@ -22,6 +23,6 @@ public class MemberExpNode extends ExpBaseNode {
 
     @Override
     public boolean isLeftValue() {
-        return isMemberVar;
+        return !this.type.match(BaseType.BuiltinType.FUNC);
     }
 }

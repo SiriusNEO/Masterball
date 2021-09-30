@@ -1,7 +1,10 @@
 package masterball.compiler.frontend.scope;
 
 import masterball.compiler.frontend.error.semantic.NameError;
-import masterball.compiler.frontend.info.*;
+import masterball.compiler.frontend.info.registry.ClassRegistry;
+import masterball.compiler.frontend.info.registry.FuncRegistry;
+import masterball.compiler.frontend.info.registry.BaseRegistry;
+import masterball.compiler.frontend.info.registry.VarRegistry;
 
 import java.util.HashMap;
 
@@ -33,7 +36,7 @@ public class GlobalScope extends BaseScope {
     }
 
     @Override
-    public void register(Registry registry) {
+    public void register(BaseRegistry registry) {
         String name = registry.name;
         if (classTable.containsKey(name))
             throw new NameError(registry.codePos, NameError.redefined , name);

@@ -1,11 +1,9 @@
-package masterball.compiler.frontend.info;
+package masterball.compiler.frontend.info.registry;
 
 import masterball.compiler.frontend.parser.MxStarParser;
 import masterball.compiler.frontend.scope.ClassScope;
 
-import java.util.HashMap;
-
-public class ClassRegistry extends Registry {
+public class ClassRegistry extends BaseRegistry {
 
     public ClassScope scope;
 

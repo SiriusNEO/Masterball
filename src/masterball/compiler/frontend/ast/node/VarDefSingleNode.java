@@ -2,7 +2,7 @@ package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.info.VarRegistry;
+import masterball.compiler.frontend.info.registry.VarRegistry;
 
 public class VarDefSingleNode extends BaseNode {
     public VarRegistry varRegistry;

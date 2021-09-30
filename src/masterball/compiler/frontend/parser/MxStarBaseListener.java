@@ -414,18 +414,6 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMemberExp(MxStarParser.MemberExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMemberExp(MxStarParser.MemberExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterBinaryExp(MxStarParser.BinaryExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -445,6 +433,18 @@ public class MxStarBaseListener implements MxStarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssignExp(MxStarParser.AssignExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMemberExp(MxStarParser.MemberExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMemberExp(MxStarParser.MemberExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

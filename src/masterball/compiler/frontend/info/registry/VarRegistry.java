@@ -1,11 +1,12 @@
-package masterball.compiler.frontend.info;
+package masterball.compiler.frontend.info.registry;
 
+import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.parser.MxStarParser;
 
 import java.util.ArrayList;
 
-public class VarRegistry extends Registry {
-    public Type type;
+public class VarRegistry extends BaseRegistry {
+    public VarType type;
     public ArrayList<VarRegistry> eachDimSize;
 
     public VarRegistry(String name, MxStarParser.VarDefSingleContext ctx) {
@@ -15,7 +16,7 @@ public class VarRegistry extends Registry {
 
     public VarRegistry(String name, MxStarParser.VarDefTypeContext ctx) {
         super(name, ctx);
-        this.type = new Type(ctx);
+        this.type = new VarType(ctx);
         eachDimSize = new ArrayList<>();
     }
 

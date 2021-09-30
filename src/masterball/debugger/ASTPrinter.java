@@ -84,7 +84,7 @@ public class ASTPrinter implements ASTVisitor {
         System.out.println("if true: ");
         node.ifTrueStmtNode.accept(this);
         System.out.println("else: ");
-        node.elseStmtNode.accept(this);
+        if (node.elseStmtNode != null) node.elseStmtNode.accept(this);
         nowIndentNum--;
     }
 
@@ -143,6 +143,7 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(AssignExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- AssignExpNode --- *\n");
+        System.out.println("type: " + node.type);
         if (node.lhsExpNode != null) node.lhsExpNode.accept(this);
         if (node.rhsExpNode != null) node.rhsExpNode.accept(this);
         nowIndentNum--;
@@ -152,6 +153,7 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(BinaryExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- BinaryExpNode --- *\n");
+        System.out.println("type: " + node.type);
         System.out.println("op: " + node.op);
         if (node.lhsExpNode != null) node.lhsExpNode.accept(this);
         if (node.rhsExpNode != null) node.rhsExpNode.accept(this);
@@ -162,8 +164,9 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(FuncCallExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- FuncCallExpNode --- *\n");
+        System.out.println("type: " + node.type);
+        node.callExpNode.accept(this);
         node.callArgExpNodes.forEach(sonnode -> sonnode.accept(this));
-        System.out.println("Func Name: " + node.callFuncName);
         nowIndentNum--;
     }
 
@@ -171,6 +174,7 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(IndexExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- IndexExpNode --- *\n");
+        System.out.println("type: " + node.type);
         if (node.arrayExpNode != null) node.arrayExpNode.accept(this);
         if (node.indexExpNode != null) node.indexExpNode.accept(this);
         nowIndentNum--;
@@ -180,9 +184,8 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(MemberExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- MemberExpNode --- *\n");
-        System.out.println("isMemberVal: " + node.isMemberVar);
+        System.out.println("type: " + node.type);
         if (node.superExpNode != null) node.superExpNode.accept(this);
-        if (node.memberExpNode != null) node.memberExpNode.accept(this);
         nowIndentNum--;
     }
 
@@ -190,7 +193,9 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(NewExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- NewExpNode --- *\n");
-        System.out.println("NewType: " + node.newType);
+        System.out.println("type: " + node.type);
+        System.out.println("NewType: " + node.type);
+        // new exp type is determined in ASTBuilder
         nowIndentNum--;
     }
 
@@ -198,6 +203,7 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(PostfixExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- PostfixExpNode --- *\n");
+        System.out.println("type: " + node.type);
         System.out.println("op: " + node.op);
         if (node.selfExpNode != null) node.selfExpNode.accept(this);
         nowIndentNum--;
@@ -207,6 +213,7 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(PrefixExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- PrefixExpNode --- *\n");
+        System.out.println("type: " + node.type);
         System.out.println("op: " + node.op);
         if (node.selfExpNode != null) node.selfExpNode.accept(this);
         nowIndentNum--;
@@ -216,6 +223,7 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(UnaryExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- UnaryExpNode --- *\n");
+        System.out.println("type: " + node.type);
         System.out.println("op: " + node.op);
         if (node.selfExpNode != null) node.selfExpNode.accept(this);
         nowIndentNum--;
@@ -232,6 +240,7 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(AtomExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- AtomExpNode --- *\n");
+        System.out.println("type: " + node.type);
         System.out.println("text: " + node.ctx.getText());
         nowIndentNum--;
     }

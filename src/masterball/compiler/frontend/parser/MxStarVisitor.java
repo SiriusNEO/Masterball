@@ -213,13 +213,6 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrefixExp(MxStarParser.PrefixExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code memberExp}
-	 * labeled alternative in {@link MxStarParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMemberExp(MxStarParser.MemberExpContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code binaryExp}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
@@ -233,6 +226,13 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssignExp(MxStarParser.AssignExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code memberExp}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMemberExp(MxStarParser.MemberExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code unaryExp}
 	 * labeled alternative in {@link MxStarParser#expression}.

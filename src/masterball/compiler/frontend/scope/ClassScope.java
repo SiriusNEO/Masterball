@@ -1,10 +1,10 @@
 package masterball.compiler.frontend.scope;
 
 import masterball.compiler.frontend.error.semantic.NameError;
-import masterball.compiler.frontend.info.ClassRegistry;
-import masterball.compiler.frontend.info.FuncRegistry;
-import masterball.compiler.frontend.info.Registry;
-import masterball.compiler.frontend.info.VarRegistry;
+import masterball.compiler.frontend.info.registry.ClassRegistry;
+import masterball.compiler.frontend.info.registry.FuncRegistry;
+import masterball.compiler.frontend.info.registry.BaseRegistry;
+import masterball.compiler.frontend.info.registry.VarRegistry;
 
 import java.util.HashMap;
 
@@ -34,7 +34,7 @@ public class ClassScope extends BaseScope {
     }
 
     @Override
-    public void register(Registry registry) {
+    public void register(BaseRegistry registry) {
         String name = registry.name;
         if (registry instanceof FuncRegistry) {
             if (funcTable.containsKey(name))

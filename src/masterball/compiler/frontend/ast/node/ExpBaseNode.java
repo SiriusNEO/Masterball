@@ -1,10 +1,10 @@
 package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.info.Type;
+import masterball.compiler.frontend.info.type.BaseType;
 
 public abstract class ExpBaseNode extends BaseNode {
-    public Type type;
+    public BaseType type;
 
     public ExpBaseNode(CodePos codePos) {
         super(codePos);

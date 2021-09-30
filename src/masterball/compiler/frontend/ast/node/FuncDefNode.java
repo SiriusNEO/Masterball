@@ -2,12 +2,11 @@ package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.info.FuncRegistry;
-import masterball.compiler.frontend.info.Type;
-import masterball.compiler.frontend.scope.NormalScope;
+import masterball.compiler.frontend.info.registry.FuncRegistry;
+import masterball.compiler.frontend.info.type.BaseType;
+import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.utils.GrammarTable;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class FuncDefNode extends BaseNode {
@@ -23,7 +22,7 @@ public class FuncDefNode extends BaseNode {
 
     public boolean isValidMainFunc() {
         return Objects.equals(funcRegistry.name, GrammarTable.mainKw)
-               && funcRegistry.retType.basicType == Type.BasicType.INT
+               && funcRegistry.type.retType.match(BaseType.BuiltinType.INT)
                && funcRegistry.funcArgs.size() == 0;
     }
 

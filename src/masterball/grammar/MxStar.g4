@@ -50,7 +50,7 @@ builtinType: IntType | StringType | BoolType | VoidType;
 varDefType
     :   builtinType
     |   Identifier
-    |   varDefType (LeftBracket RightBracket)+
+    |   (builtinType | Identifier) (LeftBracket RightBracket)+
     ;
 
 newExpSizeDeclaration: LeftBracket expression? RightBracket;
@@ -58,7 +58,7 @@ newExpSizeDeclaration: LeftBracket expression? RightBracket;
 newExpType
     :   builtinType
     |   Identifier
-    |   newExpType newExpSizeDeclaration+
+    |   (builtinType | Identifier) newExpSizeDeclaration+
     ;
 
 varDefBody: varDefType varDefSingle (Comma varDefSingle)*;
@@ -121,8 +121,8 @@ expression
     |   LeftParen expression RightParen                                                 #parenExp      // 1
 
     |   expression LeftBracket expression RightBracket                                  #indexExp      // 1
-    |   expression MemberOp expression                                                  #memberExp     // 1
-    |   Identifier funcCallArgs                                                         #funcCallExp   // 1
+    |   expression MemberOp Identifier                                                  #memberExp     // 1
+    |   expression funcCallArgs                                                         #funcCallExp   // 1
     |   LambdaStartSymbol (LeftParen funcDefArgs? RightParen)?
         LambdaArrowSymbol suite funcCallArgs                                            #lambdaExp     // 1
 
