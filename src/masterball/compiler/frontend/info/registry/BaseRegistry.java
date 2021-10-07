@@ -7,6 +7,11 @@ public abstract class BaseRegistry {
     public final String name;
     public final CodePos codePos;
 
+    BaseRegistry(String name) {
+        this.name = name;
+        this.codePos = null;
+    }
+
     BaseRegistry(String name, ParserRuleContext ctx) {
         this.name = name;
         this.codePos = new CodePos(ctx);

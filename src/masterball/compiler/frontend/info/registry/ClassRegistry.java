@@ -1,7 +1,7 @@
 package masterball.compiler.frontend.info.registry;
 
 import masterball.compiler.frontend.parser.MxStarParser;
-import masterball.compiler.frontend.scope.ClassScope;
+import masterball.compiler.frontend.info.scope.ClassScope;
 
 public class ClassRegistry extends BaseRegistry {
 

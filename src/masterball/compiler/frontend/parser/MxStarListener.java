@@ -100,16 +100,6 @@ public interface MxStarListener extends ParseTreeListener {
 	 */
 	void exitNewExpSizeDeclaration(MxStarParser.NewExpSizeDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxStarParser#newExpType}.
-	 * @param ctx the parse tree
-	 */
-	void enterNewExpType(MxStarParser.NewExpTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxStarParser#newExpType}.
-	 * @param ctx the parse tree
-	 */
-	void exitNewExpType(MxStarParser.NewExpTypeContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MxStarParser#varDefBody}.
 	 * @param ctx the parse tree
 	 */

@@ -67,12 +67,6 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNewExpSizeDeclaration(MxStarParser.NewExpSizeDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxStarParser#newExpType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNewExpType(MxStarParser.NewExpTypeContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MxStarParser#varDefBody}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

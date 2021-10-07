@@ -27,6 +27,12 @@ Click the following links to read the project design.
 - [x] .g4
 - [x] AST Design
 - [x] Scope & Registry
-- [ ] AST Builder
-- [ ] Semantic Checker
-- [ ] Data Oriented Debug
+- [x] AST Builder
+- [x] Semantic Checker
+- [x] Data Oriented Debug
+
+
+
+### IR Builder
+
+- [ ] IR Design (LLVM IR)

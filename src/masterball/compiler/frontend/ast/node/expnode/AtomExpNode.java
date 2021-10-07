@@ -20,6 +20,6 @@ public class AtomExpNode extends ExpBaseNode {
 
     @Override
     public boolean isLeftValue() {
-        return true;
+        return ctx.Identifier() != null;
     }
 }

@@ -2,7 +2,7 @@ package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.scope.NormalScope;
+import masterball.compiler.frontend.info.scope.NormalScope;
 
 import java.util.ArrayList;
 

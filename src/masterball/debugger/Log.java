@@ -7,7 +7,11 @@ public class Log {
 
     private static final boolean isOpen = true;
 
-    private static final PrintStream ps = System.out;
+    private static PrintStream ps = System.out;
+
+    public static void setPrintStream(PrintStream ps) {
+        Log.ps = ps;
+    }
 
     public static void report(Object var) {
         StringBuilder info = new StringBuilder("Log:[Report] ");

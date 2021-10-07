@@ -8,6 +8,7 @@ import masterball.compiler.utils.GrammarTable;
 public class BinaryExpNode extends ExpBaseNode {
     public ExpBaseNode lhsExpNode, rhsExpNode;
     public String op;
+    public String opType;
 
     public BinaryExpNode(CodePos codePos, ExpBaseNode lhsExpNode, ExpBaseNode rhsExpNode) {
         super(codePos);

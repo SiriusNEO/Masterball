@@ -3,11 +3,13 @@ package masterball.compiler.frontend;
 import masterball.compiler.frontend.ast.node.*;
 import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.*;
+import masterball.compiler.frontend.error.syntax.ClassDeclarationError;
 import masterball.compiler.frontend.info.*;
 import masterball.compiler.frontend.error.syntax.MainFuncError;
 import masterball.compiler.frontend.info.registry.ClassRegistry;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.registry.VarRegistry;
+import masterball.compiler.frontend.info.type.BaseType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.parser.MxStarBaseVisitor;
 import masterball.compiler.frontend.parser.MxStarParser;
@@ -15,12 +17,47 @@ import masterball.compiler.utils.GrammarTable;
 import masterball.debugger.Log;
 import masterball.debugger.VarPair;
 
+import java.util.Objects;
+
 public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
 
     @Override public BaseNode visitMxStarCode(MxStarParser.MxStarCodeContext ctx) {
         Log.track("ASTBuilder started building...");
 
         RootNode ret = new RootNode(new CodePos(ctx));
+
+        ret.scope.register(
+                new FuncRegistry("print", BaseType.BuiltinType.VOID,
+                        new VarRegistry("str", BaseType.BuiltinType.STRING))
+        );
+
+        ret.scope.register(
+                new FuncRegistry("println", BaseType.BuiltinType.VOID,
+                        new VarRegistry("str", BaseType.BuiltinType.STRING))
+        );
+
+        ret.scope.register(
+                new FuncRegistry("printInt", BaseType.BuiltinType.VOID,
+                        new VarRegistry("n", BaseType.BuiltinType.INT))
+        );
+
+        ret.scope.register(
+                new FuncRegistry("printlnInt", BaseType.BuiltinType.VOID,
+                        new VarRegistry("n", BaseType.BuiltinType.INT))
+        );
+
+        ret.scope.register(
+                new FuncRegistry("getString", BaseType.BuiltinType.STRING)
+        );
+
+        ret.scope.register(
+                new FuncRegistry("getInt", BaseType.BuiltinType.INT)
+        );
+
+        ret.scope.register(
+                new FuncRegistry("toString", BaseType.BuiltinType.STRING,
+                    new VarRegistry("i", BaseType.BuiltinType.INT))
+        );
 
         boolean hasMainFunc = false;
 
@@ -61,6 +98,11 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
 
         ctx.classConstructorDef().forEach(sonctx -> {
             FuncDefNode constructorDefNode = (FuncDefNode) visit(sonctx);
+
+            if (!Objects.equals(ret.classRegistry.name, constructorDefNode.funcRegistry.name)) {
+                throw new ClassDeclarationError(new CodePos(ctx), ClassDeclarationError.constructorWrongName);
+            }
+
             ret.classRegistry.scope.register(constructorDefNode.funcRegistry);
             ret.constructorDefNode = constructorDefNode;
         });
@@ -175,7 +217,9 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
     }
 
     @Override public BaseNode visitControlStmt(MxStarParser.ControlStmtContext ctx) {
-        return new ControlStmtNode(new CodePos(ctx), ctx.getText());
+        String controlWord = ctx.getText();
+        controlWord = controlWord.substring(0, controlWord.length()-1); // get rid of ';'
+        return new ControlStmtNode(new CodePos(ctx), controlWord);
     }
 
     @Override public BaseNode visitReturnStmt(MxStarParser.ReturnStmtContext ctx) {
@@ -195,16 +239,46 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
                 (ExpBaseNode) visit(ctx.expression().get(0)), (ExpBaseNode) visit(ctx.expression().get(1))
         );
 
-        if (ctx.LogicOrOp() != null) ret.op = GrammarTable.LogicOrOp;
-        else if (ctx.LogicAndOp() != null) ret.op = GrammarTable.LogicAndOp;
-        else if (ctx.BitXorOp() != null) ret.op = GrammarTable.BitXorOp;
-        else if (ctx.BitOrOp() != null) ret.op = GrammarTable.BitOrOp;
-        else if (ctx.BitAndOp() != null) ret.op = GrammarTable.BitAndOp;
-        else if (ctx.equalOps() != null) ret.op = ctx.equalOps().getText();
-        else if (ctx.compareOps() != null) ret.op = ctx.compareOps().getText();
-        else if (ctx.addLevelOps() != null) ret.op = ctx.addLevelOps().getText();
-        else if (ctx.mulLevelOps() != null) ret.op = ctx.mulLevelOps().getText();
-        else if (ctx.shiftOps() != null) ret.op = ctx.shiftOps().getText();
+        if (ctx.LogicOrOp() != null) {
+            ret.op = GrammarTable.LogicOrOp;
+            ret.opType = GrammarTable.logicOpType;
+        }
+        else if (ctx.LogicAndOp() != null) {
+            ret.op = GrammarTable.LogicAndOp;
+            ret.opType = GrammarTable.logicOpType;
+        }
+        else if (ctx.BitXorOp() != null) {
+            ret.op = GrammarTable.BitXorOp;
+            ret.opType = GrammarTable.arithOpType;
+        }
+        else if (ctx.BitOrOp() != null) {
+            ret.op = GrammarTable.BitOrOp;
+            ret.opType = GrammarTable.arithOpType;
+        }
+        else if (ctx.BitAndOp() != null) {
+            ret.op = GrammarTable.BitAndOp;
+            ret.opType = GrammarTable.arithOpType;
+        }
+        else if (ctx.equalOps() != null) {
+            ret.op = ctx.equalOps().getText();
+            ret.opType = GrammarTable.equalOpType;
+        }
+        else if (ctx.compareOps() != null) {
+            ret.op = ctx.compareOps().getText();
+            ret.opType = GrammarTable.compareOpType;
+        }
+        else if (ctx.addLevelOps() != null) {
+            ret.op = ctx.addLevelOps().getText();
+            ret.opType = GrammarTable.arithOpType;
+        }
+        else if (ctx.mulLevelOps() != null) {
+            ret.op = ctx.mulLevelOps().getText();
+            ret.opType = GrammarTable.arithOpType;
+        }
+        else if (ctx.shiftOps() != null) {
+            ret.op = ctx.shiftOps().getText();
+            ret.opType = GrammarTable.arithOpType;
+        }
 
         return ret;
     }
@@ -249,11 +323,21 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
     }
 
     @Override public BaseNode visitPrefixExp(MxStarParser.PrefixExpContext ctx) {
-        return new PostfixExpNode(new CodePos(ctx), ctx.prefixOps().getText(), (ExpBaseNode) visit(ctx.expression()));
+        return new PrefixExpNode(new CodePos(ctx), ctx.prefixOps().getText(), (ExpBaseNode) visit(ctx.expression()));
     }
 
     @Override public BaseNode visitNewExp(MxStarParser.NewExpContext ctx) {
-        return new NewExpNode(new CodePos(ctx), new VarType(ctx.newExpType()));
+        NewExpNode ret =  new NewExpNode(new CodePos(ctx), new VarType(ctx));
+        ctx.newExpSizeDeclaration().forEach(sonctx->{
+            if (sonctx.expression() != null) {
+                ret.eachDimExpNodes.add((ExpBaseNode) visit(sonctx.expression()));
+            }
+        });
+        return ret;
+    }
+
+    @Override public BaseNode visitParenExp(MxStarParser.ParenExpContext ctx) {
+        return visit(ctx.expression());
     }
 
     @Override public BaseNode visitAtomExp(MxStarParser.AtomExpContext ctx) {

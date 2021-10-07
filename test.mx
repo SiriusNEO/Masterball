@@ -1,9 +1,12 @@
+class A {
+  B() {}
+};
 
-int func(int a1, int a2) {
-    return a1 + a2;
-}
+class B {
+  A() {}
+};
 
 int main() {
-    func(1, "123");
-    return 0;
+  A b = new A;
+  B a = new B;
 }

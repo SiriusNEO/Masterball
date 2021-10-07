@@ -33,13 +33,6 @@ This is because Mx* should implement the forwarding reference of classes and glo
 
 ## AST Design
 
-```
-Instead of:
-	exp -> atom:(exp) -> exp
-We use:
-	exp:(exp) -> atom
-```
-
 
 
 ### Node Pack
@@ -48,10 +41,12 @@ A Node usually contains
 
 - `CodePos`  used in throw Exception. All Nodes.
 
-- `Scope`  used to manage namespace. Only there types of nodes have:
+- `Scope`  used to manage namespace. The following nodes have scopes attached to them.
 
   - `RootNode`		
-  - `ForStmtNode` (init)
+  - `ForStmtNode` 
+  - `WhileStmtNode`
+  - `IfStmtNode`  (This one have two scopes: ifTrue, else)
   - `SuiteNode`
 
   And the visitor will pull the scope into the scope stack when they meeting a node with Scope.
@@ -102,7 +97,11 @@ A Node usually contains
   - `PureStmtNode`
 
 - `ExpNode/`
+
 - `ExpBaseNode`
+  
+  - `AtomExpNode`
+  
   - `FuncCallExpNode`
   - `IndexExpNode`
   - `MemberExpNode`
@@ -146,8 +145,8 @@ Error, or Exception (In fact there are some difference, but I think Error is mor
   - `ParseFailedError`
   - `MainFuncError`
   - `ArrayDeclarationError`
+  - `ClassDeclarationError`
 - `Semantic Error`
-  - `AssignmentError`
   - `FuncCallError`
   - `FuncReturnError`
   - `NameError`
@@ -190,3 +189,7 @@ And give response to a variable / function / class call
 - `LoopScope`
 
   Use in: for-loop, while-loop
+  
+- `IfScope`
+
+  Use in: if, else

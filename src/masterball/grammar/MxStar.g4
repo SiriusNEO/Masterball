@@ -55,12 +55,6 @@ varDefType
 
 newExpSizeDeclaration: LeftBracket expression? RightBracket;
 
-newExpType
-    :   builtinType
-    |   Identifier
-    |   (builtinType | Identifier) newExpSizeDeclaration+
-    ;
-
 varDefBody: varDefType varDefSingle (Comma varDefSingle)*;
 
 varDefSingle: Identifier (AssignOp expression)?;
@@ -68,15 +62,14 @@ varDefSingle: Identifier (AssignOp expression)?;
 // 11 Statement
 
 suite
-    : LeftBrace (statement)* RightBrace
+    : LeftBrace statement* RightBrace
     ;
 
 varDefStmt
     : varDefBody SemiColon
     ;
 
-ifStmt: IfKw LeftParen expression RightParen statement
-        (ElseKw statement) ?;
+ifStmt: IfKw LeftParen expression RightParen statement (ElseKw statement)?;
 
 whileStmt: WhileKw LeftParen expression RightParen statement;
 
@@ -87,7 +80,7 @@ forStmt: ForKw LeftParen forInit? SemiColon
          RightParen statement;
 
 returnStmt: ReturnKw expression? SemiColon;
-controlStmt: (BreakKw | ContinueKw);
+controlStmt: (BreakKw | ContinueKw) SemiColon;
 pureStmt: expression? SemiColon;
 suiteStmt: suite;
 
@@ -96,8 +89,8 @@ statement
     |   ifStmt
     |   whileStmt
     |   forStmt
-    |   returnStmt
     |   controlStmt
+    |   returnStmt
     |   varDefStmt
     |   pureStmt
     ;
@@ -118,8 +111,8 @@ equalOps: (EqualOp | NotEqualOp);
 
 expression
     :   atom                                                                            #atomExp       // 0
-    |   LeftParen expression RightParen                                                 #parenExp      // 1
 
+    |   LeftParen expression RightParen                                                 #parenExp      // 1
     |   expression LeftBracket expression RightBracket                                  #indexExp      // 1
     |   expression MemberOp Identifier                                                  #memberExp     // 1
     |   expression funcCallArgs                                                         #funcCallExp   // 1
@@ -128,9 +121,9 @@ expression
 
     |   expression postfixOps                                                           #postfixExp    // 2
 
+    |   NewKw (builtinType | Identifier) newExpSizeDeclaration* (LeftParen RightParen)? #newExp        // 3
     |   prefixOps expression                                                            #prefixExp
     |   unaryOps expression                                                             #unaryExp      // 3
-    |   NewKw newExpType (LeftParen RightParen)?                                        #newExp        // 3
 
     |   expression shiftOps expression                                                  #binaryExp     // 4
 
@@ -273,10 +266,10 @@ IntegerConstant
 EscapeEnter: '\\n';
 EscapeBackslash: '\\\\';
 EscapeQuote: '\\"';
-StringContent: [ -~] ; // is this all printable character?
+StringContent: [ -~];
 
 StringConstant
-    :   QuoteOp (EscapeEnter | EscapeBackslash | EscapeQuote | StringContent)* QuoteOp
+    :   QuoteOp (EscapeEnter | EscapeBackslash | EscapeQuote | StringContent)*? QuoteOp
     ;
 
 // 6.3 Bool Constant -> Keyword

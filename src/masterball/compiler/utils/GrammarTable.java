@@ -37,5 +37,10 @@ public class GrammarTable {
     public static final String BitNotOp = "~";
     public static final String LogicAndOp = "&&";
     public static final String LogicOrOp = "||";
-    public static final String LogicNotOp = "~";
+    public static final String LogicNotOp = "!";
+
+    public static final String logicOpType = "logicOp";
+    public static final String arithOpType = "arithOpType";
+    public static final String compareOpType = "compareOp";
+    public static final String equalOpType = "equalOp";
 }

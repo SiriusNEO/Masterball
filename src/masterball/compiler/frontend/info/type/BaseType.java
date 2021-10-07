@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.CodePointBuffer;
 import java.util.Objects;
 
 public abstract class BaseType {
-    public enum BuiltinType {NULL, INT, BOOL, STRING, VOID, CLASS, THIS, FUNC}
+    public enum BuiltinType {NULL, INT, BOOL, STRING, VOID, CLASS, FUNC}
 
     public BuiltinType builtinType;
 

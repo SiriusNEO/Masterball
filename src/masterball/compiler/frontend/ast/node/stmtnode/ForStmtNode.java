@@ -5,8 +5,8 @@ import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.ast.node.StmtBaseNode;
 import masterball.compiler.frontend.ast.node.VarDefSingleNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.scope.LoopScope;
-import masterball.compiler.frontend.scope.NormalScope;
+import masterball.compiler.frontend.info.scope.LoopScope;
+import masterball.compiler.frontend.info.scope.NormalScope;
 
 import java.util.ArrayList;
 

@@ -4,7 +4,7 @@ import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.ast.node.StmtBaseNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.scope.LoopScope;
+import masterball.compiler.frontend.info.scope.LoopScope;
 
 public class WhileStmtNode extends StmtBaseNode {
 
