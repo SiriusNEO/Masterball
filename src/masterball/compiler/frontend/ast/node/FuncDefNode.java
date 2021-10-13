@@ -14,10 +14,10 @@ public class FuncDefNode extends BaseNode {
 
     public SuiteNode suiteNode;
 
-    public FuncDefNode(CodePos codePos) {
+    public FuncDefNode(CodePos codePos, FuncRegistry funcRegistry, SuiteNode suiteNode) {
         super(codePos);
-        this.funcRegistry = null;
-        this.suiteNode = null;
+        this.funcRegistry = funcRegistry;
+        this.suiteNode = suiteNode;
     }
 
     public boolean isValidMainFunc() {

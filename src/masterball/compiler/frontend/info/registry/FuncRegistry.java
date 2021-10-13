@@ -14,6 +14,7 @@ public class FuncRegistry extends BaseRegistry {
     public FuncScope scope;
     public ArrayList<VarRegistry> funcArgs;
 
+    //builtin function
     public FuncRegistry(String name, BaseType.BuiltinType retType, VarRegistry... args) {
         super(name);
 
@@ -31,6 +32,28 @@ public class FuncRegistry extends BaseRegistry {
         }
     }
 
+    //lambda
+    public FuncRegistry(MxStarParser.LambdaExpContext ctx) {
+        super("", ctx);
+
+        this.scope = new FuncScope();
+        this.type = new FuncType();
+
+        type.funcArgsType = new ArrayList<>();
+        funcArgs = new ArrayList<>();
+
+        MxStarParser.FuncDefArgsContext funcDefArgsContext = ctx.funcDefArgs();
+
+        if (funcDefArgsContext != null) {
+            for (int i = 0; i < funcDefArgsContext.varDefType().size(); ++i) {
+                VarRegistry varRegistry = new VarRegistry(funcDefArgsContext.Identifier(i).toString(), funcDefArgsContext.varDefType(i));
+                funcArgs.add(varRegistry);
+                type.funcArgsType.add(varRegistry.type);
+            }
+        }
+    }
+
+    //normal
     public FuncRegistry(MxStarParser.FuncDefContext ctx) {
         super(ctx.Identifier().toString(), ctx);
 
@@ -52,6 +75,7 @@ public class FuncRegistry extends BaseRegistry {
         }
     }
 
+    //constructor
     public FuncRegistry(MxStarParser.ClassConstructorDefContext ctx) {
         super(ctx.Identifier().toString(), ctx);
 

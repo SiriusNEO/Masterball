@@ -16,6 +16,7 @@ import masterball.compiler.frontend.info.registry.VarRegistry;
 import masterball.compiler.frontend.info.StackManager;
 import masterball.compiler.utils.GrammarTable;
 import masterball.debugger.Log;
+import org.w3c.dom.Node;
 
 import java.util.Objects;
 
@@ -43,6 +44,7 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(FuncDefNode node) {
         stackManager.push(node.funcRegistry.scope);
 
+        // query class type
         for (VarRegistry registry : node.funcRegistry.funcArgs) {
             if (registry.type.builtinType == BaseType.BuiltinType.CLASS &&
                     stackManager.queryClass(registry.type.className) == null) {
@@ -51,7 +53,8 @@ public class SemanticChecker implements ASTVisitor {
             stackManager.register(registry);
         }
 
-        if (node.suiteNode != null) visit(node.suiteNode);
+        assert node.suiteNode != null;
+        visit(node.suiteNode);
 
         if (node.funcRegistry.scope.catchedRetTypeList.isEmpty()) { //no return statement
             if (!node.isValidMainFunc() && !node.funcRegistry.type.retType.match(BaseType.BuiltinType.VOID)) {
@@ -59,7 +62,10 @@ public class SemanticChecker implements ASTVisitor {
             }
         }
         else {
+            // check every return statement
             for (VarType catchedRetType : node.funcRegistry.scope.catchedRetTypeList) {
+                // retType != null
+                assert node.funcRegistry.type.retType != null;
                 if (!node.funcRegistry.type.retType.match(catchedRetType)) {
                     throw new FuncReturnError(node.codePos, FuncReturnError.retTypeNotMatch);
                 }
@@ -214,14 +220,14 @@ public class SemanticChecker implements ASTVisitor {
         node.callExpNode.accept(this);
         node.callArgExpNodes.forEach(sonnode -> sonnode.accept(this));
 
-       if (!(node.callExpNode.type instanceof FuncType)) { // try again
+       if (!(node.callExpNode.type instanceof FuncType)) { // try again, func name query
            if (!(node.callExpNode instanceof AtomExpNode)) {
                throw new FuncCallError(node.codePos, FuncCallError.expNotAFunc);
            }
            if (((AtomExpNode) node.callExpNode).ctx.Identifier() == null) {
                throw new FuncCallError(node.codePos, FuncCallError.expNotAFunc);
            }
-            FuncRegistry funcRegistry = stackManager.queryFuncInStack(((AtomExpNode) node.callExpNode).ctx.Identifier().getText());
+           FuncRegistry funcRegistry = stackManager.queryFuncInStack(((AtomExpNode) node.callExpNode).ctx.Identifier().getText());
            if (funcRegistry != null) {
                 node.callExpNode.type = funcRegistry.type.copy(); // forced type conversion
            } else {
@@ -331,7 +337,46 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(LambdaExpNode node) {
-        //todo
+        stackManager.push(node.funcRegistry.scope);
+
+        // query class type
+        for (VarRegistry registry : node.funcRegistry.funcArgs) {
+            if (registry.type.builtinType == BaseType.BuiltinType.CLASS &&
+                    stackManager.queryClass(registry.type.className) == null) {
+                throw new NameError(node.codePos, NameError.undefined, registry.type.className);
+            }
+            stackManager.register(registry);
+        }
+
+        assert node.suiteNode != null;
+        visit(node.suiteNode);
+        node.callArgExpNodes.forEach(sonnode -> sonnode.accept(this));
+
+        int result = node.funcRegistry.type.funcCallMatch(node.callArgExpNodes);
+
+        if (result == -1) {
+            throw new FuncCallError(node.codePos, FuncCallError.argcNotMatch);
+        } else if (result == -2) {
+            throw new FuncCallError(node.codePos, FuncCallError.argTypeNotMatch);
+        }
+
+        if (node.funcRegistry.scope.catchedRetTypeList.isEmpty()) { //no return statement
+            node.type = new VarType(BaseType.BuiltinType.VOID);
+        }
+        else {
+            // check every return statement
+            for (VarType catchedRetType : node.funcRegistry.scope.catchedRetTypeList) {
+                if (node.type == null) {
+                    node.type = catchedRetType;
+                    node.funcRegistry.type.retType = catchedRetType;
+                }
+                else if (!node.type.match(catchedRetType)) {
+                    throw new FuncReturnError(node.codePos, FuncReturnError.retTypeNotMatch);
+                }
+            }
+        }
+
+        stackManager.pop();
     }
 
     @Override

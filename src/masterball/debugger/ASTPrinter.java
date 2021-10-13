@@ -233,6 +233,10 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(LambdaExpNode node) {
         nowIndentNum++;
         System.out.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- LambdaExpNode --- *\n");
+        System.out.println(node.funcRegistry);
+        node.suiteNode.accept(this);
+        System.out.println("type: " + node.type);
+        node.callArgExpNodes.forEach(sonnode -> sonnode.accept(this));
         nowIndentNum--;
     }
 

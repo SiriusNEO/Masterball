@@ -125,22 +125,14 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
     }
 
     @Override public BaseNode visitClassConstructorDef(MxStarParser.ClassConstructorDefContext ctx) {
-        FuncDefNode ret = new FuncDefNode(new CodePos(ctx));
-        ret.funcRegistry = new FuncRegistry(ctx);
-        ret.suiteNode = (SuiteNode) visit(ctx.suite());
-        return ret;
+        return new FuncDefNode(new CodePos(ctx), new FuncRegistry(ctx), (SuiteNode) visit(ctx.suite()));
     }
 
     @Override public BaseNode visitFuncDef(MxStarParser.FuncDefContext ctx) {
-        Log.track("func def");
-        FuncDefNode ret = new FuncDefNode(new CodePos(ctx));
-        ret.funcRegistry = new FuncRegistry(ctx);
-        ret.suiteNode = (SuiteNode) visit(ctx.suite());
-        return ret;
+        return new FuncDefNode(new CodePos(ctx), new FuncRegistry(ctx), (SuiteNode) visit(ctx.suite()));
     }
 
     @Override public BaseNode visitVarDefStmt(MxStarParser.VarDefStmtContext ctx) {
-        Log.track("var def stmt");
         VarDefStmtNode ret = new VarDefStmtNode(new CodePos(ctx));
 
         for (int i = 0; i < ctx.varDefBody().varDefSingle().size(); i++) {
@@ -284,14 +276,13 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
     }
 
     @Override public BaseNode visitAssignExp(MxStarParser.AssignExpContext ctx) {
-        AssignExpNode ret =  new AssignExpNode(new CodePos(ctx),
+        return new AssignExpNode(new CodePos(ctx),
                 (ExpBaseNode) visit(ctx.expression(0)), (ExpBaseNode) visit(ctx.expression(1)));
-        return ret;
     }
 
     @Override public BaseNode visitFuncCallExp(MxStarParser.FuncCallExpContext ctx) {
         FuncCallExpNode ret = new FuncCallExpNode(new CodePos(ctx), (ExpBaseNode) visit(ctx.expression()));
-        if (ctx.funcCallArgs() != null) {
+        if (ctx.funcCallArgs().expression() != null) {
             ctx.funcCallArgs().expression().forEach(sonctx -> {
                 ret.callArgExpNodes.add((ExpBaseNode) visit(sonctx));
             });
@@ -306,9 +297,18 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
                 );
     }
 
-    /*@Override public BaseNode visitLambdaExp(MxStarParser.LambdaExpContext ctx) {
+    @Override public BaseNode visitLambdaExp(MxStarParser.LambdaExpContext ctx) {
+        LambdaExpNode ret = new LambdaExpNode(new CodePos(ctx), (SuiteNode) visit(ctx.suite()));
 
-    }*/
+        ret.funcRegistry = new FuncRegistry(ctx);
+
+        if (ctx.funcCallArgs().expression() != null) {
+            ctx.funcCallArgs().expression().forEach(sonctx -> {
+                ret.callArgExpNodes.add((ExpBaseNode) visit(sonctx));
+            });
+        }
+        return ret;
+    }
 
     @Override public BaseNode visitMemberExp(MxStarParser.MemberExpContext ctx) {
         return new MemberExpNode(new CodePos(ctx), (ExpBaseNode) visit(ctx.expression()), ctx.Identifier().getText());

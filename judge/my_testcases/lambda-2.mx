@@ -1,0 +1,4 @@
+int main() {
+    int sum = [&](int a, int b) -> { return a + b; }(1, 2);
+    int sum2 = [&]() -> { return sum; }(12); // 错误
+}
