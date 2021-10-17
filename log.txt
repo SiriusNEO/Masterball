@@ -1,2 +1,0 @@
-Log:[Track] Tracking... IOEngine started successfully.
-Log:[Report] is: java.io.BufferedInputStream@79b4d0f os: java.io.PrintStream@60addb54 

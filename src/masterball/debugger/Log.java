@@ -5,7 +5,7 @@ import java.io.*;
 public class Log {
     private static int markCnt = 0;
 
-    private static final boolean isOpen = true;
+    private static final boolean isOpen = false;
 
     private static PrintStream ps = System.out;
 

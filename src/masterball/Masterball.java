@@ -15,8 +15,6 @@ public class Masterball {
 
     public static void main(String[] args) throws Exception {
 
-        Log.setPrintStream(new PrintStream("log.txt"));
-
         try {
             IOEngine ioEngine = new IOEngine(args);
 
@@ -26,15 +24,16 @@ public class Masterball {
         }
         catch (Exception e) {
             if (e instanceof BaseError) {
-                ((BaseError) e).tell();
+            //  ((BaseError) e).tell();
+                System.exit(-1);
             } else {
-                e.printStackTrace();
+            //  e.printStackTrace();
+                System.exit(-1);
             }
             return;
         }
 
-        System.out.println("Success.");
-
+        // System.out.println("Success.");
     }
 
 }
