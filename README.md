@@ -8,8 +8,9 @@
 
 ## Specification
 
+- `masterball.debug.Log` 
 - Registry System in Semantic
-- Friendly Error Report
+- Friendly Error(Syntax/Semantic/Runtime) Report
 - AST Printer for debugging
 - LLVM IR with use-def and def-use chain
 
