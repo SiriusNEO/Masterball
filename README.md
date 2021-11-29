@@ -6,7 +6,7 @@
 
 
 
-## Specification
+## Feature
 
 - `masterball.debug.Log` 
 - Registry System in Semantic
