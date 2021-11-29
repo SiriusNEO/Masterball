@@ -5,8 +5,25 @@
 ## Design Rules
 
 - Simple and Clear
-- High Performance
+- Easy to read
+- ~~High Performance~~ 
 - Compromise
+
+
+
+## Java Code Style
+
+- Class Name: Upper Camel Case
+- Variable Name: Lower Camel Case
+- Package: All Lower Case
+
+- Access Specifiers: 
+
+  Most internal classes are **all public** for easy to access and manage. 
+
+  The executors (classes between engine and compiler, e.g. , SemanticChecker): members are private, methods are public (for engine to access)
+
+  The engine are **all public** for Masterball to link them. 
 
 
 

@@ -3,9 +3,6 @@ package masterball.compiler.frontend.ast.node.stmtnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.StmtBaseNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.utils.GrammarTable;
-
-import java.util.Objects;
 
 public class ControlStmtNode extends StmtBaseNode {
     public String controlWord;

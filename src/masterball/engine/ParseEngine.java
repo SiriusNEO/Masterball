@@ -1,14 +1,12 @@
 package masterball.engine;
 
-import masterball.compiler.frontend.error.ParseErrorListener;
+import masterball.compiler.utils.error.ParseErrorListener;
 import masterball.compiler.frontend.parser.MxStarLexer;
 import masterball.compiler.frontend.parser.MxStarParser;
-import masterball.debugger.Log;
+import masterball.debug.Log;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-
-import java.io.InputStream;
 
 public class ParseEngine {
 

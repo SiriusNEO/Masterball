@@ -9,7 +9,6 @@ import masterball.compiler.frontend.info.scope.FuncScope;
 import masterball.compiler.frontend.info.scope.LoopScope;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.info.registry.VarRegistry;
-import masterball.debugger.Log;
 
 import java.util.Stack;
 

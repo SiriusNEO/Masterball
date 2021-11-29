@@ -4,8 +4,7 @@ import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.info.CodePos;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.type.BaseType;
-import masterball.compiler.frontend.info.type.VarType;
-import masterball.compiler.utils.GrammarTable;
+import masterball.compiler.utils.MxStarTable;
 
 import java.util.Objects;
 
@@ -21,7 +20,7 @@ public class FuncDefNode extends BaseNode {
     }
 
     public boolean isValidMainFunc() {
-        return Objects.equals(funcRegistry.name, GrammarTable.mainKw)
+        return Objects.equals(funcRegistry.name, MxStarTable.mainKw)
                && funcRegistry.type.retType.match(BaseType.BuiltinType.INT)
                && funcRegistry.funcArgs.size() == 0;
     }

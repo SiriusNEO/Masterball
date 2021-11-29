@@ -4,7 +4,7 @@ import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.*;
 import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.*;
-import masterball.compiler.frontend.error.semantic.*;
+import masterball.compiler.utils.error.semantic.*;
 import masterball.compiler.frontend.info.ArrayBuiltinMethods;
 import masterball.compiler.frontend.info.StringBuiltinMethods;
 import masterball.compiler.frontend.info.registry.ClassRegistry;
@@ -14,15 +14,13 @@ import masterball.compiler.frontend.info.type.FuncType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.info.registry.VarRegistry;
 import masterball.compiler.frontend.info.StackManager;
-import masterball.compiler.utils.GrammarTable;
-import masterball.debugger.Log;
-import org.w3c.dom.Node;
+import masterball.compiler.utils.MxStarTable;
 
 import java.util.Objects;
 
 public class SemanticChecker implements ASTVisitor {
 
-    StackManager stackManager = new StackManager();
+    private final StackManager stackManager = new StackManager();
 
     @Override
     public void visit(RootNode node) {
@@ -174,7 +172,7 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(ControlStmtNode node) {
         if (!stackManager.isInLoop()) {
-            if (Objects.equals(node.controlWord, GrammarTable.breakKw))
+            if (Objects.equals(node.controlWord, MxStarTable.breakKw))
                 throw new ScopeError(node.codePos, ScopeError.wrongBreak);
             else
                 throw new ScopeError(node.codePos, ScopeError.wrongContinue);
@@ -208,7 +206,7 @@ public class SemanticChecker implements ASTVisitor {
 
         TypeMatcher.match(node);
 
-        if (Objects.equals(node.opType, GrammarTable.compareOpType) || Objects.equals(node.opType, GrammarTable.equalOpType)) {
+        if (Objects.equals(node.opType, MxStarTable.compareOpType) || Objects.equals(node.opType, MxStarTable.equalOpType)) {
             node.type = new VarType(BaseType.BuiltinType.BOOL);
         } else {
             node.type = node.rhsExpNode.type.copy();

@@ -1,6 +1,6 @@
 package masterball.compiler.frontend.info.scope;
 
-import masterball.compiler.frontend.error.semantic.NameError;
+import masterball.compiler.utils.error.semantic.NameError;
 import masterball.compiler.frontend.info.registry.ClassRegistry;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.registry.BaseRegistry;

@@ -1,10 +1,9 @@
 package masterball.compiler.frontend.info.type;
 
-import masterball.compiler.frontend.error.semantic.TypeError;
-import masterball.compiler.frontend.error.syntax.ArrayDeclarationError;
+import masterball.compiler.utils.error.semantic.TypeError;
+import masterball.compiler.utils.error.syntax.ArrayDeclarationError;
 import masterball.compiler.frontend.info.CodePos;
 import masterball.compiler.frontend.parser.MxStarParser;
-import masterball.debugger.Log;
 
 import java.util.Objects;
 

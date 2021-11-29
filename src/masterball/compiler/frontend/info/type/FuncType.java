@@ -1,8 +1,6 @@
 package masterball.compiler.frontend.info.type;
 
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
-import masterball.compiler.frontend.error.semantic.FuncCallError;
-import masterball.compiler.frontend.info.registry.VarRegistry;
 
 import java.util.ArrayList;
 

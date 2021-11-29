@@ -3,7 +3,6 @@ package masterball.compiler.frontend.ast.node.expnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.debugger.Log;
 
 public class PostfixExpNode extends ExpBaseNode {
     public String op;

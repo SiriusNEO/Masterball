@@ -1,7 +1,7 @@
 package masterball.engine;
 
-import masterball.debugger.Log;
-import masterball.debugger.VarPair;
+import masterball.debug.Log;
+import masterball.debug.VarPair;
 
 import java.io.*;
 import java.util.Objects;

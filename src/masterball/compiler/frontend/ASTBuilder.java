@@ -3,9 +3,9 @@ package masterball.compiler.frontend;
 import masterball.compiler.frontend.ast.node.*;
 import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.*;
-import masterball.compiler.frontend.error.syntax.ClassDeclarationError;
+import masterball.compiler.utils.error.syntax.ClassDeclarationError;
 import masterball.compiler.frontend.info.*;
-import masterball.compiler.frontend.error.syntax.MainFuncError;
+import masterball.compiler.utils.error.syntax.MainFuncError;
 import masterball.compiler.frontend.info.registry.ClassRegistry;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.registry.VarRegistry;
@@ -13,9 +13,8 @@ import masterball.compiler.frontend.info.type.BaseType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.parser.MxStarBaseVisitor;
 import masterball.compiler.frontend.parser.MxStarParser;
-import masterball.compiler.utils.GrammarTable;
-import masterball.debugger.Log;
-import masterball.debugger.VarPair;
+import masterball.compiler.utils.MxStarTable;
+import masterball.debug.Log;
 
 import java.util.Objects;
 
@@ -232,44 +231,44 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
         );
 
         if (ctx.LogicOrOp() != null) {
-            ret.op = GrammarTable.LogicOrOp;
-            ret.opType = GrammarTable.logicOpType;
+            ret.op = MxStarTable.LogicOrOp;
+            ret.opType = MxStarTable.logicOpType;
         }
         else if (ctx.LogicAndOp() != null) {
-            ret.op = GrammarTable.LogicAndOp;
-            ret.opType = GrammarTable.logicOpType;
+            ret.op = MxStarTable.LogicAndOp;
+            ret.opType = MxStarTable.logicOpType;
         }
         else if (ctx.BitXorOp() != null) {
-            ret.op = GrammarTable.BitXorOp;
-            ret.opType = GrammarTable.arithOpType;
+            ret.op = MxStarTable.BitXorOp;
+            ret.opType = MxStarTable.arithOpType;
         }
         else if (ctx.BitOrOp() != null) {
-            ret.op = GrammarTable.BitOrOp;
-            ret.opType = GrammarTable.arithOpType;
+            ret.op = MxStarTable.BitOrOp;
+            ret.opType = MxStarTable.arithOpType;
         }
         else if (ctx.BitAndOp() != null) {
-            ret.op = GrammarTable.BitAndOp;
-            ret.opType = GrammarTable.arithOpType;
+            ret.op = MxStarTable.BitAndOp;
+            ret.opType = MxStarTable.arithOpType;
         }
         else if (ctx.equalOps() != null) {
             ret.op = ctx.equalOps().getText();
-            ret.opType = GrammarTable.equalOpType;
+            ret.opType = MxStarTable.equalOpType;
         }
         else if (ctx.compareOps() != null) {
             ret.op = ctx.compareOps().getText();
-            ret.opType = GrammarTable.compareOpType;
+            ret.opType = MxStarTable.compareOpType;
         }
         else if (ctx.addLevelOps() != null) {
             ret.op = ctx.addLevelOps().getText();
-            ret.opType = GrammarTable.arithOpType;
+            ret.opType = MxStarTable.arithOpType;
         }
         else if (ctx.mulLevelOps() != null) {
             ret.op = ctx.mulLevelOps().getText();
-            ret.opType = GrammarTable.arithOpType;
+            ret.opType = MxStarTable.arithOpType;
         }
         else if (ctx.shiftOps() != null) {
             ret.op = ctx.shiftOps().getText();
-            ret.opType = GrammarTable.arithOpType;
+            ret.opType = MxStarTable.arithOpType;
         }
 
         return ret;

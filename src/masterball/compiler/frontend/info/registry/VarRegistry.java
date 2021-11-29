@@ -1,7 +1,5 @@
 package masterball.compiler.frontend.info.registry;
 
-import masterball.compiler.frontend.error.semantic.TypeError;
-import masterball.compiler.frontend.info.CodePos;
 import masterball.compiler.frontend.info.type.BaseType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.parser.MxStarParser;

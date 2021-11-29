@@ -3,3 +3,4 @@ out/
 *.iml
 src/META-INF/
 log.txt
+lib/

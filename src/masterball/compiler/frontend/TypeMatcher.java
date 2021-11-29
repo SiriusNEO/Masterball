@@ -6,11 +6,10 @@ import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.ForStmtNode;
 import masterball.compiler.frontend.ast.node.stmtnode.IfStmtNode;
 import masterball.compiler.frontend.ast.node.stmtnode.WhileStmtNode;
-import masterball.compiler.frontend.error.semantic.TypeError;
+import masterball.compiler.utils.error.semantic.TypeError;
 import masterball.compiler.frontend.info.type.BaseType;
 import masterball.compiler.frontend.info.type.VarType;
-import masterball.compiler.frontend.parser.MxStarParser;
-import masterball.compiler.utils.GrammarTable;
+import masterball.compiler.utils.MxStarTable;
 
 import java.util.Objects;
 
@@ -20,7 +19,7 @@ public class TypeMatcher {
     // LogicNot (!) -> bool
     // others (+ - ~) -> int
     public static void match(UnaryExpNode node) {
-        if (Objects.equals(node.op, GrammarTable.LogicNotOp)) {
+        if (Objects.equals(node.op, MxStarTable.LogicNotOp)) {
             if (!node.selfExpNode.type.match(BaseType.BuiltinType.BOOL)) {
                 throw new TypeError(node.codePos, BaseType.BuiltinType.BOOL, node.selfExpNode.type);
             }
@@ -88,26 +87,26 @@ public class TypeMatcher {
         }
 
         if (node.lhsExpNode.type.match(BaseType.BuiltinType.STRING)) {
-            if (!Objects.equals(node.op, GrammarTable.AddOp) &&
-                !Objects.equals(node.opType, GrammarTable.compareOpType) &&
-                !Objects.equals(node.opType, GrammarTable.equalOpType)
+            if (!Objects.equals(node.op, MxStarTable.AddOp) &&
+                !Objects.equals(node.opType, MxStarTable.compareOpType) &&
+                !Objects.equals(node.opType, MxStarTable.equalOpType)
             ) {
                 throw new TypeError(node.codePos, TypeError.invalidOpForType, node.lhsExpNode.type);
             }
             return;
         }
 
-        if (Objects.equals(node.opType, GrammarTable.logicOpType)) {
+        if (Objects.equals(node.opType, MxStarTable.logicOpType)) {
             if (!node.lhsExpNode.type.match(BaseType.BuiltinType.BOOL))
                 throw new TypeError(node.codePos, TypeError.invalidOpForType, node.lhsExpNode.type);
         }
 
-        else if (Objects.equals(node.opType, GrammarTable.arithOpType)) {
+        else if (Objects.equals(node.opType, MxStarTable.arithOpType)) {
             if (!node.lhsExpNode.type.match(BaseType.BuiltinType.INT))
                 throw new TypeError(node.codePos, TypeError.invalidOpForType, node.lhsExpNode.type);
         }
 
-        else if (Objects.equals(node.opType, GrammarTable.compareOpType)) {
+        else if (Objects.equals(node.opType, MxStarTable.compareOpType)) {
             if (!node.lhsExpNode.type.match(BaseType.BuiltinType.INT))
                 throw new TypeError(node.codePos, TypeError.invalidOpForType, node.lhsExpNode.type);
         }
@@ -123,7 +122,7 @@ public class TypeMatcher {
         }
     }
 
-    //vardeclaration: int a = 1, c = 2;
+    //var declaration: int a = 1, c = 2;
     public static void match(VarDefSingleNode node) {
         if (!node.varRegistry.type.match(node.initExpNode.type)) {
             throw new TypeError(

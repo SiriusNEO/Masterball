@@ -1,28 +1,26 @@
 package masterball;
 
-import masterball.compiler.frontend.error.BaseError;
-import masterball.compiler.frontend.error.SyntaxError;
-import masterball.debugger.ASTPrinter;
-import masterball.debugger.Log;
+import masterball.compiler.middleend.IRPrinter;
+import masterball.compiler.utils.error.BaseError;
+import masterball.compiler.frontend.ASTPrinter;
+import masterball.debug.Log;
 import masterball.engine.IOEngine;
+import masterball.engine.IRGenEngine;
 import masterball.engine.ParseEngine;
 import masterball.engine.SemanticEngine;
-
-import java.util.HashMap;
 
 public class TestEntry {
 
     public static void main(String[] args) throws Exception {
         Log.track("Test Func Start...");
-        
         try {
             IOEngine ioEngine = new IOEngine(args);
 
             ParseEngine parseEngine = new ParseEngine(ioEngine);
 
-            SemanticEngine semanticEngine = new SemanticEngine(parseEngine);
+            SemanticEngine semanticEngine = new SemanticEngine(parseEngine, false);
 
-            new ASTPrinter().visit(semanticEngine.ASTRoot);
+            IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, true, true);
         }
         catch (Exception e) {
             if (e instanceof BaseError) {

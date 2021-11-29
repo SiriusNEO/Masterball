@@ -3,7 +3,6 @@ package masterball.compiler.frontend.ast.node.expnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.utils.GrammarTable;
 
 public class BinaryExpNode extends ExpBaseNode {
     public ExpBaseNode lhsExpNode, rhsExpNode;
