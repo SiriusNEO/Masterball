@@ -15,11 +15,14 @@ public class Function extends GlobalValue {
         // finished in IRBuilder
 
         super(name, type);
-        this.blocks.add(new BasicBlock(LLVMTable.EntryBlockLabel));
-        this.blocks.add(new BasicBlock(LLVMTable.ExitBlockLabel));
+        new BasicBlock(LLVMTable.EntryBlockLabel, this);
+        new BasicBlock(LLVMTable.ExitBlockLabel, this);
         this.entryBlock().parentFunction = this;
         this.exitBlock().parentFunction = this;
     }
+
+    public int getArgNum() {return this.operands.size();}
+    public BaseValue getArg(int index) {return this.getOperand(index);}
 
     public BasicBlock entryBlock() {return blocks.get(0);}
     public BasicBlock exitBlock() {return blocks.get(1);}

@@ -18,7 +18,7 @@ public class TestEntry {
 
             ParseEngine parseEngine = new ParseEngine(ioEngine);
 
-            SemanticEngine semanticEngine = new SemanticEngine(parseEngine, false);
+            SemanticEngine semanticEngine = new SemanticEngine(parseEngine, true);
 
             IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, true, true);
         }

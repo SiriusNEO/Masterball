@@ -17,6 +17,7 @@ public class WhileStmtNode extends StmtBaseNode {
         super(codePos);
         this.scope = new LoopScope();
         this.conditionExpNode = conditionExpNode;
+        this.bodyStmtNode = bodyStmtNode;
     }
 
     @Override

@@ -22,6 +22,12 @@ public class IRTranslator {
             case MxStarTable.BitAndOp: return LLVMTable.AndInst;
             case MxStarTable.BitOrOp: return LLVMTable.OrInst;
             case MxStarTable.BitXorOp: return LLVMTable.XorInst;
+            case MxStarTable.GreaterOp: return LLVMTable.GreaterArg;
+            case MxStarTable.GreaterEqualOp: return LLVMTable.GreaterEqualArg;
+            case MxStarTable.LessOp: return LLVMTable.LessArg;
+            case MxStarTable.LessEqualOp: return LLVMTable.LessEqualArg;
+            case MxStarTable.EqualOp: return LLVMTable.EqualArg;
+            case MxStarTable.NotEqualOp: return LLVMTable.NotEqualArg;
         }
         return "";
     }

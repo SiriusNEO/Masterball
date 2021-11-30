@@ -19,6 +19,7 @@ public class IfStmtNode extends StmtBaseNode {
         this.elseScope = new IfScope();
         this.conditionExpNode = conditionExpNode;
         this.ifTrueStmtNode = ifTrueStmtNode;
+        this.elseStmtNode = null;
     }
 
     @Override

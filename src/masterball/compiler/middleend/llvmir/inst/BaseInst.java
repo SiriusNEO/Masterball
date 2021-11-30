@@ -12,4 +12,6 @@ public class BaseInst extends BaseUser {
         this.parentBlock = parentBlock;
         parentBlock.addInst(this);
     }
+
+    public boolean isTerminator() {return false;}
 }

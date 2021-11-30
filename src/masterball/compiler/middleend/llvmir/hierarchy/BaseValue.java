@@ -3,12 +3,14 @@ package masterball.compiler.middleend.llvmir.hierarchy;
 import masterball.compiler.middleend.llvmir.inst.BaseInst;
 import masterball.compiler.middleend.llvmir.type.BaseType;
 import masterball.compiler.utils.LLVMTable;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class BaseValue {
+    // value rename
     public static Boolean rename = false;
     public static HashMap<String, Integer> renameTable = new HashMap<>();
 
@@ -19,6 +21,15 @@ public class BaseValue {
         renameTable.put(rawName, renameCnt+1);
         if (renameCnt == 0) return rawName;
         return rawName + renameCnt;
+    }
+
+    public static String addrRename(String rawName) {
+        return rawName + LLVMTable.AddrSuffix;
+    }
+
+    public static String resolveRename(String rawName) {
+        int lastAddrSuffixIndex = rawName.lastIndexOf(LLVMTable.AddrSuffix);
+        return rawName.substring(0, lastAddrSuffixIndex) + LLVMTable.ResolveSuffix;
     }
 
     public BaseType type;
@@ -36,5 +47,9 @@ public class BaseValue {
 
     public String identifier() {
         return "%" + name;
+    }
+
+    public String typedIdentifier() {
+        return type + " " + identifier();
     }
 }

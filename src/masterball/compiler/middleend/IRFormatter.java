@@ -18,9 +18,13 @@ public class IRFormatter {
         return globalVar.identifier() + " = global " + globalVar.type;
     }
 
+    public static String funcDeclFormat(Function function) {
+        return "";
+    }
+
     public static String funcDefFormat(Function function) {
         // define i32 @foo(i32 %a, i64 %b)
-        StringBuilder ret = new StringBuilder("define " + function.type + " " + function.identifier() + "(");
+        StringBuilder ret = new StringBuilder("define " + function.typedIdentifier() + "(");
         for (int i = 0; i < function.operands.size(); i++) {
             ret.append(function.getOperand(i).type).append(" ").append(function.getOperand(i).identifier());
             if (i != function.operands.size() - 1) ret.append(", ");
@@ -40,18 +44,34 @@ public class IRFormatter {
                     ((BinaryInst) inst).lhs().identifier() + ", " + ((BinaryInst) inst).rhs().identifier();
         } else if (inst instanceof BrInst) {
             // br i1 %comparison_result, label %A, label %B
-            return LLVMTable.BrInst + " " + ((BrInst) inst).condition().type + " " + ((BrInst) inst).condition().identifier()
-                    + ", label " + ((BrInst) inst).ifTrueBlock().identifier()
-                    + ", label " + ((BrInst) inst).ifFalseBlock().identifier();
+            // br label %A
+            if (!((BrInst) inst).isJump()) {
+                return LLVMTable.BrInst + " " + ((BrInst) inst).condition().type + " " + ((BrInst) inst).condition().identifier()
+                        + ", " + ((BrInst) inst).ifTrueBlock().typedIdentifier()
+                        + ", " + ((BrInst) inst).ifFalseBlock().typedIdentifier();
+            }
+            else {
+                return LLVMTable.BrInst + " " + ((BrInst) inst).destBlock().typedIdentifier();
+            }
+        } else if (inst instanceof CallInst) {
+            // %call = call i32 @foo(i32 1)
+            String ret = (inst.type.match(new VoidType())) ? "" : inst.identifier() + " = ";
+            ret += LLVMTable.CallInst + " " +((CallInst) inst).callFunc().typedIdentifier();
+            ret += "(";
+            for (int i = 0; i < ((CallInst) inst).callFunc().getArgNum(); i++) {
+                ret += ((CallInst) inst).getArgs(i).typedIdentifier();
+                if (i != ((CallInst) inst).callFunc().getArgNum() - 1) ret += ", ";
+            }
+            ret += ")";
+            return ret;
         } else if (inst instanceof ICmpInst) {
             //%cmp = icmp slt i32 %i_value, 4
             return inst.identifier() + " = " + LLVMTable.ICmpInst + " " +
-                    ((ICmpInst) inst).op + " " + ((ICmpInst) inst).lhs().type + " " +
-                    ((ICmpInst) inst).lhs().identifier() + ", " + ((ICmpInst) inst).rhs().identifier();
+                    ((ICmpInst) inst).op + " " + ((ICmpInst) inst).lhs().typedIdentifier()+ ", " + ((ICmpInst) inst).rhs().identifier();
         } else if (inst instanceof LoadInst) {
             // %load = load <type>, <type*> %destPtr, align <size>
             return inst.identifier() + " = " + LLVMTable.LoadInst + " " + inst.type + ", " +
-                    ((LoadInst) inst).destPtr().type + " " + ((LoadInst) inst).destPtr().identifier() + ", align " +
+                    ((LoadInst) inst).destPtr().typedIdentifier() + ", align " +
                     inst.type.size();
         } else if (inst instanceof RetInst) {
             // ret i32 0
@@ -63,8 +83,8 @@ public class IRFormatter {
         } else if (inst instanceof StoreInst) {
             // store i32 %1, i32* %i
             return LLVMTable.StoreInst + " " +
-                    ((StoreInst) inst).storeValue().type + " " + ((StoreInst) inst).storeValue().identifier() + ", " +
-                    ((StoreInst) inst).destPtr().type + " " + ((StoreInst) inst).destPtr().identifier();
+                    ((StoreInst) inst).storeValue().typedIdentifier() + ", " +
+                    ((StoreInst) inst).destPtr().typedIdentifier();
         }
         return "";
     }

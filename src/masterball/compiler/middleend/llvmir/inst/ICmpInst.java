@@ -9,7 +9,7 @@ public class ICmpInst extends BaseInst {
     public String op;
 
     public ICmpInst(String op, BaseValue lhs, BaseValue rhs, BasicBlock parentBlock) {
-        super(op, new BoolType(), parentBlock);
+        super(LLVMTable.ICmpInst, new BoolType(), parentBlock);
         this.op = op;
         this.addOperand(lhs);
         this.addOperand(rhs);

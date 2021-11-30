@@ -35,6 +35,8 @@ public class MxStarTable {
     public static final String BitOrOp = "|";
     public static final String BitXorOp = "^";
     public static final String BitNotOp = "~";
+    public static final String IncrementOp = "++";
+    public static final String DecrementOp = "--";
     public static final String LogicAndOp = "&&";
     public static final String LogicOrOp = "||";
     public static final String LogicNotOp = "!";

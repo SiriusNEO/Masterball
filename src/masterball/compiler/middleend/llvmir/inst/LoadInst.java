@@ -7,8 +7,9 @@ import masterball.compiler.utils.LLVMTable;
 
 public class LoadInst extends BaseInst {
     public LoadInst(BaseValue destPtr, BasicBlock parentBlock) {
-        super(destPtr.name.replace(LLVMTable.AddrSuffix, LLVMTable.ResolvedSuffix),
-                ((PointerType) destPtr.type).pointed, parentBlock);
+        super(resolveRename(destPtr.name),
+              ((PointerType) destPtr.type).pointed,
+              parentBlock);
         this.addOperand(destPtr);
     }
 

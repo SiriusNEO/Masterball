@@ -16,9 +16,11 @@ public class IRPrinter {
 
     public static void printFunc(Function function) {
         System.out.println(IRFormatter.funcDefFormat(function) + " {");
-        for (BasicBlock block : function.blocks) {
-            printBlock(block);
+        printBlock(function.entryBlock());
+        for (int i = 2; i < function.blocks.size(); i++) {
+            printBlock(function.blocks.get(i));
         }
+        printBlock(function.exitBlock());
         System.out.println("}\n");
     }
 
