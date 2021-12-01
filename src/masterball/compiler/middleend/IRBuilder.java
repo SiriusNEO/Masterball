@@ -5,7 +5,9 @@ import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.*;
 import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.*;
+import masterball.compiler.frontend.info.ArrayBuiltinMethods;
 import masterball.compiler.frontend.info.StackManager;
+import masterball.compiler.frontend.info.StringBuiltinMethods;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.registry.VarRegistry;
 import masterball.compiler.frontend.info.type.BaseType;
@@ -19,7 +21,6 @@ import masterball.compiler.middleend.llvmir.hierarchy.BasicBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.Function;
 import masterball.compiler.middleend.llvmir.hierarchy.Module;
 import masterball.compiler.middleend.llvmir.inst.*;
-import masterball.compiler.middleend.llvmir.type.IntType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.middleend.llvmir.type.VoidType;
 import masterball.compiler.utils.LLVMTable;
@@ -43,9 +44,63 @@ public class IRBuilder implements ASTVisitor {
     }
 
     // private tool methods
-    private void funcDef(Function func) {
-        module.functions.add(func);
-        stackManager.queryFuncInStack(func.name).value = func;
+
+    // global init func
+    private void createInitFunc() {
+        curFunc = new Function(LLVMTable.InitFuncName, new VoidType());
+        curBlock = curFunc.entryBlock();
+        FuncRegistry initRegistry = new FuncRegistry(LLVMTable.InitFuncName, BaseType.BuiltinType.VOID);
+        initRegistry.isBuiltin = false;
+        stackManager.register(initRegistry);
+
+        new RetInst(curFunc);
+        module.functions.add(curFunc);
+        stackManager.queryFuncInStack(curFunc.name).value = curFunc;
+    }
+
+    // func decl
+    private void funcDecl(FuncDefNode node) {
+        Function declFunc = new Function(node.funcRegistry.name,
+                IRTranslator.translateType(node.funcRegistry.type.retType));
+
+        for (VarRegistry argRegistry : node.funcRegistry.funcArgs) {
+            declFunc.addArgType(IRTranslator.translateType(argRegistry.type));
+        }
+
+        module.functions.add(declFunc);
+        node.funcRegistry.value = declFunc;
+    }
+
+    private void builtinFuncDecl(RootNode node) {
+        // malloc & string op
+        module.bottomFunctions();
+
+        // global functions
+        for (FuncRegistry builtinFuncRegistry : node.scope.builtinFuncList) {
+            Function builtinFunc = new Function(builtinFuncRegistry.name,
+                    IRTranslator.translateType(builtinFuncRegistry.type.retType));
+
+            for (VarRegistry argRegistry : builtinFuncRegistry.funcArgs)
+                builtinFunc.addArgType(IRTranslator.translateType(argRegistry.type));
+
+            module.builtinFunctions.add(builtinFunc);
+            builtinFuncRegistry.value = builtinFunc;
+        }
+
+        // string methods
+        for (FuncRegistry builtinFuncRegistry : StringBuiltinMethods.scope.builtinFuncList) {
+            Function builtinFunc = new Function(LLVMTable.StrFuncPrefix + builtinFuncRegistry.name,
+                    IRTranslator.translateType(builtinFuncRegistry.type.retType));
+
+            // "this" concept
+            builtinFunc.addArgType(IRTranslator.stringType);
+
+            for (VarRegistry argRegistry : builtinFuncRegistry.funcArgs)
+                builtinFunc.addArgType(IRTranslator.translateType(argRegistry.type));
+
+            module.builtinFunctions.add(builtinFunc);
+            builtinFuncRegistry.value = builtinFunc;
+        }
     }
 
     private BaseValue resolvePointer(BaseValue pointer, BasicBlock block) {
@@ -65,22 +120,21 @@ public class IRBuilder implements ASTVisitor {
     public void visit(RootNode node) {
         stackManager.push(node.scope);
 
-        // global init func
-        curFunc = new Function(LLVMTable.InitFuncName, new VoidType());
-        curBlock = curFunc.entryBlock();
-        stackManager.register(
-                new FuncRegistry(LLVMTable.InitFuncName, BaseType.BuiltinType.VOID)
-        );
+        builtinFuncDecl(node);
+        createInitFunc();
 
-        new RetInst(curFunc);
-        funcDef(curFunc);
+        // forward reference support
+        for (BaseNode sonnode: node.sonNodes) {
+            if (sonnode instanceof FuncDefNode) {
+                funcDecl((FuncDefNode) sonnode);
+            }
+        }
 
         // scan global variable
         for (BaseNode sonnode : node.sonNodes)
             if (sonnode instanceof VarDefStmtNode) {
                 sonnode.accept(this);
             }
-
         for (BasicBlock block : curFunc.blocks) {
             if (!block.isTerminated) {
                 new BrInst(curFunc.exitBlock(), block);
@@ -105,31 +159,32 @@ public class IRBuilder implements ASTVisitor {
     public void visit(FuncDefNode node) {
         stackManager.push(node.funcRegistry.scope);
 
-        curFunc = new Function(node.funcRegistry.name,
-                IRTranslator.translateType(node.funcRegistry.type.retType));
+        curFunc = (Function) node.funcRegistry.value;
         curBlock = curFunc.entryBlock();
 
         // main func
         if (Objects.equals(node.funcRegistry.name, MxStarTable.mainKw)) {
             // call init
             new CallInst((Function) stackManager.queryFuncInStack(LLVMTable.InitFuncName).value,
-                        new ArrayList<>(), curBlock);
+                    new ArrayList<>(), curBlock);
             // main without return
             new RetInst(new IntConst(0), curFunc);
         }
 
-        for (VarRegistry argRegistry : node.funcRegistry.funcArgs) {
+        for (int i = 0; i < curFunc.getArgNum(); i++) {
+            VarRegistry argRegistry = node.funcRegistry.funcArgs.get(i);
+
             BaseValue arg = new BaseValue(argRegistry.name,
                     IRTranslator.translateType(argRegistry.type));
-            curFunc.addOperand(arg);
+
             BaseValue allocaPtr = new AllocaInst(argRegistry.name,
                     IRTranslator.translateType(argRegistry.type),
                     curBlock);
             argRegistry.value = allocaPtr;
+            curFunc.addArg(arg);
             new StoreInst(allocaPtr, arg, curBlock);
         }
 
-        funcDef(curFunc);
         Function curFuncBackup = curFunc;
         node.suiteNode.accept(this);
 
@@ -188,14 +243,14 @@ public class IRBuilder implements ASTVisitor {
                    exitBlock = new BasicBlock(LLVMTable.IfExitBlockLabel, curFunc);
 
         node.conditionExpNode.accept(this);
+        new BrInst(node.conditionExpNode.value, trueBlock, falseBlock, curBlock);
+        curBlock = falseBlock;
         if (node.elseStmtNode != null) {
-            new BrInst(node.conditionExpNode.value, trueBlock, falseBlock, curBlock);
-            curBlock = falseBlock;
             stackManager.push(node.elseScope);
             node.elseStmtNode.accept(this);
-            new BrInst(exitBlock, curBlock);
             stackManager.pop();
         }
+        new BrInst(exitBlock, curBlock);
 
         curBlock = trueBlock;
         stackManager.push(node.ifTrueScope);

@@ -6,8 +6,12 @@ import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.utils.LLVMTable;
 
 public class AllocaInst extends BaseInst {
+    public BaseType allocaType;
+
     public AllocaInst(String allocaName, BaseType allocaType, BasicBlock parentBlock) {
         super(addrRename(allocaName),
               new PointerType(allocaType), parentBlock);
+
+        this.allocaType = allocaType;
     }
 }

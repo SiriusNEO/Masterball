@@ -47,4 +47,5 @@ Now in: `IR`
 - [x] IR Design (LLVM IR)
 - [x] Type, Constant, Inst
 - [x] Skeleton, can generate my first IR
+- [ ] Type System
 - [ ] IR Builder (before MEM2REG)

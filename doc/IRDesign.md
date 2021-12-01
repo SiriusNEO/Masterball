@@ -79,3 +79,18 @@ display the whole IR, finish IR generating.
 ### GlobalVariable
 
 - **Superclass:** GlobalValue
+
+
+
+## Type System
+
+### Function Type
+
+- **Members:** retType, argTypes
+- initialized in func declare (function value initialized in func def)
+- decl first (forward reference support)
+
+
+
+### ArrayType
+

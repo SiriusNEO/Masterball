@@ -1,12 +1,11 @@
-int func(int a, int b) {
-    return a + b;
+bool func(bool v) {
+    return v;
 }
 
 int main() {
-    int a = 1;
     int b;
-    for (int i = 1; i <= a; i++) {
-        b = 1;
+    bool a = (b < 1);
+    if (a) {
+        b = 2;
     }
-    b = 2;
 }

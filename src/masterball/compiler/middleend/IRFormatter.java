@@ -4,6 +4,7 @@ import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.hierarchy.BaseValue;
 import masterball.compiler.middleend.llvmir.hierarchy.Function;
 import masterball.compiler.middleend.llvmir.inst.*;
+import masterball.compiler.middleend.llvmir.type.FunctionType;
 import masterball.compiler.middleend.llvmir.type.VoidType;
 import masterball.compiler.utils.LLVMTable;
 import masterball.debug.Log;
@@ -19,14 +20,21 @@ public class IRFormatter {
     }
 
     public static String funcDeclFormat(Function function) {
-        return "";
+        // declare void @print(i8*)
+        StringBuilder ret = new StringBuilder("declare " + function.typedIdentifier() + "(");
+        for (int i = 0; i < ((FunctionType) function.type).argTypes.size(); i++) {
+            ret.append(((FunctionType) function.type).argTypes.get(i));
+            if (i != ((FunctionType) function.type).argTypes.size() - 1) ret.append(", ");
+        }
+        ret.append(")");
+        return ret.toString();
     }
 
     public static String funcDefFormat(Function function) {
         // define i32 @foo(i32 %a, i64 %b)
         StringBuilder ret = new StringBuilder("define " + function.typedIdentifier() + "(");
         for (int i = 0; i < function.operands.size(); i++) {
-            ret.append(function.getOperand(i).type).append(" ").append(function.getOperand(i).identifier());
+            ret.append(function.getOperand(i).typedIdentifier());
             if (i != function.operands.size() - 1) ret.append(", ");
         }
         ret.append(")");
@@ -37,7 +45,8 @@ public class IRFormatter {
     public static String instFormat(BaseInst inst) {
         if (inst instanceof AllocaInst) {
             // %alloca = alloca <type>, align <size>
-            return inst.identifier() + " = " + LLVMTable.AllocaInst + ", align " + inst.type.size();
+            return inst.identifier() + " = " + LLVMTable.AllocaInst + " " +
+                    ((AllocaInst) inst).allocaType + ", align " + ((AllocaInst) inst).allocaType.size();
         } else if (inst instanceof BinaryInst) {
             //%add = add i32 %A, %B
             return inst.identifier() + " = " + ((BinaryInst) inst).op + " " + inst.type + " " +

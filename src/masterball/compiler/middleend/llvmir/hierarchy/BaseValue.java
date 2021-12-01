@@ -36,6 +36,11 @@ public class BaseValue {
     public ArrayList<BaseUser> users = new ArrayList<BaseUser>();
     public String name;
 
+    public BaseValue(BaseType type) {
+        this.name = LLVMTable.TypeAnon;
+        this.type = type;
+    }
+
     public BaseValue(String name, BaseType type) {
         this.name = rename(name);
         this.type = type;

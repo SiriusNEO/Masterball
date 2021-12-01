@@ -1,15 +1,16 @@
 package masterball.compiler.middleend;
 
 import masterball.compiler.frontend.info.type.VarType;
-import masterball.compiler.middleend.llvmir.type.BaseType;
-import masterball.compiler.middleend.llvmir.type.BoolType;
-import masterball.compiler.middleend.llvmir.type.IntType;
-import masterball.compiler.middleend.llvmir.type.VoidType;
+import masterball.compiler.middleend.llvmir.type.*;
 import masterball.compiler.utils.LLVMTable;
 import masterball.compiler.utils.MxStarTable;
 import masterball.debug.Log;
 
 public class IRTranslator {
+    public static final BaseType stringType = new PointerType(new IntType(8)),
+            boolType = new BoolType(),
+            i32Type = new IntType(32);
+
     public static String translateOp(String mxOp) {
         switch (mxOp) {
             case MxStarTable.AddOp: return LLVMTable.AddInst;
@@ -40,8 +41,9 @@ public class IRTranslator {
         if (mxType instanceof VarType) {
             if (((VarType) mxType).dimension == 0) {
                 switch (mxType.builtinType) {
-                    case INT: ret = new IntType(); break;
-                    case BOOL: ret = new BoolType(); break;
+                    case INT: ret = i32Type; break;
+                    case BOOL: ret = boolType; break;
+                    case STRING: ret = stringType; break;
                     default: ret = new VoidType();
                 }
             }

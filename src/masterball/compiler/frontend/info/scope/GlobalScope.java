@@ -5,7 +5,9 @@ import masterball.compiler.frontend.info.registry.ClassRegistry;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.registry.BaseRegistry;
 import masterball.compiler.frontend.info.registry.VarRegistry;
+import masterball.debug.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GlobalScope extends BaseScope {
@@ -13,11 +15,13 @@ public class GlobalScope extends BaseScope {
     public HashMap<String, ClassRegistry> classTable;
     public HashMap<String, FuncRegistry> funcTable;
     public HashMap<String, VarRegistry> varTable;
+    public ArrayList<FuncRegistry> builtinFuncList;
 
     public GlobalScope() {
         this.classTable = new HashMap<>();
         this.funcTable = new HashMap<>();
         this.varTable = new HashMap<>();
+        this.builtinFuncList = new ArrayList<>();
     }
 
     @Override
@@ -48,6 +52,9 @@ public class GlobalScope extends BaseScope {
             if (funcTable.containsKey(name))
                 throw new NameError(registry.codePos, NameError.redefined , name);
             funcTable.put(name, (FuncRegistry) registry);
+            if (((FuncRegistry) registry).isBuiltin) {
+                builtinFuncList.add((FuncRegistry) registry);
+            }
         } else if (registry instanceof VarRegistry) {
             if (varTable.containsKey(name))
                 throw new NameError(registry.codePos, NameError.redefined , name);

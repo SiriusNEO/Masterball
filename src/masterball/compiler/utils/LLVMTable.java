@@ -5,12 +5,17 @@ public class LLVMTable {
     public static int PointerSize = 4;
 
     // default reg & label
+    public static final String TypeAnon = "__type";
     public static final String ConstAnon = "__const";
     // public static final String InstVirualRegAnon = "__inst_";
 
     public static final String Spliter = ".";
 
     public static final String InitFuncName = "glb" + Spliter + "init";
+
+    // prefix
+    public static final String StrFuncPrefix = "str" + Spliter;
+    public static final String BottomStrFuncPrefix = "bot" + Spliter + StrFuncPrefix;
 
     public static final String EntryBlockLabel = "entry";
     public static final String ExitBlockLabel = "exit";

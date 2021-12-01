@@ -1,6 +1,11 @@
 package masterball.compiler.middleend.llvmir.type;
 
+import java.util.ArrayList;
+
 public class ClassType extends BaseType {
+    public static String className;
+    public ArrayList<BaseType> memberTypes = new ArrayList<>();
+
     @Override
     public boolean match(BaseType other) {
         return false;
@@ -8,11 +13,13 @@ public class ClassType extends BaseType {
 
     @Override
     public int size() {
-        return 0;
+        int ret = 0;
+        for (BaseType memberType : memberTypes) ret += memberType.size();
+        return ret;
     }
 
     @Override
     public String toString() {
-        return null;
+        return "%struct." + className;
     }
 }

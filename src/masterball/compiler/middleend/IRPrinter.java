@@ -37,6 +37,10 @@ public class IRPrinter {
         System.out.println(TargetInfo.dataLayout);
         System.out.println(TargetInfo.triple + "\n");
 
+        for (Function func : module.builtinFunctions) {
+            System.out.println(IRFormatter.funcDeclFormat(func));
+        }
+        System.out.print('\n');
         for (Function func : module.functions)
             printFunc(func);
     }

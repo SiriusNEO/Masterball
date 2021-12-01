@@ -13,6 +13,7 @@ public class FuncRegistry extends BaseRegistry {
     public FuncType type;
     public FuncScope scope;
     public ArrayList<VarRegistry> funcArgs;
+    public boolean isBuiltin;
 
     //builtin function
     public FuncRegistry(String name, BaseType.BuiltinType retType, VarRegistry... args) {
@@ -20,6 +21,7 @@ public class FuncRegistry extends BaseRegistry {
 
         this.scope = new FuncScope();
         this.type = new FuncType();
+        this.isBuiltin = true;
 
         type.retType = new VarType(retType);
 
@@ -38,6 +40,7 @@ public class FuncRegistry extends BaseRegistry {
 
         this.scope = new FuncScope();
         this.type = new FuncType();
+        this.isBuiltin = false;
 
         type.funcArgsType = new ArrayList<>();
         funcArgs = new ArrayList<>();
@@ -59,6 +62,7 @@ public class FuncRegistry extends BaseRegistry {
 
         this.scope = new FuncScope();
         this.type = new FuncType();
+        this.isBuiltin = false;
 
         type.retType = new VarType(ctx.varDefType(), true);
         type.funcArgsType = new ArrayList<>();
@@ -81,6 +85,8 @@ public class FuncRegistry extends BaseRegistry {
 
         this.scope = new FuncScope();
         this.type = new FuncType();
+        this.isBuiltin = false;
+
         type.retType = new VarType(BaseType.BuiltinType.VOID);
 
         funcArgs = new ArrayList<>();
