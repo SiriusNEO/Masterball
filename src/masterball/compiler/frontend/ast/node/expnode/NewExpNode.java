@@ -9,12 +9,12 @@ import java.util.ArrayList;
 
 public class NewExpNode extends ExpBaseNode {
 
-    public ArrayList<ExpBaseNode> eachDimExpNodes;
+    public ArrayList<ExpBaseNode> eachDimLengthExpNodes;
 
     public NewExpNode(CodePos codePos, VarType type) {
         super(codePos);
         this.type = type;
-        this.eachDimExpNodes = new ArrayList<>();
+        this.eachDimLengthExpNodes = new ArrayList<>();
     }
 
     @Override

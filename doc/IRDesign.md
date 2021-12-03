@@ -10,12 +10,14 @@ According to https://llvm.org/doxygen/IRBuilder_8h.html
 
 ### Unit Display
 
-- Value: display their identifier
+- Value: display their identifier `identifier`
 - Type: use toString method
 
 ### Formatter
 
-link unit in one line
+link unit in one line.
+
+every instructions override `format` methods
 
 ### IRPrinter
 
@@ -84,13 +86,39 @@ display the whole IR, finish IR generating.
 
 ## Type System
 
-### Function Type
+### Function
 
 - **Members:** retType, argTypes
 - initialized in func declare (function value initialized in func def)
 - decl first (forward reference support)
 
+### Bool
+
+There are two types for boolean: BoolType(i1) and MemBoolType(i8)
+
+Converted in three mem operations (alloca, load, store)
+
+- alloca: alloca boolType -> alloca memBoolType
+- load: load memBoolType -> load boolType
+- store: store boolType -> store memBoolType
+
+### String
+
+string variable is a pointer i8* (translated)
+
+string constant is a pointer to ArrayType ([ n x i8 ], same as i8*)
+
+getelmentptr [4 x i8], <string constant typedIdentifier>, offset1, offset2 
+
+### Array
+
+PointerType, alloca a single PointerType and assign null at first.
+
+Different from Mx grammar (`.size()`), I use `length` to represent the number of elements and `size` to represent the bytes.
 
 
-### ArrayType
+
+### Class
+
+
 

@@ -1,6 +1,6 @@
 package masterball.compiler.middleend.llvmir.type;
 
-public class IntType extends BaseType {
+public class IntType extends IRBaseType {
     public final int bitWidth;
 
     public IntType() {
@@ -12,7 +12,7 @@ public class IntType extends BaseType {
     }
 
     @Override
-    public boolean match(BaseType other) {
+    public boolean match(IRBaseType other) {
         return other instanceof IntType && ((IntType) other).bitWidth == bitWidth;
     }
 

@@ -1,18 +1,18 @@
 package masterball.compiler.middleend.llvmir.type;
 
-public class LabelType extends IRBaseType {
+public class MemBoolType extends IRBaseType {
     @Override
     public boolean match(IRBaseType other) {
-        return false;
+        return other instanceof MemBoolType;
     }
 
     @Override
     public int size() {
-        return 0;
+        return 1;
     }
 
     @Override
     public String toString() {
-        return "label";
+        return "i8";
     }
 }

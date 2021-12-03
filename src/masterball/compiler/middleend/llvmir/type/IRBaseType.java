@@ -1,8 +1,8 @@
 package masterball.compiler.middleend.llvmir.type;
 
-public abstract class BaseType {
+public abstract class IRBaseType {
 
-    abstract public boolean match(BaseType other);
+    abstract public boolean match(IRBaseType other);
 
     abstract public int size(); // byte
 

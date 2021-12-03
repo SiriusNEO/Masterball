@@ -1,8 +1,8 @@
 package masterball.compiler.middleend.llvmir.type;
 
-public class BoolType extends BaseType {
+public class BoolType extends IRBaseType {
     @Override
-    public boolean match(BaseType other) {
+    public boolean match(IRBaseType other) {
         return other instanceof BoolType;
     }
 

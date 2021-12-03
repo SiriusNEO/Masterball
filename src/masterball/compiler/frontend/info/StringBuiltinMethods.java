@@ -3,30 +3,30 @@ package masterball.compiler.frontend.info;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.registry.VarRegistry;
 import masterball.compiler.frontend.info.scope.ClassScope;
-import masterball.compiler.frontend.info.type.BaseType;
+import masterball.compiler.frontend.info.type.MxBaseType;
 
 public class StringBuiltinMethods {
     public static ClassScope scope = new ClassScope();
 
     static {
         scope.register(
-                new FuncRegistry("length", BaseType.BuiltinType.INT)
+                new FuncRegistry("length", MxBaseType.BuiltinType.INT)
         );
 
         scope.register(
-                new FuncRegistry("substring", BaseType.BuiltinType.STRING,
-                        new VarRegistry("left", BaseType.BuiltinType.INT),
-                        new VarRegistry("right", BaseType.BuiltinType.INT)
+                new FuncRegistry("substring", MxBaseType.BuiltinType.STRING,
+                        new VarRegistry("left", MxBaseType.BuiltinType.INT),
+                        new VarRegistry("right", MxBaseType.BuiltinType.INT)
                 )
         );
 
         scope.register(
-                new FuncRegistry("parseInt", BaseType.BuiltinType.INT)
+                new FuncRegistry("parseInt", MxBaseType.BuiltinType.INT)
         );
 
         scope.register(
-                new FuncRegistry("ord", BaseType.BuiltinType.INT,
-                        new VarRegistry("pos", BaseType.BuiltinType.INT))
+                new FuncRegistry("ord", MxBaseType.BuiltinType.INT,
+                        new VarRegistry("pos", MxBaseType.BuiltinType.INT))
         );
     }
 }

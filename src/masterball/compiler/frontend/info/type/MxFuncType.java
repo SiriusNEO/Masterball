@@ -4,20 +4,20 @@ import masterball.compiler.frontend.ast.node.ExpBaseNode;
 
 import java.util.ArrayList;
 
-import static masterball.compiler.frontend.info.type.BaseType.BuiltinType.FUNC;
+import static masterball.compiler.frontend.info.type.MxBaseType.BuiltinType.FUNC;
 
-public class FuncType extends BaseType {
+public class MxFuncType extends MxBaseType {
     public VarType retType;
     public ArrayList<VarType> funcArgsType;
 
-    public FuncType() {
+    public MxFuncType() {
         super(BuiltinType.FUNC);
         retType = null;
         funcArgsType = new ArrayList<>();
     }
 
     @Override
-    public boolean match(BaseType other) {return false;}
+    public boolean match(MxBaseType other) {return false;}
 
     @Override
     public boolean match(BuiltinType other) {return other == FUNC;}
@@ -35,8 +35,8 @@ public class FuncType extends BaseType {
     }
 
     @Override
-    public BaseType copy() {
-        FuncType ret = new FuncType();
+    public MxBaseType copy() {
+        MxFuncType ret = new MxFuncType();
         ret.retType = (VarType) retType.copy();
         for (int i = 0; i < funcArgsType.size(); i++) {
             ret.funcArgsType.add((VarType) funcArgsType.get(i).copy());

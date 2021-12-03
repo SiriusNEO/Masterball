@@ -1,21 +1,17 @@
 package masterball.compiler.frontend.info.type;
 
-import org.antlr.v4.runtime.CodePointBuffer;
-
-import java.util.Objects;
-
-public abstract class BaseType {
+public abstract class MxBaseType {
     public enum BuiltinType {NULL, INT, BOOL, STRING, VOID, CLASS, FUNC}
 
     public BuiltinType builtinType;
 
-    public abstract boolean match(BaseType other);
+    public abstract boolean match(MxBaseType other);
 
     public abstract boolean match(BuiltinType other);
 
-    public abstract BaseType copy();
+    public abstract MxBaseType copy();
 
-    public BaseType(BuiltinType builtinType) {
+    public MxBaseType(BuiltinType builtinType) {
         this.builtinType = builtinType;
     }
 }

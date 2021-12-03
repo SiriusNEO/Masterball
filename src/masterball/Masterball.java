@@ -19,7 +19,7 @@ public class Masterball {
 
             SemanticEngine semanticEngine = new SemanticEngine(parseEngine, false);
 
-            IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, false, true);
+            // IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, false, true);
         }
         catch (Exception e) {
             if (e instanceof BaseError) {

@@ -5,8 +5,10 @@ public class LLVMTable {
     public static int PointerSize = 4;
 
     // default reg & label
-    public static final String TypeAnon = "__type";
-    public static final String ConstAnon = "__const";
+    public static final String TempAnon = "anon.temp";
+    public static final String TypeAnon = "anon.type";
+    public static final String ConstAnon = "anon.const";
+    public static final String StrConstAnon = "anon.strconst";
     // public static final String InstVirualRegAnon = "__inst_";
 
     public static final String Spliter = ".";
@@ -15,6 +17,7 @@ public class LLVMTable {
 
     // prefix
     public static final String StrFuncPrefix = "str" + Spliter;
+    public static final String BottomPrefix = "bot" + Spliter;
     public static final String BottomStrFuncPrefix = "bot" + Spliter + StrFuncPrefix;
 
     public static final String EntryBlockLabel = "entry";
@@ -30,7 +33,6 @@ public class LLVMTable {
     public static final String WhBodyBlockLabel = "wh" + Spliter + "body";
     public static final String WhExitBlockLabel = "wh" + Spliter + "exit";
 
-
     // LLVM inst
     public static final String AllocaInst = "alloca";
     public static final String BitCastInst = "bitcast";
@@ -42,6 +44,8 @@ public class LLVMTable {
     public static final String StoreInst = "store";
     public static final String PhiInst = "phi";
     public static final String RetInst = "ret";
+    public static final String TruncInst = "trunc";
+    public static final String ZextInst = "zext";
 
     // virtual reg suffix
     public static final String AddrSuffix = Spliter + "addr";
@@ -60,11 +64,14 @@ public class LLVMTable {
     public static final String OrInst = "or";
     public static final String XorInst = "xor";
 
-    // icmp
+    // compare
     public static final String GreaterArg = "sgt";
     public static final String GreaterEqualArg = "sge";
     public static final String LessArg = "slt";
     public static final String LessEqualArg = "sle";
     public static final String EqualArg = "eq";
     public static final String NotEqualArg = "neq";
+
+    // str
+    public static final String StrCatArg = "cat";
 }

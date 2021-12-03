@@ -7,7 +7,7 @@ import masterball.compiler.frontend.ast.node.stmtnode.ForStmtNode;
 import masterball.compiler.frontend.ast.node.stmtnode.IfStmtNode;
 import masterball.compiler.frontend.ast.node.stmtnode.WhileStmtNode;
 import masterball.compiler.utils.error.semantic.TypeError;
-import masterball.compiler.frontend.info.type.BaseType;
+import masterball.compiler.frontend.info.type.MxBaseType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.utils.MxStarTable;
 
@@ -20,12 +20,12 @@ public class TypeMatcher {
     // others (+ - ~) -> int
     public static void match(UnaryExpNode node) {
         if (Objects.equals(node.op, MxStarTable.LogicNotOp)) {
-            if (!node.selfExpNode.type.match(BaseType.BuiltinType.BOOL)) {
-                throw new TypeError(node.codePos, BaseType.BuiltinType.BOOL, node.selfExpNode.type);
+            if (!node.selfExpNode.type.match(MxBaseType.BuiltinType.BOOL)) {
+                throw new TypeError(node.codePos, MxBaseType.BuiltinType.BOOL, node.selfExpNode.type);
             }
         } else {
-            if (!node.selfExpNode.type.match(BaseType.BuiltinType.INT)) {
-                throw new TypeError(node.codePos, BaseType.BuiltinType.INT, node.selfExpNode.type);
+            if (!node.selfExpNode.type.match(MxBaseType.BuiltinType.INT)) {
+                throw new TypeError(node.codePos, MxBaseType.BuiltinType.INT, node.selfExpNode.type);
             }
         }
     }
@@ -35,8 +35,8 @@ public class TypeMatcher {
         if (!node.selfExpNode.isLeftValue()) {
             throw new TypeError(node.codePos, TypeError.prefixAndPostfix);
         }
-        if (!node.selfExpNode.type.match(BaseType.BuiltinType.INT)) {
-            throw new TypeError(node.codePos, BaseType.BuiltinType.INT, node.selfExpNode.type);
+        if (!node.selfExpNode.type.match(MxBaseType.BuiltinType.INT)) {
+            throw new TypeError(node.codePos, MxBaseType.BuiltinType.INT, node.selfExpNode.type);
         }
     }
 
@@ -45,14 +45,14 @@ public class TypeMatcher {
         if (!node.selfExpNode.isLeftValue()) {
             throw new TypeError(node.codePos, TypeError.prefixAndPostfix);
         }
-        if (!node.selfExpNode.type.match(BaseType.BuiltinType.INT)) {
-            throw new TypeError(node.codePos, BaseType.BuiltinType.INT, node.selfExpNode.type);
+        if (!node.selfExpNode.type.match(MxBaseType.BuiltinType.INT)) {
+            throw new TypeError(node.codePos, MxBaseType.BuiltinType.INT, node.selfExpNode.type);
         }
     }
 
     // member: a.b, a -> class (str and array is checked in semantic checker)
     public static void match(MemberExpNode node) {
-        if (!node.superExpNode.type.match(BaseType.BuiltinType.CLASS)) {
+        if (!node.superExpNode.type.match(MxBaseType.BuiltinType.CLASS)) {
             throw new TypeError(node.codePos, TypeError.typeNotCallable, node.superExpNode.type);
         }
     }
@@ -66,8 +66,8 @@ public class TypeMatcher {
             throw new TypeError(node.codePos, TypeError.typeNotSubscribable, node.arrayExpNode.type);
         }
         assert node.indexExpNode != null;
-        if (!node.indexExpNode.type.match(BaseType.BuiltinType.INT)) {
-            throw new TypeError(node.codePos, BaseType.BuiltinType.INT, node.indexExpNode.type);
+        if (!node.indexExpNode.type.match(MxBaseType.BuiltinType.INT)) {
+            throw new TypeError(node.codePos, MxBaseType.BuiltinType.INT, node.indexExpNode.type);
         }
     }
 
@@ -86,7 +86,7 @@ public class TypeMatcher {
             throw new TypeError(node.codePos, node.lhsExpNode.type, node.rhsExpNode.type);
         }
 
-        if (node.lhsExpNode.type.match(BaseType.BuiltinType.STRING)) {
+        if (node.lhsExpNode.type.match(MxBaseType.BuiltinType.STRING)) {
             if (!Objects.equals(node.op, MxStarTable.AddOp) &&
                 !Objects.equals(node.opType, MxStarTable.compareOpType) &&
                 !Objects.equals(node.opType, MxStarTable.equalOpType)
@@ -97,17 +97,17 @@ public class TypeMatcher {
         }
 
         if (Objects.equals(node.opType, MxStarTable.logicOpType)) {
-            if (!node.lhsExpNode.type.match(BaseType.BuiltinType.BOOL))
+            if (!node.lhsExpNode.type.match(MxBaseType.BuiltinType.BOOL))
                 throw new TypeError(node.codePos, TypeError.invalidOpForType, node.lhsExpNode.type);
         }
 
         else if (Objects.equals(node.opType, MxStarTable.arithOpType)) {
-            if (!node.lhsExpNode.type.match(BaseType.BuiltinType.INT))
+            if (!node.lhsExpNode.type.match(MxBaseType.BuiltinType.INT))
                 throw new TypeError(node.codePos, TypeError.invalidOpForType, node.lhsExpNode.type);
         }
 
         else if (Objects.equals(node.opType, MxStarTable.compareOpType)) {
-            if (!node.lhsExpNode.type.match(BaseType.BuiltinType.INT))
+            if (!node.lhsExpNode.type.match(MxBaseType.BuiltinType.INT))
                 throw new TypeError(node.codePos, TypeError.invalidOpForType, node.lhsExpNode.type);
         }
     }
@@ -133,37 +133,37 @@ public class TypeMatcher {
 
     // forstmt: condi is bool
     public static void match(ForStmtNode node) {
-        if (!node.conditionExpNode.type.match(BaseType.BuiltinType.BOOL)) {
+        if (!node.conditionExpNode.type.match(MxBaseType.BuiltinType.BOOL)) {
             throw new TypeError(
-                    node.codePos, BaseType.BuiltinType.BOOL, node.conditionExpNode.type
+                    node.codePos, MxBaseType.BuiltinType.BOOL, node.conditionExpNode.type
             );
         }
     }
 
     // while stmt: condi is bool
     public static void match(WhileStmtNode node) {
-        if (!node.conditionExpNode.type.match(BaseType.BuiltinType.BOOL)) {
+        if (!node.conditionExpNode.type.match(MxBaseType.BuiltinType.BOOL)) {
             throw new TypeError(
-                    node.codePos, BaseType.BuiltinType.BOOL, node.conditionExpNode.type
+                    node.codePos, MxBaseType.BuiltinType.BOOL, node.conditionExpNode.type
             );
         }
     }
 
     // if stmt: condi is bool
     public static void match(IfStmtNode node) {
-        if (!node.conditionExpNode.type.match(BaseType.BuiltinType.BOOL)) {
+        if (!node.conditionExpNode.type.match(MxBaseType.BuiltinType.BOOL)) {
             throw new TypeError(
-                    node.codePos, BaseType.BuiltinType.BOOL, node.conditionExpNode.type
+                    node.codePos, MxBaseType.BuiltinType.BOOL, node.conditionExpNode.type
             );
         }
     }
 
     // new: int[][] a = new int[][];
-    // index -> int
+    // each dim size -> int
     public static void match(NewExpNode node) {
-        for (ExpBaseNode eachDimExpNode : node.eachDimExpNodes) {
-            if (!eachDimExpNode.type.match(BaseType.BuiltinType.INT)) {
-                throw new TypeError(node.codePos, BaseType.BuiltinType.INT, eachDimExpNode.type);
+        for (ExpBaseNode eachDimExpNode : node.eachDimLengthExpNodes) {
+            if (!eachDimExpNode.type.match(MxBaseType.BuiltinType.INT)) {
+                throw new TypeError(node.codePos, MxBaseType.BuiltinType.INT, eachDimExpNode.type);
             }
         }
     }

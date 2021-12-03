@@ -5,7 +5,6 @@ import masterball.compiler.middleend.llvmir.inst.BrInst;
 import masterball.compiler.middleend.llvmir.inst.RetInst;
 import masterball.compiler.middleend.llvmir.type.LabelType;
 import masterball.compiler.utils.LLVMTable;
-import masterball.compiler.utils.error.RuntimeError;
 import masterball.debug.Log;
 
 import java.util.LinkedList;

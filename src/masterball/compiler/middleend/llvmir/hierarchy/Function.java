@@ -1,9 +1,8 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
-import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.middleend.llvmir.constant.GlobalValue;
-import masterball.compiler.middleend.llvmir.type.BaseType;
-import masterball.compiler.middleend.llvmir.type.FunctionType;
+import masterball.compiler.middleend.llvmir.type.IRBaseType;
+import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.utils.LLVMTable;
 
 import java.util.ArrayList;
@@ -11,31 +10,28 @@ import java.util.ArrayList;
 public class Function extends GlobalValue {
     public ArrayList<BasicBlock> blocks = new ArrayList<BasicBlock>();
 
-    public Function(String name, BaseType retType) {
+    public Function(String name, IRFuncType funcType) {
         // not init complete.
         // finished in IRBuilder
 
-        super(name, new FunctionType(retType));
+        super(name, funcType);
         new BasicBlock(LLVMTable.EntryBlockLabel, this);
         new BasicBlock(LLVMTable.ExitBlockLabel, this);
         this.entryBlock().parentFunction = this;
         this.exitBlock().parentFunction = this;
     }
 
-    public Function(String name, BaseType retType, BaseType... argTypes) {
-        super(name, new FunctionType(retType));
-        for (BaseType argType : argTypes) this.addArgType(argType);
+    // bottom function decl
+    public Function(String name, IRBaseType retType, IRBaseType... argTypes) {
+        super(name, new IRFuncType(retType));
+        for (IRBaseType argType : argTypes) ((IRFuncType) this.type).argTypes.add(argType);
     }
 
     public void addArg(BaseValue arg) {
         this.addOperand(arg);
     }
 
-    public void addArgType(BaseType argType) {
-        ((FunctionType) this.type).argTypes.add(argType);
-    }
-
-    public int getArgNum() {return ((FunctionType) this.type).argTypes.size();}
+    public int getArgNum() {return ((IRFuncType) this.type).argTypes.size();}
     public BaseValue getArg(int index) {return this.getOperand(index);}
 
     public BasicBlock entryBlock() {return blocks.get(0);}

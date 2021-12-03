@@ -2,7 +2,7 @@ package masterball.compiler.utils.error.semantic;
 
 import masterball.compiler.frontend.info.CodePos;
 import masterball.compiler.utils.error.SemanticError;
-import masterball.compiler.frontend.info.type.BaseType;
+import masterball.compiler.frontend.info.type.MxBaseType;
 
 public class TypeError extends SemanticError {
 
@@ -16,15 +16,15 @@ public class TypeError extends SemanticError {
     public static final String assignment = "the expression on the left side of the assign-op should be a left-value";
     public static final String prefixAndPostfix = "expecting a left-value in prefix/postfix expression";
 
-    public TypeError(CodePos codePos, BaseType lhs, BaseType rhs) {
+    public TypeError(CodePos codePos, MxBaseType lhs, MxBaseType rhs) {
         super(codePos, typeNotMatch + "\"" +  lhs + "\" and \"" + rhs + "\"", "TypeError");
     }
 
-    public TypeError(CodePos codePos, BaseType.BuiltinType lhs, BaseType rhs) {
+    public TypeError(CodePos codePos, MxBaseType.BuiltinType lhs, MxBaseType rhs) {
         super(codePos, typeNotMatch + "\"" + lhs + "\" and \"" + rhs + "\"", "TypeError");
     }
 
-    public TypeError(CodePos codePos, String message, BaseType type) {
+    public TypeError(CodePos codePos, String message, MxBaseType type) {
         super(codePos, message + type, "TypeError");
     }
 

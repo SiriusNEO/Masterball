@@ -2,7 +2,7 @@ package masterball.compiler.frontend.info;
 
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.scope.ClassScope;
-import masterball.compiler.frontend.info.type.BaseType;
+import masterball.compiler.frontend.info.type.MxBaseType;
 
 public class ArrayBuiltinMethods {
 
@@ -10,7 +10,7 @@ public class ArrayBuiltinMethods {
 
     static {
         scope.register(
-                new FuncRegistry("size", BaseType.BuiltinType.INT)
+                new FuncRegistry("size", MxBaseType.BuiltinType.INT)
         );
     }
 

@@ -26,6 +26,15 @@ public class Log {
         colorPrintln(ReportColor, info.toString());
     }
 
+    public static void report(Object... vars) {
+        StringBuilder info = new StringBuilder("Log:[Report] ");
+        for (Object var : vars) {
+            info.append(var.toString());
+            info.append(" ");
+        }
+        colorPrintln(ReportColor, info.toString());
+    }
+
     public static void report(VarPair... vars) {
         if (!isOpen) {
             return;
@@ -40,7 +49,7 @@ public class Log {
 
     public static void mark() {
         if (isOpen) {
-            colorPrintln(MarkColor, "Log:[mark] mark " + markCnt);
+            colorPrintln(MarkColor, "Log:[Mark] mark " + markCnt);
             markCnt++;
         }
     }

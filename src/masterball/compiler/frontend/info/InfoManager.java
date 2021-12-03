@@ -12,12 +12,12 @@ import masterball.compiler.frontend.info.registry.VarRegistry;
 
 import java.util.Stack;
 
-public class StackManager {
+public class InfoManager {
 
     public Stack<BaseScope> scopeStack;
     public ClassRegistry nowClass = null;
 
-    public StackManager() {
+    public InfoManager() {
         this.scopeStack = new Stack<>();
     }
 

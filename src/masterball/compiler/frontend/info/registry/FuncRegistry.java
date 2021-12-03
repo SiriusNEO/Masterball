@@ -1,7 +1,7 @@
 package masterball.compiler.frontend.info.registry;
 
-import masterball.compiler.frontend.info.type.BaseType;
-import masterball.compiler.frontend.info.type.FuncType;
+import masterball.compiler.frontend.info.type.MxBaseType;
+import masterball.compiler.frontend.info.type.MxFuncType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.parser.MxStarParser;
 import masterball.compiler.frontend.info.scope.FuncScope;
@@ -10,17 +10,17 @@ import java.util.ArrayList;
 
 public class FuncRegistry extends BaseRegistry {
 
-    public FuncType type;
+    public MxFuncType type;
     public FuncScope scope;
     public ArrayList<VarRegistry> funcArgs;
     public boolean isBuiltin;
 
-    //builtin function
-    public FuncRegistry(String name, BaseType.BuiltinType retType, VarRegistry... args) {
+    // builtin function
+    public FuncRegistry(String name, MxBaseType.BuiltinType retType, VarRegistry... args) {
         super(name);
 
         this.scope = new FuncScope();
-        this.type = new FuncType();
+        this.type = new MxFuncType();
         this.isBuiltin = true;
 
         type.retType = new VarType(retType);
@@ -34,12 +34,12 @@ public class FuncRegistry extends BaseRegistry {
         }
     }
 
-    //lambda
+    // lambda
     public FuncRegistry(MxStarParser.LambdaExpContext ctx) {
         super("", ctx);
 
         this.scope = new FuncScope();
-        this.type = new FuncType();
+        this.type = new MxFuncType();
         this.isBuiltin = false;
 
         type.funcArgsType = new ArrayList<>();
@@ -56,12 +56,12 @@ public class FuncRegistry extends BaseRegistry {
         }
     }
 
-    //normal
+    // normal
     public FuncRegistry(MxStarParser.FuncDefContext ctx) {
         super(ctx.Identifier().toString(), ctx);
 
         this.scope = new FuncScope();
-        this.type = new FuncType();
+        this.type = new MxFuncType();
         this.isBuiltin = false;
 
         type.retType = new VarType(ctx.varDefType(), true);
@@ -79,15 +79,15 @@ public class FuncRegistry extends BaseRegistry {
         }
     }
 
-    //constructor
+    // constructor
     public FuncRegistry(MxStarParser.ClassConstructorDefContext ctx) {
         super(ctx.Identifier().toString(), ctx);
 
         this.scope = new FuncScope();
-        this.type = new FuncType();
+        this.type = new MxFuncType();
         this.isBuiltin = false;
 
-        type.retType = new VarType(BaseType.BuiltinType.VOID);
+        type.retType = new VarType(MxBaseType.BuiltinType.VOID);
 
         funcArgs = new ArrayList<>();
     }

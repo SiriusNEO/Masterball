@@ -7,7 +7,7 @@ import masterball.compiler.frontend.parser.MxStarParser;
 
 import java.util.Objects;
 
-public class VarType extends BaseType {
+public class VarType extends MxBaseType {
 
     public static final String notClass = "not a class";
 
@@ -89,7 +89,7 @@ public class VarType extends BaseType {
         }
     }
 
-    public BaseType copy() {
+    public MxBaseType copy() {
         VarType ret = new VarType(builtinType);
         ret.dimension = dimension;
         ret.className = className;
@@ -97,7 +97,7 @@ public class VarType extends BaseType {
     }
 
     @Override
-    public boolean match(BaseType other) {
+    public boolean match(MxBaseType other) {
         if (other instanceof VarType) {
             if ((dimension > 0 || builtinType == BuiltinType.CLASS) && other.builtinType == BuiltinType.NULL) {
                 return true;

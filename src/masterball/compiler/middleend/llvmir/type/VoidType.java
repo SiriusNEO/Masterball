@@ -1,8 +1,8 @@
 package masterball.compiler.middleend.llvmir.type;
 
-public class VoidType extends BaseType {
+public class VoidType extends IRBaseType {
     @Override
-    public boolean match(BaseType other) {
+    public boolean match(IRBaseType other) {
         return other instanceof VoidType;
     }
 

@@ -1,19 +1,31 @@
 package masterball.compiler.middleend.llvmir.type;
 
+import masterball.compiler.middleend.IRTranslator;
 import masterball.compiler.utils.LLVMTable;
 
-public class PointerType extends BaseType {
-    public BaseType pointed;
+public class PointerType extends IRBaseType {
+    public IRBaseType pointedType;
     public int dimension;
 
-    public PointerType(BaseType pointed) {
-        this.pointed = pointed;
+    public PointerType(IRBaseType pointed) {
+        this.pointedType = pointed;
         if (pointed instanceof PointerType) this.dimension = ((PointerType)pointed).dimension + 1;
         else this.dimension = 1;
     }
 
     @Override
-    public boolean match(BaseType other) {
+    public boolean match(IRBaseType other) {
+        // pointer match: pointedType match and dimension match
+        // nullptr judge: if other is nullptr, return true
+        if (other instanceof PointerType) {
+            return (
+                    (((PointerType) other).dimension == dimension && ((PointerType) other).pointedType.match(pointedType))
+                    || other.match(IRTranslator.nullType)
+            );
+        }
+        else if (other instanceof ArrayType) {
+            return this.match(IRTranslator.stringType);
+        }
         return false;
     }
 
@@ -24,6 +36,7 @@ public class PointerType extends BaseType {
 
     @Override
     public String toString() {
-        return pointed + "*";
+        if (pointedType instanceof VoidType) return ""; // void* is invalid
+        return pointedType + "*";
     }
 }

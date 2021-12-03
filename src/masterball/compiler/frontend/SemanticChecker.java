@@ -9,53 +9,53 @@ import masterball.compiler.frontend.info.ArrayBuiltinMethods;
 import masterball.compiler.frontend.info.StringBuiltinMethods;
 import masterball.compiler.frontend.info.registry.ClassRegistry;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
-import masterball.compiler.frontend.info.type.BaseType;
-import masterball.compiler.frontend.info.type.FuncType;
+import masterball.compiler.frontend.info.type.MxBaseType;
+import masterball.compiler.frontend.info.type.MxFuncType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.info.registry.VarRegistry;
-import masterball.compiler.frontend.info.StackManager;
+import masterball.compiler.frontend.info.InfoManager;
 import masterball.compiler.utils.MxStarTable;
 
 import java.util.Objects;
 
 public class SemanticChecker implements ASTVisitor {
 
-    private final StackManager stackManager = new StackManager();
+    private final InfoManager infoManager = new InfoManager();
 
     @Override
     public void visit(RootNode node) {
-        stackManager.push(node.scope);
+        infoManager.push(node.scope);
         node.sonNodes.forEach(sonnode -> sonnode.accept(this));
-        stackManager.pop();
+        infoManager.pop();
     }
 
     @Override
     public void visit(ClassDefNode node) {
-        stackManager.push(node.classRegistry); // update nowClass
+        infoManager.push(node.classRegistry); // update nowClass
         if (node.constructorDefNode != null) visit(node.constructorDefNode);
         node.varDefStmtNodes.forEach(sonnode -> sonnode.accept(this));
         node.funcDefNodes.forEach(sonnode -> sonnode.accept(this));
-        stackManager.pop();
+        infoManager.pop();
     }
 
     @Override
     public void visit(FuncDefNode node) {
-        stackManager.push(node.funcRegistry.scope);
+        infoManager.push(node.funcRegistry.scope);
 
         // query class type
         for (VarRegistry registry : node.funcRegistry.funcArgs) {
-            if (registry.type.builtinType == BaseType.BuiltinType.CLASS &&
-                    stackManager.queryClass(registry.type.className) == null) {
+            if (registry.type.builtinType == MxBaseType.BuiltinType.CLASS &&
+                    infoManager.queryClass(registry.type.className) == null) {
                 throw new NameError(node.codePos, NameError.undefined, registry.type.className);
             }
-            stackManager.register(registry);
+            infoManager.register(registry);
         }
 
         assert node.suiteNode != null;
         visit(node.suiteNode);
 
         if (node.funcRegistry.scope.catchedRetTypeList.isEmpty()) { //no return statement
-            if (!node.isValidMainFunc() && !node.funcRegistry.type.retType.match(BaseType.BuiltinType.VOID)) {
+            if (!node.isValidMainFunc() && !node.funcRegistry.type.retType.match(MxBaseType.BuiltinType.VOID)) {
                 throw new FuncReturnError(node.codePos, FuncReturnError.noReturn);
             }
         }
@@ -70,7 +70,7 @@ public class SemanticChecker implements ASTVisitor {
             }
         }
 
-        stackManager.pop();
+        infoManager.pop();
     }
 
     @Override
@@ -79,15 +79,15 @@ public class SemanticChecker implements ASTVisitor {
         if (node.initExpNode != null) {
             node.initExpNode.accept(this);
 
-            if (node.varRegistry.type.builtinType == BaseType.BuiltinType.CLASS &&
-               stackManager.queryClass(node.varRegistry.type.className) == null) {
+            if (node.varRegistry.type.builtinType == MxBaseType.BuiltinType.CLASS &&
+               infoManager.queryClass(node.varRegistry.type.className) == null) {
                 throw new NameError(node.codePos, NameError.undefined, node.varRegistry.type.className);
             }
 
             TypeMatcher.match(node);
         }
 
-        stackManager.register(node.varRegistry);
+        infoManager.register(node.varRegistry);
     }
 
     @Override
@@ -97,9 +97,9 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(SuiteNode node) {
-        stackManager.push(node.scope);
+        infoManager.push(node.scope);
         node.stmtNodes.forEach(sonnode -> sonnode.accept(this));
-        stackManager.pop();
+        infoManager.pop();
     }
 
     @Override
@@ -113,20 +113,20 @@ public class SemanticChecker implements ASTVisitor {
 
         TypeMatcher.match(node);
 
-        stackManager.push(node.ifTrueScope);
+        infoManager.push(node.ifTrueScope);
         node.ifTrueStmtNode.accept(this);
-        stackManager.pop();
+        infoManager.pop();
 
         if (node.elseStmtNode != null) {
-            stackManager.push(node.elseScope);
+            infoManager.push(node.elseScope);
             node.elseStmtNode.accept(this);
-            stackManager.pop();
+            infoManager.pop();
         }
     }
 
     @Override
     public void visit(WhileStmtNode node) {
-        stackManager.push(node.scope);
+        infoManager.push(node.scope);
 
         node.conditionExpNode.accept(this);
 
@@ -134,12 +134,12 @@ public class SemanticChecker implements ASTVisitor {
 
         if (node.bodyStmtNode != null) node.bodyStmtNode.accept(this);
 
-        stackManager.pop();
+        infoManager.pop();
     }
 
     @Override
     public void visit(ForStmtNode node) {
-        stackManager.push(node.scope);
+        infoManager.push(node.scope);
 
         if (node.initExpNode != null) node.initExpNode.accept(this);
 
@@ -155,23 +155,23 @@ public class SemanticChecker implements ASTVisitor {
         assert node.bodyStmtNode != null;
         node.bodyStmtNode.accept(this);
 
-        stackManager.pop();
+        infoManager.pop();
     }
 
     @Override
     public void visit(ReturnStmtNode node) {
-        if (!stackManager.isInFunc()) throw new ScopeError(node.codePos, ScopeError.wrongReturn);
+        if (!infoManager.isInFunc()) throw new ScopeError(node.codePos, ScopeError.wrongReturn);
         if (node.retExpNode != null) {
             node.retExpNode.accept(this);
-            stackManager.stackReturn((VarType) node.retExpNode.type);
+            infoManager.stackReturn((VarType) node.retExpNode.type);
         } else {
-            stackManager.stackReturn(new VarType(BaseType.BuiltinType.VOID));
+            infoManager.stackReturn(new VarType(MxBaseType.BuiltinType.VOID));
         }
     }
 
     @Override
     public void visit(ControlStmtNode node) {
-        if (!stackManager.isInLoop()) {
+        if (!infoManager.isInLoop()) {
             if (Objects.equals(node.controlWord, MxStarTable.breakKw))
                 throw new ScopeError(node.codePos, ScopeError.wrongBreak);
             else
@@ -207,7 +207,7 @@ public class SemanticChecker implements ASTVisitor {
         TypeMatcher.match(node);
 
         if (Objects.equals(node.opType, MxStarTable.compareOpType) || Objects.equals(node.opType, MxStarTable.equalOpType)) {
-            node.type = new VarType(BaseType.BuiltinType.BOOL);
+            node.type = new VarType(MxBaseType.BuiltinType.BOOL);
         } else {
             node.type = node.rhsExpNode.type.copy();
         }
@@ -218,14 +218,14 @@ public class SemanticChecker implements ASTVisitor {
         node.callExpNode.accept(this);
         node.callArgExpNodes.forEach(sonnode -> sonnode.accept(this));
 
-       if (!(node.callExpNode.type instanceof FuncType)) { // try again, func name query
+       if (!(node.callExpNode.type instanceof MxFuncType)) { // try again, func name query
            if (!(node.callExpNode instanceof AtomExpNode)) {
                throw new FuncCallError(node.codePos, FuncCallError.expNotAFunc);
            }
            if (((AtomExpNode) node.callExpNode).ctx.Identifier() == null) {
                throw new FuncCallError(node.codePos, FuncCallError.expNotAFunc);
            }
-           FuncRegistry funcRegistry = stackManager.queryFuncInStack(((AtomExpNode) node.callExpNode).ctx.Identifier().getText());
+           FuncRegistry funcRegistry = infoManager.queryFuncInStack(((AtomExpNode) node.callExpNode).ctx.Identifier().getText());
            if (funcRegistry != null) {
                 node.callExpNode.type = funcRegistry.type.copy(); // forced type conversion
            } else {
@@ -233,7 +233,7 @@ public class SemanticChecker implements ASTVisitor {
            }
        }
 
-        int result = ((FuncType) node.callExpNode.type).funcCallMatch(node.callArgExpNodes);
+        int result = ((MxFuncType) node.callExpNode.type).funcCallMatch(node.callArgExpNodes);
 
         if (result == -1) {
             throw new FuncCallError(node.codePos, FuncCallError.argcNotMatch);
@@ -241,7 +241,7 @@ public class SemanticChecker implements ASTVisitor {
             throw new FuncCallError(node.codePos, FuncCallError.argTypeNotMatch);
         }
 
-        node.type = ((FuncType) node.callExpNode.type).retType.copy();
+        node.type = ((MxFuncType) node.callExpNode.type).retType.copy();
     }
 
     @Override
@@ -262,7 +262,7 @@ public class SemanticChecker implements ASTVisitor {
         assert node.superExpNode != null;
 
         // string & array all have builtin methods.
-        if (node.superExpNode.type.match(BaseType.BuiltinType.STRING)) {
+        if (node.superExpNode.type.match(MxBaseType.BuiltinType.STRING)) {
             if (StringBuiltinMethods.scope.funcTable.containsKey(node.memberName)) {
                 node.type = StringBuiltinMethods.scope.queryFunc(node.memberName).type.copy();
                 return;
@@ -279,7 +279,7 @@ public class SemanticChecker implements ASTVisitor {
         TypeMatcher.match(node);
 
         String className = ((VarType) node.superExpNode.type).className;
-        ClassRegistry classRegistry = stackManager.queryClass(className);
+        ClassRegistry classRegistry = infoManager.queryClass(className);
         if (classRegistry == null) {
             throw new NameError(node.codePos, NameError.undefined, className);
         }
@@ -296,7 +296,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(NewExpNode node) {
-        node.eachDimExpNodes.forEach(sonnode -> sonnode.accept(this));
+        node.eachDimLengthExpNodes.forEach(sonnode -> sonnode.accept(this));
 
         TypeMatcher.match(node);
 
@@ -335,15 +335,15 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(LambdaExpNode node) {
-        stackManager.push(node.funcRegistry.scope);
+        infoManager.push(node.funcRegistry.scope);
 
         // query class type
         for (VarRegistry registry : node.funcRegistry.funcArgs) {
-            if (registry.type.builtinType == BaseType.BuiltinType.CLASS &&
-                    stackManager.queryClass(registry.type.className) == null) {
+            if (registry.type.builtinType == MxBaseType.BuiltinType.CLASS &&
+                    infoManager.queryClass(registry.type.className) == null) {
                 throw new NameError(node.codePos, NameError.undefined, registry.type.className);
             }
-            stackManager.register(registry);
+            infoManager.register(registry);
         }
 
         assert node.suiteNode != null;
@@ -359,7 +359,7 @@ public class SemanticChecker implements ASTVisitor {
         }
 
         if (node.funcRegistry.scope.catchedRetTypeList.isEmpty()) { //no return statement
-            node.type = new VarType(BaseType.BuiltinType.VOID);
+            node.type = new VarType(MxBaseType.BuiltinType.VOID);
         }
         else {
             // check every return statement
@@ -374,25 +374,25 @@ public class SemanticChecker implements ASTVisitor {
             }
         }
 
-        stackManager.pop();
+        infoManager.pop();
     }
 
     @Override
     public void visit(AtomExpNode node) {
         if (node.ctx.IntegerConstant() != null) {
-            node.type = new VarType(BaseType.BuiltinType.INT);
+            node.type = new VarType(MxBaseType.BuiltinType.INT);
         }
         else if (node.ctx.StringConstant() != null) {
-            node.type = new VarType(BaseType.BuiltinType.STRING);
+            node.type = new VarType(MxBaseType.BuiltinType.STRING);
         }
         else if (node.ctx.TrueConstant() != null || node.ctx.FalseConstant() != null) {
-            node.type = new VarType(BaseType.BuiltinType.BOOL);
+            node.type = new VarType(MxBaseType.BuiltinType.BOOL);
         }
         else if (node.ctx.NullConstant() != null) {
-            node.type = new VarType(BaseType.BuiltinType.NULL);
+            node.type = new VarType(MxBaseType.BuiltinType.NULL);
         }
         else if (node.ctx.ThisPointer() != null) {
-            ClassRegistry nowClass = stackManager.getNowClass();
+            ClassRegistry nowClass = infoManager.getNowClass();
             if (nowClass == null) {
                 throw new ScopeError(node.codePos, ScopeError.wrongThis);
             }
@@ -400,8 +400,8 @@ public class SemanticChecker implements ASTVisitor {
         }
         else if (node.ctx.Identifier() != null) {
 
-            VarRegistry varRegistry = stackManager.queryVarInStack(node.ctx.Identifier().getText());
-            FuncRegistry funcRegistry = stackManager.queryFuncInStack(node.ctx.Identifier().getText());
+            VarRegistry varRegistry = infoManager.queryVarInStack(node.ctx.Identifier().getText());
+            FuncRegistry funcRegistry = infoManager.queryFuncInStack(node.ctx.Identifier().getText());
 
             if (varRegistry != null) {
                 node.type = varRegistry.type.copy();

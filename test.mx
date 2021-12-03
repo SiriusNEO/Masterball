@@ -1,11 +1,8 @@
-bool func(bool v) {
-    return v;
-}
-
 int main() {
-    int b;
-    bool a = (b < 1);
-    if (a) {
-        b = 2;
-    }
+  int b = 1;
+  if (true) {
+     b = 2;
+  }
+
+  return 0;
 }

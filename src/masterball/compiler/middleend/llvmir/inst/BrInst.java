@@ -40,4 +40,18 @@ public class BrInst extends BaseInst {
 
     @Override
     public boolean isTerminator() {return true;}
+
+    @Override
+    public String format() {
+        // br i1 %comparison_result, label %A, label %B
+        // br label %A
+        if (!this.isJump()) {
+            return LLVMTable.BrInst + " " + this.condition().type + " " + this.condition().identifier()
+                    + ", " + this.ifTrueBlock().typedIdentifier()
+                    + ", " + this.ifFalseBlock().typedIdentifier();
+        }
+        else {
+            return LLVMTable.BrInst + " " + this.destBlock().typedIdentifier();
+        }
+    }
 }

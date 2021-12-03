@@ -5,9 +5,10 @@ import masterball.compiler.middleend.llvmir.hierarchy.BasicBlock;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.utils.LLVMTable;
 
-public class BitCastInst extends BaseInst {
-    public BitCastInst(BaseValue fromValue, IRBaseType targetType, BasicBlock parentBlock) {
-        super(LLVMTable.BitCastInst, targetType, parentBlock);
+public class TruncInst extends BaseInst {
+
+    public TruncInst(BaseValue fromValue, IRBaseType targetType, BasicBlock parentBlock) {
+        super(LLVMTable.TruncInst, targetType, parentBlock);
         this.addOperand(fromValue);
     }
 
@@ -15,8 +16,8 @@ public class BitCastInst extends BaseInst {
 
     @Override
     public String format() {
-        // %bitcast = bitcast i8** %a to i8*;
-        return this.identifier() + " = " + LLVMTable.BitCastInst + " " + this.fromValue().typedIdentifier()
+        // %trunc = trunc i32 %a to i8;
+        return this.identifier() + " = " + LLVMTable.TruncInst + " " + this.fromValue().typedIdentifier()
                 + " to " + this.type;
     }
 }

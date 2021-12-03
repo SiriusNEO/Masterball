@@ -2,18 +2,18 @@ package masterball.compiler.middleend.llvmir.type;
 
 import java.util.ArrayList;
 
-public class FunctionType extends BaseType {
-    public BaseType retType;
-    public ArrayList<BaseType> argTypes;
+public class IRFuncType extends IRBaseType {
+    public IRBaseType retType;
+    public ArrayList<IRBaseType> argTypes;
 
     // init retType
-    public FunctionType(BaseType retType) {
+    public IRFuncType(IRBaseType retType) {
         this.retType = retType;
-        argTypes = new ArrayList<BaseType>();
+        argTypes = new ArrayList<IRBaseType>();
     }
 
     @Override
-    public boolean match(BaseType other) {
+    public boolean match(IRBaseType other) {
         return false;
     }
 

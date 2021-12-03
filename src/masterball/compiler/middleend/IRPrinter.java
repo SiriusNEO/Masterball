@@ -1,6 +1,8 @@
 package masterball.compiler.middleend;
 
 import masterball.compiler.middleend.IRFormatter;
+import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
+import masterball.compiler.middleend.llvmir.constant.StringConst;
 import masterball.compiler.middleend.llvmir.hierarchy.BasicBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.Function;
 import masterball.compiler.middleend.llvmir.hierarchy.Module;
@@ -40,6 +42,15 @@ public class IRPrinter {
         for (Function func : module.builtinFunctions) {
             System.out.println(IRFormatter.funcDeclFormat(func));
         }
+
+        for (GlobalVariable globalVar : module.globalVarSeg) {
+            System.out.println(IRFormatter.globalVarInitFormat(globalVar));
+        }
+
+        for (StringConst stringConst : module.stringConstSeg) {
+            System.out.println(IRFormatter.stringConstInitFormat(stringConst));
+        }
+
         System.out.print('\n');
         for (Function func : module.functions)
             printFunc(func);

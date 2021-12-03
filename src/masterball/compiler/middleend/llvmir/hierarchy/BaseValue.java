@@ -1,9 +1,7 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
-import masterball.compiler.middleend.llvmir.inst.BaseInst;
-import masterball.compiler.middleend.llvmir.type.BaseType;
+import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.utils.LLVMTable;
-import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,16 +30,16 @@ public class BaseValue {
         return rawName.substring(0, lastAddrSuffixIndex) + LLVMTable.ResolveSuffix;
     }
 
-    public BaseType type;
+    public IRBaseType type;
     public ArrayList<BaseUser> users = new ArrayList<BaseUser>();
     public String name;
 
-    public BaseValue(BaseType type) {
+    public BaseValue(IRBaseType type) {
         this.name = LLVMTable.TypeAnon;
         this.type = type;
     }
 
-    public BaseValue(String name, BaseType type) {
+    public BaseValue(String name, IRBaseType type) {
         this.name = rename(name);
         this.type = type;
     }

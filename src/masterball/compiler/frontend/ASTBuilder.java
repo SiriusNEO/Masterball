@@ -9,7 +9,7 @@ import masterball.compiler.utils.error.syntax.MainFuncError;
 import masterball.compiler.frontend.info.registry.ClassRegistry;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.registry.VarRegistry;
-import masterball.compiler.frontend.info.type.BaseType;
+import masterball.compiler.frontend.info.type.MxBaseType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.parser.MxStarBaseVisitor;
 import masterball.compiler.frontend.parser.MxStarParser;
@@ -26,36 +26,36 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
         RootNode ret = new RootNode(new CodePos(ctx));
 
         ret.scope.register(
-                new FuncRegistry("print", BaseType.BuiltinType.VOID,
-                        new VarRegistry("str", BaseType.BuiltinType.STRING))
+                new FuncRegistry("print", MxBaseType.BuiltinType.VOID,
+                        new VarRegistry("str", MxBaseType.BuiltinType.STRING))
         );
 
         ret.scope.register(
-                new FuncRegistry("println", BaseType.BuiltinType.VOID,
-                        new VarRegistry("str", BaseType.BuiltinType.STRING))
+                new FuncRegistry("println", MxBaseType.BuiltinType.VOID,
+                        new VarRegistry("str", MxBaseType.BuiltinType.STRING))
         );
 
         ret.scope.register(
-                new FuncRegistry("printInt", BaseType.BuiltinType.VOID,
-                        new VarRegistry("n", BaseType.BuiltinType.INT))
+                new FuncRegistry("printInt", MxBaseType.BuiltinType.VOID,
+                        new VarRegistry("n", MxBaseType.BuiltinType.INT))
         );
 
         ret.scope.register(
-                new FuncRegistry("printlnInt", BaseType.BuiltinType.VOID,
-                        new VarRegistry("n", BaseType.BuiltinType.INT))
+                new FuncRegistry("printlnInt", MxBaseType.BuiltinType.VOID,
+                        new VarRegistry("n", MxBaseType.BuiltinType.INT))
         );
 
         ret.scope.register(
-                new FuncRegistry("getString", BaseType.BuiltinType.STRING)
+                new FuncRegistry("getString", MxBaseType.BuiltinType.STRING)
         );
 
         ret.scope.register(
-                new FuncRegistry("getInt", BaseType.BuiltinType.INT)
+                new FuncRegistry("getInt", MxBaseType.BuiltinType.INT)
         );
 
         ret.scope.register(
-                new FuncRegistry("toString", BaseType.BuiltinType.STRING,
-                    new VarRegistry("i", BaseType.BuiltinType.INT))
+                new FuncRegistry("toString", MxBaseType.BuiltinType.STRING,
+                    new VarRegistry("i", MxBaseType.BuiltinType.INT))
         );
 
         boolean hasMainFunc = false;
@@ -329,7 +329,7 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
         NewExpNode ret =  new NewExpNode(new CodePos(ctx), new VarType(ctx));
         ctx.newExpSizeDeclaration().forEach(sonctx->{
             if (sonctx.expression() != null) {
-                ret.eachDimExpNodes.add((ExpBaseNode) visit(sonctx.expression()));
+                ret.eachDimLengthExpNodes.add((ExpBaseNode) visit(sonctx.expression()));
             }
         });
         return ret;

@@ -3,7 +3,7 @@ package masterball.compiler.frontend.ast.node.expnode;
 import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.info.type.BaseType;
+import masterball.compiler.frontend.info.type.MxBaseType;
 
 public class MemberExpNode extends ExpBaseNode {
     public ExpBaseNode superExpNode;
@@ -23,6 +23,6 @@ public class MemberExpNode extends ExpBaseNode {
 
     @Override
     public boolean isLeftValue() {
-        return !this.type.match(BaseType.BuiltinType.FUNC);
+        return !this.type.match(MxBaseType.BuiltinType.FUNC);
     }
 }
