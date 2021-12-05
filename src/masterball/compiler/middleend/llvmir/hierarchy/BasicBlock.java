@@ -29,4 +29,8 @@ public class BasicBlock extends BaseValue {
         instructions.addLast(inst);
         if (inst.isTerminator()) isTerminated = true;
     }
+
+    public void popInst() {
+        instructions.removeLast();
+    }
 }

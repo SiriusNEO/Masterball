@@ -1,6 +1,6 @@
 import os
 
-command = "java -jar Masterball.jar < {input_file} > {output_file}"
+command = "java -jar ../local/Masterball.jar < {input_file} > {output_file}"
 
 judge_list = open("testcases/sema/judgelist.txt").readlines()
 

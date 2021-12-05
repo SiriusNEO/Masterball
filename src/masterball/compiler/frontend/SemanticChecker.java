@@ -32,9 +32,12 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(ClassDefNode node) {
         infoManager.push(node.classRegistry); // update nowClass
-        if (node.constructorDefNode != null) visit(node.constructorDefNode);
+
+        assert node.constructorDefNode != null;
+        visit(node.constructorDefNode);
         node.varDefStmtNodes.forEach(sonnode -> sonnode.accept(this));
         node.funcDefNodes.forEach(sonnode -> sonnode.accept(this));
+
         infoManager.pop();
     }
 
@@ -76,16 +79,14 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(VarDefSingleNode node) {
         // from right to left, init first, register after
-        if (node.initExpNode != null) {
-            node.initExpNode.accept(this);
+        if (node.initExpNode != null) node.initExpNode.accept(this);
 
-            if (node.varRegistry.type.builtinType == MxBaseType.BuiltinType.CLASS &&
-               infoManager.queryClass(node.varRegistry.type.className) == null) {
-                throw new NameError(node.codePos, NameError.undefined, node.varRegistry.type.className);
-            }
-
-            TypeMatcher.match(node);
+        if (node.varRegistry.type.builtinType == MxBaseType.BuiltinType.CLASS &&
+                infoManager.queryClass(node.varRegistry.type.className) == null) {
+            throw new NameError(node.codePos, NameError.undefined, node.varRegistry.type.className);
         }
+
+        if (node.initExpNode != null) TypeMatcher.match(node);
 
         infoManager.register(node.varRegistry);
     }
@@ -269,10 +270,8 @@ public class SemanticChecker implements ASTVisitor {
             }
         }
 
-        if (((VarType) node.superExpNode.type).dimension > 0) {
-            if (ArrayBuiltinMethods.scope.funcTable.containsKey(node.memberName)) {
-                node.type = ArrayBuiltinMethods.scope.queryFunc(node.memberName).type.copy();
-            }
+        if (node.superExpNode.type.isArray() && ArrayBuiltinMethods.scope.funcTable.containsKey(node.memberName)) {
+            node.type = ArrayBuiltinMethods.scope.queryFunc(node.memberName).type.copy();
             return;
         }
 
@@ -280,18 +279,14 @@ public class SemanticChecker implements ASTVisitor {
 
         String className = ((VarType) node.superExpNode.type).className;
         ClassRegistry classRegistry = infoManager.queryClass(className);
-        if (classRegistry == null) {
-            throw new NameError(node.codePos, NameError.undefined, className);
-        }
-        if (classRegistry.scope.funcTable.containsKey(node.memberName)) {
+        if (classRegistry == null) throw new NameError(node.codePos, NameError.undefined, className);
+        if (classRegistry.scope.funcTable.containsKey(node.memberName))
             node.type = classRegistry.scope.queryFunc(node.memberName).type.copy();
-        }
-        else if (classRegistry.scope.varTable.containsKey(node.memberName)) {
+
+        else if (classRegistry.scope.varTable.containsKey(node.memberName))
             node.type = classRegistry.scope.queryVar(node.memberName).type.copy();
-        }
-        else {
-            throw new NameError(node.codePos, NameError.undefined, node.memberName);
-        }
+
+        else throw new NameError(node.codePos, NameError.undefined, node.memberName);
     }
 
     @Override

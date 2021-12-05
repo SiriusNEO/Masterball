@@ -1,25 +1,35 @@
 package masterball.compiler.middleend.llvmir.type;
 
+import masterball.compiler.middleend.llvmir.hierarchy.StructProto;
+import masterball.compiler.utils.LLVMTable;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class StructType extends IRBaseType {
-    public static String structName;
-    public ArrayList<IRBaseType> memberTypes = new ArrayList<>();
+    public final String structName;
+    public final StructProto structProto;
+    public ArrayList<IRBaseType> memberVarTypes = new ArrayList<>();
+
+    public StructType(String structName) {
+        this.structName = structName;
+        structProto = new StructProto(LLVMTable.StructPrefix + structName, this);
+    }
 
     @Override
     public boolean match(IRBaseType other) {
-        return false;
+        return other instanceof StructType && Objects.equals(structName, ((StructType) other).structName);
     }
 
     @Override
     public int size() {
         int ret = 0;
-        for (IRBaseType memberType : memberTypes) ret += memberType.size();
+        for (IRBaseType memberVarType : memberVarTypes) ret += memberVarType.size();
         return ret;
     }
 
     @Override
     public String toString() {
-        return "%struct." + structName;
+        return structProto.identifier();
     }
 }

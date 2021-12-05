@@ -116,9 +116,13 @@ PointerType, alloca a single PointerType and assign null at first.
 
 Different from Mx grammar (`.size()`), I use `length` to represent the number of elements and `size` to represent the bytes.
 
-
-
 ### Class
 
+Class is a Type in LLVM rather than Value. But for assigning a value to ClassRegistry, we use a `ClassProto` which is a Value
 
+In LLVM, `Structure Type` can be used to implement it.
+
+Declare first.
+
+Translator will translate MxStarClass to IRStructType*
 

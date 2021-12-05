@@ -8,7 +8,7 @@ import masterball.compiler.utils.LLVMTable;
 import java.util.ArrayList;
 
 public class Function extends GlobalValue {
-    public ArrayList<BasicBlock> blocks = new ArrayList<BasicBlock>();
+    public final ArrayList<BasicBlock> blocks = new ArrayList<BasicBlock>();
 
     public Function(String name, IRFuncType funcType) {
         // not init complete.

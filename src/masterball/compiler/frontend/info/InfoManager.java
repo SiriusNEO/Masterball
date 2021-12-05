@@ -31,8 +31,7 @@ public class InfoManager {
     }
 
     public ClassRegistry queryClass(String name) {
-        ClassRegistry ret = scopeStack.get(0).queryClass(name);
-        return ret;
+        return scopeStack.get(0).queryClass(name);
     }
 
     public FuncRegistry queryFuncInStack(String name) {

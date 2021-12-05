@@ -2,6 +2,8 @@
 
 a simple syntax-only highlight for MxStar language in IntelliJ IDEA.
 
+
+
 ### Usage
 
 run `name_gen.py` first.
@@ -37,7 +39,7 @@ all name are letters (a-z, A-Z). support:
 - builtin-function names
 - Var/Function Name: all lower case, name length in 1~3
 - Class Name: start with upper case, name length in 1~3
-- some frequently used names.
+- some frequently used names (words in GSL and self-added ones)
 
 
 

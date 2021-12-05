@@ -44,9 +44,14 @@ public class MxFuncType extends MxBaseType {
         return ret;
     }
 
+    @Override
+    public boolean isArray() {
+        return false;
+    }
+
     public String toString() {
         StringBuilder ret = new StringBuilder();
-        ret.append(retType).append(" args:");
+        ret.append("func, retType:").append(retType).append(" args:");
         for (int i = 0; i < funcArgsType.size(); ++i) {
             ret.append(funcArgsType.get(i).toString() + " ");
         }

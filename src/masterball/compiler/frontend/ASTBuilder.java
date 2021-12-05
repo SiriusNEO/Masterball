@@ -102,22 +102,35 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
                 throw new ClassDeclarationError(new CodePos(ctx), ClassDeclarationError.constructorWrongName);
             }
 
+            ret.classRegistry.memberFuncs.add(constructorDefNode.funcRegistry);
             ret.classRegistry.scope.register(constructorDefNode.funcRegistry);
             ret.constructorDefNode = constructorDefNode;
         });
 
+        if (ctx.classConstructorDef().size() == 0) {
+            FuncRegistry defaultConstructor = new FuncRegistry(ctx.Identifier().getText());
+            SuiteNode suiteNode = new SuiteNode(new CodePos(ctx));
+            ReturnStmtNode retNode = new ReturnStmtNode(new CodePos(ctx));
+            suiteNode.stmtNodes.add(retNode);
+            ret.classRegistry.memberFuncs.add(defaultConstructor);
+            ret.classRegistry.scope.register(defaultConstructor);
+            ret.constructorDefNode = new FuncDefNode(new CodePos(ctx), defaultConstructor, suiteNode);
+        }
+
         ctx.varDefStmt().forEach(sonctx -> {
             VarDefStmtNode varDefStmtNode = (VarDefStmtNode) visit(sonctx);
             varDefStmtNode.varDefSingleNodes.forEach(sonnode -> {
+               ret.classRegistry.memberVars.add(sonnode.varRegistry);
                ret.classRegistry.scope.register(sonnode.varRegistry);
             });
             ret.varDefStmtNodes.add(varDefStmtNode);
         });
 
         ctx.funcDef().forEach(sonctx -> {
-            FuncDefNode constructorDefNode = (FuncDefNode) visit(sonctx);
-            ret.classRegistry.scope.register(constructorDefNode.funcRegistry);
-            ret.funcDefNodes.add(constructorDefNode);
+            FuncDefNode funcDefNode = (FuncDefNode) visit(sonctx);
+            ret.classRegistry.memberFuncs.add(funcDefNode.funcRegistry);
+            ret.classRegistry.scope.register(funcDefNode.funcRegistry);
+            ret.funcDefNodes.add(funcDefNode);
         });
 
         return ret;

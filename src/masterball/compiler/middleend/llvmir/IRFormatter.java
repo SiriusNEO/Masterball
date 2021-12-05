@@ -1,11 +1,14 @@
-package masterball.compiler.middleend;
+package masterball.compiler.middleend.llvmir;
 
 import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.constant.StringConst;
 import masterball.compiler.middleend.llvmir.hierarchy.Function;
+import masterball.compiler.middleend.llvmir.hierarchy.StructProto;
 import masterball.compiler.middleend.llvmir.inst.*;
+import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
+import masterball.compiler.middleend.llvmir.type.StructType;
 
 // Formatter is a powerful tool in formatting one-line LLVM IR grammar
 // To link them up, please see @IRPrinter
@@ -18,7 +21,17 @@ public class IRFormatter {
     }
 
     public static String globalVarInitFormat(GlobalVariable globalVar) {
-        return globalVar.identifier() + " = global " + globalVar.type;
+        return globalVar.identifier() + " = global " + globalVar.pointedType() + " zeroinitializer, align " + globalVar.pointedType().size();
+    }
+
+    public static String classInitFormat(StructProto structProto) {
+        StringBuilder ret = new StringBuilder(structProto.identifier() + " = type {");
+        for (int i = 0; i < structProto.struct().memberVarTypes.size(); i++) {
+            ret.append(structProto.struct().memberVarTypes.get(i));
+            if (i != structProto.struct().memberVarTypes.size() - 1) ret.append(", ");
+        }
+        ret.append("}");
+        return ret.toString();
     }
 
     public static String funcDeclFormat(Function function) {

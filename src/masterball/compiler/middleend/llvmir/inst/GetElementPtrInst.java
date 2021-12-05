@@ -1,10 +1,7 @@
 package masterball.compiler.middleend.llvmir.inst;
 
-import masterball.compiler.middleend.IRTranslator;
-import masterball.compiler.middleend.llvmir.constant.IntConst;
 import masterball.compiler.middleend.llvmir.hierarchy.BaseValue;
 import masterball.compiler.middleend.llvmir.hierarchy.BasicBlock;
-import masterball.compiler.middleend.llvmir.type.ArrayType;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.utils.LLVMTable;
@@ -14,6 +11,12 @@ public class GetElementPtrInst extends BaseInst {
     // headPointer is the field (struct* or a pointer)
     // yieldType / retType is the type of the result
     // hint: move ptr: getelement type, type* ptr %a, i32 offset
+
+    public GetElementPtrInst(String elementName, BaseValue headPointer, IRBaseType yieldType , BasicBlock parentBlock, BaseValue... indices) {
+        super(addrRename(elementName), yieldType, parentBlock);
+        this.addOperand(headPointer);
+        for (BaseValue index : indices) this.addOperand(index);
+    }
 
     public GetElementPtrInst(BaseValue headPointer, IRBaseType yieldType , BasicBlock parentBlock, BaseValue... indices) {
         super(LLVMTable.GetElementPtrInst, yieldType, parentBlock);

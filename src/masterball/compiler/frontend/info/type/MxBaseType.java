@@ -11,6 +11,8 @@ public abstract class MxBaseType {
 
     public abstract MxBaseType copy();
 
+    public abstract boolean isArray();
+
     public MxBaseType(BuiltinType builtinType) {
         this.builtinType = builtinType;
     }

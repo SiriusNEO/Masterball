@@ -27,12 +27,15 @@ public class BaseValue {
 
     public static String resolveRename(String rawName) {
         int lastAddrSuffixIndex = rawName.lastIndexOf(LLVMTable.AddrSuffix);
+        if (lastAddrSuffixIndex < 0) return rawName + LLVMTable.ResolveSuffix;
         return rawName.substring(0, lastAddrSuffixIndex) + LLVMTable.ResolveSuffix;
     }
 
     public IRBaseType type;
     public ArrayList<BaseUser> users = new ArrayList<BaseUser>();
+    public BaseValue resolveFrom = null;
     public String name;
+    public String comment = null;
 
     public BaseValue(IRBaseType type) {
         this.name = LLVMTable.TypeAnon;
@@ -54,5 +57,10 @@ public class BaseValue {
 
     public String typedIdentifier() {
         return type + " " + identifier();
+    }
+
+    public String commentFormat() {
+        if (comment == null) return "";
+        return "; " + comment;
     }
 }

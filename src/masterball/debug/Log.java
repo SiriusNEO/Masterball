@@ -18,15 +18,19 @@ public class Log {
         Log.ps = ps;
     }
 
-
-
     public static void report(Object var) {
+        if (!isOpen) {
+            return;
+        }
         StringBuilder info = new StringBuilder("Log:[Report] ");
         info.append(var.toString());
         colorPrintln(ReportColor, info.toString());
     }
 
     public static void report(Object... vars) {
+        if (!isOpen) {
+            return;
+        }
         StringBuilder info = new StringBuilder("Log:[Report] ");
         for (Object var : vars) {
             info.append(var.toString());

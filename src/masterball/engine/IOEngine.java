@@ -8,34 +8,51 @@ import java.util.Objects;
 
 public class IOEngine {
 
-    public static final String redirectInput = "-i";
-    public static final String redirectOutput = "-o";
+    // Arguments
+    private static final String redirectInput = "-i";
+    private static final String redirectLogOutput = "-debug-o";
+    private static final String redirectASTOutput = "-ast-o";
+    private static final String redirectLLVMOutput = "-llvm-o";
+    private static final String semanticCheckOnly = "-fsyntax-only";
 
     public final InputStream is;
-    private final PrintStream os;
+
+    public final PrintStream logStream, astGenStream, irGenStream;
 
     public IOEngine(String[] args) throws Exception {
-        String inputPath = null, outputPath = null;
+
+        String inputPath = null, logOutputPath = null, astOutputPath = null, llvmOutputPath = null;
         for (int i = 0; i < args.length; i++) {
             if (Objects.equals(args[i], redirectInput)) {
                 if (i == args.length - 1) throw new FileNotFoundException();
                 inputPath = args[i + 1];
                 i ++;
             }
-            else if (Objects.equals(args[i], redirectOutput)) {
+            else if (Objects.equals(args[i], redirectLogOutput)) {
                 if (i == args.length - 1) throw new FileNotFoundException();
-                outputPath = args[i + 1];
+                logOutputPath = args[i + 1];
+                i ++;
+            }
+            else if (Objects.equals(args[i], redirectASTOutput)) {
+                if (i == args.length - 1) throw new FileNotFoundException();
+                astOutputPath = args[i + 1];
+                i ++;
+            }
+            else if (Objects.equals(args[i], redirectLLVMOutput)) {
+                if (i == args.length - 1) throw new FileNotFoundException();
+                llvmOutputPath = args[i + 1];
                 i ++;
             }
         }
+
         is = (inputPath != null) ? new FileInputStream(inputPath) : System.in;
-        os = (outputPath != null) ? new PrintStream(outputPath) : System.out;
+        logStream = (logOutputPath != null) ? new PrintStream(logOutputPath) : System.out;
+        astGenStream = (astOutputPath != null) ? new PrintStream(astOutputPath) : System.out;
+        irGenStream = (llvmOutputPath != null) ? new PrintStream(llvmOutputPath) : System.out;
+
+        Log.setPrintStream(logStream);
 
         Log.track("IOEngine started successfully.");
-        Log.report(new VarPair("is", is), new VarPair("os", os));
-    }
-
-    public void println(String s) {
-        os.println(s);
+        Log.report(new VarPair(redirectInput, is), new VarPair(redirectLLVMOutput, irGenStream));
     }
 }

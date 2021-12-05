@@ -1,11 +1,13 @@
-package masterball.compiler.middleend;
+package masterball.compiler.middleend.llvmir;
 
+import masterball.compiler.frontend.info.scope.GlobalScope;
 import masterball.compiler.frontend.info.type.MxBaseType;
 import masterball.compiler.frontend.info.type.MxFuncType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.middleend.llvmir.type.*;
 import masterball.compiler.utils.LLVMTable;
 import masterball.compiler.utils.MxStarTable;
+import masterball.debug.Log;
 
 import java.util.Objects;
 
@@ -16,7 +18,8 @@ public class IRTranslator {
             i32Type = new IntType(32),
             voidType = new VoidType(),
             nullType = new PointerType(voidType),
-            heapPointerType = new PointerType(new IntType(8));
+            heapPointerType = new PointerType(new IntType(8)),
+            i32PointerType = new PointerType(i32Type);
 
     public static String translateOp(String mxOp) {
         switch (mxOp) {
@@ -46,37 +49,54 @@ public class IRTranslator {
         return translateOp(mxOp);
     }
 
-    public static IRBaseType translateBuiltinType(MxBaseType.BuiltinType builtinType) {
+    // to translate types, you must instantiate a Translator to support translate CLASS
+    private GlobalScope globalScope;
+
+    public void setGlobalScope(GlobalScope globalScope) {this.globalScope = globalScope;}
+
+    public IRBaseType translateBuiltinType(MxBaseType mxType) {
         // TODO: not implemented completely yet
         IRBaseType ret;
-        switch (builtinType) {
+        switch (mxType.builtinType) {
             case INT: ret = i32Type; break;
             case BOOL: ret = boolType; break;
             case STRING: ret = stringType; break;
+            case CLASS: ret = new PointerType(globalScope.queryClass(((VarType) mxType).className).value.type); break;
             default: ret = voidType;
         }
         return ret;
     }
 
-    public static IRFuncType translateFuncType(MxFuncType funcType, IRBaseType methodFrom) {
+    public IRFuncType translateFuncType(MxFuncType funcType, IRBaseType methodFrom) {
         IRFuncType ret = new IRFuncType(translateVarType(funcType.retType));
 
-        if (methodFrom != null) ret.argTypes.add(new PointerType(methodFrom));
+        if (methodFrom != null) ret.argTypes.add(methodFrom);
 
         for (MxBaseType argType : funcType.funcArgsType)
             ret.argTypes.add(translateVarType(argType));
         return ret;
     }
 
-    public static IRBaseType translateVarType(MxBaseType mxType) {
+    public IRBaseType translateVarType(MxBaseType mxType) {
         IRBaseType ret;
 
         // VarType: (builtin type/class name), with dimension (array)
         assert mxType instanceof VarType;
 
-        ret = translateBuiltinType(mxType.builtinType);
+        ret = translateBuiltinType(mxType);
 
         // array: recursive pointer-wrapped
+        for (int i = 1; i <= ((VarType) mxType).dimension; i++)
+            ret = new PointerType(ret);
+
+        return ret;
+    }
+
+    public IRBaseType translateAllocaType(MxBaseType mxType) {
+        IRBaseType ret;
+        if (mxType.builtinType == MxBaseType.BuiltinType.BOOL)
+            ret = memBoolType;
+        else return translateVarType(mxType);
         for (int i = 1; i <= ((VarType) mxType).dimension; i++)
             ret = new PointerType(ret);
 

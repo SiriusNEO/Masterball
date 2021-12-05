@@ -1,20 +1,19 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
-import masterball.compiler.middleend.IRTranslator;
+import masterball.compiler.middleend.llvmir.IRTranslator;
 import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.constant.StringConst;
-import masterball.compiler.middleend.llvmir.type.*;
 import masterball.compiler.utils.LLVMTable;
 import masterball.compiler.utils.error.runtime.UnknownError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Module {
     public ArrayList<Function> functions = new ArrayList<>();
+    public ArrayList<Function> methods = new ArrayList<>();
     public ArrayList<Function> builtinFunctions = new ArrayList<>();
-    public ArrayList<StructType> classes = new ArrayList<>();
+    public ArrayList<StructProto> classes = new ArrayList<>();
 
     // static data segment
     public ArrayList<GlobalVariable> globalVarSeg = new ArrayList<>();

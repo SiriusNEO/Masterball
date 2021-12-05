@@ -1,6 +1,6 @@
 import os
 
-command = "java -jar Masterball.jar < {input_file} > {output_file}"
+command = "java -jar ../local/Masterball.jar < {input_file} > {output_file}"
 
 package_name = input("Please input the package name. (codeforces-package not support now) :")
 test_num = input("Please input the num of testcases: ")

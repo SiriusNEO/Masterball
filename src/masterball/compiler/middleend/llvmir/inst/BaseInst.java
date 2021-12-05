@@ -9,8 +9,12 @@ public class BaseInst extends BaseUser {
 
     public BaseInst(String name, IRBaseType type, BasicBlock parentBlock) {
         super(name, type);
+        setParentBlock(parentBlock);
+    }
+
+    public void setParentBlock(BasicBlock parentBlock) {
         this.parentBlock = parentBlock;
-        parentBlock.addInst(this);
+        if (parentBlock != null) parentBlock.addInst(this);
     }
 
     public String format() {return "";}

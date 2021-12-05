@@ -6,6 +6,16 @@
 
 
 
+## Mx*
+
+Mx* or MxStar is a language designed for this course.
+
+The grammar is defined in [AssignmentRequirement](doc/README.md)
+
+a simple syntax highlight for this language: see `hightlight/`
+
+
+
 ## Feature
 
 - `masterball.debug.Log` 
@@ -47,5 +57,6 @@ Now in: `IR`
 - [x] IR Design (LLVM IR)
 - [x] Type, Constant, Inst
 - [x] Skeleton, can generate my first IR
-- [ ] Type System
-- [ ] IR Builder (before MEM2REG)
+- [x] Type System
+- [x] IR Builder (before MEM2REG)
+- [ ] IR debug

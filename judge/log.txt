@@ -1,4 +1,0 @@
-Log:[Track] Tracking... IOEngine started successfully.
-Log:[Report] is: java.io.BufferedInputStream@3a71f4dd os: java.io.PrintStream@6ce253f1 
-Log:[Track] Tracking... ParseEngine started successfully.
-Log:[Track] Tracking... ASTBuilder started building...

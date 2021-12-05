@@ -66,6 +66,14 @@ public class VarType extends MxBaseType {
         dimension = ctx.newExpSizeDeclaration().size();
         className = notClass;
 
+        boolean isAllNull = (dimension > 0);
+
+        for (int i = 0; i < dimension; i++)
+            if (ctx.newExpSizeDeclaration(i).expression() != null)
+                isAllNull = false;
+
+        if (isAllNull) throw new ArrayDeclarationError(new CodePos(ctx), ArrayDeclarationError.leastOneSize);
+
         for (int i = 0; i < dimension-1; i++) {
             if (ctx.newExpSizeDeclaration(i).expression() == null &&
                 ctx.newExpSizeDeclaration(i+1).expression() != null) {
@@ -94,6 +102,11 @@ public class VarType extends MxBaseType {
         ret.dimension = dimension;
         ret.className = className;
         return ret;
+    }
+
+    @Override
+    public boolean isArray() {
+        return this.dimension > 0;
     }
 
     @Override

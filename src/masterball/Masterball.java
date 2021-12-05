@@ -6,6 +6,8 @@ import masterball.engine.IRGenEngine;
 import masterball.engine.ParseEngine;
 import masterball.engine.SemanticEngine;
 
+// Masterball main entry. GAMESTART.
+
 public class Masterball {
 
     public static void main(String[] args) throws Exception {
@@ -17,9 +19,9 @@ public class Masterball {
 
             ParseEngine parseEngine = new ParseEngine(ioEngine);
 
-            SemanticEngine semanticEngine = new SemanticEngine(parseEngine, false);
+            SemanticEngine semanticEngine = new SemanticEngine(parseEngine, ioEngine.astGenStream);
 
-            // IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, false, true);
+            IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, true, ioEngine.irGenStream);
         }
         catch (Exception e) {
             if (e instanceof BaseError) {

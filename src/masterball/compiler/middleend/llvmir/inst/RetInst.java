@@ -1,18 +1,19 @@
 package masterball.compiler.middleend.llvmir.inst;
 
 import masterball.compiler.middleend.llvmir.hierarchy.BaseValue;
+import masterball.compiler.middleend.llvmir.hierarchy.BasicBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.Function;
 import masterball.compiler.middleend.llvmir.type.VoidType;
 import masterball.compiler.utils.LLVMTable;
 
 public class RetInst extends BaseInst {
 
-    public RetInst(Function parentFunc) {
-        super(LLVMTable.RetInst, new VoidType(), parentFunc.exitBlock());
+    public RetInst(BasicBlock parentBlock) {
+        super(LLVMTable.RetInst, new VoidType(), parentBlock);
     }
 
-    public RetInst(BaseValue retVal, Function parentFunc) {
-        super(LLVMTable.RetInst, retVal.type, parentFunc.exitBlock());
+    public RetInst(BaseValue retVal, BasicBlock parentBlock) {
+        super(LLVMTable.RetInst, retVal.type, parentBlock);
         this.addOperand(retVal);
     }
 

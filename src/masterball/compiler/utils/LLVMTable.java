@@ -5,33 +5,44 @@ public class LLVMTable {
     public static int PointerSize = 4;
 
     // default reg & label
-    public static final String TempAnon = "anon.temp";
     public static final String TypeAnon = "anon.type";
     public static final String ConstAnon = "anon.const";
     public static final String StrConstAnon = "anon.strconst";
     // public static final String InstVirualRegAnon = "__inst_";
 
-    public static final String Spliter = ".";
+    public static final String ThisArg = "this";
+    public static final String RetReg = "retreg";
 
-    public static final String InitFuncName = "glb" + Spliter + "init";
+    public static final String Spliter = ".";
+    public static final String FuncNameSpliter = "_";
+
+    public static final String InitFuncName = FuncNameSpliter + "glb" + FuncNameSpliter + "init";
 
     // prefix
-    public static final String StrFuncPrefix = "str" + Spliter;
-    public static final String BottomPrefix = "bot" + Spliter;
-    public static final String BottomStrFuncPrefix = "bot" + Spliter + StrFuncPrefix;
+    public static final String StrMethodPrefix = FuncNameSpliter + "str" + FuncNameSpliter;
+    public static final String BottomPrefix = FuncNameSpliter + "bot" + FuncNameSpliter;
+    public static final String BottomStrFuncPrefix = FuncNameSpliter + "bot" + StrMethodPrefix;
+
+    public static final String StructPrefix = "class" + Spliter;
 
     public static final String EntryBlockLabel = "entry";
     public static final String ExitBlockLabel = "exit";
+
     public static final String IfTrueBlockLabel = "if" + Spliter + "true";
     public static final String IfFalseBlockLabel = "if" + Spliter + "false";
     public static final String IfExitBlockLabel = "if" + Spliter + "exit";
+
     public static final String ForCondBlockLabel = "for" + Spliter + "cond";
     public static final String ForIncrBlockLabel = "for" + Spliter + "incr";
     public static final String ForBodyBlockLabel = "for" + Spliter + "body";
     public static final String ForExitBlockLabel = "for" + Spliter + "exit";
+
     public static final String WhCondBlockLabel = "wh" + Spliter + "cond";
     public static final String WhBodyBlockLabel = "wh" + Spliter + "body";
     public static final String WhExitBlockLabel = "wh" + Spliter + "exit";
+
+    public static final String LogicNoCutBlockLabel = "lg" + Spliter + "nocut";
+    public static final String LogicExitBlockLabel = "lg" + Spliter + "exit";
 
     // LLVM inst
     public static final String AllocaInst = "alloca";
@@ -49,6 +60,7 @@ public class LLVMTable {
 
     // virtual reg suffix
     public static final String AddrSuffix = Spliter + "addr";
+    public static final String ArrayElementSuffix = Spliter + "elem";
     public static final String CallSuffix = Spliter + CallInst;
     public static final String ResolveSuffix = Spliter + LoadInst;
 
@@ -70,7 +82,7 @@ public class LLVMTable {
     public static final String LessArg = "slt";
     public static final String LessEqualArg = "sle";
     public static final String EqualArg = "eq";
-    public static final String NotEqualArg = "neq";
+    public static final String NotEqualArg = "ne";
 
     // str
     public static final String StrCatArg = "cat";

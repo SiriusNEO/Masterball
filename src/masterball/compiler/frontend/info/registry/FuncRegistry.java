@@ -15,6 +15,20 @@ public class FuncRegistry extends BaseRegistry {
     public ArrayList<VarRegistry> funcArgs;
     public boolean isBuiltin;
 
+    // default func
+    public FuncRegistry(String name) {
+        super(name);
+
+        this.scope = new FuncScope();
+        this.type = new MxFuncType();
+        this.isBuiltin = false;
+
+        type.retType = new VarType(MxBaseType.BuiltinType.VOID);
+        type.funcArgsType = new ArrayList<>();
+
+        funcArgs = new ArrayList<>();
+    }
+
     // builtin function
     public FuncRegistry(String name, MxBaseType.BuiltinType retType, VarRegistry... args) {
         super(name);

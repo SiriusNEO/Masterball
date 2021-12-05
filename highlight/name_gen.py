@@ -79,32 +79,25 @@ frequently_used_name = [
     "index",
     "book",
     "python",
-    "ticket",
-    "list",
-    "wrong",
-    "entry",
-    "door",
-    "water",
-    "bird",
-    "fuck",
     "yield",
     "field",
     "application",
     "register",
     "clang",
-    "rust",
-    "pear",
-    "bear",
-    "honey",
+    "llvm",
+    "mxstar",
+    "compiler",
     "haha",
     "papa",
-    "rabbit",
-    "china"
+    "john",
+    "tomasulo"
 ]
 
 upper_letter_set = range(ord("A"), ord("Z")+1)
 lower_letter_set = range(ord("a"), ord("z")+1)
 
+fp1 = open("GSL_upper.txt", "r")
+fp2 = open("GSL_lower.txt", "r")
 
 def keyword_check(name: str):
     for keyword in keyword_list:
@@ -129,7 +122,10 @@ for start in range(ord("A"), ord("Z")+1):
             output = ""
             for i in range(len(per)):
                 output += chr(per[i])
-            fp.write(chr(start) + output + "\n")            
+            fp.write(chr(start) + output + "\n")
+for line in fp1.readlines():
+    fp.write(line)
+
 fp.close()
 
 fp = open("Keyword4.txt", "w")
@@ -139,7 +135,13 @@ for j in range(1, 4):
         for i in range(len(per)):
             output += chr(per[i])
         fp.write(output + "\n")
+for name in builtin_func_list:
+    fp.write(name + "\n")
 for name in frequently_used_name:
-    fp.write(name + "\n")    
+    fp.write(name + "\n")
+for line in fp2.readlines():
+    fp.write(line)        
 fp.close()
+fp1.close()
+fp2.close()
 

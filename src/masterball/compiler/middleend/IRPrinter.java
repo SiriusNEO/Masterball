@@ -1,14 +1,15 @@
 package masterball.compiler.middleend;
 
-import masterball.compiler.middleend.IRFormatter;
+import masterball.compiler.middleend.llvmir.IRFormatter;
 import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.constant.StringConst;
-import masterball.compiler.middleend.llvmir.hierarchy.BasicBlock;
-import masterball.compiler.middleend.llvmir.hierarchy.Function;
+import masterball.compiler.middleend.llvmir.hierarchy.*;
 import masterball.compiler.middleend.llvmir.hierarchy.Module;
-import masterball.compiler.middleend.llvmir.hierarchy.TargetInfo;
 import masterball.compiler.middleend.llvmir.inst.BaseInst;
 import masterball.debug.Log;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 public class IRPrinter {
 
@@ -16,42 +17,68 @@ public class IRPrinter {
 
     // based on hierarchy
 
-    public static void printFunc(Function function) {
-        System.out.println(IRFormatter.funcDefFormat(function) + " {");
+    private final PrintStream ps;
+
+    public IRPrinter() {
+        this.ps = System.out;
+    }
+
+    public IRPrinter(PrintStream ps) {
+        this.ps = ps;
+    }
+
+    public void printFunc(Function function) {
+        ps.println(IRFormatter.funcDefFormat(function) + " {");
         printBlock(function.entryBlock());
+        ps.print("\n");
         for (int i = 2; i < function.blocks.size(); i++) {
             printBlock(function.blocks.get(i));
+            ps.print("\n");
         }
         printBlock(function.exitBlock());
-        System.out.println("}\n");
+        ps.println("}\n");
     }
 
-    public static void printBlock(BasicBlock block) {
-        System.out.println(block.name + ":");
+    public void printBlock(BasicBlock block) {
+        ps.println(block.name + ":");
         for (BaseInst inst : block.instructions) {
-            System.out.println(INDENT + IRFormatter.instFormat(inst));
+            ps.println(INDENT + IRFormatter.instFormat(inst));
         }
     }
 
-    public static void printModule(Module module) {
+    public void printModule(Module module) {
         Log.report("IR Printer Start Sucess");
 
-        System.out.println(TargetInfo.dataLayout);
-        System.out.println(TargetInfo.triple + "\n");
+        ps.println(TargetInfo.dataLayout);
+        ps.println(TargetInfo.triple + "\n");
 
         for (Function func : module.builtinFunctions) {
-            System.out.println(IRFormatter.funcDeclFormat(func));
+            ps.println(IRFormatter.funcDeclFormat(func));
         }
+
+        ps.print('\n');
 
         for (GlobalVariable globalVar : module.globalVarSeg) {
-            System.out.println(IRFormatter.globalVarInitFormat(globalVar));
+            ps.println(IRFormatter.globalVarInitFormat(globalVar));
         }
+
+        if (module.globalVarSeg.size() > 0) ps.print('\n');
 
         for (StringConst stringConst : module.stringConstSeg) {
-            System.out.println(IRFormatter.stringConstInitFormat(stringConst));
+            ps.println(IRFormatter.stringConstInitFormat(stringConst));
         }
 
-        System.out.print('\n');
+        if (module.stringConstSeg.size() > 0) ps.print('\n');
+
+        for (StructProto structProto : module.classes) {
+            ps.println(IRFormatter.classInitFormat(structProto));
+        }
+
+        if (module.classes.size() > 0) ps.print('\n');
+
+        for (Function method : module.methods)
+            printFunc(method);
+
         for (Function func : module.functions)
             printFunc(func);
     }
