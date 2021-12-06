@@ -39,9 +39,11 @@ Click the following links to read the project design.
 
 ## TO DO
 
-Now in: `IR`
+Now in: `ASM`
 
-### Semantic
+
+
+### FrontEnd (Semantic Check)
 
 - [x] .g4
 - [x] AST Design
@@ -52,11 +54,29 @@ Now in: `IR`
 
 
 
-### IR Builder
+### MiddleEnd (IR Builder)
 
 - [x] IR Design (LLVM IR)
-- [x] Type, Constant, Inst
+- [x] Type, Constant, Inst, Hierarchy
 - [x] Skeleton, can generate my first IR
 - [x] Type System
 - [x] IR Builder (before MEM2REG)
 - [x] IR debug (use clang-llvm tools)
+
+
+
+### BackEnd (ASM)
+
+- [ ] ASM Design (RISCV-32I)
+- [ ] Inst, Operand, Hierarchy
+- [ ] RegisterAlloca (GraphColoring)
+- [ ] ASMBuilder
+
+
+
+### MiddleEnd (Optimizer)
+
+Hope I will have time.
+
+
+
