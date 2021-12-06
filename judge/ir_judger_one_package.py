@@ -3,14 +3,16 @@ import time
 
 command = "cp {code_file} ../local/test.mx && cp input.txt ../local/input.txt && cd ../local/ && ./llvmrun.bash < {input_file} > {output_file} && cp output.txt ../judge/output.txt && cd ../judge/"
 
-judge_list = open("testcases/codegen/judgelist.txt").readlines()
+package = input("Please input the package name: ")
+package_path = "testcases/" + package + "/";
+dirs = os.listdir(package_path)
 
 cnt = 0
 
-for judge in judge_list:
+for judge in dirs:
     cnt += 1
     
-    code_file = judge.replace("\n", "").replace("./", "testcases/codegen/")
+    code_file = package_path + judge
     input_file = "input.txt"
     output_file = "output.txt"
     std_file = "std.txt"
@@ -53,6 +55,6 @@ for judge in judge_list:
     else:
         print("\033[31m[Failed] [test]: in {testpoint} \033[0m".format(testpoint = code_file + ", point " + str(cnt)))
         print("[info]: ", info)
-        exit(-1)
+        # exit(-1)
     
     time.sleep(1)

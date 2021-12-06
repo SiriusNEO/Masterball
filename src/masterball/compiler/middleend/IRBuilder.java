@@ -25,6 +25,7 @@ import masterball.compiler.utils.LLVMTable;
 import masterball.compiler.utils.MxStarTable;
 import masterball.compiler.utils.error.runtime.UnimplementedError;
 import masterball.compiler.utils.error.runtime.UnknownError;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -144,11 +145,10 @@ public class IRBuilder implements ASTVisitor {
 
         // step 1. malloc this dim.
         // size calculation using (curDimLength+1) * elementTypeSize (metadata)
-        BaseValue curDimSize = new BinaryInst(LLVMTable.MulInst,
-                               eachDimLengths.get(curDim),
-                               new IntConst(elementType.size()), cur.block);
-        BaseValue mallocSize = new BinaryInst(LLVMTable.AddInst, curDimSize, new IntConst(IRTranslator.i32Type.size()), cur.block);
-        BaseValue mallocPtr = new CallInst(module.getMalloc(), cur.block, mallocSize);
+        BaseValue curDimSize = new BinaryInst(LLVMTable.MulInst, IRTranslator.i32Type,
+                                eachDimLengths.get(curDim), new IntConst(elementType.size()), cur.block);
+        BaseValue mallocSize = new BinaryInst(LLVMTable.AddInst, IRTranslator.i32Type, curDimSize, new IntConst(IRTranslator.i32Type.size()), cur.block);
+        BaseValue mallocPtr = new CallInst(module.getMalloc(), cur.block, mallocSize).noalias();
 
         // step 2. store length at the head of the array
         BaseValue lengthDestPtr = new BitCastInst(mallocPtr, IRTranslator.i32PointerType, cur.block);
@@ -186,7 +186,7 @@ public class IRBuilder implements ASTVisitor {
     }
 
     private BaseValue classMalloc(StructType classType) {
-        BaseValue mallocPtr = new CallInst(module.getMalloc(), cur.block, new IntConst(classType.size()));
+        BaseValue mallocPtr = new CallInst(module.getMalloc(), cur.block, new IntConst(classType.size())).noalias();
         return new BitCastInst(mallocPtr, new PointerType(classType), cur.block);
     }
 
@@ -223,6 +223,8 @@ public class IRBuilder implements ASTVisitor {
 
         cur.classRegistry = node.classRegistry;
 
+        node.varDefStmtNodes.forEach(sonnode -> sonnode.accept(this));
+
         assert node.constructorDefNode != null;
         node.constructorDefNode.accept(this);
 
@@ -252,7 +254,7 @@ public class IRBuilder implements ASTVisitor {
             // call init
             new CallInst((Function) infoManager.queryFuncInStack(LLVMTable.InitFuncName).value,
                     cur.block, new ArrayList<>());
-            new StoreInst(cur.retValPtr, new IntConst(0), cur.block);
+            memStore(cur.retValPtr, new IntConst(0));
         }
 
         for (int i = 0; i < cur.func.getArgNum(); i++) {
@@ -290,7 +292,7 @@ public class IRBuilder implements ASTVisitor {
         // global variable
         if (Objects.equals(cur.func.name, LLVMTable.InitFuncName)) {
            allocaPtr = new GlobalVariable(node.varRegistry.name,
-                       translator.translateVarType(node.varRegistry.type));
+                       translator.translateAllocaType(node.varRegistry.type));
            module.globalVarSeg.add((GlobalVariable) allocaPtr);
         } else {
             allocaPtr = new AllocaInst(node.varRegistry.name, translator.translateAllocaType(node.varRegistry.type), cur.block);
@@ -389,10 +391,12 @@ public class IRBuilder implements ASTVisitor {
         node.initVarDefSingleNodes.forEach(sonnode -> sonnode.accept(this));
         new BrInst(condBlock, cur.block);
 
+        cur.block = condBlock;
         if (node.conditionExpNode != null) {
-            cur.block = condBlock;
             node.conditionExpNode.accept(this);
             new BrInst(node.conditionExpNode.value, bodyBlock, exitBlock, cur.block);
+        } else {
+            new BrInst(bodyBlock, cur.block);
         }
 
         cur.block = incrBlock;
@@ -415,7 +419,7 @@ public class IRBuilder implements ASTVisitor {
     public void visit(ReturnStmtNode node) {
         if (node.retExpNode != null && !node.retExpNode.type.match(MxBaseType.BuiltinType.VOID)) {
             node.retExpNode.accept(this);
-            new StoreInst(cur.retValPtr, node.retExpNode.value, cur.block);
+            memStore(cur.retValPtr, node.retExpNode.value);
         }
         new BrInst(cur.func.exitBlock(), cur.block);
     }
@@ -479,6 +483,7 @@ public class IRBuilder implements ASTVisitor {
             } else if (Objects.equals(node.opType, MxStarTable.arithOpType)) {
                 node.value = new BinaryInst(
                         IRTranslator.translateOp(node.op),
+                        IRTranslator.i32Type,
                         node.lhsExpNode.value,
                         node.rhsExpNode.value,
                         cur.block
@@ -501,8 +506,16 @@ public class IRBuilder implements ASTVisitor {
 
         ArrayList<BaseValue> argsValue = new ArrayList<>();
 
-        if (node.callExpNode instanceof MemberExpNode)
-            argsValue.add(((MemberExpNode) node.callExpNode).superExpNode.value); // this
+        // this
+        if (((IRFuncType) node.callExpNode.value.type).methodFrom != null) {
+            if (node.callExpNode instanceof MemberExpNode) {
+                argsValue.add(((MemberExpNode) node.callExpNode).superExpNode.value);
+            }
+            else {
+                assert cur.classRegistry != null;
+                argsValue.add(cur.getThis());
+            }
+        }
 
         for (int i = 0; i < node.callArgExpNodes.size(); i++) {
             node.callArgExpNodes.get(i).accept(this);
@@ -577,10 +590,10 @@ public class IRBuilder implements ASTVisitor {
         BaseValue calculated = null, storePtr = node.selfExpNode.value.resolveFrom;
         switch (node.op) {
             case MxStarTable.IncrementOp:
-                calculated = new BinaryInst(LLVMTable.AddInst, node.selfExpNode.value, new IntConst(1), cur.block);
+                calculated = new BinaryInst(LLVMTable.AddInst, IRTranslator.i32Type,  node.selfExpNode.value, new IntConst(1), cur.block);
                 break;
             case MxStarTable.DecrementOp:
-                calculated = new BinaryInst(LLVMTable.SubInst, node.selfExpNode.value, new IntConst(1), cur.block);
+                calculated = new BinaryInst(LLVMTable.SubInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(1), cur.block);
                 break;
         }
         memStore(storePtr, calculated);
@@ -593,9 +606,9 @@ public class IRBuilder implements ASTVisitor {
         BaseValue calculated = null, storePtr = node.selfExpNode.value.resolveFrom;
         switch (node.op) {
             case MxStarTable.IncrementOp:
-                calculated = new BinaryInst(LLVMTable.AddInst, node.selfExpNode.value, new IntConst(1), cur.block);break;
+                calculated = new BinaryInst(LLVMTable.AddInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(1), cur.block);break;
             case MxStarTable.DecrementOp:
-                calculated = new BinaryInst(LLVMTable.SubInst, node.selfExpNode.value, new IntConst(1), cur.block);break;
+                calculated = new BinaryInst(LLVMTable.SubInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(1), cur.block);break;
             default: throw new UnknownError(node.codePos, node);
         }
         memStore(storePtr, calculated);
@@ -609,11 +622,11 @@ public class IRBuilder implements ASTVisitor {
             case MxStarTable.AddOp:
                 node.value = node.selfExpNode.value;break;
             case MxStarTable.SubOp:
-                node.value = new BinaryInst(LLVMTable.SubInst, new IntConst(0), node.selfExpNode.value, cur.block);break;
+                node.value = new BinaryInst(LLVMTable.SubInst, IRTranslator.i32Type ,new IntConst(0), node.selfExpNode.value, cur.block);break;
             case MxStarTable.LogicNotOp:
-                node.value = new BinaryInst(LLVMTable.XorInst, node.selfExpNode.value, new BoolConst(true), cur.block);break;
+                node.value = new BinaryInst(LLVMTable.XorInst, IRTranslator.boolType, node.selfExpNode.value, new BoolConst(true), cur.block);break;
             case MxStarTable.BitNotOp:
-                node.value = new BinaryInst(LLVMTable.XorInst, node.selfExpNode.value, new IntConst(-1), cur.block);break;
+                node.value = new BinaryInst(LLVMTable.XorInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(-1), cur.block);break;
             default: throw new UnknownError(node.codePos, node);
         }
     }
@@ -641,9 +654,11 @@ public class IRBuilder implements ASTVisitor {
         else if (node.ctx.Identifier() != null) {
             if (node.type instanceof VarType) {
                 BaseValue varAddr;
-                VarRegistry varRegistry = infoManager.queryVarInStack(node.ctx.Identifier().getText());
+                boolean[] isMember = {false};
+                VarRegistry varRegistry = infoManager.queryVarWithValue(node.ctx.Identifier().getText(), isMember);
                 int memberIndex = -1;
-                if (cur.classRegistry != null) memberIndex = cur.classRegistry.getMemberVarIndex(varRegistry.name);
+                if (cur.classRegistry != null && isMember[0])
+                    memberIndex = cur.classRegistry.getMemberVarIndex(varRegistry.name);
                 if (memberIndex >= 0) {
                     // member in class scope
                     varAddr = new GetElementPtrInst(varRegistry.name, cur.getThis(),
@@ -655,6 +670,10 @@ public class IRBuilder implements ASTVisitor {
                 }
                 // variable resolve
                 node.value = memLoad(varAddr, cur.block);
+                Log.mark();
+                Log.report(varRegistry.name);
+                Log.report(node.codePos);
+                Log.report(varAddr.type);
             }
             else if (node.type instanceof MxFuncType) {
                 node.value = infoManager.queryFuncInStack(node.ctx.Identifier().getText()).value;

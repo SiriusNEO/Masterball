@@ -23,7 +23,7 @@ public class Function extends GlobalValue {
 
     // bottom function decl
     public Function(String name, IRBaseType retType, IRBaseType... argTypes) {
-        super(name, new IRFuncType(retType));
+        super(name, new IRFuncType(retType, null));
         for (IRBaseType argType : argTypes) ((IRFuncType) this.type).argTypes.add(argType);
     }
 
@@ -32,7 +32,10 @@ public class Function extends GlobalValue {
     }
 
     public int getArgNum() {return ((IRFuncType) this.type).argTypes.size();}
-    public BaseValue getArg(int index) {return this.getOperand(index);}
+
+    public IRBaseType getArgType(int index) {
+        return ((IRFuncType) this.type).argTypes.get(index);
+    }
 
     public BasicBlock entryBlock() {return blocks.get(0);}
     public BasicBlock exitBlock() {return blocks.get(1);}

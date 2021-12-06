@@ -2,7 +2,7 @@ package masterball.compiler.utils;
 
 public class LLVMTable {
     // compile environment
-    public static int PointerSize = 4;
+    public static final int PointerSize = 8;
 
     // default reg & label
     public static final String TypeAnon = "anon.type";

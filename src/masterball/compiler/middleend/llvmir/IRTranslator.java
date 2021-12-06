@@ -17,8 +17,8 @@ public class IRTranslator {
             memBoolType = new MemBoolType(),
             i32Type = new IntType(32),
             voidType = new VoidType(),
-            nullType = new PointerType(voidType),
             heapPointerType = new PointerType(new IntType(8)),
+            nullType = heapPointerType,
             i32PointerType = new PointerType(i32Type);
 
     public static String translateOp(String mxOp) {
@@ -68,7 +68,7 @@ public class IRTranslator {
     }
 
     public IRFuncType translateFuncType(MxFuncType funcType, IRBaseType methodFrom) {
-        IRFuncType ret = new IRFuncType(translateVarType(funcType.retType));
+        IRFuncType ret = new IRFuncType(translateVarType(funcType.retType), methodFrom);
 
         if (methodFrom != null) ret.argTypes.add(methodFrom);
 

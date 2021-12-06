@@ -38,7 +38,7 @@ public class IRFormatter {
         // declare void @print(i8*)
         StringBuilder ret = new StringBuilder("declare " + function.typedIdentifier() + "(");
         for (int i = 0; i < ((IRFuncType) function.type).argTypes.size(); i++) {
-            ret.append(((IRFuncType) function.type).argTypes.get(i));
+            ret.append(function.getArgType(i));
             if (i != ((IRFuncType) function.type).argTypes.size() - 1) ret.append(", ");
         }
         ret.append(")");

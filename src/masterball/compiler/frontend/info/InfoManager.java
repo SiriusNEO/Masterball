@@ -30,6 +30,20 @@ public class InfoManager {
         return ret;
     }
 
+    // in IR, a variable is reachable if and only if it has value.
+    public VarRegistry queryVarWithValue(String name, boolean[] isMember) {
+        VarRegistry ret = null;
+        isMember[0] = false;
+        for (int i = scopeStack.size() - 1; i >= 0; i--) {
+            ret = scopeStack.get(i).queryVar(name);
+            if (ret != null && ret.value != null) {
+                if (scopeStack.get(i) instanceof ClassScope) isMember[0] = true;
+                break;
+            }
+        }
+        return ret;
+    }
+
     public ClassRegistry queryClass(String name) {
         return scopeStack.get(0).queryClass(name);
     }

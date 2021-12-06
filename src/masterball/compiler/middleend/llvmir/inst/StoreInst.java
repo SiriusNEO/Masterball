@@ -19,13 +19,13 @@ public class StoreInst extends BaseInst {
 
     @Override
     public String format() {
-        // store i32 %1, i32* %i
+        // store i32 %1, i32* %i, align 4
         // nullptr has the same type with destPtr.pointedType
         if (this.storeValue() instanceof NullptrConst) {
             return LLVMTable.StoreInst + " " + ((PointerType) this.destPtr().type).pointedType + " " +
-                    this.storeValue().identifier() + ", " + this.destPtr().typedIdentifier();
+                    this.storeValue().identifier() + ", " + this.destPtr().typedIdentifier() + ", align " + this.type.size();
         }
 
-        return LLVMTable.StoreInst + " " + this.storeValue().typedIdentifier() + ", " + this.destPtr().typedIdentifier();
+        return LLVMTable.StoreInst + " " + this.storeValue().typedIdentifier() + ", " + this.destPtr().typedIdentifier() + ", align " + this.type.size();
     }
 }

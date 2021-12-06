@@ -2,7 +2,7 @@
 
 <img src="asset/masterball.png" style="zoom:100%;" />Masterball, an elaborate Mx* Compiler.
 
-![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success) 
+![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success)   ![](https://img.shields.io/badge/LLVM_IR-passed-success) 
 
 
 
@@ -59,4 +59,4 @@ Now in: `IR`
 - [x] Skeleton, can generate my first IR
 - [x] Type System
 - [x] IR Builder (before MEM2REG)
-- [ ] IR debug
+- [x] IR debug (use clang-llvm tools)

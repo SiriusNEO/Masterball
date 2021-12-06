@@ -1,15 +1,17 @@
 package masterball.compiler.middleend.llvmir.inst;
 
+import masterball.compiler.middleend.llvmir.IRTranslator;
 import masterball.compiler.middleend.llvmir.hierarchy.BasicBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.BaseValue;
+import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.IntType;
 import masterball.compiler.utils.LLVMTable;
 
 public class BinaryInst extends BaseInst {
     public String op;
 
-    public BinaryInst(String op, BaseValue lhs, BaseValue rhs, BasicBlock parentBlock) {
-        super(op, new IntType(), parentBlock);
+    public BinaryInst(String op, IRBaseType retType, BaseValue lhs, BaseValue rhs, BasicBlock parentBlock) {
+        super(op, retType, parentBlock);
         this.op = op;
         this.addOperand(lhs);
         this.addOperand(rhs);

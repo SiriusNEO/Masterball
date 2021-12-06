@@ -128,6 +128,7 @@ public class ASTBuilder extends MxStarBaseVisitor<BaseNode> {
 
         ctx.funcDef().forEach(sonctx -> {
             FuncDefNode funcDefNode = (FuncDefNode) visit(sonctx);
+
             ret.classRegistry.memberFuncs.add(funcDefNode.funcRegistry);
             ret.classRegistry.scope.register(funcDefNode.funcRegistry);
             ret.funcDefNodes.add(funcDefNode);

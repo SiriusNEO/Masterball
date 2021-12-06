@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 public class ClassScope extends BaseScope {
 
-    public HashMap<String, VarRegistry> varTable;
     public HashMap<String, FuncRegistry> funcTable;
     public ArrayList<FuncRegistry> builtinFuncList;
 

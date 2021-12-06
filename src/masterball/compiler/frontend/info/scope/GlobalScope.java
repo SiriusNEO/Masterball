@@ -14,7 +14,6 @@ public class GlobalScope extends BaseScope {
 
     public HashMap<String, ClassRegistry> classTable;
     public HashMap<String, FuncRegistry> funcTable;
-    public HashMap<String, VarRegistry> varTable;
     public ArrayList<FuncRegistry> builtinFuncList;
 
     public GlobalScope() {

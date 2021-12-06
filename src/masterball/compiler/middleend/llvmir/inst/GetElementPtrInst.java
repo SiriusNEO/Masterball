@@ -38,7 +38,7 @@ public class GetElementPtrInst extends BaseInst {
     public String format() {
         // %t4 = getelementptr [10 x [20 x i32]], [10 x [20 x i32]]* %t3, i32 0, i32 5
         StringBuilder ret = new StringBuilder(this.identifier() + " = " + LLVMTable.GetElementPtrInst
-                + " " + ((PointerType) this.headPointer().type).pointedType
+                + " inbounds " + ((PointerType) this.headPointer().type).pointedType
                 + ", " + this.headPointer().typedIdentifier());
         for (int i = 0; i < this.indicesNum(); ++i)
             ret.append(", ").append(this.getIndex(i).typedIdentifier());

@@ -10,12 +10,6 @@ import java.util.HashMap;
 
 public class NormalScope extends BaseScope {
 
-    public HashMap<String, VarRegistry> varTable;
-
-    public NormalScope() {
-        varTable = new HashMap<>();
-    }
-
     @Override
     public ClassRegistry queryClass(String name) {
         return null;

@@ -36,7 +36,6 @@ public class PointerType extends IRBaseType {
 
     @Override
     public String toString() {
-        if (pointedType instanceof VoidType) return ""; // void* is invalid
         return pointedType + "*";
     }
 }
