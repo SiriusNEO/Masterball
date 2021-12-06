@@ -2189,14 +2189,14 @@ public class MxStarParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public ShiftOpsContext shiftOps() {
-			return getRuleContext(ShiftOpsContext.class,0);
-		}
 		public MulLevelOpsContext mulLevelOps() {
 			return getRuleContext(MulLevelOpsContext.class,0);
 		}
 		public AddLevelOpsContext addLevelOps() {
 			return getRuleContext(AddLevelOpsContext.class,0);
+		}
+		public ShiftOpsContext shiftOps() {
+			return getRuleContext(ShiftOpsContext.class,0);
 		}
 		public CompareOpsContext compareOps() {
 			return getRuleContext(CompareOpsContext.class,0);
@@ -2629,7 +2629,7 @@ public class MxStarParser extends Parser {
 						setState(292);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
 						setState(293);
-						shiftOps();
+						mulLevelOps();
 						setState(294);
 						expression(12);
 						}
@@ -2641,7 +2641,7 @@ public class MxStarParser extends Parser {
 						setState(296);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
 						setState(297);
-						mulLevelOps();
+						addLevelOps();
 						setState(298);
 						expression(11);
 						}
@@ -2653,7 +2653,7 @@ public class MxStarParser extends Parser {
 						setState(300);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
 						setState(301);
-						addLevelOps();
+						shiftOps();
 						setState(302);
 						expression(10);
 						}
@@ -3020,10 +3020,10 @@ public class MxStarParser extends Parser {
 		"\2\2\u0121\u0122\5\62\32\2\u0122\u0123\5> \16\u0123\u0125\3\2\2\2\u0124"+
 		"\u00fd\3\2\2\2\u0124\u00ff\3\2\2\2\u0124\u0103\3\2\2\2\u0124\u010f\3\2"+
 		"\2\2\u0124\u011e\3\2\2\2\u0124\u0121\3\2\2\2\u0125\u015a\3\2\2\2\u0126"+
-		"\u0127\f\r\2\2\u0127\u0128\5\64\33\2\u0128\u0129\5> \16\u0129\u0159\3"+
-		"\2\2\2\u012a\u012b\f\f\2\2\u012b\u012c\5\66\34\2\u012c\u012d\5> \r\u012d"+
-		"\u0159\3\2\2\2\u012e\u012f\f\13\2\2\u012f\u0130\58\35\2\u0130\u0131\5"+
-		"> \f\u0131\u0159\3\2\2\2\u0132\u0133\f\n\2\2\u0133\u0134\5:\36\2\u0134"+
+		"\u0127\f\r\2\2\u0127\u0128\5\66\34\2\u0128\u0129\5> \16\u0129\u0159\3"+
+		"\2\2\2\u012a\u012b\f\f\2\2\u012b\u012c\58\35\2\u012c\u012d\5> \r\u012d"+
+		"\u0159\3\2\2\2\u012e\u012f\f\13\2\2\u012f\u0130\5\64\33\2\u0130\u0131"+
+		"\5> \f\u0131\u0159\3\2\2\2\u0132\u0133\f\n\2\2\u0133\u0134\5:\36\2\u0134"+
 		"\u0135\5> \13\u0135\u0159\3\2\2\2\u0136\u0137\f\t\2\2\u0137\u0138\5<\37"+
 		"\2\u0138\u0139\5> \n\u0139\u0159\3\2\2\2\u013a\u013b\f\b\2\2\u013b\u013c"+
 		"\7\23\2\2\u013c\u0159\5> \t\u013d\u013e\f\7\2\2\u013e\u013f\7\25\2\2\u013f"+

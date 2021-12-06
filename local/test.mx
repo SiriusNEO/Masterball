@@ -1,131 +1,51 @@
 /*
-Test Package: Codegen
-Author: YifanXu
-Time: 2020-04-09
+Test Package: Optim
+Author: 18' Zonghan YANG
+Time: 2021-03-25
 Input:
 === input ===
-4 5
-1 2 2
-1 3 2
-1 4 3
-2 3 4
-3 4 3
+
 === end ===
 Output:
 === output ===
-7
+
 === end ===
 ExitCode: 0
-InstLimit: -1
+RunTimeLimit: 9999
+OutputLengthLimit: 10000
+CompileTimeLimit: 15
 */
 
-
-class Edge {
-	int x;
-	int y;
-	int w;
-};
-
 int n;
-int m;
-int ans = 0;
-int[] fa;
-int[] rk;
-Edge[] e;
 
-
-void qsort(Edge[] e, int l, int r)
-{
-	if (l < r)
-	{      
-		int i = l;
-        int j = r;
-        Edge x = e[l];
-		while (i < j)
-		{
-			while(i < j && e[j].w >= x.w) {
-				j--; 
-            }
-			if (i < j) {
-				e[i] = e[j];
-                i++;
-            }
-			while(i < j && e[i].w < x.w) { 
-				i++; 
-            }
-			if (i < j) {
-				e[j] = e[i];
-                j--;
-            }
-		}
-		e[i] = x;
-		qsort(e, l, i - 1);
-		qsort(e, i + 1, r);
-	}
+int test() {
+    int i, j = n, k;
+    for (i = 0; i < j; i++) {
+        int t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20,t21,t22,t23,t24,t25,t26,t27,t28,t29,t30,t31,t32,t33,t34,t35,t36,t37,t38,t39,t40,t41,t42,t43,t44,t45,t46,t47,t48,t49;
+        t0 = i + 1;
+        t1 = t0; t2 = t1; t3 = t2; t4 = t3; t5 = t4; t6 = t5; t7 = t6; t8 = t7; t9 = t8; t10 = t9; t11 = t10; t12 = t11; t13 = t12; t14 = t13; t15 = t14; t16 = t15; t17 = t16; t18 = t17; t19 = t18; t20 = t19; t21 = t20; t22 = t21; t23 = t22; t24 = t23; t25 = t24; t26 = t25; t27 = t26; t28 = t27; t29 = t28; t30 = t29; t31 = t30; t32 = t31; t33 = t32; t34 = t33; t35 = t34; t36 = t35; t37 = t36; t38 = t37; t39 = t38; t40 = t39; t41 = t40; t42 = t41; t43 = t42; t44 = t43; t45 = t44; t46 = t45; t47 = t46; t48 = t47; t49 = t48;
+        t1 = t0; t2 = t1; t3 = t2; t4 = t3; t5 = t4; t6 = t5; t7 = t6; t8 = t7; t9 = t8; t10 = t9; t11 = t10; t12 = t11; t13 = t12; t14 = t13; t15 = t14; t16 = t15; t17 = t16; t18 = t17; t19 = t18; t20 = t19; t21 = t20; t22 = t21; t23 = t22; t24 = t23; t25 = t24; t26 = t25; t27 = t26; t28 = t27; t29 = t28; t30 = t29; t31 = t30; t32 = t31; t33 = t32; t34 = t33; t35 = t34; t36 = t35; t37 = t36; t38 = t37; t39 = t38; t40 = t39; t41 = t40; t42 = t41; t43 = t42; t44 = t43; t45 = t44; t46 = t45; t47 = t46; t48 = t47; t49 = t48;
+        t1 = t0; t2 = t1; t3 = t2; t4 = t3; t5 = t4; t6 = t5; t7 = t6; t8 = t7; t9 = t8; t10 = t9; t11 = t10; t12 = t11; t13 = t12; t14 = t13; t15 = t14; t16 = t15; t17 = t16; t18 = t17; t19 = t18; t20 = t19; t21 = t20; t22 = t21; t23 = t22; t24 = t23; t25 = t24; t26 = t25; t27 = t26; t28 = t27; t29 = t28; t30 = t29; t31 = t30; t32 = t31; t33 = t32; t34 = t33; t35 = t34; t36 = t35; t37 = t36; t38 = t37; t39 = t38; t40 = t39; t41 = t40; t42 = t41; t43 = t42; t44 = t43; t45 = t44; t46 = t45; t47 = t46; t48 = t47; t49 = t48;
+        t1 = t0; t2 = t1; t3 = t2; t4 = t3; t5 = t4; t6 = t5; t7 = t6; t8 = t7; t9 = t8; t10 = t9; t11 = t10; t12 = t11; t13 = t12; t14 = t13; t15 = t14; t16 = t15; t17 = t16; t18 = t17; t19 = t18; t20 = t19; t21 = t20; t22 = t21; t23 = t22; t24 = t23; t25 = t24; t26 = t25; t27 = t26; t28 = t27; t29 = t28; t30 = t29; t31 = t30; t32 = t31; t33 = t32; t34 = t33; t35 = t34; t36 = t35; t37 = t36; t38 = t37; t39 = t38; t40 = t39; t41 = t40; t42 = t41; t43 = t42; t44 = t43; t45 = t44; t46 = t45; t47 = t46; t48 = t47; t49 = t48;
+        t1 = t0; t2 = t1; t3 = t2; t4 = t3; t5 = t4; t6 = t5; t7 = t6; t8 = t7; t9 = t8; t10 = t9; t11 = t10; t12 = t11; t13 = t12; t14 = t13; t15 = t14; t16 = t15; t17 = t16; t18 = t17; t19 = t18; t20 = t19; t21 = t20; t22 = t21; t23 = t22; t24 = t23; t25 = t24; t26 = t25; t27 = t26; t28 = t27; t29 = t28; t30 = t29; t31 = t30; t32 = t31; t33 = t32; t34 = t33; t35 = t34; t36 = t35; t37 = t36; t38 = t37; t39 = t38; t40 = t39; t41 = t40; t42 = t41; t43 = t42; t44 = t43; t45 = t44; t46 = t45; t47 = t46; t48 = t47; t49 = t48;
+        t1 = t0; t2 = t1; t3 = t2; t4 = t3; t5 = t4; t6 = t5; t7 = t6; t8 = t7; t9 = t8; t10 = t9; t11 = t10; t12 = t11; t13 = t12; t14 = t13; t15 = t14; t16 = t15; t17 = t16; t18 = t17; t19 = t18; t20 = t19; t21 = t20; t22 = t21; t23 = t22; t24 = t23; t25 = t24; t26 = t25; t27 = t26; t28 = t27; t29 = t28; t30 = t29; t31 = t30; t32 = t31; t33 = t32; t34 = t33; t35 = t34; t36 = t35; t37 = t36; t38 = t37; t39 = t38; t40 = t39; t41 = t40; t42 = t41; t43 = t42; t44 = t43; t45 = t44; t46 = t45; t47 = t46; t48 = t47; t49 = t48;
+        t1 = t0; t2 = t1; t3 = t2; t4 = t3; t5 = t4; t6 = t5; t7 = t6; t8 = t7; t9 = t8; t10 = t9; t11 = t10; t12 = t11; t13 = t12; t14 = t13; t15 = t14; t16 = t15; t17 = t16; t18 = t17; t19 = t18; t20 = t19; t21 = t20; t22 = t21; t23 = t22; t24 = t23; t25 = t24; t26 = t25; t27 = t26; t28 = t27; t29 = t28; t30 = t29; t31 = t30; t32 = t31; t33 = t32; t34 = t33; t35 = t34; t36 = t35; t37 = t36; t38 = t37; t39 = t38; t40 = t39; t41 = t40; t42 = t41; t43 = t42; t44 = t43; t45 = t44; t46 = t45; t47 = t46; t48 = t47; t49 = t48;
+        t1 = t0; t2 = t1; t3 = t2; t4 = t3; t5 = t4; t6 = t5; t7 = t6; t8 = t7; t9 = t8; t10 = t9; t11 = t10; t12 = t11; t13 = t12; t14 = t13; t15 = t14; t16 = t15; t17 = t16; t18 = t17; t19 = t18; t20 = t19; t21 = t20; t22 = t21; t23 = t22; t24 = t23; t25 = t24; t26 = t25; t27 = t26; t28 = t27; t29 = t28; t30 = t29; t31 = t30; t32 = t31; t33 = t32; t34 = t33; t35 = t34; t36 = t35; t37 = t36; t38 = t37; t39 = t38; t40 = t39; t41 = t40; t42 = t41; t43 = t42; t44 = t43; t45 = t44; t46 = t45; t47 = t46; t48 = t47; t49 = t48;
+        if (t49 != 0) {
+            k = t49;
+        }
+    }
+    return k;
 }
 
-void init() {
-    fa = new int[n + 1];
-    rk = new int[n + 1];
-	int i;
-    for (i = 1; i <= n; ++i) {
-		fa[i] = i;
-		rk[i] = 1;
-	}
-}
 
-int find(int x) {
-	if (x == fa[x]) return x;
-	x = find(fa[x]);
-	return fa[x];
-}
-
-bool union(int x, int y) {
-	x = find(x);
-	y = find(y);
-	if (x == y) return false;
-	if (rk[x] > rk[y]) {
-		fa[y] = x;
-		rk[x] = rk[x] + rk[y];
-	} else {
-		fa[x] = y;
-		rk[y] = rk[y] + rk[x];
-	}
-	return true;
-}
 
 int main() {
-    n = getInt();
-    m = getInt();
-    e = new Edge[m];
-    int i;
-	for (i = 0; i < m; ++i) {
-        Edge ed = new Edge;
-        ed.x = getInt();
-        ed.y = getInt();
-        ed.w = getInt();
-		e[i] = ed;
-	}
-    qsort(e, 0, m - 1);
-	init();
-	i = 0;
-    int j = 0;
-	while (i < n - 1) {
-		if (j >= m) {
-			printInt(-1);
-			return 0;
-		}
-        Edge ed = e[j];
-		++j;
-		if (union(ed.x, ed.y)) {
-			++i;
-			ans = ans + ed.w;
-		}
-	}
-	if (rk[find(1)] == n) {
-        printInt(ans);
-    } else {
-        printInt(-1);
-    }
-	return 0;
+    n = 100;
+    int ret = test();
+    n = 200;
+    return ret + test() - 300;
 }
+
+
+

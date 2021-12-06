@@ -2,56 +2,9 @@
 ..* --- RootNode --- *
 
 [GlobalScope]
-VarTable: {e=[VarRegistry] Edge[]|e, ans=[VarRegistry] INT|ans, rk=[VarRegistry] INT[]|rk, fa=[VarRegistry] INT[]|fa, m=[VarRegistry] INT|m, n=[VarRegistry] INT|n}
-FuncTable: {getInt=[FuncRegistry] name: getInt type: func, retType:INT args:, qsort=[FuncRegistry] name: qsort type: func, retType:VOID args:Edge[] INT INT , init=[FuncRegistry] name: init type: func, retType:VOID args:, print=[FuncRegistry] name: print type: func, retType:VOID args:STRING , println=[FuncRegistry] name: println type: func, retType:VOID args:STRING , find=[FuncRegistry] name: find type: func, retType:INT args:INT , printInt=[FuncRegistry] name: printInt type: func, retType:VOID args:INT , printlnInt=[FuncRegistry] name: printlnInt type: func, retType:VOID args:INT , toString=[FuncRegistry] name: toString type: func, retType:STRING args:INT , main=[FuncRegistry] name: main type: func, retType:INT args:, getString=[FuncRegistry] name: getString type: func, retType:STRING args:, union=[FuncRegistry] name: union type: func, retType:BOOL args:INT INT }
-ClassTable: {Edge=[ClassRegistry] 
-name:Edge 
-scope:[ClassScope]
-VarTable: {w=[VarRegistry] INT|w, x=[VarRegistry] INT|x, y=[VarRegistry] INT|y}
-FuncTable: {Edge=[FuncRegistry] name: Edge type: func, retType:VOID args:}
- }
-
-....* --- ClassDefNode --- *
-
-[ClassRegistry] 
-name:Edge 
-scope:[ClassScope]
-VarTable: {w=[VarRegistry] INT|w, x=[VarRegistry] INT|x, y=[VarRegistry] INT|y}
-FuncTable: {Edge=[FuncRegistry] name: Edge type: func, retType:VOID args:}
- 
-
-......* --- FuncDefNode --- *
-
-[FuncRegistry] name: Edge type: func, retType:VOID args:
-
-........* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..........* --- ReturnStmtNode --- *
-
-
-......* --- VarDefStmtNode --- *
-
-
-........* --- VarDefSingleNode --- *
-
-[VarRegistry] INT|x
-
-......* --- VarDefStmtNode --- *
-
-
-........* --- VarDefSingleNode --- *
-
-[VarRegistry] INT|y
-
-......* --- VarDefStmtNode --- *
-
-
-........* --- VarDefSingleNode --- *
-
-[VarRegistry] INT|w
+VarTable: {n=[VarRegistry] INT|n}
+FuncTable: {getInt=[FuncRegistry] name: getInt type: func, retType:INT args:, print=[FuncRegistry] name: print type: func, retType:VOID args:STRING , println=[FuncRegistry] name: println type: func, retType:VOID args:STRING , test=[FuncRegistry] name: test type: func, retType:INT args:, printInt=[FuncRegistry] name: printInt type: func, retType:VOID args:INT , printlnInt=[FuncRegistry] name: printlnInt type: func, retType:VOID args:INT , toString=[FuncRegistry] name: toString type: func, retType:STRING args:INT , main=[FuncRegistry] name: main type: func, retType:INT args:, getString=[FuncRegistry] name: getString type: func, retType:STRING args:}
+ClassTable: {}
 
 ....* --- VarDefStmtNode --- *
 
@@ -60,1209 +13,34 @@ VarTable: {}
 
 [VarRegistry] INT|n
 
-....* --- VarDefStmtNode --- *
-
-
-......* --- VarDefSingleNode --- *
-
-[VarRegistry] INT|m
-
-....* --- VarDefStmtNode --- *
-
-
-......* --- VarDefSingleNode --- *
-
-[VarRegistry] INT|ans
-
-........* --- AtomExpNode --- *
-
-type: INT
-text: 0
-
-....* --- VarDefStmtNode --- *
-
-
-......* --- VarDefSingleNode --- *
-
-[VarRegistry] INT[]|fa
-
-....* --- VarDefStmtNode --- *
-
-
-......* --- VarDefSingleNode --- *
-
-[VarRegistry] INT[]|rk
-
-....* --- VarDefStmtNode --- *
-
-
-......* --- VarDefSingleNode --- *
-
-[VarRegistry] Edge[]|e
-
 ....* --- FuncDefNode --- *
 
-[FuncRegistry] name: qsort type: func, retType:VOID args:Edge[] INT INT 
+[FuncRegistry] name: test type: func, retType:INT args:
 
 ......* --- SuiteNode --- *
 
 [NormalScope]
-VarTable: {}
+VarTable: {i=[VarRegistry] INT|i, j=[VarRegistry] INT|j, k=[VarRegistry] INT|k}
 
-........* --- IfStmtNode --- *
-
-condi: 
-
-..........* --- BinaryExpNode --- *
-
-type: BOOL
-op: <
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: l
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: r
-if true: 
-
-..........* --- SuiteStmtNode --- *
+........* --- VarDefStmtNode --- *
 
 
-............* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {x=[VarRegistry] Edge|x, i=[VarRegistry] INT|i, j=[VarRegistry] INT|j}
-
-..............* --- VarDefStmtNode --- *
-
-
-................* --- VarDefSingleNode --- *
+..........* --- VarDefSingleNode --- *
 
 [VarRegistry] INT|i
 
-..................* --- AtomExpNode --- *
-
-type: INT
-text: l
-
-..............* --- VarDefStmtNode --- *
-
-
-................* --- VarDefSingleNode --- *
+..........* --- VarDefSingleNode --- *
 
 [VarRegistry] INT|j
 
-..................* --- AtomExpNode --- *
-
-type: INT
-text: r
-
-..............* --- VarDefStmtNode --- *
-
-
-................* --- VarDefSingleNode --- *
-
-[VarRegistry] Edge|x
-
-..................* --- IndexExpNode --- *
-
-type: Edge
-
-....................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: l
-
-..............* --- WhileStmtNode --- *
-
-condi: 
-
-................* --- BinaryExpNode --- *
-
-type: BOOL
-op: <
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: j
-body: 
-
-................* --- SuiteStmtNode --- *
-
-
-..................* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-....................* --- WhileStmtNode --- *
-
-condi: 
-
-......................* --- BinaryExpNode --- *
-
-type: BOOL
-op: &&
-
-........................* --- BinaryExpNode --- *
-
-type: BOOL
-op: <
-
-..........................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..........................* --- AtomExpNode --- *
-
-type: INT
-text: j
-
-........................* --- BinaryExpNode --- *
-
-type: BOOL
-op: >=
-
-..........................* --- MemberExpNode --- *
-
-type: INT
-
-............................* --- IndexExpNode --- *
-
-type: Edge
-
-..............................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-..............................* --- AtomExpNode --- *
-
-type: INT
-text: j
-
-..........................* --- MemberExpNode --- *
-
-type: INT
-
-............................* --- AtomExpNode --- *
-
-type: Edge
-text: x
-body: 
-
-......................* --- SuiteStmtNode --- *
-
-
-........................* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..........................* --- PureStmtNode --- *
-
-
-............................* --- PostfixExpNode --- *
-
-type: INT
-op: --
-
-..............................* --- AtomExpNode --- *
-
-type: INT
-text: j
-
-....................* --- IfStmtNode --- *
-
-condi: 
-
-......................* --- BinaryExpNode --- *
-
-type: BOOL
-op: <
-
-........................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-........................* --- AtomExpNode --- *
-
-type: INT
-text: j
-if true: 
-
-......................* --- SuiteStmtNode --- *
-
-
-........................* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..........................* --- PureStmtNode --- *
-
-
-............................* --- AssignExpNode --- *
-
-type: Edge
-
-..............................* --- IndexExpNode --- *
-
-type: Edge
-
-................................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-................................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..............................* --- IndexExpNode --- *
-
-type: Edge
-
-................................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-................................* --- AtomExpNode --- *
-
-type: INT
-text: j
-
-..........................* --- PureStmtNode --- *
-
-
-............................* --- PostfixExpNode --- *
-
-type: INT
-op: ++
-
-..............................* --- AtomExpNode --- *
-
-type: INT
-text: i
-else: 
-
-....................* --- WhileStmtNode --- *
-
-condi: 
-
-......................* --- BinaryExpNode --- *
-
-type: BOOL
-op: &&
-
-........................* --- BinaryExpNode --- *
-
-type: BOOL
-op: <
-
-..........................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..........................* --- AtomExpNode --- *
-
-type: INT
-text: j
-
-........................* --- BinaryExpNode --- *
-
-type: BOOL
-op: <
-
-..........................* --- MemberExpNode --- *
-
-type: INT
-
-............................* --- IndexExpNode --- *
-
-type: Edge
-
-..............................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-..............................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..........................* --- MemberExpNode --- *
-
-type: INT
-
-............................* --- AtomExpNode --- *
-
-type: Edge
-text: x
-body: 
-
-......................* --- SuiteStmtNode --- *
-
-
-........................* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..........................* --- PureStmtNode --- *
-
-
-............................* --- PostfixExpNode --- *
-
-type: INT
-op: ++
-
-..............................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-....................* --- IfStmtNode --- *
-
-condi: 
-
-......................* --- BinaryExpNode --- *
-
-type: BOOL
-op: <
-
-........................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-........................* --- AtomExpNode --- *
-
-type: INT
-text: j
-if true: 
-
-......................* --- SuiteStmtNode --- *
-
-
-........................* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..........................* --- PureStmtNode --- *
-
-
-............................* --- AssignExpNode --- *
-
-type: Edge
-
-..............................* --- IndexExpNode --- *
-
-type: Edge
-
-................................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-................................* --- AtomExpNode --- *
-
-type: INT
-text: j
-
-..............................* --- IndexExpNode --- *
-
-type: Edge
-
-................................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-................................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..........................* --- PureStmtNode --- *
-
-
-............................* --- PostfixExpNode --- *
-
-type: INT
-op: --
-
-..............................* --- AtomExpNode --- *
-
-type: INT
-text: j
-else: 
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: Edge
-
-..................* --- IndexExpNode --- *
-
-type: Edge
-
-....................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..................* --- AtomExpNode --- *
-
-type: Edge
-text: x
-
-..............* --- PureStmtNode --- *
-
-
-................* --- FuncCallExpNode --- *
-
-type: VOID
-
-..................* --- AtomExpNode --- *
-
-type: func, retType:VOID args:Edge[] INT INT 
-text: qsort
-
-..................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: l
-
-..................* --- BinaryExpNode --- *
-
-type: INT
-op: -
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: 1
-
-..............* --- PureStmtNode --- *
-
-
-................* --- FuncCallExpNode --- *
-
-type: VOID
-
-..................* --- AtomExpNode --- *
-
-type: func, retType:VOID args:Edge[] INT INT 
-text: qsort
-
-..................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-..................* --- BinaryExpNode --- *
-
-type: INT
-op: +
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: 1
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: r
-else: 
-
-....* --- FuncDefNode --- *
-
-[FuncRegistry] name: init type: func, retType:VOID args:
-
-......* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {i=[VarRegistry] INT|i}
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: INT[]
-
-............* --- AtomExpNode --- *
-
-type: INT[]
-text: fa
-
-............* --- NewExpNode --- *
-
-type: INT[]
-NewType: INT[]
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: INT[]
-
-............* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-............* --- NewExpNode --- *
-
-type: INT[]
-NewType: INT[]
-
-........* --- VarDefStmtNode --- *
-
-
-..........* --- VarDefSingleNode --- *
-
-[VarRegistry] INT|i
-
-........* --- ForStmtNode --- *
-
-init: 
-
-..........* --- AssignExpNode --- *
-
-type: INT
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: 1
-condi: 
-
-..........* --- BinaryExpNode --- *
-
-type: BOOL
-op: <=
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: n
-incr: 
-
-..........* --- PrefixExpNode --- *
-
-type: INT
-op: ++
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: i
-body: 
-
-..........* --- SuiteStmtNode --- *
-
-
-............* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: INT
-
-..................* --- IndexExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: INT[]
-text: fa
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: INT
-
-..................* --- IndexExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: 1
-
-....* --- FuncDefNode --- *
-
-[FuncRegistry] name: find type: func, retType:INT args:INT 
-
-......* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-........* --- IfStmtNode --- *
-
-condi: 
-
-..........* --- BinaryExpNode --- *
-
-type: BOOL
-op: ==
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-............* --- IndexExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: INT[]
-text: fa
-
-..............* --- AtomExpNode --- *
-
-type: INT
-text: x
-if true: 
-
-..........* --- ReturnStmtNode --- *
-
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: x
-else: 
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: INT
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-............* --- FuncCallExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: func, retType:INT args:INT 
-text: find
-
-..............* --- IndexExpNode --- *
-
-type: INT
-
-................* --- AtomExpNode --- *
-
-type: INT[]
-text: fa
-
-................* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-........* --- ReturnStmtNode --- *
-
-
-..........* --- IndexExpNode --- *
-
-type: INT
-
-............* --- AtomExpNode --- *
-
-type: INT[]
-text: fa
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-....* --- FuncDefNode --- *
-
-[FuncRegistry] name: union type: func, retType:BOOL args:INT INT 
-
-......* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: INT
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-............* --- FuncCallExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: func, retType:INT args:INT 
-text: find
-
-..............* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: INT
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: y
-
-............* --- FuncCallExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: func, retType:INT args:INT 
-text: find
-
-..............* --- AtomExpNode --- *
-
-type: INT
-text: y
-
-........* --- IfStmtNode --- *
-
-condi: 
-
-..........* --- BinaryExpNode --- *
-
-type: BOOL
-op: ==
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: y
-if true: 
-
-..........* --- ReturnStmtNode --- *
-
-
-............* --- AtomExpNode --- *
-
-type: BOOL
-text: false
-else: 
-
-........* --- IfStmtNode --- *
-
-condi: 
-
-..........* --- BinaryExpNode --- *
-
-type: BOOL
-op: >
-
-............* --- IndexExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-..............* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-............* --- IndexExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-..............* --- AtomExpNode --- *
-
-type: INT
-text: y
-if true: 
-
-..........* --- SuiteStmtNode --- *
-
-
-............* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: INT
-
-..................* --- IndexExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: INT[]
-text: fa
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: y
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: INT
-
-..................* --- IndexExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-..................* --- BinaryExpNode --- *
-
-type: INT
-op: +
-
-....................* --- IndexExpNode --- *
-
-type: INT
-
-......................* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-......................* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-....................* --- IndexExpNode --- *
-
-type: INT
-
-......................* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-......................* --- AtomExpNode --- *
-
-type: INT
-text: y
-else: 
-
-..........* --- SuiteStmtNode --- *
-
-
-............* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: INT
-
-..................* --- IndexExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: INT[]
-text: fa
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: y
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: INT
-
-..................* --- IndexExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: y
-
-..................* --- BinaryExpNode --- *
-
-type: INT
-op: +
-
-....................* --- IndexExpNode --- *
-
-type: INT
-
-......................* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-......................* --- AtomExpNode --- *
-
-type: INT
-text: y
-
-....................* --- IndexExpNode --- *
-
-type: INT
-
-......................* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-......................* --- AtomExpNode --- *
-
-type: INT
-text: x
-
-........* --- ReturnStmtNode --- *
-
-
-..........* --- AtomExpNode --- *
-
-type: BOOL
-text: true
-
-....* --- FuncDefNode --- *
-
-[FuncRegistry] name: main type: func, retType:INT args:
-
-......* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {i=[VarRegistry] INT|i, j=[VarRegistry] INT|j}
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: INT
-
 ............* --- AtomExpNode --- *
 
 type: INT
 text: n
 
-............* --- FuncCallExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: func, retType:INT args:
-text: getInt
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: INT
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: m
-
-............* --- FuncCallExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: func, retType:INT args:
-text: getInt
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: Edge[]
-
-............* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-............* --- NewExpNode --- *
-
-type: Edge[]
-NewType: Edge[]
-
-........* --- VarDefStmtNode --- *
-
-
 ..........* --- VarDefSingleNode --- *
 
-[VarRegistry] INT|i
+[VarRegistry] INT|k
 
 ........* --- ForStmtNode --- *
 
@@ -1296,10 +74,10 @@ text: i
 ............* --- AtomExpNode --- *
 
 type: INT
-text: m
+text: j
 incr: 
 
-..........* --- PrefixExpNode --- *
+..........* --- PostfixExpNode --- *
 
 type: INT
 op: ++
@@ -1316,19 +94,210 @@ body:
 ............* --- SuiteNode --- *
 
 [NormalScope]
-VarTable: {ed=[VarRegistry] Edge|ed}
+VarTable: {t10=[VarRegistry] INT|t10, t12=[VarRegistry] INT|t12, t11=[VarRegistry] INT|t11, t14=[VarRegistry] INT|t14, t13=[VarRegistry] INT|t13, t16=[VarRegistry] INT|t16, t15=[VarRegistry] INT|t15, t18=[VarRegistry] INT|t18, t17=[VarRegistry] INT|t17, t19=[VarRegistry] INT|t19, t21=[VarRegistry] INT|t21, t20=[VarRegistry] INT|t20, t23=[VarRegistry] INT|t23, t22=[VarRegistry] INT|t22, t25=[VarRegistry] INT|t25, t24=[VarRegistry] INT|t24, t27=[VarRegistry] INT|t27, t26=[VarRegistry] INT|t26, t29=[VarRegistry] INT|t29, t28=[VarRegistry] INT|t28, t0=[VarRegistry] INT|t0, t1=[VarRegistry] INT|t1, t2=[VarRegistry] INT|t2, t3=[VarRegistry] INT|t3, t4=[VarRegistry] INT|t4, t5=[VarRegistry] INT|t5, t6=[VarRegistry] INT|t6, t7=[VarRegistry] INT|t7, t8=[VarRegistry] INT|t8, t9=[VarRegistry] INT|t9, t30=[VarRegistry] INT|t30, t32=[VarRegistry] INT|t32, t31=[VarRegistry] INT|t31, t34=[VarRegistry] INT|t34, t33=[VarRegistry] INT|t33, t36=[VarRegistry] INT|t36, t35=[VarRegistry] INT|t35, t38=[VarRegistry] INT|t38, t37=[VarRegistry] INT|t37, t39=[VarRegistry] INT|t39, t41=[VarRegistry] INT|t41, t40=[VarRegistry] INT|t40, t43=[VarRegistry] INT|t43, t42=[VarRegistry] INT|t42, t45=[VarRegistry] INT|t45, t44=[VarRegistry] INT|t44, t47=[VarRegistry] INT|t47, t46=[VarRegistry] INT|t46, t49=[VarRegistry] INT|t49, t48=[VarRegistry] INT|t48}
 
 ..............* --- VarDefStmtNode --- *
 
 
 ................* --- VarDefSingleNode --- *
 
-[VarRegistry] Edge|ed
+[VarRegistry] INT|t0
 
-..................* --- NewExpNode --- *
+................* --- VarDefSingleNode --- *
 
-type: Edge
-NewType: Edge
+[VarRegistry] INT|t1
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t2
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t3
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t4
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t5
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t6
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t7
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t8
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t9
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t10
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t11
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t12
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t13
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t14
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t15
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t16
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t17
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t18
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t19
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t20
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t21
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t22
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t23
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t24
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t25
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t26
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t27
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t28
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t29
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t30
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t31
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t32
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t33
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t34
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t35
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t36
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t37
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t38
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t39
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t40
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t41
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t42
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t43
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t44
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t45
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t46
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t47
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t48
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|t49
 
 ..............* --- PureStmtNode --- *
 
@@ -1336,216 +305,6690 @@ NewType: Edge
 ................* --- AssignExpNode --- *
 
 type: INT
-
-..................* --- MemberExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: Edge
-text: ed
-
-..................* --- FuncCallExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: func, retType:INT args:
-text: getInt
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: INT
-
-..................* --- MemberExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: Edge
-text: ed
-
-..................* --- FuncCallExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: func, retType:INT args:
-text: getInt
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: INT
-
-..................* --- MemberExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: Edge
-text: ed
-
-..................* --- FuncCallExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: func, retType:INT args:
-text: getInt
-
-..............* --- PureStmtNode --- *
-
-
-................* --- AssignExpNode --- *
-
-type: Edge
-
-..................* --- IndexExpNode --- *
-
-type: Edge
-
-....................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: i
 
 ..................* --- AtomExpNode --- *
 
-type: Edge
-text: ed
+type: INT
+text: t0
 
-........* --- PureStmtNode --- *
-
-
-..........* --- FuncCallExpNode --- *
-
-type: VOID
-
-............* --- AtomExpNode --- *
-
-type: func, retType:VOID args:Edge[] INT INT 
-text: qsort
-
-............* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-............* --- AtomExpNode --- *
+..................* --- BinaryExpNode --- *
 
 type: INT
-text: 0
+op: +
 
-............* --- BinaryExpNode --- *
-
-type: INT
-op: -
-
-..............* --- AtomExpNode --- *
-
-type: INT
-text: m
-
-..............* --- AtomExpNode --- *
-
-type: INT
-text: 1
-
-........* --- PureStmtNode --- *
-
-
-..........* --- FuncCallExpNode --- *
-
-type: VOID
-
-............* --- AtomExpNode --- *
-
-type: func, retType:VOID args:
-text: init
-
-........* --- PureStmtNode --- *
-
-
-..........* --- AssignExpNode --- *
-
-type: INT
-
-............* --- AtomExpNode --- *
+....................* --- AtomExpNode --- *
 
 type: INT
 text: i
 
-............* --- AtomExpNode --- *
-
-type: INT
-text: 0
-
-........* --- VarDefStmtNode --- *
-
-
-..........* --- VarDefSingleNode --- *
-
-[VarRegistry] INT|j
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: 0
-
-........* --- WhileStmtNode --- *
-
-condi: 
-
-..........* --- BinaryExpNode --- *
-
-type: BOOL
-op: <
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: i
-
-............* --- BinaryExpNode --- *
-
-type: INT
-op: -
-
-..............* --- AtomExpNode --- *
-
-type: INT
-text: n
-
-..............* --- AtomExpNode --- *
+....................* --- AtomExpNode --- *
 
 type: INT
 text: 1
-body: 
 
-..........* --- SuiteStmtNode --- *
+..............* --- PureStmtNode --- *
 
 
-............* --- SuiteNode --- *
+................* --- AssignExpNode --- *
 
-[NormalScope]
-VarTable: {ed=[VarRegistry] Edge|ed}
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t0
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t49
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t0
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t49
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t0
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t49
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t0
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t49
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t0
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t49
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t0
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t49
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t0
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t49
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t0
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t2
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t3
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t4
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t5
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t6
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t7
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t8
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t9
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t10
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t11
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t12
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t13
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t14
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t15
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t16
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t17
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t18
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t19
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t20
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t21
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t22
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t23
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t24
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t25
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t26
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t27
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t28
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t29
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t30
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t31
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t32
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t33
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t34
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t35
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t36
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t37
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t38
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t39
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t40
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t41
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t42
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t43
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t44
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t45
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t46
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t47
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t49
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: t48
 
 ..............* --- IfStmtNode --- *
 
@@ -1554,122 +6997,17 @@ condi:
 ................* --- BinaryExpNode --- *
 
 type: BOOL
-op: >=
+op: !=
 
 ..................* --- AtomExpNode --- *
 
 type: INT
-text: j
+text: t49
 
 ..................* --- AtomExpNode --- *
-
-type: INT
-text: m
-if true: 
-
-................* --- SuiteStmtNode --- *
-
-
-..................* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-....................* --- PureStmtNode --- *
-
-
-......................* --- FuncCallExpNode --- *
-
-type: VOID
-
-........................* --- AtomExpNode --- *
-
-type: func, retType:VOID args:INT 
-text: printInt
-
-........................* --- UnaryExpNode --- *
-
-type: INT
-op: -
-
-..........................* --- AtomExpNode --- *
-
-type: INT
-text: 1
-
-....................* --- ReturnStmtNode --- *
-
-
-......................* --- AtomExpNode --- *
 
 type: INT
 text: 0
-else: 
-
-..............* --- VarDefStmtNode --- *
-
-
-................* --- VarDefSingleNode --- *
-
-[VarRegistry] Edge|ed
-
-..................* --- IndexExpNode --- *
-
-type: Edge
-
-....................* --- AtomExpNode --- *
-
-type: Edge[]
-text: e
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: j
-
-..............* --- PureStmtNode --- *
-
-
-................* --- PrefixExpNode --- *
-
-type: INT
-op: ++
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: j
-
-..............* --- IfStmtNode --- *
-
-condi: 
-
-................* --- FuncCallExpNode --- *
-
-type: BOOL
-
-..................* --- AtomExpNode --- *
-
-type: func, retType:BOOL args:INT INT 
-text: union
-
-..................* --- MemberExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: Edge
-text: ed
-
-..................* --- MemberExpNode --- *
-
-type: INT
-
-....................* --- AtomExpNode --- *
-
-type: Edge
-text: ed
 if true: 
 
 ................* --- SuiteStmtNode --- *
@@ -1679,19 +7017,6 @@ if true:
 
 [NormalScope]
 VarTable: {}
-
-....................* --- PureStmtNode --- *
-
-
-......................* --- PrefixExpNode --- *
-
-type: INT
-op: ++
-
-........................* --- AtomExpNode --- *
-
-type: INT
-text: i
 
 ....................* --- PureStmtNode --- *
 
@@ -1703,121 +7028,13 @@ type: INT
 ........................* --- AtomExpNode --- *
 
 type: INT
-text: ans
+text: k
 
-........................* --- BinaryExpNode --- *
-
-type: INT
-op: +
-
-..........................* --- AtomExpNode --- *
+........................* --- AtomExpNode --- *
 
 type: INT
-text: ans
-
-..........................* --- MemberExpNode --- *
-
-type: INT
-
-............................* --- AtomExpNode --- *
-
-type: Edge
-text: ed
+text: t49
 else: 
-
-........* --- IfStmtNode --- *
-
-condi: 
-
-..........* --- BinaryExpNode --- *
-
-type: BOOL
-op: ==
-
-............* --- IndexExpNode --- *
-
-type: INT
-
-..............* --- AtomExpNode --- *
-
-type: INT[]
-text: rk
-
-..............* --- FuncCallExpNode --- *
-
-type: INT
-
-................* --- AtomExpNode --- *
-
-type: func, retType:INT args:INT 
-text: find
-
-................* --- AtomExpNode --- *
-
-type: INT
-text: 1
-
-............* --- AtomExpNode --- *
-
-type: INT
-text: n
-if true: 
-
-..........* --- SuiteStmtNode --- *
-
-
-............* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..............* --- PureStmtNode --- *
-
-
-................* --- FuncCallExpNode --- *
-
-type: VOID
-
-..................* --- AtomExpNode --- *
-
-type: func, retType:VOID args:INT 
-text: printInt
-
-..................* --- AtomExpNode --- *
-
-type: INT
-text: ans
-else: 
-
-..........* --- SuiteStmtNode --- *
-
-
-............* --- SuiteNode --- *
-
-[NormalScope]
-VarTable: {}
-
-..............* --- PureStmtNode --- *
-
-
-................* --- FuncCallExpNode --- *
-
-type: VOID
-
-..................* --- AtomExpNode --- *
-
-type: func, retType:VOID args:INT 
-text: printInt
-
-..................* --- UnaryExpNode --- *
-
-type: INT
-op: -
-
-....................* --- AtomExpNode --- *
-
-type: INT
-text: 1
 
 ........* --- ReturnStmtNode --- *
 
@@ -1825,4 +7042,95 @@ text: 1
 ..........* --- AtomExpNode --- *
 
 type: INT
-text: 0
+text: k
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: main type: func, retType:INT args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {ret=[VarRegistry] INT|ret}
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: n
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 100
+
+........* --- VarDefStmtNode --- *
+
+
+..........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|ret
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: test
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: n
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 200
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+............* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: ret
+
+..............* --- FuncCallExpNode --- *
+
+type: INT
+
+................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: test
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 300

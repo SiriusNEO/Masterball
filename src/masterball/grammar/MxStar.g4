@@ -109,6 +109,8 @@ addLevelOps: (AddOp | SubOp);
 compareOps: (GreaterOp | GreaterEqualOp | LessOp | LessEqualOp);
 equalOps: (EqualOp | NotEqualOp);
 
+// reference: https://en.cppreference.com/w/c/language/operator_precedence
+
 expression
     :   atom                                                                            #atomExp       // 0
 
@@ -121,24 +123,25 @@ expression
 
     |   expression postfixOps                                                           #postfixExp    // 2
 
-    |   NewKw (builtinType | Identifier) newExpSizeDeclaration* (LeftParen RightParen)? #newExp        // 3
-    |   prefixOps expression                                                            #prefixExp
-    |   unaryOps expression                                                             #unaryExp      // 3
+    |   NewKw (builtinType | Identifier) newExpSizeDeclaration* (LeftParen RightParen)? #newExp        // 2
+    |   prefixOps expression                                                            #prefixExp     // 2
+    |   unaryOps expression                                                             #unaryExp      // 2
 
-    |   expression shiftOps expression                                                  #binaryExp     // 4
+    |   expression mulLevelOps expression                                               #binaryExp     // 3
+    |   expression addLevelOps expression                                               #binaryExp     // 4
 
-    |   expression mulLevelOps expression                                               #binaryExp     // 5
-    |   expression addLevelOps expression                                               #binaryExp     // 6
+    |   expression shiftOps expression                                                  #binaryExp     // 5
 
-    |   expression compareOps expression                                                #binaryExp     // 8
-    |   expression equalOps expression                                                  #binaryExp     // 9
-    |   expression BitAndOp expression                                                  #binaryExp     // 10
-    |   expression BitXorOp expression                                                  #binaryExp     // 11
-    |   expression BitOrOp expression                                                   #binaryExp     // 12
-    |   expression LogicAndOp expression                                                #binaryExp     // 13
-    |   expression LogicOrOp expression                                                 #binaryExp     // 14
-    |   <assoc=right> expression AssignOp expression                                    #assignExp     // 16
-    //|   expression Comma expression                                                   #commaExpL     // 18
+    |   expression compareOps expression                                                #binaryExp     // 6
+    |   expression equalOps expression                                                  #binaryExp     // 7
+    |   expression BitAndOp expression                                                  #binaryExp     // 8
+    |   expression BitXorOp expression                                                  #binaryExp     // 9
+    |   expression BitOrOp expression                                                   #binaryExp     // 10
+    |   expression LogicAndOp expression                                                #binaryExp     // 11
+    |   expression LogicOrOp expression                                                 #binaryExp     // 12
+    // ? expr                                                                                          // 13
+    |   <assoc=right> expression AssignOp expression                                    #assignExp     // 14
+    //|   expression Comma expression                                                   #commaExpL     // 15
     ;
 
 atom

@@ -3,7 +3,7 @@ source_filename = "builtin.c"
 target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
-@IO_BUFFER_SIZE = dso_local constant i32 512, align 4
+@IO_BUFFER_SIZE = dso_local constant i32 1024, align 4
 @NUM_BUFFER_SIZE = dso_local constant i32 20, align 4
 @.str = private unnamed_addr constant [3 x i8] c"%s\00", align 1
 @.str.1 = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
@@ -179,7 +179,7 @@ define dso_local void @printlnInt(i32 %0) #0 {
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local i8* @getString() #0 {
   %1 = alloca i8*, align 8
-  %2 = call noalias i8* @malloc(i64 512) #5
+  %2 = call noalias i8* @malloc(i64 1024) #5
   store i8* %2, i8** %1, align 8
   %3 = load i8*, i8** %1, align 8
   %4 = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), i8* %3)

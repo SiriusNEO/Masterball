@@ -1,7 +1,7 @@
 package masterball.compiler.utils;
 
 public class LLVMTable {
-    // compile environment
+    // compile environment. 64bit in my machine.
     public static final int PointerSize = 8;
 
     // default reg & label
