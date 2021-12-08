@@ -4,7 +4,7 @@ import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.*;
 import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.*;
-import masterball.compiler.utils.error.semantic.*;
+import masterball.compiler.share.error.semantic.*;
 import masterball.compiler.frontend.info.ArrayBuiltinMethods;
 import masterball.compiler.frontend.info.StringBuiltinMethods;
 import masterball.compiler.frontend.info.registry.ClassRegistry;
@@ -14,7 +14,7 @@ import masterball.compiler.frontend.info.type.MxFuncType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.info.registry.VarRegistry;
 import masterball.compiler.frontend.info.InfoManager;
-import masterball.compiler.utils.MxStarTable;
+import masterball.compiler.share.MxStarTable;
 
 import java.util.Objects;
 

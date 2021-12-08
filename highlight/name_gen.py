@@ -90,7 +90,16 @@ frequently_used_name = [
     "haha",
     "papa",
     "john",
-    "tomasulo"
+    "tomasulo",
+    "node",
+    "random",
+    "initialize",
+    "merge",
+    "link",
+    "swap",
+    "sqrt",
+    "data",
+    "file"
 ]
 
 upper_letter_set = range(ord("A"), ord("Z")+1)

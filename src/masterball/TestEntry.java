@@ -1,9 +1,6 @@
 package masterball;
 
-import masterball.compiler.middleend.IRPrinter;
-import masterball.compiler.utils.error.BaseError;
-import masterball.compiler.frontend.ASTPrinter;
-import masterball.debug.Log;
+import masterball.compiler.share.error.BaseError;
 import masterball.engine.IOEngine;
 import masterball.engine.IRGenEngine;
 import masterball.engine.ParseEngine;

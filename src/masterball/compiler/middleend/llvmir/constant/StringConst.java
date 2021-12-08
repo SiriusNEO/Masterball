@@ -3,8 +3,7 @@ package masterball.compiler.middleend.llvmir.constant;
 import masterball.compiler.middleend.llvmir.type.ArrayType;
 import masterball.compiler.middleend.llvmir.type.IntType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
-import masterball.compiler.utils.LLVMTable;
-import masterball.debug.Log;
+import masterball.compiler.share.LLVMTable;
 
 public class StringConst extends GlobalValue {
 

@@ -1,6 +1,6 @@
 package masterball.engine;
 
-import masterball.compiler.utils.error.ParseErrorListener;
+import masterball.compiler.share.error.ParseErrorListener;
 import masterball.compiler.frontend.parser.MxStarLexer;
 import masterball.compiler.frontend.parser.MxStarParser;
 import masterball.debug.Log;

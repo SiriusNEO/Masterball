@@ -1,7 +1,7 @@
 package masterball.compiler.middleend.llvmir.type;
 
 import masterball.compiler.middleend.llvmir.IRTranslator;
-import masterball.compiler.utils.LLVMTable;
+import masterball.compiler.share.LLVMTable;
 
 public class PointerType extends IRBaseType {
     public IRBaseType pointedType;

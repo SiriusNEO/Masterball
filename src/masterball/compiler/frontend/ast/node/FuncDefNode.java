@@ -4,7 +4,7 @@ import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.info.CodePos;
 import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.type.MxBaseType;
-import masterball.compiler.utils.MxStarTable;
+import masterball.compiler.share.MxStarTable;
 
 import java.util.Objects;
 

@@ -2,8 +2,6 @@ package masterball.compiler.frontend.info.registry;
 
 import masterball.compiler.frontend.parser.MxStarParser;
 import masterball.compiler.frontend.info.scope.ClassScope;
-import masterball.compiler.utils.error.RuntimeError;
-import masterball.compiler.utils.error.runtime.UnknownError;
 
 import java.util.ArrayList;
 

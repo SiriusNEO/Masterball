@@ -5,9 +5,8 @@ import masterball.compiler.frontend.info.type.MxBaseType;
 import masterball.compiler.frontend.info.type.MxFuncType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.middleend.llvmir.type.*;
-import masterball.compiler.utils.LLVMTable;
-import masterball.compiler.utils.MxStarTable;
-import masterball.debug.Log;
+import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.MxStarTable;
 
 import java.util.Objects;
 

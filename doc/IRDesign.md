@@ -126,3 +126,77 @@ Declare first.
 
 Translator will translate MxStarClass to IRStructType*
 
+
+
+## Pass
+
+
+
+### SSADestructor
+
+is a Function Pass.
+
+mainly for Resolve Phi.
+
+
+
+##### ParaCopy
+
+`%indvar = phi i32 [ 0, %LoopHeader ], [ %nextindvar, %Loop ]`
+
+as its name, it is a parallel copy with %indvar <- 0 and %indar <- %nextindvar
+
+use a CopyMap with Block -> ParaCopy
+
+
+
+##### Step 1. Critical Edge Split
+
+Critical edge is an edge in CFG which connects A block and B block: 
+
+- A has multiple successors.
+- B has multiple predecessors.
+
+if we simply put the copy in this case, it will cause redundancy.
+
+
+
+##### Step 2. Build CopyGraph
+
+a copy is a directed edge like:
+
+```
+dest <- source
+```
+
+Then we maintain a copy list to eliminate.
+
+Notice that if we have:
+
+```T
+A <- B
+B <- C
+```
+
+Then 1 must be done after 2.
+
+if we have
+
+```
+A <- B
+B <- C
+C <- A
+```
+
+which is a ring, then we do
+
+```
+A' <- B
+B' <- C
+C' <- A
+```
+
+ 
+
+
+

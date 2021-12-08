@@ -1,0 +1,61 @@
+int stop = 0;
+int stop1 = 0;
+int max = 100;
+
+class A {
+    int dat;
+    B b;
+    A() {
+        dat = 233;
+        stop++;
+        if (stop <= max) {
+            b = new B();
+        }
+    }
+};
+
+class B {
+    A a;
+    B() {
+        a = new A();
+    }
+};
+
+class C {
+    string str;
+    C() {
+        str = "mouse" + "cat";
+    }
+};
+
+class Self {
+    Self pre, next;
+    int a;
+
+    Self() {
+        stop1++;
+        a = stop1;
+        if (stop1 <= max) {
+            this.next = new Self();
+            this.next.pre = this;
+        }
+    }
+};
+
+int main() {
+    A haha = new A();
+    printlnInt(haha.b.a.b.a.b.a.b.a.b.a.b.a.b.a.b.a.b.a.b.a.b.a.b.a.b.a.dat);
+    println(func().str);
+    C c = test();
+    if (c == null) println("C is null");
+    Self self = new Self();
+    printlnInt(self.next.next.next.next.next.next.pre.pre.a);
+}
+
+C func() {
+    return new C();
+}
+
+C test() {
+    return null;
+}

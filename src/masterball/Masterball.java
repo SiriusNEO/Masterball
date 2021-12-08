@@ -1,6 +1,6 @@
 package masterball;
 
-import masterball.compiler.utils.error.BaseError;
+import masterball.compiler.share.error.BaseError;
 import masterball.engine.IOEngine;
 import masterball.engine.IRGenEngine;
 import masterball.engine.ParseEngine;
@@ -25,10 +25,10 @@ public class Masterball {
         }
         catch (Exception e) {
             if (e instanceof BaseError) {
-            //  ((BaseError) e).tell();
+                ((BaseError) e).tell();
                 System.exit(-1);
             } else {
-            //  e.printStackTrace();
+                e.printStackTrace();
                 System.exit(-1);
             }
         }

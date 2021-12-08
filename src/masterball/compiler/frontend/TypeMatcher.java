@@ -6,10 +6,10 @@ import masterball.compiler.frontend.ast.node.expnode.*;
 import masterball.compiler.frontend.ast.node.stmtnode.ForStmtNode;
 import masterball.compiler.frontend.ast.node.stmtnode.IfStmtNode;
 import masterball.compiler.frontend.ast.node.stmtnode.WhileStmtNode;
-import masterball.compiler.utils.error.semantic.TypeError;
+import masterball.compiler.share.error.semantic.TypeError;
 import masterball.compiler.frontend.info.type.MxBaseType;
 import masterball.compiler.frontend.info.type.VarType;
-import masterball.compiler.utils.MxStarTable;
+import masterball.compiler.share.MxStarTable;
 
 import java.util.Objects;
 

@@ -1,7 +1,5 @@
 package masterball.compiler.middleend.llvmir.constant;
-import masterball.compiler.middleend.llvmir.hierarchy.BaseValue;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
-import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 
 public class GlobalVariable extends GlobalValue {

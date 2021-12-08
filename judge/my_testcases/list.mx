@@ -1,0 +1,74 @@
+class Node {
+    int data;
+    Node pre, next;
+
+    Node() {
+        pre = null;
+        next = null;
+    }
+
+    void setData(int data) {
+        this.data = data;
+    }
+};
+
+class LinkedList {
+    int size;
+    Node head, tail;
+
+    LinkedList() {
+        size = 0;
+        head = null;
+        tail = null;
+    }
+
+    void push(int data) {
+        Node newNode = new Node();
+        newNode.setData(data);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.pre = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    void pop() {
+        if (size == 1) {
+            head = tail = null;
+        } else {
+            tail = tail.pre;
+            tail.next = null;
+        }
+        size--;
+    }
+
+    // 0-based
+    int search(int index) {
+        int cnt = 0;
+        Node ptr = head;
+        while (cnt < index) {
+            if (ptr.next == null) {
+                println("index out of bound!");
+                return -1;
+            }
+            ptr = ptr.next;
+            cnt++;
+        }
+        return ptr.data;
+    }
+};
+
+int main() {
+    LinkedList list = new LinkedList();
+
+    for (int i = 1; i <= 20; i++) {
+        list.push(i);
+        if (i%2 == 0)
+            list.pop();
+    }
+
+    printlnInt(list.search(7));
+}

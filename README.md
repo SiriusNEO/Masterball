@@ -69,8 +69,8 @@ Now in: `ASM`
 
 - [ ] ASM Design (RISCV-32I)
 - [ ] Inst, Operand, Hierarchy
-- [ ] RegisterAlloca (GraphColoring)
 - [ ] ASMBuilder
+- [ ] RegisterAlloca (GraphColoring)
 
 
 

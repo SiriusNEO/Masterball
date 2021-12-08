@@ -1,7 +1,7 @@
 package masterball.compiler.middleend.llvmir.constant;
 
 import masterball.compiler.middleend.llvmir.type.IntType;
-import masterball.compiler.utils.LLVMTable;
+import masterball.compiler.share.LLVMTable;
 
 public class IntConst extends BaseConst {
     public int constData;

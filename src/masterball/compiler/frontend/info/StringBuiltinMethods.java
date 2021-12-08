@@ -4,7 +4,7 @@ import masterball.compiler.frontend.info.registry.FuncRegistry;
 import masterball.compiler.frontend.info.registry.VarRegistry;
 import masterball.compiler.frontend.info.scope.ClassScope;
 import masterball.compiler.frontend.info.type.MxBaseType;
-import masterball.compiler.utils.MxStarTable;
+import masterball.compiler.share.MxStarTable;
 
 public class StringBuiltinMethods {
     public static ClassScope scope = new ClassScope();

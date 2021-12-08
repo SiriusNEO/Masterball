@@ -1,7 +1,7 @@
 package masterball.compiler.frontend.info.type;
 
-import masterball.compiler.utils.error.semantic.TypeError;
-import masterball.compiler.utils.error.syntax.ArrayDeclarationError;
+import masterball.compiler.share.error.semantic.TypeError;
+import masterball.compiler.share.error.syntax.ArrayDeclarationError;
 import masterball.compiler.frontend.info.CodePos;
 import masterball.compiler.frontend.parser.MxStarParser;
 

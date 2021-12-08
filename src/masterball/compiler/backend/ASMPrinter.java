@@ -1,4 +1,4 @@
 package masterball.compiler.backend;
 
-public class ASMPrinter {
+public class AsmPrinter {
 }
