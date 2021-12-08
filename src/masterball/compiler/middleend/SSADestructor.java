@@ -21,7 +21,8 @@ public class SSADestructor extends IRFuncPass {
     // critical path: fromBlock -> toBlock
     // notice: ConcurrentModificationException
     private void criticalEdgeSplit(IRFunction function) {
-        ArrayList<IRBlock> midBlocks = new ArrayList<>();
+        ArrayList<IRBlock> midBlockLists = new ArrayList<>();
+        HashMap<IRBlock, IRBlock> relinkLists = new HashMap<>();
 
         for (IRBlock fromBlock : function.blocks) {
             var successors = fromBlock.nexts;
@@ -31,8 +32,10 @@ public class SSADestructor extends IRFuncPass {
                 if (toBlock.prevs.size() <= 1) continue;
                 // fromBlock -> midBlock -> toBlock
                 IRBlock midBlock = new IRBlock(LLVMTable.MidBlockLabel, null);
-                midBlocks.add(midBlock);
-                fromBlock.relinkBlock(toBlock, midBlock);
+                midBlockLists.add(midBlock);
+                relinkLists.put(toBlock, midBlock);
+                // fromBlock.relinkBlock(toBlock, midBlock);
+
                 new IRBrInst(toBlock, midBlock); // jump to toBlock
 
                 // revise phi fromBlocks
@@ -42,9 +45,9 @@ public class SSADestructor extends IRFuncPass {
                             inst.resetOperand(i+1, midBlock);
                 }
             }
+            relinkLists.forEach(fromBlock::relinkBlock);
         }
-
-        function.blocks.addAll(midBlocks);
+        function.blocks.addAll(midBlockLists);
     }
 
     // resolve phi and generate para copies
@@ -60,9 +63,9 @@ public class SSADestructor extends IRFuncPass {
        }
     }
 
-    // paraCopy -> move inst
+    // copy -> move inst
     // notice: ConcurrentModificationException
-    private void copyResolve(IRBlock block, CopyGraph copyGraph) {
+    private void copyToMove(IRBlock block, CopyGraph copyGraph) {
         boolean resolveDoneFlag = false;
         while (!resolveDoneFlag) {
             resolveDoneFlag = true;
@@ -72,7 +75,6 @@ public class SSADestructor extends IRFuncPass {
                 for (var it = copyGraph.copyList.iterator(); it.hasNext(); ) {
                     CopyGraph.Copy nowCopy = it.next();
                     if (copyGraph.isfree(nowCopy.dest)) {
-                        Log.report(nowCopy.dest, nowCopy.source);
                         new IRMoveInst(nowCopy.dest, nowCopy.source, block);
                         it.remove();
                         copyGraph.remove(nowCopy);
@@ -90,6 +92,7 @@ public class SSADestructor extends IRFuncPass {
                 copyGraph.insert(new CopyGraph.Copy(nowCopy.dest, midDest));
                 new IRMoveInst(midDest, nowCopy.source, block);
                 resolveDoneFlag = false;
+                break;
             }
         }
     }
@@ -98,6 +101,6 @@ public class SSADestructor extends IRFuncPass {
     public void pass(IRFunction function) {
         criticalEdgeSplit(function);
         buildCopyGraph(function);
-        copyGraphMap.forEach(this::copyResolve);
+        copyGraphMap.forEach(this::copyToMove);
     }
 }

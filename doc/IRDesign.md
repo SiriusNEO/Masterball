@@ -171,6 +171,10 @@ dest <- source
 
 Then we maintain a copy list to eliminate.
 
+
+
+### Step 3. Copy Eliminate
+
 Notice that if we have:
 
 ```T
@@ -191,12 +195,16 @@ C <- A
 which is a ring, then we do
 
 ```
-A' <- B
-B' <- C
-C' <- A
+A <- A' <- B
 ```
 
- 
+ And we commit A1 <- B first, then it will be converted into a chain
+
+```
+A <- A'
+C <- A
+B <- C
+```
 
 
 

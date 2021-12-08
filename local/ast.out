@@ -2,9 +2,1192 @@
 ..* --- RootNode --- *
 
 [GlobalScope]
+VarTable: {e=[VarRegistry] Edge[]|e, ans=[VarRegistry] INT|ans, rk=[VarRegistry] INT[]|rk, fa=[VarRegistry] INT[]|fa, m=[VarRegistry] INT|m, n=[VarRegistry] INT|n}
+FuncTable: {getInt=[FuncRegistry] name: getInt type: func, retType:INT args:, qsort=[FuncRegistry] name: qsort type: func, retType:VOID args:Edge[] INT INT , init=[FuncRegistry] name: init type: func, retType:VOID args:, print=[FuncRegistry] name: print type: func, retType:VOID args:STRING , println=[FuncRegistry] name: println type: func, retType:VOID args:STRING , find=[FuncRegistry] name: find type: func, retType:INT args:INT , printInt=[FuncRegistry] name: printInt type: func, retType:VOID args:INT , printlnInt=[FuncRegistry] name: printlnInt type: func, retType:VOID args:INT , toString=[FuncRegistry] name: toString type: func, retType:STRING args:INT , main=[FuncRegistry] name: main type: func, retType:INT args:, getString=[FuncRegistry] name: getString type: func, retType:STRING args:, union=[FuncRegistry] name: union type: func, retType:BOOL args:INT INT }
+ClassTable: {Edge=[ClassRegistry] 
+name:Edge 
+scope:[ClassScope]
+VarTable: {w=[VarRegistry] INT|w, x=[VarRegistry] INT|x, y=[VarRegistry] INT|y}
+FuncTable: {Edge=[FuncRegistry] name: Edge type: func, retType:VOID args:}
+ }
+
+....* --- ClassDefNode --- *
+
+[ClassRegistry] 
+name:Edge 
+scope:[ClassScope]
+VarTable: {w=[VarRegistry] INT|w, x=[VarRegistry] INT|x, y=[VarRegistry] INT|y}
+FuncTable: {Edge=[FuncRegistry] name: Edge type: func, retType:VOID args:}
+ 
+
+......* --- FuncDefNode --- *
+
+[FuncRegistry] name: Edge type: func, retType:VOID args:
+
+........* --- SuiteNode --- *
+
+[NormalScope]
 VarTable: {}
-FuncTable: {getInt=[FuncRegistry] name: getInt type: func, retType:INT args:, print=[FuncRegistry] name: print type: func, retType:VOID args:STRING , println=[FuncRegistry] name: println type: func, retType:VOID args:STRING , printInt=[FuncRegistry] name: printInt type: func, retType:VOID args:INT , printlnInt=[FuncRegistry] name: printlnInt type: func, retType:VOID args:INT , toString=[FuncRegistry] name: toString type: func, retType:STRING args:INT , main=[FuncRegistry] name: main type: func, retType:INT args:, getString=[FuncRegistry] name: getString type: func, retType:STRING args:}
-ClassTable: {}
+
+..........* --- ReturnStmtNode --- *
+
+
+......* --- VarDefStmtNode --- *
+
+
+........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|x
+
+......* --- VarDefStmtNode --- *
+
+
+........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|y
+
+......* --- VarDefStmtNode --- *
+
+
+........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|w
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|n
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|m
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|ans
+
+........* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT[]|fa
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT[]|rk
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] Edge[]|e
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: qsort type: func, retType:VOID args:Edge[] INT INT 
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: l
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: r
+if true: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {x=[VarRegistry] Edge|x, i=[VarRegistry] INT|i, j=[VarRegistry] INT|j}
+
+..............* --- VarDefStmtNode --- *
+
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|i
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: l
+
+..............* --- VarDefStmtNode --- *
+
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|j
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: r
+
+..............* --- VarDefStmtNode --- *
+
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] Edge|x
+
+..................* --- IndexExpNode --- *
+
+type: Edge
+
+....................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: l
+
+..............* --- WhileStmtNode --- *
+
+condi: 
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: j
+body: 
+
+................* --- SuiteStmtNode --- *
+
+
+..................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+....................* --- WhileStmtNode --- *
+
+condi: 
+
+......................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+........................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+........................* --- BinaryExpNode --- *
+
+type: BOOL
+op: >=
+
+..........................* --- MemberExpNode --- *
+
+type: INT
+
+............................* --- IndexExpNode --- *
+
+type: Edge
+
+..............................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+..........................* --- MemberExpNode --- *
+
+type: INT
+
+............................* --- AtomExpNode --- *
+
+type: Edge
+text: x
+body: 
+
+......................* --- SuiteStmtNode --- *
+
+
+........................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- PostfixExpNode --- *
+
+type: INT
+op: --
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+....................* --- IfStmtNode --- *
+
+condi: 
+
+......................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: j
+if true: 
+
+......................* --- SuiteStmtNode --- *
+
+
+........................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- AssignExpNode --- *
+
+type: Edge
+
+..............................* --- IndexExpNode --- *
+
+type: Edge
+
+................................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..............................* --- IndexExpNode --- *
+
+type: Edge
+
+................................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- PostfixExpNode --- *
+
+type: INT
+op: ++
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+else: 
+
+....................* --- WhileStmtNode --- *
+
+condi: 
+
+......................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+........................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+........................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+..........................* --- MemberExpNode --- *
+
+type: INT
+
+............................* --- IndexExpNode --- *
+
+type: Edge
+
+..............................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..........................* --- MemberExpNode --- *
+
+type: INT
+
+............................* --- AtomExpNode --- *
+
+type: Edge
+text: x
+body: 
+
+......................* --- SuiteStmtNode --- *
+
+
+........................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- PostfixExpNode --- *
+
+type: INT
+op: ++
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+....................* --- IfStmtNode --- *
+
+condi: 
+
+......................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: j
+if true: 
+
+......................* --- SuiteStmtNode --- *
+
+
+........................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- AssignExpNode --- *
+
+type: Edge
+
+..............................* --- IndexExpNode --- *
+
+type: Edge
+
+................................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+..............................* --- IndexExpNode --- *
+
+type: Edge
+
+................................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- PostfixExpNode --- *
+
+type: INT
+op: --
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: j
+else: 
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: Edge
+
+..................* --- IndexExpNode --- *
+
+type: Edge
+
+....................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..................* --- AtomExpNode --- *
+
+type: Edge
+text: x
+
+..............* --- PureStmtNode --- *
+
+
+................* --- FuncCallExpNode --- *
+
+type: VOID
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:Edge[] INT INT 
+text: qsort
+
+..................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: l
+
+..................* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..............* --- PureStmtNode --- *
+
+
+................* --- FuncCallExpNode --- *
+
+type: VOID
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:Edge[] INT INT 
+text: qsort
+
+..................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+..................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: r
+else: 
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: init type: func, retType:VOID args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {i=[VarRegistry] INT|i}
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT[]
+
+............* --- AtomExpNode --- *
+
+type: INT[]
+text: fa
+
+............* --- NewExpNode --- *
+
+type: INT[]
+NewType: INT[]
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT[]
+
+............* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+............* --- NewExpNode --- *
+
+type: INT[]
+NewType: INT[]
+
+........* --- VarDefStmtNode --- *
+
+
+..........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|i
+
+........* --- ForStmtNode --- *
+
+init: 
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 1
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: <=
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: n
+incr: 
+
+..........* --- PrefixExpNode --- *
+
+type: INT
+op: ++
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+body: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- IndexExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: INT[]
+text: fa
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- IndexExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: find type: func, retType:INT args:INT 
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+............* --- IndexExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: INT[]
+text: fa
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: x
+if true: 
+
+..........* --- ReturnStmtNode --- *
+
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: x
+else: 
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:INT args:INT 
+text: find
+
+..............* --- IndexExpNode --- *
+
+type: INT
+
+................* --- AtomExpNode --- *
+
+type: INT[]
+text: fa
+
+................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- IndexExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT[]
+text: fa
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: union type: func, retType:BOOL args:INT INT 
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:INT args:INT 
+text: find
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:INT args:INT 
+text: find
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: y
+if true: 
+
+..........* --- ReturnStmtNode --- *
+
+
+............* --- AtomExpNode --- *
+
+type: BOOL
+text: false
+else: 
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: >
+
+............* --- IndexExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+............* --- IndexExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: y
+if true: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- IndexExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: INT[]
+text: fa
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- IndexExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+..................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+....................* --- IndexExpNode --- *
+
+type: INT
+
+......................* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+......................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+....................* --- IndexExpNode --- *
+
+type: INT
+
+......................* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+......................* --- AtomExpNode --- *
+
+type: INT
+text: y
+else: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- IndexExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: INT[]
+text: fa
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- IndexExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+....................* --- IndexExpNode --- *
+
+type: INT
+
+......................* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+......................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+....................* --- IndexExpNode --- *
+
+type: INT
+
+......................* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+......................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- AtomExpNode --- *
+
+type: BOOL
+text: true
 
 ....* --- FuncDefNode --- *
 
@@ -13,16 +1196,633 @@ ClassTable: {}
 ......* --- SuiteNode --- *
 
 [NormalScope]
-VarTable: {a=[VarRegistry] INT[][]|a}
+VarTable: {i=[VarRegistry] INT|i, j=[VarRegistry] INT|j}
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: n
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: getInt
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: m
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: getInt
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: Edge[]
+
+............* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+............* --- NewExpNode --- *
+
+type: Edge[]
+NewType: Edge[]
 
 ........* --- VarDefStmtNode --- *
 
 
 ..........* --- VarDefSingleNode --- *
 
-[VarRegistry] INT[][]|a
+[VarRegistry] INT|i
 
-............* --- NewExpNode --- *
+........* --- ForStmtNode --- *
 
-type: INT[][]
-NewType: INT[][]
+init: 
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: m
+incr: 
+
+..........* --- PrefixExpNode --- *
+
+type: INT
+op: ++
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+body: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {ed=[VarRegistry] Edge|ed}
+
+..............* --- VarDefStmtNode --- *
+
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] Edge|ed
+
+..................* --- NewExpNode --- *
+
+type: Edge
+NewType: Edge
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- MemberExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: Edge
+text: ed
+
+..................* --- FuncCallExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: getInt
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- MemberExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: Edge
+text: ed
+
+..................* --- FuncCallExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: getInt
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- MemberExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: Edge
+text: ed
+
+..................* --- FuncCallExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: getInt
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: Edge
+
+..................* --- IndexExpNode --- *
+
+type: Edge
+
+....................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..................* --- AtomExpNode --- *
+
+type: Edge
+text: ed
+
+........* --- PureStmtNode --- *
+
+
+..........* --- FuncCallExpNode --- *
+
+type: VOID
+
+............* --- AtomExpNode --- *
+
+type: func, retType:VOID args:Edge[] INT INT 
+text: qsort
+
+............* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+............* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: m
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+........* --- PureStmtNode --- *
+
+
+..........* --- FuncCallExpNode --- *
+
+type: VOID
+
+............* --- AtomExpNode --- *
+
+type: func, retType:VOID args:
+text: init
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+........* --- VarDefStmtNode --- *
+
+
+..........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|j
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+........* --- WhileStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+............* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: n
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: 1
+body: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {ed=[VarRegistry] Edge|ed}
+
+..............* --- IfStmtNode --- *
+
+condi: 
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: >=
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: m
+if true: 
+
+................* --- SuiteStmtNode --- *
+
+
+..................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+....................* --- PureStmtNode --- *
+
+
+......................* --- FuncCallExpNode --- *
+
+type: VOID
+
+........................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT 
+text: printInt
+
+........................* --- UnaryExpNode --- *
+
+type: INT
+op: -
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+....................* --- ReturnStmtNode --- *
+
+
+......................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+else: 
+
+..............* --- VarDefStmtNode --- *
+
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] Edge|ed
+
+..................* --- IndexExpNode --- *
+
+type: Edge
+
+....................* --- AtomExpNode --- *
+
+type: Edge[]
+text: e
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+..............* --- PureStmtNode --- *
+
+
+................* --- PrefixExpNode --- *
+
+type: INT
+op: ++
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+..............* --- IfStmtNode --- *
+
+condi: 
+
+................* --- FuncCallExpNode --- *
+
+type: BOOL
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:BOOL args:INT INT 
+text: union
+
+..................* --- MemberExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: Edge
+text: ed
+
+..................* --- MemberExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: Edge
+text: ed
+if true: 
+
+................* --- SuiteStmtNode --- *
+
+
+..................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+....................* --- PureStmtNode --- *
+
+
+......................* --- PrefixExpNode --- *
+
+type: INT
+op: ++
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+....................* --- PureStmtNode --- *
+
+
+......................* --- AssignExpNode --- *
+
+type: INT
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: ans
+
+........................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: ans
+
+..........................* --- MemberExpNode --- *
+
+type: INT
+
+............................* --- AtomExpNode --- *
+
+type: Edge
+text: ed
+else: 
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+............* --- IndexExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: INT[]
+text: rk
+
+..............* --- FuncCallExpNode --- *
+
+type: INT
+
+................* --- AtomExpNode --- *
+
+type: func, retType:INT args:INT 
+text: find
+
+................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: n
+if true: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- PureStmtNode --- *
+
+
+................* --- FuncCallExpNode --- *
+
+type: VOID
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT 
+text: printInt
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: ans
+else: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- PureStmtNode --- *
+
+
+................* --- FuncCallExpNode --- *
+
+type: VOID
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT 
+text: printInt
+
+..................* --- UnaryExpNode --- *
+
+type: INT
+op: -
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- AtomExpNode --- *
+
+type: INT
+text: 0

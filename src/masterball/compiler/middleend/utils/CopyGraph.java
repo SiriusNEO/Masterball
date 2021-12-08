@@ -6,7 +6,6 @@ import masterball.compiler.middleend.llvmir.inst.IRMoveInst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class CopyGraph {
     public static class Copy {

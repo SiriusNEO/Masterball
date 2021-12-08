@@ -52,7 +52,7 @@ for judge in judge_list:
         print("\033[32m[Success] [test]: in {testpoint} \033[0m".format(testpoint = code_file + ", point " + str(cnt)))
     else:
         print("\033[31m[Failed] [test]: in {testpoint} \033[0m".format(testpoint = code_file + ", point " + str(cnt)))
-        print("[info]: ", info)
-        exit(-1)
+        # print("[info]: ", info)
+        # exit(-1)
     
     time.sleep(1)
