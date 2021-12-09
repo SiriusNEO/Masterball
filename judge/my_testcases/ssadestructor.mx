@@ -1,0 +1,7 @@
+int main() {
+    bool a = true;
+    bool b = false;
+    bool c;
+
+    c = (a || b) && (a || c) || (b && c);
+}
