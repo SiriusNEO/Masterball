@@ -1,18 +1,22 @@
 package masterball.compiler.backend.rvasm.inst;
 
 import masterball.compiler.backend.rvasm.AsmTranslator;
-import masterball.compiler.backend.rvasm.hierarchy.ASMBlock;
+import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.operand.Immediate;
 import masterball.compiler.backend.rvasm.operand.Register;
+import masterball.compiler.share.RVTable;
 
 public class AsmLoadInst extends AsmBaseInst {
-    public AsmLoadInst(int byteWidth, Register rs1, Register rs2, Immediate imm, ASMBlock parentBlock) {
-        super("l" + AsmTranslator.translateByteWidth(byteWidth),
-                null, rs1, rs2, imm, parentBlock);
+    private final int byteWidth;
+
+    public AsmLoadInst(int byteWidth, Register rd, Register rs1, Register rs2, Immediate imm, AsmBlock parentBlock) {
+        super(rd, rs1, rs2, imm, parentBlock);
+        this.byteWidth = byteWidth;
     }
 
     @Override
     public String format() {
-        return String.format("%s %s %s %s", name, rs1, rs2, imm);
+        return String.format("%s %s %s %s",
+                RVTable.LoadInstPrefix + AsmTranslator.translateByteWidth(byteWidth), rs1, rs2, imm);
     }
 }

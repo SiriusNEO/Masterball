@@ -67,7 +67,9 @@ Now in: `ASM`
 
 ### BackEnd (ASM)
 
-- [ ] ASM Design (RISCV-32I)
+- [x] SSADestructor (without MEM2REG phi nodes are all simple)
+
+- [x] ASM Design (RISCV-32I)
 - [ ] Inst, Operand, Hierarchy
 - [ ] ASMBuilder
 - [ ] RegisterAlloca (GraphColoring)

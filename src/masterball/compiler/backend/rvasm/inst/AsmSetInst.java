@@ -4,8 +4,8 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.operand.Immediate;
 import masterball.compiler.backend.rvasm.operand.Register;
 
-public class AsmMoveInst extends AsmBaseInst {
-    public AsmMoveInst(Register rd, Register rs1, Register rs2, Immediate imm, AsmBlock parentBlock) {
+public class AsmSetInst extends AsmBaseInst{
+    public AsmSetInst(Register rd, Register rs1, Register rs2, Immediate imm, AsmBlock parentBlock) {
         super(rd, rs1, rs2, imm, parentBlock);
     }
 

@@ -13,6 +13,21 @@ According to https://llvm.org/doxygen/IRBuilder_8h.html
 - Value: display their identifier `identifier`
 - Type: use toString method
 
+Why in IR use `identifier()` method？Because according to LLVM Doc, IR Inst is also considered as a Value, 
+
+so there are:
+
+```
+inst.format() // to format a inst line
+inst.identifier() // to display a inst value identifier
+```
+
+It is clear and easy to read.
+
+And because LLVM are strongly-typed language, we use `typedIdentifier` to show `type identifier` this format.
+
+if we simply override `toString` method, it will be ugly.
+
 ### Formatter
 
 link unit in one line.

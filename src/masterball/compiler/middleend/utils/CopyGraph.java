@@ -1,17 +1,16 @@
 package masterball.compiler.middleend.utils;
 
-import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.Value;
-import masterball.compiler.middleend.llvmir.inst.IRMoveInst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class CopyGraph {
-    public static class Copy {
+    public static class CopyEdge {
         public Value dest, source;
 
-        public Copy(Value dest, Value source) {
+        public CopyEdge(Value dest, Value source) {
             this.dest = dest;
             this.source = source;
         }
@@ -22,19 +21,20 @@ public class CopyGraph {
 
     }
 
-    public final ArrayList<Copy> copyList = new ArrayList<>();
+    public final ArrayList<CopyEdge> edges = new ArrayList<>();
     private final HashMap<Value, Integer> inDegree = new HashMap<>();
 
     public CopyGraph() {}
 
-    public void insert(Copy copy) {
-        copyList.add(copy);
+    public void insert(CopyEdge copy) {
+        edges.add(copy);
         if (!inDegree.containsKey(copy.source)) inDegree.put(copy.source, 1);
         else inDegree.put(copy.source, inDegree.get(copy.source) + 1);
     }
 
-    // use iterator because we are doing for-loop
-    public void remove(Copy copy) {
+    // remove from copyList by iterator to avoid concurrent
+    public void remove(CopyEdge copy, Iterator<CopyEdge> it) {
+        it.remove();
         if (inDegree.get(copy.source) == 1) inDegree.remove(copy.source);
         else inDegree.put(copy.source, inDegree.get(copy.source) - 1);
     }

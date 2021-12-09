@@ -7,6 +7,9 @@ import masterball.compiler.middleend.llvmir.hierarchy.Value;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.share.LLVMTable;
 
+// It is a fake instruction which can not be recognized by llc
+// created by SSADestructor
+
 public class IRMoveInst extends IRBaseInst {
     public IRMoveInst(Value dest, Value source, IRBlock parentBlock) {
         super(LLVMTable.MoveInst, IRTranslator.voidType, parentBlock);

@@ -45,11 +45,4 @@ public class MxStarTable {
     public static final String arithOpType = "arithOpType";
     public static final String compareOpType = "compareOp";
     public static final String equalOpType = "equalOp";
-
-    public static final String ArrayBuiltinSize = "size";
-
-    public static final String StrBuiltinLength = "length";
-    public static final String StrBuiltinSubstring = "substring";
-    public static final String StrBuiltinParseInt = "parseInt";
-    public static final String StrBuiltinOrd = "ord";
 }

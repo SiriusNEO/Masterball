@@ -9,7 +9,6 @@ import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.middleend.pass.IRFuncPass;
 import masterball.compiler.middleend.utils.CopyGraph;
 import masterball.compiler.share.LLVMTable;
-import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +33,6 @@ public class SSADestructor extends IRFuncPass {
                 IRBlock midBlock = new IRBlock(LLVMTable.MidBlockLabel, null);
                 midBlockLists.add(midBlock);
                 relinkLists.put(toBlock, midBlock);
-                // fromBlock.relinkBlock(toBlock, midBlock);
-
                 new IRBrInst(toBlock, midBlock); // jump to toBlock
 
                 // revise phi fromBlocks
@@ -58,40 +55,43 @@ public class SSADestructor extends IRFuncPass {
                for (int i = 0; i < phi.operandSize(); i += 2)
                    // insert in the graph of preds
                    copyGraphMap.get((IRBlock) phi.getOperand(i + 1)).
-                           insert(new CopyGraph.Copy(phi, phi.getOperand(i)));
+                           insert(new CopyGraph.CopyEdge(phi, phi.getOperand(i)));
            }
        }
     }
 
     // copy -> move inst
     // notice: ConcurrentModificationException
-    private void copyToMove(IRBlock block, CopyGraph copyGraph) {
-        boolean resolveDoneFlag = false;
-        while (!resolveDoneFlag) {
-            resolveDoneFlag = true;
-            boolean hasFreeNode = true;
-            while (hasFreeNode) {
-                hasFreeNode = false;
-                for (var it = copyGraph.copyList.iterator(); it.hasNext(); ) {
-                    CopyGraph.Copy nowCopy = it.next();
-                    if (copyGraph.isfree(nowCopy.dest)) {
-                        new IRMoveInst(nowCopy.dest, nowCopy.source, block);
-                        it.remove();
-                        copyGraph.remove(nowCopy);
-                        hasFreeNode = true;
-                    }
+    private void eliminateFreeNode(IRBlock block, CopyGraph copyGraph) {
+        boolean hasFreeNode = true;
+        while (hasFreeNode) {
+            hasFreeNode = false;
+            for (var it = copyGraph.edges.iterator(); it.hasNext(); ) {
+                CopyGraph.CopyEdge nowCopy = it.next();
+                if (copyGraph.isfree(nowCopy.dest)) {
+                    new IRMoveInst(nowCopy.dest, nowCopy.source, block);
+                    copyGraph.remove(nowCopy, it);
+                    hasFreeNode = true;
                 }
             }
-            // graph -> ring, create mid dest
-            for (var it = copyGraph.copyList.iterator(); it.hasNext(); ) {
-                CopyGraph.Copy nowCopy = it.next();
+        }
+    }
+
+    private void copyToMove(IRBlock block, CopyGraph copyGraph) {
+        boolean loopBreak = true;
+        while (loopBreak) {
+            loopBreak = false;
+            eliminateFreeNode(block, copyGraph);
+
+            // graph -> ring, create mid dest to break the loop
+            for (var it = copyGraph.edges.iterator(); it.hasNext(); ) {
+                CopyGraph.CopyEdge nowCopy = it.next();
                 if (nowCopy.isLoop()) continue; // move A A
-                it.remove();
-                copyGraph.remove(nowCopy);
+                copyGraph.remove(nowCopy, it);
                 Value midDest = new Value(LLVMTable.Anon, nowCopy.dest.type); // a new dest
-                copyGraph.insert(new CopyGraph.Copy(nowCopy.dest, midDest));
+                copyGraph.insert(new CopyGraph.CopyEdge(nowCopy.dest, midDest));
                 new IRMoveInst(midDest, nowCopy.source, block);
-                resolveDoneFlag = false;
+                loopBreak = true; // after breaking the loop, the graph should be processed again
                 break;
             }
         }

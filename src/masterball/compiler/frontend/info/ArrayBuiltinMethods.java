@@ -11,7 +11,7 @@ public class ArrayBuiltinMethods {
 
     static {
         scope.register(
-                new FuncRegistry(MxStarTable.ArrayBuiltinSize, MxBaseType.BuiltinType.INT)
+                new FuncRegistry("size", MxBaseType.BuiltinType.INT)
         );
     }
 

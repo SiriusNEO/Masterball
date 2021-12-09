@@ -1,4 +1,16 @@
 package masterball.compiler.backend.rvasm.inst;
 
-public class AsmRetInst {
+import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
+import masterball.compiler.backend.rvasm.operand.Immediate;
+import masterball.compiler.backend.rvasm.operand.Register;
+
+public class AsmRetInst extends AsmBaseInst {
+    public AsmRetInst(Register rd, Register rs1, Register rs2, Immediate imm, AsmBlock parentBlock) {
+        super(rd, rs1, rs2, imm, parentBlock);
+    }
+
+    @Override
+    public String format() {
+        return null;
+    }
 }

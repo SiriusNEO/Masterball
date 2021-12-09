@@ -12,7 +12,6 @@ public class LLVMTable {
     public static final String TypeAnon = "anon.type";
     public static final String ConstAnon = "anon.const";
     public static final String StrConstAnon = "anon.strconst";
-    // public static final String InstVirualRegAnon = "__inst_";
 
     public static final String ThisArg = "this";
     public static final String RetReg = "retreg";

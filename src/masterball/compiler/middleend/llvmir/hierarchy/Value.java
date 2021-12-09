@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
+import masterball.compiler.backend.rvasm.operand.BaseOperand;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.share.LLVMTable;
 
@@ -36,6 +37,8 @@ public class Value {
     public Value resolveFrom = null;
     public String name;
     public String comment = null;
+    // interact with BackEnd
+    public BaseOperand asmOperand = null;
 
     public Value(IRBaseType type) {
         this.name = LLVMTable.TypeAnon;

@@ -11,22 +11,22 @@ public class StringBuiltinMethods {
 
     static {
         scope.register(
-                new FuncRegistry(MxStarTable.StrBuiltinLength, MxBaseType.BuiltinType.INT)
+                new FuncRegistry("length", MxBaseType.BuiltinType.INT)
         );
 
         scope.register(
-                new FuncRegistry(MxStarTable.StrBuiltinSubstring, MxBaseType.BuiltinType.STRING,
+                new FuncRegistry("substring", MxBaseType.BuiltinType.STRING,
                         new VarRegistry("left", MxBaseType.BuiltinType.INT),
                         new VarRegistry("right", MxBaseType.BuiltinType.INT)
                 )
         );
 
         scope.register(
-                new FuncRegistry(MxStarTable.StrBuiltinParseInt, MxBaseType.BuiltinType.INT)
+                new FuncRegistry("parseInt", MxBaseType.BuiltinType.INT)
         );
 
         scope.register(
-                new FuncRegistry(MxStarTable.StrBuiltinOrd, MxBaseType.BuiltinType.INT,
+                new FuncRegistry("ord", MxBaseType.BuiltinType.INT,
                         new VarRegistry("pos", MxBaseType.BuiltinType.INT))
         );
     }

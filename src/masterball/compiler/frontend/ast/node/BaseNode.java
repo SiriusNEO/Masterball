@@ -7,7 +7,7 @@ import masterball.compiler.middleend.llvmir.hierarchy.Value;
 public abstract class BaseNode {
     public CodePos codePos;
     // interact with IR part
-    public Value value;
+    public Value value = null;
 
     public BaseNode(CodePos codePos) {
         this.codePos = codePos;
