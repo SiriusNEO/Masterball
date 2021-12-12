@@ -1,19 +1,20 @@
 package masterball.compiler.middleend.llvmir.inst;
 
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.type.VoidType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
+import masterball.compiler.share.pass.InstVisitor;
 
 public class IRBrInst extends IRBaseInst {
     public IRBrInst(IRBlock destBlock, IRBlock parentBlock) {
-        super(LLVMTable.BrInst, new VoidType(), parentBlock);
+        super(LLVM.BrInst, new VoidType(), parentBlock);
         this.addOperand(destBlock);
         this.parentBlock.linkParentBlock(this);
     }
 
     public IRBrInst(Value condition, IRBlock ifTrueBlock, IRBlock ifFalseBlock, IRBlock parentBlock) {
-        super(LLVMTable.BrInst, new VoidType(), parentBlock);
+        super(LLVM.BrInst, new VoidType(), parentBlock);
         this.addOperand(condition);
         this.addOperand(ifTrueBlock);
         this.addOperand(ifFalseBlock);
@@ -49,12 +50,17 @@ public class IRBrInst extends IRBaseInst {
         // br i1 %comparison_result, label %A, label %B
         // br label %A
         if (!this.isJump()) {
-            return LLVMTable.BrInst + " " + this.condition().type + " " + this.condition().identifier()
+            return LLVM.BrInst + " " + this.condition().type + " " + this.condition().identifier()
                     + ", " + this.ifTrueBlock().typedIdentifier()
                     + ", " + this.ifFalseBlock().typedIdentifier();
         }
         else {
-            return LLVMTable.BrInst + " " + this.destBlock().typedIdentifier();
+            return LLVM.BrInst + " " + this.destBlock().typedIdentifier();
         }
+    }
+
+    @Override
+    public void accept(InstVisitor visitor) {
+        visitor.visit(this);
     }
 }

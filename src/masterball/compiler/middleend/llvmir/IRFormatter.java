@@ -3,7 +3,6 @@ package masterball.compiler.middleend.llvmir;
 import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.constant.StringConst;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
-import masterball.compiler.middleend.llvmir.hierarchy.StructProto;
 import masterball.compiler.middleend.llvmir.inst.*;
 import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.middleend.llvmir.type.PointerType;

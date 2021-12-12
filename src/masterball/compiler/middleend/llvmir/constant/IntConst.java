@@ -1,18 +1,18 @@
 package masterball.compiler.middleend.llvmir.constant;
 
 import masterball.compiler.middleend.llvmir.type.IntType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
 
 public class IntConst extends BaseConst {
     public int constData;
 
     public IntConst(int constData) {
-        super(LLVMTable.ConstAnon, new IntType());
+        super(LLVM.ConstAnon, new IntType());
         this.constData = constData;
     }
 
     public IntConst(int constData, int bitWidth) {
-        super(LLVMTable.ConstAnon, new IntType(bitWidth));
+        super(LLVM.ConstAnon, new IntType(bitWidth));
         this.constData = constData;
     }
 

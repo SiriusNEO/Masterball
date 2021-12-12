@@ -1,9 +1,10 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
 import masterball.compiler.middleend.llvmir.IRTranslator;
+import masterball.compiler.middleend.llvmir.StructProto;
 import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.constant.StringConst;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.error.runtime.UnknownError;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import java.util.Objects;
 
 public class IRModule {
     public ArrayList<IRFunction> functions = new ArrayList<>();
-    public ArrayList<IRFunction> methods = new ArrayList<>();
     public ArrayList<IRFunction> builtinFunctions = new ArrayList<>();
     public ArrayList<StructProto> classes = new ArrayList<>();
 
@@ -20,28 +20,28 @@ public class IRModule {
     public ArrayList<StringConst> stringConstSeg = new ArrayList<>();
 
     public void setBottomFunctions() {
-        builtinFunctions.add(new IRFunction(LLVMTable.BottomPrefix + "malloc",
+        builtinFunctions.add(new IRFunction(LLVM.BottomPrefix + "malloc",
                 IRTranslator.heapPointerType, IRTranslator.i32Type));
 
-        builtinFunctions.add(new IRFunction(LLVMTable.BottomStrFuncPrefix + LLVMTable.StrCatArg,
+        builtinFunctions.add(new IRFunction(LLVM.BottomStrFuncPrefix + LLVM.StrCatArg,
                 IRTranslator.stringType, IRTranslator.stringType, IRTranslator.stringType));
 
-        builtinFunctions.add(new IRFunction(LLVMTable.BottomStrFuncPrefix + LLVMTable.EqualArg,
+        builtinFunctions.add(new IRFunction(LLVM.BottomStrFuncPrefix + LLVM.EqualArg,
                 IRTranslator.boolType, IRTranslator.stringType, IRTranslator.stringType));
 
-        builtinFunctions.add(new IRFunction(LLVMTable.BottomStrFuncPrefix + LLVMTable.NotEqualArg,
+        builtinFunctions.add(new IRFunction(LLVM.BottomStrFuncPrefix + LLVM.NotEqualArg,
                 IRTranslator.boolType, IRTranslator.stringType, IRTranslator.stringType));
 
-        builtinFunctions.add(new IRFunction(LLVMTable.BottomStrFuncPrefix + LLVMTable.LessArg,
+        builtinFunctions.add(new IRFunction(LLVM.BottomStrFuncPrefix + LLVM.LessArg,
                 IRTranslator.boolType, IRTranslator.stringType, IRTranslator.stringType));
 
-        builtinFunctions.add(new IRFunction(LLVMTable.BottomStrFuncPrefix + LLVMTable.LessEqualArg,
+        builtinFunctions.add(new IRFunction(LLVM.BottomStrFuncPrefix + LLVM.LessEqualArg,
                 IRTranslator.boolType, IRTranslator.stringType, IRTranslator.stringType));
 
-        builtinFunctions.add(new IRFunction(LLVMTable.BottomStrFuncPrefix + LLVMTable.GreaterArg,
+        builtinFunctions.add(new IRFunction(LLVM.BottomStrFuncPrefix + LLVM.GreaterArg,
                 IRTranslator.boolType, IRTranslator.stringType, IRTranslator.stringType));
 
-        builtinFunctions.add(new IRFunction(LLVMTable.BottomStrFuncPrefix + LLVMTable.GreaterEqualArg,
+        builtinFunctions.add(new IRFunction(LLVM.BottomStrFuncPrefix + LLVM.GreaterEqualArg,
                 IRTranslator.boolType, IRTranslator.stringType, IRTranslator.stringType));
     }
 
@@ -51,7 +51,7 @@ public class IRModule {
 
     public IRFunction getStrMethod(String op) {
         for (IRFunction builtinFunction : builtinFunctions) {
-            if (Objects.equals(builtinFunction.name, LLVMTable.BottomStrFuncPrefix + op))
+            if (Objects.equals(builtinFunction.name, LLVM.BottomStrFuncPrefix + op))
                 return builtinFunction;
         }
         throw new UnknownError(op);

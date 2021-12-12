@@ -1,16 +1,17 @@
 package masterball.compiler.middleend.llvmir.inst;
 
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.error.runtime.UnknownError;
+import masterball.compiler.share.pass.InstVisitor;
 
 // number of PhiInst operands must be even
 
 public class IRPhiInst extends IRBaseInst {
     public IRPhiInst(IRBaseType yieldType, IRBlock parentBlock, Value... operands) {
-        super(LLVMTable.PhiInst, yieldType, parentBlock);
+        super(LLVM.PhiInst, yieldType, parentBlock);
 
         for (Value operand : operands) this.addOperand(operand);
 
@@ -25,7 +26,7 @@ public class IRPhiInst extends IRBaseInst {
     @Override
     public String format() {
         // %indvar = phi i32 [ 0, %LoopHeader ], [ %nextindvar, %Loop ]
-        String ret = this.identifier() + " = " + LLVMTable.PhiInst + " " + this.type + " ";
+        String ret = this.identifier() + " = " + LLVM.PhiInst + " " + this.type + " ";
 
         for (int i = 0; i < this.operandSize(); i += 2) {
             ret += "[" + this.getOperand(i).identifier() + ", " + this.getOperand(i+1).identifier() + "]";
@@ -33,5 +34,10 @@ public class IRPhiInst extends IRBaseInst {
         }
 
         return ret;
+    }
+
+    @Override
+    public void accept(InstVisitor visitor) {
+        visitor.visit(this);
     }
 }

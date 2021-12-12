@@ -3,14 +3,14 @@ package masterball.compiler.middleend.llvmir.constant;
 import masterball.compiler.middleend.llvmir.type.ArrayType;
 import masterball.compiler.middleend.llvmir.type.IntType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
 
 public class StringConst extends GlobalValue {
 
     public String constData;
 
     public StringConst(String constData) {
-        super(LLVMTable.StrConstAnon,
+        super(LLVM.StrConstAnon,
                 new PointerType(new ArrayType(new IntType(8), constData.length()+1))
                 );
         this.constData = constData;

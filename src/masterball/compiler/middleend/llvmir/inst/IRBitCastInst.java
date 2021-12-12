@@ -1,13 +1,14 @@
 package masterball.compiler.middleend.llvmir.inst;
 
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
+import masterball.compiler.share.pass.InstVisitor;
 
 public class IRBitCastInst extends IRBaseInst {
     public IRBitCastInst(Value fromValue, IRBaseType targetType, IRBlock parentBlock) {
-        super(LLVMTable.BitCastInst, targetType, parentBlock);
+        super(LLVM.BitCastInst, targetType, parentBlock);
         this.addOperand(fromValue);
     }
 
@@ -16,7 +17,12 @@ public class IRBitCastInst extends IRBaseInst {
     @Override
     public String format() {
         // %bitcast = bitcast i8** %a to i8*;
-        return this.identifier() + " = " + LLVMTable.BitCastInst + " " + this.fromValue().typedIdentifier()
+        return this.identifier() + " = " + LLVM.BitCastInst + " " + this.fromValue().typedIdentifier()
                 + " to " + this.type;
+    }
+
+    @Override
+    public void accept(InstVisitor visitor) {
+        visitor.visit(this);
     }
 }

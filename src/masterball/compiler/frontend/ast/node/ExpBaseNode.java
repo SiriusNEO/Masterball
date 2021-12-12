@@ -2,7 +2,7 @@ package masterball.compiler.frontend.ast.node;
 
 import masterball.compiler.frontend.info.CodePos;
 import masterball.compiler.frontend.info.type.MxBaseType;
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 
 public abstract class ExpBaseNode extends BaseNode {
     public MxBaseType type;

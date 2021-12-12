@@ -1,10 +1,7 @@
 package masterball;
 
 import masterball.compiler.share.error.BaseError;
-import masterball.engine.IOEngine;
-import masterball.engine.IRGenEngine;
-import masterball.engine.ParseEngine;
-import masterball.engine.SemanticEngine;
+import masterball.engine.*;
 
 public class TestEntry {
 
@@ -17,6 +14,8 @@ public class TestEntry {
             SemanticEngine semanticEngine = new SemanticEngine(parseEngine, ioEngine.astGenStream);
 
             IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, true, ioEngine.irGenStream);
+
+            CodeGenEngine codeGenEngine = new CodeGenEngine(irGenEngine, ioEngine.asmGenStream);
         }
         catch (Exception e) {
             if (e instanceof BaseError) {

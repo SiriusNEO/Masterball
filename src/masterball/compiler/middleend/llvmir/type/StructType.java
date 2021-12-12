@@ -1,7 +1,7 @@
 package masterball.compiler.middleend.llvmir.type;
 
-import masterball.compiler.middleend.llvmir.hierarchy.StructProto;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.middleend.llvmir.StructProto;
+import masterball.compiler.share.lang.LLVM;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -13,7 +13,7 @@ public class StructType extends IRBaseType {
 
     public StructType(String structName) {
         this.structName = structName;
-        structProto = new StructProto(LLVMTable.StructPrefix + structName, this);
+        structProto = new StructProto(LLVM.StructPrefix + structName, this);
     }
 
     @Override

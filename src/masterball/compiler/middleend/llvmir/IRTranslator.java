@@ -5,8 +5,8 @@ import masterball.compiler.frontend.info.type.MxBaseType;
 import masterball.compiler.frontend.info.type.MxFuncType;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.middleend.llvmir.type.*;
-import masterball.compiler.share.LLVMTable;
-import masterball.compiler.share.MxStarTable;
+import masterball.compiler.share.lang.LLVM;
+import masterball.compiler.share.lang.MxStar;
 
 import java.util.Objects;
 
@@ -22,29 +22,29 @@ public class IRTranslator {
 
     public static String translateOp(String mxOp) {
         switch (mxOp) {
-            case MxStarTable.AddOp: return LLVMTable.AddInst;
-            case MxStarTable.SubOp: return LLVMTable.SubInst;
-            case MxStarTable.MulOp: return LLVMTable.MulInst;
-            case MxStarTable.DivOp: return LLVMTable.DivInst;
-            case MxStarTable.ModOp: return LLVMTable.ModInst;
-            case MxStarTable.ArithShiftLeftOp: return LLVMTable.ShiftLeftInst;
-            case MxStarTable.ArithShiftRightOp: return LLVMTable.ShiftRightInst;
-            case MxStarTable.BitAndOp: return LLVMTable.AndInst;
-            case MxStarTable.BitOrOp: return LLVMTable.OrInst;
-            case MxStarTable.BitXorOp: return LLVMTable.XorInst;
-            case MxStarTable.GreaterOp: return LLVMTable.GreaterArg;
-            case MxStarTable.GreaterEqualOp: return LLVMTable.GreaterEqualArg;
-            case MxStarTable.LessOp: return LLVMTable.LessArg;
-            case MxStarTable.LessEqualOp: return LLVMTable.LessEqualArg;
-            case MxStarTable.EqualOp: return LLVMTable.EqualArg;
-            case MxStarTable.NotEqualOp: return LLVMTable.NotEqualArg;
+            case MxStar.AddOp: return LLVM.AddInst;
+            case MxStar.SubOp: return LLVM.SubInst;
+            case MxStar.MulOp: return LLVM.MulInst;
+            case MxStar.DivOp: return LLVM.DivInst;
+            case MxStar.ModOp: return LLVM.ModInst;
+            case MxStar.ArithShiftLeftOp: return LLVM.ShiftLeftInst;
+            case MxStar.ArithShiftRightOp: return LLVM.ShiftRightInst;
+            case MxStar.BitAndOp: return LLVM.AndInst;
+            case MxStar.BitOrOp: return LLVM.OrInst;
+            case MxStar.BitXorOp: return LLVM.XorInst;
+            case MxStar.GreaterOp: return LLVM.GreaterArg;
+            case MxStar.GreaterEqualOp: return LLVM.GreaterEqualArg;
+            case MxStar.LessOp: return LLVM.LessArg;
+            case MxStar.LessEqualOp: return LLVM.LessEqualArg;
+            case MxStar.EqualOp: return LLVM.EqualArg;
+            case MxStar.NotEqualOp: return LLVM.NotEqualArg;
         }
         return "";
     }
 
     public static String translateStrOp(String mxOp) {
         // add -> cat, others (cmp op) are the same
-        if (Objects.equals(mxOp, MxStarTable.AddOp)) return LLVMTable.StrCatArg;
+        if (Objects.equals(mxOp, MxStar.AddOp)) return LLVM.StrCatArg;
         return translateOp(mxOp);
     }
 
@@ -54,7 +54,6 @@ public class IRTranslator {
     public void setGlobalScope(GlobalScope globalScope) {this.globalScope = globalScope;}
 
     public IRBaseType translateBuiltinType(MxBaseType mxType) {
-        // TODO: not implemented completely yet
         IRBaseType ret;
         switch (mxType.builtinType) {
             case INT: ret = i32Type; break;

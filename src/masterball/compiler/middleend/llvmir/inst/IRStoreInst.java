@@ -2,29 +2,35 @@ package masterball.compiler.middleend.llvmir.inst;
 
 import masterball.compiler.middleend.llvmir.constant.NullptrConst;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.type.PointerType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
+import masterball.compiler.share.pass.InstVisitor;
 
 public class IRStoreInst extends IRBaseInst {
-    public IRStoreInst(Value destPtr, Value storeValue, IRBlock parentBlock) {
-        super(LLVMTable.StoreInst, storeValue.type, parentBlock);
+    public IRStoreInst(Value storePtr, Value storeValue, IRBlock parentBlock) {
+        super(LLVM.StoreInst, storeValue.type, parentBlock);
         this.addOperand(storeValue);
-        this.addOperand(destPtr);
+        this.addOperand(storePtr);
     }
 
     public Value storeValue() {return this.getOperand(0);}
-    public Value destPtr() {return this.getOperand(1);}
+    public Value storePtr() {return this.getOperand(1);}
 
     @Override
     public String format() {
         // store i32 %1, i32* %i, align 4
         // nullptr has the same type with destPtr.pointedType
         if (this.storeValue() instanceof NullptrConst) {
-            return LLVMTable.StoreInst + " " + ((PointerType) this.destPtr().type).pointedType + " " +
-                    this.storeValue().identifier() + ", " + this.destPtr().typedIdentifier() + ", align " + this.type.size();
+            return LLVM.StoreInst + " " + ((PointerType) this.storePtr().type).pointedType + " " +
+                    this.storeValue().identifier() + ", " + this.storePtr().typedIdentifier() + ", align " + this.type.size();
         }
 
-        return LLVMTable.StoreInst + " " + this.storeValue().typedIdentifier() + ", " + this.destPtr().typedIdentifier() + ", align " + this.type.size();
+        return LLVM.StoreInst + " " + this.storeValue().typedIdentifier() + ", " + this.storePtr().typedIdentifier() + ", align " + this.type.size();
+    }
+
+    @Override
+    public void accept(InstVisitor visitor) {
+        visitor.visit(this);
     }
 }

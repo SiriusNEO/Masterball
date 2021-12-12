@@ -9,6 +9,7 @@ import masterball.compiler.frontend.info.scope.FuncScope;
 import masterball.compiler.frontend.info.scope.LoopScope;
 import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.frontend.info.registry.VarRegistry;
+import masterball.compiler.share.misc.Pair;
 
 import java.util.Stack;
 
@@ -31,17 +32,17 @@ public class InfoManager {
     }
 
     // in IR, a variable is reachable if and only if it has value.
-    public VarRegistry queryVarWithValue(String name, boolean[] isMember) {
+    public Pair<VarRegistry, Boolean> queryVarWithValue(String name) {
         VarRegistry ret = null;
-        isMember[0] = false;
+        boolean isMember = false;
         for (int i = scopeStack.size() - 1; i >= 0; i--) {
             ret = scopeStack.get(i).queryVar(name);
             if (ret != null && ret.value != null) {
-                if (scopeStack.get(i) instanceof ClassScope) isMember[0] = true;
+                if (scopeStack.get(i) instanceof ClassScope) isMember = true;
                 break;
             }
         }
-        return ret;
+        return new Pair<>(ret, isMember);
     }
 
     public ClassRegistry queryClass(String name) {

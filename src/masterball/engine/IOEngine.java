@@ -13,15 +13,17 @@ public class IOEngine {
     private static final String redirectLogOutput = "-debug-o";
     private static final String redirectASTOutput = "-ast-o";
     private static final String redirectLLVMOutput = "-llvm-o";
+    private static final String redirectRVOutput = "-rv-o";
     private static final String semanticCheckOnly = "-fsyntax-only";
 
     public final InputStream is;
 
-    public final PrintStream logStream, astGenStream, irGenStream;
+    public final PrintStream logStream, astGenStream, irGenStream, asmGenStream;
+
 
     public IOEngine(String[] args) throws Exception {
 
-        String inputPath = null, logOutputPath = null, astOutputPath = null, llvmOutputPath = null;
+        String inputPath = null, logOutputPath = null, astOutputPath = null, llvmOutputPath = null, rvOutputPath = null;
         for (int i = 0; i < args.length; i++) {
             if (Objects.equals(args[i], redirectInput)) {
                 if (i == args.length - 1) throw new FileNotFoundException();
@@ -43,12 +45,18 @@ public class IOEngine {
                 llvmOutputPath = args[i + 1];
                 i ++;
             }
+            else if (Objects.equals(args[i], redirectRVOutput)) {
+                if (i == args.length - 1) throw new FileNotFoundException();
+                rvOutputPath = args[i + 1];
+                i ++;
+            }
         }
 
         is = (inputPath != null) ? new FileInputStream(inputPath) : System.in;
         logStream = (logOutputPath != null) ? new PrintStream(logOutputPath) : System.out;
         astGenStream = (astOutputPath != null) ? new PrintStream(astOutputPath) : System.out;
         irGenStream = (llvmOutputPath != null) ? new PrintStream(llvmOutputPath) : System.out;
+        asmGenStream = (rvOutputPath != null) ? new PrintStream(rvOutputPath) : System.out;
 
         Log.setPrintStream(logStream);
 

@@ -1,18 +1,17 @@
 package masterball.compiler.middleend.llvmir.inst;
 
 import masterball.compiler.middleend.llvmir.IRTranslator;
-import masterball.compiler.middleend.llvmir.constant.IntConst;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
-import masterball.compiler.middleend.llvmir.type.IRBaseType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.middleend.llvmir.Value;
+import masterball.compiler.share.lang.LLVM;
+import masterball.compiler.share.pass.InstVisitor;
 
 // It is a fake instruction which can not be recognized by llc
 // created by SSADestructor
 
 public class IRMoveInst extends IRBaseInst {
     public IRMoveInst(Value dest, Value source, IRBlock parentBlock) {
-        super(LLVMTable.MoveInst, IRTranslator.voidType, parentBlock);
+        super(LLVM.MoveInst, IRTranslator.voidType, parentBlock);
         this.addOperand(dest);
         this.addOperand(source);
     }
@@ -27,16 +26,21 @@ public class IRMoveInst extends IRBaseInst {
 
     @Override
     public String format() {
-        return LLVMTable.MoveInst + " " + this.dest().identifier() + ", " + this.source().identifier();
+        return LLVM.MoveInst + " " + this.dest().identifier() + ", " + this.source().identifier();
         /*
         IRBaseInst substitutedInst;
         if (dest().type.match(IRTranslator.i32Type) || dest().type.match(IRTranslator.boolType)) {
-            substitutedInst = new IRBinaryInst(LLVMTable.AddInst, dest().type, source(), new IntConst(0), null);
+            substitutedInst = new IRBinaryInst(LLVM.AddInst, dest().type, source(), new IntConst(0), null);
         }
         else
             substitutedInst = new IRGetElementPtrInst(source(), source().type, null, new IntConst(0));
         substitutedInst.name = dest().name;
         return substitutedInst.format();
         */
+    }
+
+    @Override
+    public void accept(InstVisitor visitor) {
+        visitor.visit(this);
     }
 }

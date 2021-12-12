@@ -1,9 +1,9 @@
 package masterball.engine;
 
-import masterball.compiler.middleend.IRBuilder;
-import masterball.compiler.middleend.IRPrinter;
-import masterball.compiler.middleend.SSADestructor;
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.IRBuilder;
+import masterball.compiler.middleend.llvmir.IRPrinter;
+import masterball.compiler.middleend.ssa.SSADestructor;
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
 
 import java.io.PrintStream;
@@ -16,11 +16,10 @@ public class IRGenEngine {
         Value.rename = renameFlag;
         this.module = new IRBuilder(se.ASTRoot).module;
 
-        this.module.functions.forEach(func -> new SSADestructor().pass(func));
-        this.module.methods.forEach(method -> new SSADestructor().pass(method));
-
         if (irGenStream != null) {
-            new IRPrinter(irGenStream).visit(this.module);
+            new IRPrinter(irGenStream).runOnModule(this.module);
         }
+
+        this.module.functions.forEach(func -> new SSADestructor().runOnFunc(func));
     }
 }

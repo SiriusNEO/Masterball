@@ -143,6 +143,18 @@ Translator will translate MxStarClass to IRStructType*
 
 
 
+## Current
+
+Current is a concept of "the current state of this builder".
+
+So we have `cur.block`,  `cur.func` etc.
+
+In IR, current do work like: manager current block, func and class; and manager current continue/break stack.
+
+in Asm, current do more things such as a simple register allocator (because to some extent it is also a "current state" of AsmBuilder).
+
+
+
 ## Pass
 
 

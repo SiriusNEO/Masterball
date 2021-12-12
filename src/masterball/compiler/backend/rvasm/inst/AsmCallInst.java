@@ -1,0 +1,19 @@
+package masterball.compiler.backend.rvasm.inst;
+
+import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
+import masterball.compiler.share.lang.RV32I;
+
+public class AsmCallInst extends AsmBaseInst {
+    private String symbol;
+
+    public AsmCallInst(String symbol, AsmBlock parentBlock) {
+        super(null, null, null, null, parentBlock);
+        this.symbol = symbol;
+    }
+
+    @Override
+    public String format() {
+        // call symbol
+        return String.format("%s %s", RV32I.CallInst, rd, symbol);
+    }
+}

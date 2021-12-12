@@ -1,11 +1,11 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRBrInst;
 import masterball.compiler.middleend.llvmir.inst.IRMoveInst;
 import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.middleend.llvmir.type.LabelType;
-import masterball.compiler.share.LLVMTable;
 import masterball.debug.Log;
 
 import java.util.ArrayList;

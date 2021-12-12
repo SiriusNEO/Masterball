@@ -1,8 +1,9 @@
 package masterball.compiler.middleend.llvmir.inst;
 
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
-import masterball.compiler.middleend.llvmir.hierarchy.User;
+import masterball.compiler.middleend.llvmir.User;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
+import masterball.compiler.share.pass.InstVisitor;
 
 public abstract class IRBaseInst extends User {
     public IRBlock parentBlock;
@@ -32,4 +33,6 @@ public abstract class IRBaseInst extends User {
     public abstract String format();
 
     public boolean isTerminator() {return false;}
+
+    public abstract void accept(InstVisitor visitor);
 }

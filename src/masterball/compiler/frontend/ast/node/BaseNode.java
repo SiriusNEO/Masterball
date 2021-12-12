@@ -1,8 +1,8 @@
 package masterball.compiler.frontend.ast.node;
 
-import masterball.compiler.frontend.ast.ASTVisitor;
+import masterball.compiler.share.pass.ASTVisitor;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 
 public abstract class BaseNode {
     public CodePos codePos;
@@ -13,5 +13,5 @@ public abstract class BaseNode {
         this.codePos = codePos;
     }
 
-    abstract public void accept(ASTVisitor visitor);
+    public abstract void accept(ASTVisitor visitor);
 }

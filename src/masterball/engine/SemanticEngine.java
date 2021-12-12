@@ -1,8 +1,8 @@
 package masterball.engine;
 
-import masterball.compiler.frontend.ASTBuilder;
-import masterball.compiler.frontend.ASTPrinter;
-import masterball.compiler.frontend.SemanticChecker;
+import masterball.compiler.frontend.ast.ASTBuilder;
+import masterball.compiler.frontend.ast.ASTPrinter;
+import masterball.compiler.frontend.sema.SemanticChecker;
 import masterball.compiler.frontend.ast.node.RootNode;
 import masterball.debug.Log;
 

@@ -1,9 +1,9 @@
 package masterball.compiler.frontend.ast.node;
 
-import masterball.compiler.frontend.ast.ASTVisitor;
 import masterball.compiler.frontend.ast.node.stmtnode.VarDefStmtNode;
 import masterball.compiler.frontend.info.CodePos;
 import masterball.compiler.frontend.info.registry.ClassRegistry;
+import masterball.compiler.share.pass.ASTVisitor;
 
 import java.util.ArrayList;
 

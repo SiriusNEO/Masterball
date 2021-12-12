@@ -1,9 +1,11 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
+import masterball.compiler.middleend.llvmir.IRTranslator;
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.GlobalValue;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.IRFuncType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
 
 import java.util.ArrayList;
 
@@ -15,8 +17,8 @@ public class IRFunction extends GlobalValue {
         // finished in IRBuilder
 
         super(name, funcType);
-        new IRBlock(LLVMTable.EntryBlockLabel, this);
-        new IRBlock(LLVMTable.ExitBlockLabel, this);
+        new IRBlock(LLVM.EntryBlockLabel, this);
+        new IRBlock(LLVM.ExitBlockLabel, this);
         this.entryBlock().parentFunction = this;
         this.exitBlock().parentFunction = this;
     }
@@ -25,6 +27,10 @@ public class IRFunction extends GlobalValue {
     public IRFunction(String name, IRBaseType retType, IRBaseType... argTypes) {
         super(name, new IRFuncType(retType, null));
         for (IRBaseType argType : argTypes) ((IRFuncType) this.type).argTypes.add(argType);
+    }
+
+    public boolean isVoid() {
+        return ((IRFuncType) this.type).retType.match(IRTranslator.voidType);
     }
 
     public void addArg(Value arg) {

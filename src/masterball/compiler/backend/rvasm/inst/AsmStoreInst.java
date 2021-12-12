@@ -4,7 +4,7 @@ import masterball.compiler.backend.rvasm.AsmTranslator;
 import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.operand.Immediate;
 import masterball.compiler.backend.rvasm.operand.Register;
-import masterball.compiler.share.RVTable;
+import masterball.compiler.share.lang.RV32I;
 
 public class AsmStoreInst extends AsmBaseInst {
     private final int byteWidth;
@@ -16,7 +16,8 @@ public class AsmStoreInst extends AsmBaseInst {
 
     @Override
     public String format() {
-        return String.format("%s %s %s %s",
-                RVTable.StoreInstPrefix + AsmTranslator.translateByteWidth(byteWidth), rs1, rs2, imm);
+        // sw rs2, offset(rs1)
+        return String.format("%s %s, %s(%s)",
+                RV32I.StoreInstPrefix + AsmTranslator.translateByteWidth(byteWidth), rs2, imm, rs1);
     }
 }

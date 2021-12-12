@@ -1,11 +1,12 @@
 package masterball.compiler.middleend.llvmir.inst;
 
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.middleend.llvmir.type.VoidType;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
+import masterball.compiler.share.pass.InstVisitor;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class IRCallInst extends IRBaseInst {
     private boolean noaliasFlag = false;
 
     public IRCallInst(IRFunction callFunc, IRBlock parentBlock, ArrayList<Value> callArgs) {
-        super(callFunc.name + LLVMTable.CallSuffix,
+        super(callFunc.name + LLVM.CallSuffix,
                 ((IRFuncType) callFunc.type).retType,
                 parentBlock);
         this.addOperand(callFunc);
@@ -22,7 +23,7 @@ public class IRCallInst extends IRBaseInst {
     }
 
     public IRCallInst(IRFunction callFunc, IRBlock parentBlock, Value... callArgs) {
-        super(callFunc.name + LLVMTable.CallSuffix,
+        super(callFunc.name + LLVM.CallSuffix,
                 ((IRFuncType) callFunc.type).retType,
                 parentBlock);
         this.addOperand(callFunc);
@@ -46,7 +47,7 @@ public class IRCallInst extends IRBaseInst {
     public String format() {
         // %call = call i32 @foo(i32 1)
         StringBuilder ret = new StringBuilder((this.type.match(new VoidType())) ? "" : this.identifier() + " = ");
-        ret.append(LLVMTable.CallInst + " ");
+        ret.append(LLVM.CallInst + " ");
         if (noaliasFlag) ret.append("noalias ");
         ret.append(this.callFunc().typedIdentifier()).append("(");
         for (int i = 0; i < this.callFunc().getArgNum(); i++) {
@@ -55,5 +56,10 @@ public class IRCallInst extends IRBaseInst {
         }
         ret.append(")");
         return ret.toString();
+    }
+
+    @Override
+    public void accept(InstVisitor visitor) {
+        visitor.visit(this);
     }
 }

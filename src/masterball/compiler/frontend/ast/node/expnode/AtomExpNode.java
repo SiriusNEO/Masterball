@@ -1,9 +1,8 @@
 package masterball.compiler.frontend.ast.node.expnode;
 
-import masterball.compiler.frontend.ast.ASTVisitor;
+import masterball.compiler.share.pass.ASTVisitor;
 import masterball.compiler.frontend.ast.node.ExpBaseNode;
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.frontend.info.registry.VarRegistry;
 import masterball.compiler.frontend.parser.MxStarParser;
 
 public class AtomExpNode extends ExpBaseNode {

@@ -1,9 +1,7 @@
 package masterball.compiler.backend.rvasm.inst;
 
 import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
-import masterball.compiler.backend.rvasm.operand.Immediate;
-import masterball.compiler.backend.rvasm.operand.Register;
-import masterball.compiler.share.RVTable;
+import masterball.compiler.share.lang.RV32I;
 
 public class AsmJmpInst extends AsmBaseInst {
     private final AsmBlock dest;
@@ -16,6 +14,6 @@ public class AsmJmpInst extends AsmBaseInst {
     @Override
     public String format() {
         // j offset
-        return String.format("%s %s", RVTable.JmpInstPrefix, dest);
+        return String.format("%s %s", RV32I.JmpInstPrefix, dest);
     }
 }

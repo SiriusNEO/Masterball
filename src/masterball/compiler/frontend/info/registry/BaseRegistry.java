@@ -1,7 +1,7 @@
 package masterball.compiler.frontend.info.registry;
 
 import masterball.compiler.frontend.info.CodePos;
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class BaseRegistry {

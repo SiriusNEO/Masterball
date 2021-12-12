@@ -1,8 +1,9 @@
 package masterball.compiler.middleend.llvmir.inst;
 
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
-import masterball.compiler.middleend.llvmir.hierarchy.Value;
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
+import masterball.compiler.share.pass.InstVisitor;
 
 public class IRBinaryInst extends IRBaseInst {
     public String op;
@@ -22,5 +23,10 @@ public class IRBinaryInst extends IRBaseInst {
         // %add = add i32 %A, %B
         return this.identifier() + " = " + this.op + " " + this.type + " " +
                 this.lhs().identifier() + ", " + this.rhs().identifier();
+    }
+
+    @Override
+    public void accept(InstVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -68,11 +68,11 @@ Now in: `ASM`
 ### BackEnd (ASM)
 
 - [x] SSADestructor (without MEM2REG phi nodes are all simple)
-
 - [x] ASM Design (RISCV-32I)
-- [ ] Inst, Operand, Hierarchy
-- [ ] ASMBuilder
-- [ ] RegisterAlloca (GraphColoring)
+- [x] Inst, Operand, Hierarchy
+- [x] ASMBuilder
+- [x] RegisterAlloca (GraphColoring)
+- [ ] Debug (ok... it will take me a long time)
 
 
 

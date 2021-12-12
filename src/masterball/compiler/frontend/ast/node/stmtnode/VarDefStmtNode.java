@@ -1,7 +1,6 @@
 package masterball.compiler.frontend.ast.node.stmtnode;
 
-import masterball.compiler.frontend.ast.ASTVisitor;
-import masterball.compiler.frontend.ast.node.BaseNode;
+import masterball.compiler.share.pass.ASTVisitor;
 import masterball.compiler.frontend.ast.node.StmtBaseNode;
 import masterball.compiler.frontend.ast.node.VarDefSingleNode;
 import masterball.compiler.frontend.info.CodePos;

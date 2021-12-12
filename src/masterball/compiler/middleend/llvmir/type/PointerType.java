@@ -1,7 +1,7 @@
 package masterball.compiler.middleend.llvmir.type;
 
 import masterball.compiler.middleend.llvmir.IRTranslator;
-import masterball.compiler.share.LLVMTable;
+import masterball.compiler.share.lang.LLVM;
 
 public class PointerType extends IRBaseType {
     public IRBaseType pointedType;
@@ -31,7 +31,7 @@ public class PointerType extends IRBaseType {
 
     @Override
     public int size() {
-        return LLVMTable.PointerSize;
+        return LLVM.PointerSize;
     }
 
     @Override
