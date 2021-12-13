@@ -13,6 +13,6 @@ public class AsmLuiInst extends AsmBaseInst {
     @Override
     public String format() {
         // lui	a0, %hi(glb)
-        return String.format("%s %s, %s", RV32I.LuiInst, rd, imm);
+        return String.format("%s\t%s, %s", RV32I.LuiInst, rd, imm);
     }
 }

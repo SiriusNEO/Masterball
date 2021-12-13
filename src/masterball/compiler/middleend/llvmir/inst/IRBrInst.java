@@ -26,9 +26,11 @@ public class IRBrInst extends IRBaseInst {
     }
 
     public IRBlock destBlock() {
+        assert isJump();
         return (IRBlock) this.getOperand(0);
     }
     public Value condition() {
+        assert !isJump();
         return this.getOperand(0);
     }
     public IRBlock ifTrueBlock() {

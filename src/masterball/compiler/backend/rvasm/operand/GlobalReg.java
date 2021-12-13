@@ -11,4 +11,12 @@ public class GlobalReg extends Register {
         super(identifier);
         this.stringConst = stringConst;
     }
+
+    public String stringDataFormat() {
+        return stringConst.replace("\\", "\\\\")
+                          .replace("\n", "\\n")
+                          .replace("\0", "")
+                          .replace("\t", "\\t")
+                          .replace("\"", "\\\"");
+    }
 }

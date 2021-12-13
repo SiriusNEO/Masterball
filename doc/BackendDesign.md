@@ -18,6 +18,56 @@ String.format("%s %s %s", RVTable.LiInst, rd, imm);
 
 
 
+### Register
+
+- PhysicalReg
+
+  representing the true physical register of RV32 architecture.
+
+  - caller-saved register: `ra, t0-6, a0-7`
+
+    caller-saved 意思为 caller is responsible for these registers, 因此 caller 有责任在调用前将这些寄存器压入堆栈（或其他位置）
+
+  - callee-saved register: `s0-11`
+
+    callee 在执行完之后，返回前，有责任恢复这部分寄存器
+
+  - special: `zero, sp, gp, tp`
+
+- VirualReg
+
+- GlobalReg
+
+
+
+### Stack
+
+假设该函数栈空间使用了 totalStackUsed
+
+开辟栈空间（函数头）：
+
+```
+addi sp, sp, -totalStackUsed
+```
+
+回收栈空间（函数尾）：
+
+```
+addi sp, sp, totalStackUsed
+```
+
+
+
+### Alloca 的处理
+
+```
+%a.addr = alloca i32, align 4
+```
+
+实际上是在栈上分配 4 byte 空间
+
+
+
 ## ASMBuilder
 
 ### RV32 Inst
@@ -111,3 +161,8 @@ required:
 
   Mv
 
+
+
+## Register Allocator
+
+see [this doc](RegisterAllocation.md)

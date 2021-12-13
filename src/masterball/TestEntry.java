@@ -13,9 +13,9 @@ public class TestEntry {
 
             SemanticEngine semanticEngine = new SemanticEngine(parseEngine, ioEngine.astGenStream);
 
-            IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, true, ioEngine.irGenStream);
+            IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, ioEngine);
 
-            CodeGenEngine codeGenEngine = new CodeGenEngine(irGenEngine, ioEngine.asmGenStream);
+            CodeGenEngine codeGenEngine = new CodeGenEngine(irGenEngine, ioEngine);
         }
         catch (Exception e) {
             if (e instanceof BaseError) {
@@ -25,5 +25,4 @@ public class TestEntry {
             return;
         }
     }
-
 }

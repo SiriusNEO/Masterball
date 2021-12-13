@@ -15,6 +15,6 @@ public class AsmLaInst extends AsmBaseInst {
     @Override
     public String format() {
         // la rd, symbol
-        return String.format("%s %s, %s", RV32I.LaInst, rd, symbol);
+        return String.format("%s\t%s, %s", RV32I.LaInst, rd, symbol);
     }
 }

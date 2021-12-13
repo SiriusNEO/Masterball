@@ -23,6 +23,7 @@ import masterball.compiler.share.error.runtime.UnimplementedError;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.misc.Pair;
 import masterball.compiler.share.pass.ASTVisitor;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -645,17 +646,19 @@ public class IRBuilder implements ASTVisitor {
             IRPhiInst curDimPtr = new IRPhiInst(arrHeadPointer.type, null, arrHeadPointer, cur.block);
             Value tailDimPtr = new IRGetElementPtrInst(arrHeadPointer, arrHeadPointer.type, cur.block, eachDimLengths.get(curDim));
             IRBaseInst incrPtr = new IRGetElementPtrInst(curDimPtr, curDimPtr.type, null, new IntConst(1));
-            curDimPtr.addBranch(incrPtr, bodyBlock);
 
             new IRBrInst(condBlock, cur.block);
+
             cur.block = condBlock;
             curDimPtr.setParentBlock(condBlock);
             Value condValue = new IRICmpInst(LLVM.NotEqualArg, curDimPtr, tailDimPtr, cur.block);
             new IRBrInst(condValue, bodyBlock, exitBlock, cur.block);
 
             cur.block = bodyBlock;
-            memStore(curDimPtr, arrayMalloc(eachDimLengths, curDim+1, ((PointerType) elementType).pointedType));
-            incrPtr.setParentBlock(bodyBlock);
+            Value subMallocPtr = arrayMalloc(eachDimLengths, curDim+1, ((PointerType) elementType).pointedType);
+            memStore(curDimPtr, subMallocPtr);
+            incrPtr.setParentBlock(cur.block);
+            curDimPtr.addBranch(incrPtr, cur.block);
             new IRBrInst(condBlock, cur.block);
 
             cur.block = exitBlock;

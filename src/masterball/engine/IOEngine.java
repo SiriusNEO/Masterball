@@ -16,16 +16,29 @@ public class IOEngine {
     private static final String redirectRVOutput = "-rv-o";
     private static final String semanticCheckOnly = "-fsyntax-only";
 
-    public final InputStream is;
+    public String inputPath = null, logOutputPath = null, astOutputPath = null, llvmOutputPath = null, rvOutputPath = null;
 
+    public final InputStream is;
     public final PrintStream logStream, astGenStream, irGenStream, asmGenStream;
 
+    public boolean fsyntaxOnly = false;
 
+    public static String getFileName(String path) {
+        for (int i = path.length()-1; i >= 0; i--) {
+            if (path.charAt(i) == '/') {
+                return path.substring(i+1, path.length());
+            }
+        }
+        return path;
+    }
+
+    // IO Parser
     public IOEngine(String[] args) throws Exception {
-
-        String inputPath = null, logOutputPath = null, astOutputPath = null, llvmOutputPath = null, rvOutputPath = null;
         for (int i = 0; i < args.length; i++) {
-            if (Objects.equals(args[i], redirectInput)) {
+            if (Objects.equals(args[i], semanticCheckOnly)) {
+                fsyntaxOnly = true;
+            }
+            else if (Objects.equals(args[i], redirectInput)) {
                 if (i == args.length - 1) throw new FileNotFoundException();
                 inputPath = args[i + 1];
                 i ++;

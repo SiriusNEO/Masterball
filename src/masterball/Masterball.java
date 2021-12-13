@@ -1,39 +1,35 @@
 package masterball;
 
 import masterball.compiler.share.error.BaseError;
-import masterball.engine.IOEngine;
-import masterball.engine.IRGenEngine;
-import masterball.engine.ParseEngine;
-import masterball.engine.SemanticEngine;
+import masterball.engine.*;
 
-// Masterball main entry. GAMESTART.
+/*
+ * @Masterball main entry
+ * a Compiler for Mx* language
+ * by SiriusNEO
+ */
 
 public class Masterball {
 
     public static void main(String[] args) throws Exception {
-
         try {
-            // sequential compiler progress
-
             IOEngine ioEngine = new IOEngine(args);
 
             ParseEngine parseEngine = new ParseEngine(ioEngine);
 
             SemanticEngine semanticEngine = new SemanticEngine(parseEngine, ioEngine.astGenStream);
 
-            IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, true, ioEngine.irGenStream);
+            IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, ioEngine);
+
+            CodeGenEngine codeGenEngine = new CodeGenEngine(irGenEngine, ioEngine);
         }
         catch (Exception e) {
             if (e instanceof BaseError) {
                 ((BaseError) e).tell();
-                System.exit(-1);
-            } else {
-                e.printStackTrace();
-                System.exit(-1);
             }
+            e.printStackTrace();
+            return;
         }
-
-        // System.out.println("Success.");
     }
 
 }

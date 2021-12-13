@@ -7,9 +7,9 @@ public abstract class Register extends BaseOperand {
     // allocated in RegisterAllocator
     public PhysicalReg color;
     // location in stack
-    public Immediate stackPos;
+    public Immediate stackOffset;
     // info in RIG
-    public RIG.Node node;
+    public RIG.Node node = new RIG.Node();
 
     public Register(String identifier) {
         super(identifier);

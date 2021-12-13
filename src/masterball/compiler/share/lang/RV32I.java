@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RV32I {
-    // imm
+    // sys config
     public static final int ImmBound = (1 << 11);
+    public static final int StackAllocUnit = 16;
+    public static final int MaxStackSize = (1 << 12);
 
     // reg
     public static final int MaxArgRegNum = 8;
@@ -34,6 +36,7 @@ public class RV32I {
     public static final String NotEqualSuffix = "ne";
 
     // inst
+    public static final String ITypeSuffix = "i";
     public static final String BrInstPrefix = "b";
     public static final String CallInst = "call";
     public static final String JmpInstPrefix = "j";

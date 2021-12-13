@@ -3,16 +3,14 @@ package masterball.compiler.backend.rvasm;
 import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.inst.*;
-import masterball.compiler.backend.rvasm.operand.Immediate;
-import masterball.compiler.backend.rvasm.operand.PhysicalReg;
-import masterball.compiler.backend.rvasm.operand.Register;
-import masterball.compiler.backend.rvasm.operand.VirtualReg;
+import masterball.compiler.backend.rvasm.operand.*;
 import masterball.compiler.middleend.llvmir.constant.BoolConst;
 import masterball.compiler.middleend.llvmir.constant.IntConst;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.error.runtime.UnimplementedError;
 import masterball.compiler.share.error.runtime.UnknownError;
+import masterball.debug.Log;
 
 public class AsmCurrent {
 
@@ -20,10 +18,11 @@ public class AsmCurrent {
     public AsmFunction func;
 
     public Register toReg(Value value) {
-        if (value.asmOperand != null)
+        if (value.asmOperand != null) {
             return (Register) value.asmOperand;
-
-        VirtualReg ret = new VirtualReg(value.type.size());
+        }
+        Log.mark();
+        Log.report(value.identifier(), VirtualReg.virtualRegNum);
         Integer intValue = null;
         if (value instanceof IntConst) intValue = ((IntConst) value).constData;
         else if (value instanceof BoolConst) intValue = ((BoolConst) value).constData ? 1 : 0;
@@ -31,7 +30,10 @@ public class AsmCurrent {
             value.asmOperand = PhysicalReg.reg("zero");
             return PhysicalReg.reg("zero");
         }
-        else if (intValue != null) {
+
+        VirtualReg ret = new VirtualReg(value.type.size());
+
+        if (intValue != null) {
             new AsmLiInst(ret, new Immediate(intValue), this.block);
         }
         value.asmOperand = ret;
@@ -44,6 +46,7 @@ public class AsmCurrent {
     }
 
     public Immediate toImm(Value value) {
+        if (value.asmOperand instanceof StackOffset) return (Immediate) value.asmOperand;
         if (value instanceof IntConst) return new Immediate(((IntConst) value).constData);
         if (value instanceof BoolConst) return new Immediate (((BoolConst) value).constData ? 1 : 0);
         throw new UnimplementedError(this);

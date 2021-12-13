@@ -1,7 +1,7 @@
 package masterball.compiler.backend.rvasm.operand;
 
 public class Immediate extends BaseOperand {
-    private final int value;
+    protected int value;
 
     public Immediate(int value) {
         super(String.valueOf(value));

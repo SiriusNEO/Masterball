@@ -19,13 +19,11 @@ public class IRPrinter implements IRModulePass, IRFuncPass, IRBlockPass {
     // based on hierarchy
 
     private final PrintStream ps;
+    private final String mxFilePath;
 
-    public IRPrinter() {
-        this.ps = System.out;
-    }
-
-    public IRPrinter(PrintStream ps) {
+    public IRPrinter(String mxFilePath, PrintStream ps) {
         this.ps = ps;
+        this.mxFilePath = mxFilePath;
     }
 
     @Override
@@ -57,6 +55,8 @@ public class IRPrinter implements IRModulePass, IRFuncPass, IRBlockPass {
     public void runOnModule(IRModule module) {
         Log.report("IR Printer Start Sucess");
 
+        ps.printf("; ModuleID = '%s'%n", mxFilePath);
+        ps.printf("source_filename = \"%s\"%n", mxFilePath);
         ps.println(TargetInfo.dataLayout);
         ps.println(TargetInfo.triple + "\n");
 

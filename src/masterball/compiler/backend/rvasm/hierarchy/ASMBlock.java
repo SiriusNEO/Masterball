@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public class AsmBlock extends BaseOperand {
 
-    public LinkedList<AsmBaseInst> instructions;
+    public LinkedList<AsmBaseInst> instructions = new LinkedList<>();
     public HashSet<AsmBlock> prevs = new HashSet<>(), nexts = new HashSet<>();
 
     public AsmBlock(String label) {

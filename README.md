@@ -33,7 +33,9 @@ Click the following links to read the project design.
 - [General Design](doc/GeneralDesign.md)
 - [Grammar Design](src/masterball/grammar/MxStar.g4)
 - [FrontEnd Design](doc/FrontEndDesign.md)
-- [IR Design](doc/IRDesign.md)
+- [MiddleEnd Design](doc/IRDesign.md)
+- [BackEnd Design](doc/BackEndDesign.md)
+- [Register Allocation Algorithm](doc/RegisterAllocation.md)
 
 
 
@@ -71,7 +73,8 @@ Now in: `ASM`
 - [x] ASM Design (RISCV-32I)
 - [x] Inst, Operand, Hierarchy
 - [x] ASMBuilder
-- [x] RegisterAlloca (GraphColoring)
+- [ ] RegisterAlloca (GraphColoring) 
+- [x] StackNightmare (a scary solution)
 - [ ] Debug (ok... it will take me a long time)
 
 

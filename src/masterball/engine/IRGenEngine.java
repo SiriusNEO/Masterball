@@ -12,12 +12,14 @@ public class IRGenEngine {
 
     public final IRModule module;
 
-    public IRGenEngine(SemanticEngine se, boolean renameFlag, PrintStream irGenStream) {
-        Value.rename = renameFlag;
+    public IRGenEngine(SemanticEngine se, IOEngine ioEngine) {
+        // rename flag. can be set to false for debug purpose
+        Value.rename = true;
+
         this.module = new IRBuilder(se.ASTRoot).module;
 
-        if (irGenStream != null) {
-            new IRPrinter(irGenStream).runOnModule(this.module);
+        if (ioEngine != null) {
+            new IRPrinter(IOEngine.getFileName(ioEngine.inputPath), ioEngine.irGenStream).runOnModule(this.module);
         }
 
         this.module.functions.forEach(func -> new SSADestructor().runOnFunc(func));

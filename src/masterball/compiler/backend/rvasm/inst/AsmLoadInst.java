@@ -17,7 +17,7 @@ public class AsmLoadInst extends AsmBaseInst {
     @Override
     public String format() {
         // lw rd, offset(rs1)
-        return String.format("%s %s, %s(%s)",
+        return String.format("%s\t%s, %s(%s)",
                 RV32I.LoadInstPrefix + AsmTranslator.translateByteWidth(byteWidth), rd, imm, rs1);
     }
 }

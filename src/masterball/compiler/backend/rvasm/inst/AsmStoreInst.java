@@ -17,7 +17,7 @@ public class AsmStoreInst extends AsmBaseInst {
     @Override
     public String format() {
         // sw rs2, offset(rs1)
-        return String.format("%s %s, %s(%s)",
+        return String.format("%s\t%s, %s(%s)",
                 RV32I.StoreInstPrefix + AsmTranslator.translateByteWidth(byteWidth), rs2, imm, rs1);
     }
 }

@@ -41,14 +41,14 @@ public class RIG {
         public Set<Register> adjList = new LinkedHashSet<>();
         public boolean precolored;
         public int degree;
-        public double weight;
+        public double priority;
         public Register alias;
         public Set<AsmMvInst> moveList = new LinkedHashSet<>();
 
         public void init(boolean isPrecolored) {
             this.adjList.clear();
             this.moveList.clear();
-            this.weight = 0;
+            this.priority = 0;
             this.alias = null;
             if (isPrecolored) this.degree = INF;
             else this.degree = 0;
