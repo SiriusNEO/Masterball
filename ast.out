@@ -1,0 +1,2520 @@
+
+..* --- RootNode --- *
+
+[GlobalScope]
+VarTable: {color=[VarRegistry] INT[]|color, count=[VarRegistry] INT[]|count, i=[VarRegistry] INT|i, j=[VarRegistry] INT|j, make=[VarRegistry] INT[][]|make}
+FuncTable: {getInt=[FuncRegistry] name: getInt type: func, retType:INT args:, print=[FuncRegistry] name: print type: func, retType:VOID args:STRING , println=[FuncRegistry] name: println type: func, retType:VOID args:STRING , search=[FuncRegistry] name: search type: func, retType:VOID args:INT INT INT , origin=[FuncRegistry] name: origin type: func, retType:VOID args:INT , printInt=[FuncRegistry] name: printInt type: func, retType:VOID args:INT , printlnInt=[FuncRegistry] name: printlnInt type: func, retType:VOID args:INT , toString=[FuncRegistry] name: toString type: func, retType:STRING args:INT , main=[FuncRegistry] name: main type: func, retType:INT args:, getString=[FuncRegistry] name: getString type: func, retType:STRING args:}
+ClassTable: {}
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT[][]|make
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT[]|color
+
+........* --- NewExpNode --- *
+
+type: INT[]
+NewType: INT[]
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT[]|count
+
+........* --- NewExpNode --- *
+
+type: INT[]
+NewType: INT[]
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|i
+
+....* --- VarDefStmtNode --- *
+
+
+......* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|j
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: origin type: func, retType:VOID args:INT 
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT[][]
+
+............* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+............* --- NewExpNode --- *
+
+type: INT[][]
+NewType: INT[][]
+
+........* --- ForStmtNode --- *
+
+init: 
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: N
+incr: 
+
+..........* --- PostfixExpNode --- *
+
+type: INT
+op: ++
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: i
+body: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- PureStmtNode --- *
+
+
+................* --- AssignExpNode --- *
+
+type: INT[]
+
+..................* --- IndexExpNode --- *
+
+type: INT[]
+
+....................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..................* --- NewExpNode --- *
+
+type: INT[]
+NewType: INT[]
+
+..............* --- ForStmtNode --- *
+
+init: 
+
+................* --- AssignExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+condi: 
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: N
+incr: 
+
+................* --- PostfixExpNode --- *
+
+type: INT
+op: ++
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: j
+body: 
+
+................* --- PureStmtNode --- *
+
+
+..................* --- AssignExpNode --- *
+
+type: INT
+
+....................* --- IndexExpNode --- *
+
+type: INT
+
+......................* --- IndexExpNode --- *
+
+type: INT[]
+
+........................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+......................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: search type: func, retType:VOID args:INT INT INT 
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {s=[VarRegistry] INT|s, i=[VarRegistry] INT|i, j=[VarRegistry] INT|j}
+
+........* --- VarDefStmtNode --- *
+
+
+..........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|s
+
+........* --- VarDefStmtNode --- *
+
+
+..........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|i
+
+........* --- VarDefStmtNode --- *
+
+
+..........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|j
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: ||
+
+............* --- BinaryExpNode --- *
+
+type: BOOL
+op: ||
+
+..............* --- BinaryExpNode --- *
+
+type: BOOL
+op: ||
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: >
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..............* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+............* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+..............* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..................* --- IndexExpNode --- *
+
+type: INT
+
+....................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..................* --- IndexExpNode --- *
+
+type: INT
+
+....................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+................* --- IndexExpNode --- *
+
+type: INT
+
+..................* --- IndexExpNode --- *
+
+type: INT[]
+
+....................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+....................* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+......................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+......................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: 15
+if true: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- IfStmtNode --- *
+
+condi: 
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+..................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+....................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+if true: 
+
+................* --- SuiteStmtNode --- *
+
+
+..................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+....................* --- PureStmtNode --- *
+
+
+......................* --- AssignExpNode --- *
+
+type: INT
+
+........................* --- IndexExpNode --- *
+
+type: INT
+
+..........................* --- IndexExpNode --- *
+
+type: INT[]
+
+............................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+............................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+........................* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: 45
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: z
+
+....................* --- PureStmtNode --- *
+
+
+......................* --- AssignExpNode --- *
+
+type: INT
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: s
+
+........................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..........................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+............................* --- IndexExpNode --- *
+
+type: INT
+
+..............................* --- IndexExpNode --- *
+
+type: INT[]
+
+................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+............................* --- IndexExpNode --- *
+
+type: INT
+
+..............................* --- IndexExpNode --- *
+
+type: INT[]
+
+................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..........................* --- IndexExpNode --- *
+
+type: INT
+
+............................* --- IndexExpNode --- *
+
+type: INT[]
+
+..............................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+............................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+....................* --- IfStmtNode --- *
+
+condi: 
+
+......................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+........................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+..........................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+..............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+..................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+....................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+......................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+........................................* --- IndexExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+............................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+........................................* --- IndexExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+............................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+......................................* --- IndexExpNode --- *
+
+type: INT
+
+........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: s
+
+..................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+....................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+......................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+........................................* --- IndexExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+............................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+........................................* --- IndexExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+............................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+......................................* --- IndexExpNode --- *
+
+type: INT
+
+........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: s
+
+................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+..................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+....................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+......................................* --- IndexExpNode --- *
+
+type: INT
+
+........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+......................................* --- IndexExpNode --- *
+
+type: INT
+
+........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+....................................* --- IndexExpNode --- *
+
+type: INT
+
+......................................* --- IndexExpNode --- *
+
+type: INT[]
+
+........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: s
+
+..............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+....................................* --- IndexExpNode --- *
+
+type: INT
+
+......................................* --- IndexExpNode --- *
+
+type: INT[]
+
+........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+....................................* --- IndexExpNode --- *
+
+type: INT
+
+......................................* --- IndexExpNode --- *
+
+type: INT[]
+
+........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..................................* --- IndexExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: s
+
+............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+..............................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..................................* --- IndexExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..................................* --- IndexExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+................................* --- IndexExpNode --- *
+
+type: INT
+
+..................................* --- IndexExpNode --- *
+
+type: INT[]
+
+....................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: s
+
+..........................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+............................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..............................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+................................* --- IndexExpNode --- *
+
+type: INT
+
+..................................* --- IndexExpNode --- *
+
+type: INT[]
+
+....................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+................................* --- IndexExpNode --- *
+
+type: INT
+
+..................................* --- IndexExpNode --- *
+
+type: INT[]
+
+....................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..............................* --- IndexExpNode --- *
+
+type: INT
+
+................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+............................* --- AtomExpNode --- *
+
+type: INT
+text: s
+
+........................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+..........................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+............................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..............................* --- IndexExpNode --- *
+
+type: INT
+
+................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..............................* --- IndexExpNode --- *
+
+type: INT
+
+................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+............................* --- IndexExpNode --- *
+
+type: INT
+
+..............................* --- IndexExpNode --- *
+
+type: INT[]
+
+................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+
+..........................* --- AtomExpNode --- *
+
+type: INT
+text: s
+if true: 
+
+......................* --- SuiteStmtNode --- *
+
+
+........................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- AssignExpNode --- *
+
+type: INT
+
+..............................* --- IndexExpNode --- *
+
+type: INT
+
+................................* --- AtomExpNode --- *
+
+type: INT[]
+text: count
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+..............................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+................................* --- IndexExpNode --- *
+
+type: INT
+
+..................................* --- AtomExpNode --- *
+
+type: INT[]
+text: count
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..........................* --- ForStmtNode --- *
+
+init: 
+
+............................* --- AssignExpNode --- *
+
+type: INT
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+condi: 
+
+............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <=
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+incr: 
+
+............................* --- PostfixExpNode --- *
+
+type: INT
+op: ++
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+body: 
+
+............................* --- SuiteStmtNode --- *
+
+
+..............................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+................................* --- ForStmtNode --- *
+
+init: 
+
+..................................* --- AssignExpNode --- *
+
+type: INT
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+condi: 
+
+..................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <=
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+incr: 
+
+..................................* --- PostfixExpNode --- *
+
+type: INT
+op: ++
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: j
+body: 
+
+..................................* --- SuiteStmtNode --- *
+
+
+....................................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+......................................* --- PureStmtNode --- *
+
+
+........................................* --- FuncCallExpNode --- *
+
+type: VOID
+
+..........................................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:STRING 
+text: print
+
+..........................................* --- FuncCallExpNode --- *
+
+type: STRING
+
+............................................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:INT 
+text: toString
+
+............................................* --- IndexExpNode --- *
+
+type: INT
+
+..............................................* --- IndexExpNode --- *
+
+type: INT[]
+
+................................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+................................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: j
+
+......................................* --- PureStmtNode --- *
+
+
+........................................* --- FuncCallExpNode --- *
+
+type: VOID
+
+..........................................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:STRING 
+text: print
+
+..........................................* --- AtomExpNode --- *
+
+type: STRING
+text: " "
+
+................................* --- PureStmtNode --- *
+
+
+..................................* --- FuncCallExpNode --- *
+
+type: VOID
+
+....................................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:STRING 
+text: print
+
+....................................* --- AtomExpNode --- *
+
+type: STRING
+text: "\n"
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- FuncCallExpNode --- *
+
+type: VOID
+
+..............................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:STRING 
+text: print
+
+..............................* --- AtomExpNode --- *
+
+type: STRING
+text: "\n"
+else: 
+else: 
+
+................* --- SuiteStmtNode --- *
+
+
+..................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+....................* --- IfStmtNode --- *
+
+condi: 
+
+......................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+........................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+if true: 
+
+......................* --- SuiteStmtNode --- *
+
+
+........................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........................* --- PureStmtNode --- *
+
+
+............................* --- AssignExpNode --- *
+
+type: INT
+
+..............................* --- IndexExpNode --- *
+
+type: INT
+
+................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..............................* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+................................* --- BinaryExpNode --- *
+
+type: INT
+op: -
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 15
+
+..................................* --- IndexExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+................................* --- IndexExpNode --- *
+
+type: INT
+
+..................................* --- IndexExpNode --- *
+
+type: INT[]
+
+....................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+..........................* --- IfStmtNode --- *
+
+condi: 
+
+............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+..............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: >
+
+..................................* --- IndexExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+..................................* --- IndexExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..................................* --- AtomExpNode --- *
+
+type: INT
+text: 10
+
+..............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+................................* --- IndexExpNode --- *
+
+type: INT
+
+..................................* --- AtomExpNode --- *
+
+type: INT[]
+text: color
+
+..................................* --- IndexExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT[]
+
+......................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+if true: 
+
+............................* --- SuiteStmtNode --- *
+
+
+..............................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+................................* --- PureStmtNode --- *
+
+
+..................................* --- AssignExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT
+
+......................................* --- AtomExpNode --- *
+
+type: INT[]
+text: color
+
+......................................* --- IndexExpNode --- *
+
+type: INT
+
+........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+................................* --- IfStmtNode --- *
+
+condi: 
+
+..................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+if true: 
+
+..................................* --- PureStmtNode --- *
+
+
+....................................* --- FuncCallExpNode --- *
+
+type: VOID
+
+......................................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT INT INT 
+text: search
+
+......................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+......................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: z
+
+........................................* --- IndexExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+............................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+else: 
+
+..................................* --- PureStmtNode --- *
+
+
+....................................* --- FuncCallExpNode --- *
+
+type: VOID
+
+......................................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT INT INT 
+text: search
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+......................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+......................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: z
+
+........................................* --- IndexExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+............................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+................................* --- PureStmtNode --- *
+
+
+..................................* --- AssignExpNode --- *
+
+type: INT
+
+....................................* --- IndexExpNode --- *
+
+type: INT
+
+......................................* --- AtomExpNode --- *
+
+type: INT[]
+text: color
+
+......................................* --- IndexExpNode --- *
+
+type: INT
+
+........................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..........................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+........................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+else: 
+else: 
+
+......................* --- SuiteStmtNode --- *
+
+
+........................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........................* --- ForStmtNode --- *
+
+init: 
+
+............................* --- AssignExpNode --- *
+
+type: INT
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+condi: 
+
+............................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <=
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: 9
+incr: 
+
+............................* --- PostfixExpNode --- *
+
+type: INT
+op: ++
+
+..............................* --- AtomExpNode --- *
+
+type: INT
+text: i
+body: 
+
+............................* --- SuiteStmtNode --- *
+
+
+..............................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+................................* --- IfStmtNode --- *
+
+condi: 
+
+..................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+....................................* --- IndexExpNode --- *
+
+type: INT
+
+......................................* --- AtomExpNode --- *
+
+type: INT[]
+text: color
+
+......................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+....................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+if true: 
+
+..................................* --- SuiteStmtNode --- *
+
+
+....................................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+......................................* --- PureStmtNode --- *
+
+
+........................................* --- AssignExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT
+
+............................................* --- AtomExpNode --- *
+
+type: INT[]
+text: color
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+......................................* --- PureStmtNode --- *
+
+
+........................................* --- AssignExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT
+
+............................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..............................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+......................................* --- IfStmtNode --- *
+
+condi: 
+
+........................................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 2
+if true: 
+
+........................................* --- PureStmtNode --- *
+
+
+..........................................* --- FuncCallExpNode --- *
+
+type: VOID
+
+............................................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT INT INT 
+text: search
+
+............................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+............................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: z
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+else: 
+
+........................................* --- PureStmtNode --- *
+
+
+..........................................* --- FuncCallExpNode --- *
+
+type: VOID
+
+............................................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT INT INT 
+text: search
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+............................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: 1
+
+............................................* --- BinaryExpNode --- *
+
+type: INT
+op: +
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: z
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+......................................* --- PureStmtNode --- *
+
+
+........................................* --- AssignExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT
+
+............................................* --- IndexExpNode --- *
+
+type: INT[]
+
+..............................................* --- AtomExpNode --- *
+
+type: INT[][]
+text: make
+
+..............................................* --- AtomExpNode --- *
+
+type: INT
+text: x
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: y
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+......................................* --- PureStmtNode --- *
+
+
+........................................* --- AssignExpNode --- *
+
+type: INT
+
+..........................................* --- IndexExpNode --- *
+
+type: INT
+
+............................................* --- AtomExpNode --- *
+
+type: INT[]
+text: color
+
+............................................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..........................................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+else: 
+else: 
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: main type: func, retType:INT args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- PureStmtNode --- *
+
+
+..........* --- AssignExpNode --- *
+
+type: INT
+
+............* --- IndexExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: INT[]
+text: count
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+........* --- PureStmtNode --- *
+
+
+..........* --- FuncCallExpNode --- *
+
+type: VOID
+
+............* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT 
+text: origin
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 3
+
+........* --- PureStmtNode --- *
+
+
+..........* --- FuncCallExpNode --- *
+
+type: VOID
+
+............* --- AtomExpNode --- *
+
+type: func, retType:VOID args:INT INT INT 
+text: search
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+............* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+........* --- PureStmtNode --- *
+
+
+..........* --- FuncCallExpNode --- *
+
+type: VOID
+
+............* --- AtomExpNode --- *
+
+type: func, retType:VOID args:STRING 
+text: println
+
+............* --- FuncCallExpNode --- *
+
+type: STRING
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:STRING args:INT 
+text: toString
+
+..............* --- IndexExpNode --- *
+
+type: INT
+
+................* --- AtomExpNode --- *
+
+type: INT[]
+text: count
+
+................* --- AtomExpNode --- *
+
+type: INT
+text: 0
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- AtomExpNode --- *
+
+type: INT
+text: 0

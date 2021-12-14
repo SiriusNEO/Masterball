@@ -109,8 +109,7 @@ public class StackNightmare implements AsmFuncPass {
                     new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(-function.totalStackUse), null)
             );
             new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(function.totalStackUse), function.exitBlock());
-            new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
-                    new StackOffset(function.totalStackUse, 0, function), function.exitBlock());
+            new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"), PhysicalReg.reg("s1"), function.exitBlock());
         }
         else {
             function.entryBlock().instructions.addFirst(
@@ -125,7 +124,7 @@ public class StackNightmare implements AsmFuncPass {
         fpInstPtr.next(); // ra
         fpInstPtr.next(); // s0
         fpInstPtr.next(); // arrive
-        if (function.totalStackUse > RV32I.MaxStackSize) {
+        if (function.totalStackUse >= RV32I.ImmBound) {
             fpInstPtr.add(
                     new AsmALUInst(RV32I.SubInst, PhysicalReg.reg("s0"), PhysicalReg.reg("sp"), PhysicalReg.reg("s1"), null)
             );
