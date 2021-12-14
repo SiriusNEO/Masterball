@@ -9,6 +9,8 @@ import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.debug.Log;
 
+import java.util.ListIterator;
+
 /*
  * after register allocation, refresh the program.
  * move eliminator & stack allocator
@@ -23,15 +25,8 @@ public class StackNightmare implements AsmFuncPass {
         }
     }
 
-    public void violentAllocator(AsmFunction function) {
-        function.blocks.forEach(block -> {
-            block.instructions.forEach(inst -> {
-                virtualSet(inst.rd, function);
-                virtualSet(inst.rs1, function);
-                virtualSet(inst.rs2, function);
-            });
-        });
 
+    public void violentAllocator(AsmFunction function) {
         for (AsmBlock block : function.blocks) {
             var it = block.instructions.listIterator();
             while (it.hasNext()) {
@@ -39,7 +34,13 @@ public class StackNightmare implements AsmFuncPass {
 
                 if (inst.rs1 instanceof VirtualReg) {
                     it.previous();
-                    it.add(new AsmLoadInst(((VirtualReg) inst.rs1).size, PhysicalReg.t(2), PhysicalReg.reg("sp"), inst.rs1.stackOffset, null));
+                    if (inst.rs1.stackOffset.value > RV32I.ImmBound) {
+                        it.add(new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(inst.rs1.stackOffset.value), null));
+                        it.add(new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("s1"), PhysicalReg.reg("s1"), PhysicalReg.reg("sp"), null));
+                        it.add(new AsmLoadInst(((VirtualReg) inst.rs1).size, PhysicalReg.t(2), PhysicalReg.reg("s1"), new Immediate(0), null));
+                    } else {
+                        it.add(new AsmLoadInst(((VirtualReg) inst.rs1).size, PhysicalReg.t(2), PhysicalReg.reg("sp"), inst.rs1.stackOffset, null));
+                    }
                     it.next();
                     inst.rs1 = PhysicalReg.t(2);
                 }
@@ -52,7 +53,13 @@ public class StackNightmare implements AsmFuncPass {
 
                 if (inst.rs2 instanceof VirtualReg) {
                     it.previous();
-                    it.add(new AsmLoadInst(((VirtualReg) inst.rs2).size, PhysicalReg.t(3), PhysicalReg.reg("sp"), inst.rs2.stackOffset, null));
+                    if (inst.rs2.stackOffset.value > RV32I.ImmBound) {
+                        it.add(new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(inst.rs2.stackOffset.value), null));
+                        it.add(new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("s1"), PhysicalReg.reg("s1"), PhysicalReg.reg("sp"), null));
+                        it.add(new AsmLoadInst(((VirtualReg) inst.rs2).size, PhysicalReg.t(3), PhysicalReg.reg("s1"), new Immediate(0), null));
+                    } else {
+                        it.add(new AsmLoadInst(((VirtualReg) inst.rs2).size, PhysicalReg.t(3), PhysicalReg.reg("sp"), inst.rs2.stackOffset, null));
+                    }
                     it.next();
                     inst.rs2 = PhysicalReg.t(3);
                 }
@@ -64,7 +71,13 @@ public class StackNightmare implements AsmFuncPass {
                 }
 
                 if (inst.rd instanceof VirtualReg) {
-                    it.add(new AsmStoreInst(((VirtualReg) inst.rd).size, PhysicalReg.reg("sp"), PhysicalReg.t(1), inst.rd.stackOffset, null));
+                    if (inst.rd.stackOffset.value > RV32I.ImmBound) {
+                        it.add(new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(inst.rd.stackOffset.value), null));
+                        it.add(new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("s1"), PhysicalReg.reg("s1"), PhysicalReg.reg("sp"), null));
+                        it.add(new AsmStoreInst(((VirtualReg) inst.rd).size, PhysicalReg.reg("s1"), PhysicalReg.t(1), new Immediate(0), null));
+                    } else {
+                        it.add(new AsmStoreInst(((VirtualReg) inst.rd).size, PhysicalReg.reg("sp"), PhysicalReg.t(1), inst.rd.stackOffset, null));
+                    }
                     inst.rd = PhysicalReg.t(1);
                 }
                 else if (inst.rd instanceof ArgumentReg) {
@@ -88,25 +101,50 @@ public class StackNightmare implements AsmFuncPass {
         // todo: overflow
         // if (function.stackBase > RV32I.MaxStackSize) throw new StackOverflowError();
 
-        function.entryBlock().instructions.addFirst(
-                new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
-                        new StackOffset(-function.totalStackUse, 0, function), null)
-        );
+        if (function.totalStackUse > RV32I.MaxStackSize) {
+            function.entryBlock().instructions.addFirst(
+                    new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"), PhysicalReg.reg("s1"), null)
+            );
+            function.entryBlock().instructions.addFirst(
+                    new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(-function.totalStackUse), null)
+            );
+            new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(function.totalStackUse), function.exitBlock());
+            new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
+                    new StackOffset(function.totalStackUse, 0, function), function.exitBlock());
+        }
+        else {
+            function.entryBlock().instructions.addFirst(
+                    new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
+                            new StackOffset(-function.totalStackUse, 0, function), null)
+            );
+            new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
+                    new StackOffset(function.totalStackUse, 0, function), function.exitBlock());
+        }
 
         var fpInstPtr = function.entryBlock().instructions.listIterator();
         fpInstPtr.next(); // ra
         fpInstPtr.next(); // s0
         fpInstPtr.next(); // arrive
-        fpInstPtr.add(
-                new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("s0"), PhysicalReg.reg("sp"),
-                        new StackOffset(function.totalStackUse, 0, function), null)
-        );
+        if (function.totalStackUse > RV32I.MaxStackSize) {
+            fpInstPtr.add(
+                    new AsmALUInst(RV32I.SubInst, PhysicalReg.reg("s0"), PhysicalReg.reg("sp"), PhysicalReg.reg("s1"), null)
+            );
+        } else {
+            fpInstPtr.add(
+                    new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("s0"), PhysicalReg.reg("sp"),
+                            new StackOffset(function.totalStackUse, 0, function), null)
+            );
+        }
 
-        new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
-                new StackOffset(function.totalStackUse, 0, function), function.exitBlock());
         new AsmRetInst(function.exitBlock());
 
-        violentAllocator(function);
+        function.blocks.forEach(block -> {
+            block.instructions.forEach(inst -> {
+                virtualSet(inst.rd, function);
+                virtualSet(inst.rs1, function);
+                virtualSet(inst.rs2, function);
+            });
+        });
 
         StackOffset.collection.forEach(offset -> {
             if (offset.parentFunction == function) {
@@ -114,5 +152,7 @@ public class StackNightmare implements AsmFuncPass {
                 else if (offset.level == 2) offset.setStackBase(function.callStackUse + function.allocaStackUse);
             }
         });
+
+        violentAllocator(function);
     }
 }
