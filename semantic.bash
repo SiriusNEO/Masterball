@@ -1,2 +1,2 @@
 set -e
-java -jar Masterball.jar -ast-o local/ast.out -fsyntax-only
+java -jar Masterball.jar -ast-o ast.out -fsyntax-only
