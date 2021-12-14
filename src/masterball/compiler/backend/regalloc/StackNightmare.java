@@ -34,7 +34,7 @@ public class StackNightmare implements AsmFuncPass {
 
                 if (inst.rs1 instanceof VirtualReg) {
                     it.previous();
-                    if (inst.rs1.stackOffset.value > RV32I.ImmBound) {
+                    if (inst.rs1.stackOffset.value >= RV32I.ImmBound) {
                         it.add(new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(inst.rs1.stackOffset.value), null));
                         it.add(new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("s1"), PhysicalReg.reg("s1"), PhysicalReg.reg("sp"), null));
                         it.add(new AsmLoadInst(((VirtualReg) inst.rs1).size, PhysicalReg.t(2), PhysicalReg.reg("s1"), new Immediate(0), null));
@@ -53,7 +53,7 @@ public class StackNightmare implements AsmFuncPass {
 
                 if (inst.rs2 instanceof VirtualReg) {
                     it.previous();
-                    if (inst.rs2.stackOffset.value > RV32I.ImmBound) {
+                    if (inst.rs2.stackOffset.value >= RV32I.ImmBound) {
                         it.add(new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(inst.rs2.stackOffset.value), null));
                         it.add(new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("s1"), PhysicalReg.reg("s1"), PhysicalReg.reg("sp"), null));
                         it.add(new AsmLoadInst(((VirtualReg) inst.rs2).size, PhysicalReg.t(3), PhysicalReg.reg("s1"), new Immediate(0), null));
@@ -71,7 +71,7 @@ public class StackNightmare implements AsmFuncPass {
                 }
 
                 if (inst.rd instanceof VirtualReg) {
-                    if (inst.rd.stackOffset.value > RV32I.ImmBound) {
+                    if (inst.rd.stackOffset.value >= RV32I.ImmBound) {
                         it.add(new AsmLiInst(PhysicalReg.reg("s1"), new Immediate(inst.rd.stackOffset.value), null));
                         it.add(new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("s1"), PhysicalReg.reg("s1"), PhysicalReg.reg("sp"), null));
                         it.add(new AsmStoreInst(((VirtualReg) inst.rd).size, PhysicalReg.reg("s1"), PhysicalReg.t(1), new Immediate(0), null));
@@ -101,7 +101,7 @@ public class StackNightmare implements AsmFuncPass {
         // todo: overflow
         // if (function.stackBase > RV32I.MaxStackSize) throw new StackOverflowError();
 
-        if (function.totalStackUse > RV32I.MaxStackSize) {
+        if (function.totalStackUse >= RV32I.ImmBound) {
             function.entryBlock().instructions.addFirst(
                     new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"), PhysicalReg.reg("s1"), null)
             );
