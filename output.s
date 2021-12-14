@@ -1,5 +1,4 @@
 	.text
-	.file	test.ll
 	.globl	_glb_init
 	.p2align	1
 	.type	_glb_init,@function
@@ -134,8 +133,7 @@ exit11:
 	mv	s0, t2
 	addi	sp, sp, 144
 	ret
-.Lfunc_end0:
-	.size	_glb_init, .Lfunc_end0-_glb_init
+	.size	_glb_init, .-_glb_init
                                         # -- End function
 	.globl	printBoard
 	.p2align	1
@@ -278,8 +276,7 @@ if.false:
 	j	if.exit
 if.exit:
 	j	for.incr1
-.Lfunc_end1:
-	.size	printBoard, .Lfunc_end1-printBoard
+	.size	printBoard, .-printBoard
                                         # -- End function
 	.globl	search
 	.p2align	1
@@ -802,8 +799,7 @@ mid1:
 	mv	t1, t2
 	sb	t1, 608(sp)
 	j	lg.exit1
-.Lfunc_end2:
-	.size	search, .Lfunc_end2-search
+	.size	search, .-search
                                         # -- End function
 	.globl	main
 	.p2align	1
@@ -1076,8 +1072,7 @@ for.body5:
 	j	for.incr5
 for.exit5:
 	j	for.incr4
-.Lfunc_end3:
-	.size	main, .Lfunc_end3-main
+	.size	main, .-main
                                         # -- End function
 	.type	N,@object
 	.section	.bss

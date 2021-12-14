@@ -29,7 +29,7 @@ public class AsmPrinter implements AsmModulePass, AsmFuncPass, AsmBlockPass {
         Log.report("Asm Printer Start Sucess");
 
         ps.println(TAB + ".text");
-        ps.println(TAB + ".file" + TAB + irFilePath);
+        // ps.println(TAB + ".file" + TAB + irFilePath);
         module.functions.forEach(this::runOnFunc);
         module.globalVarSeg.forEach(globalVar -> {
             AsmFormatter.globalVariableFormat(globalVar).forEach(ps::println);
@@ -47,8 +47,8 @@ public class AsmPrinter implements AsmModulePass, AsmFuncPass, AsmBlockPass {
         ps.println(function.identifier + ":");
         // ps.println(TAB + ".cfi_startproc");
         function.blocks.forEach(this::runOnBlock);
-        ps.println(".Lfunc_end" + funcEndCounter + ":");
-        ps.println(TAB + ".size" + TAB + function + ", .Lfunc_end" + funcEndCounter + "-" + function);
+        // ps.println(".Lfunc_end" + funcEndCounter + ":");
+        ps.println(TAB + ".size" + TAB + function + ", .-" + function);
         funcEndCounter++;
         // ps.println(TAB + ".cfi_endproc");
         ps.println("                                        # -- End function");
