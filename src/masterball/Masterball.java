@@ -28,11 +28,11 @@ public class Masterball {
         catch (Exception e) {
             if (e instanceof BaseError) {
                 // ((BaseError) e).tell();
-                System.exit(1);
+                System.exit(-1);
             }
             else {
                 // e.printStackTrace();
-                System.exit(1);
+                System.exit(-1);
             }
         }
 
