@@ -2,7 +2,13 @@
 
 <img src="asset/masterball.png" style="zoom:100%;" />Masterball, an elaborate Mx* Compiler.
 
-![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success)   ![](https://img.shields.io/badge/LLVM_IR-passed-success) 
+![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success)   ![](https://img.shields.io/badge/LLVM_IR-passed-success)   ![](https://img.shields.io/badge/CodeGen-passed-success) 
+
+
+
+**WARNING: Masterball use "StackNightmare" strategy for register allocation now, which is ugly but works.**
+
+**The Graph Coloring algorithm is developing...**
 
 
 
@@ -75,7 +81,7 @@ Now in: `ASM`
 - [x] ASMBuilder
 - [ ] RegisterAlloca (GraphColoring) 
 - [x] StackNightmare (a scary solution)
-- [ ] Debug (ok... it will take me a long time)
+- [x] Debug (ok... it will take me a long time)
 
 
 
