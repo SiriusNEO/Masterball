@@ -1,1 +1,95 @@
-Success.
+[32mLog:[Track] Tracking... IOEngine started successfully.[0m
+[35mLog:[Report] -i: java.io.BufferedInputStream@681a9515 -llvm-o: java.io.PrintStream@404b9385 [0m
+[32mLog:[Track] Tracking... ParseEngine started successfully.[0m
+[32mLog:[Track] Tracking... ASTBuilder started building...[0m
+[32mLog:[Track] Tracking... class def[0m
+[35mLog:[Report] AST Printer Start Sucess[0m
+
+..* --- RootNode --- *
+
+[GlobalScope]
+VarTable: {}
+FuncTable: {getInt=[FuncRegistry] name: getInt type: func, retType:INT args:, print=[FuncRegistry] name: print type: func, retType:VOID args:STRING , println=[FuncRegistry] name: println type: func, retType:VOID args:STRING , printInt=[FuncRegistry] name: printInt type: func, retType:VOID args:INT , printlnInt=[FuncRegistry] name: printlnInt type: func, retType:VOID args:INT , toString=[FuncRegistry] name: toString type: func, retType:STRING args:INT , main=[FuncRegistry] name: main type: func, retType:INT args:, getString=[FuncRegistry] name: getString type: func, retType:STRING args:}
+ClassTable: {A=[ClassRegistry] 
+name:A 
+scope:[ClassScope]
+VarTable: {e=[VarRegistry] INT|e}
+FuncTable: {A=[FuncRegistry] name: A type: func, retType:VOID args:, b=[FuncRegistry] name: b type: func, retType:VOID args:INT , c=[FuncRegistry] name: c type: func, retType:VOID args:INT }
+ }
+
+....* --- ClassDefNode --- *
+
+[ClassRegistry] 
+name:A 
+scope:[ClassScope]
+VarTable: {e=[VarRegistry] INT|e}
+FuncTable: {A=[FuncRegistry] name: A type: func, retType:VOID args:, b=[FuncRegistry] name: b type: func, retType:VOID args:INT , c=[FuncRegistry] name: c type: func, retType:VOID args:INT }
+ 
+
+......* --- FuncDefNode --- *
+
+[FuncRegistry] name: A type: func, retType:VOID args:
+
+........* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........* --- ReturnStmtNode --- *
+
+
+......* --- VarDefStmtNode --- *
+
+
+........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|e
+
+......* --- FuncDefNode --- *
+
+[FuncRegistry] name: b type: func, retType:VOID args:INT 
+
+........* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+......* --- FuncDefNode --- *
+
+[FuncRegistry] name: c type: func, retType:VOID args:INT 
+
+........* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..........* --- PureStmtNode --- *
+
+
+............* --- FuncCallExpNode --- *
+
+type: VOID
+
+..............* --- MemberExpNode --- *
+
+type: func, retType:VOID args:INT 
+
+................* --- AtomExpNode --- *
+
+type: A
+text: this
+
+..............* --- AtomExpNode --- *
+
+type: INT
+text: b
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: main type: func, retType:INT args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+[32mLog:[Track] Tracking... SemanticEngine started successfully.[0m

@@ -10,7 +10,7 @@ public class AsmTranslator {
         switch (byteWidth) {
             case 1: return RV32I.ByteKeyword;
             case 2: return RV32I.HalfWordKeyword;
-            case 4: return RV32I.WordKeyword;
+            case 4: case 8: return RV32I.WordKeyword; // pointer type 64bit -> 32bit
         }
         return "";
     }

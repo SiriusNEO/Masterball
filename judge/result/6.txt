@@ -1,1 +1,600 @@
-Success.
+[32mLog:[Track] Tracking... IOEngine started successfully.[0m
+[35mLog:[Report] -i: java.io.BufferedInputStream@681a9515 -llvm-o: java.io.PrintStream@404b9385 [0m
+[32mLog:[Track] Tracking... ParseEngine started successfully.[0m
+[32mLog:[Track] Tracking... ASTBuilder started building...[0m
+[35mLog:[Report] AST Printer Start Sucess[0m
+
+..* --- RootNode --- *
+
+[GlobalScope]
+VarTable: {}
+FuncTable: {getInt=[FuncRegistry] name: getInt type: func, retType:INT args:, vwvvvv=[FuncRegistry] name: vwvvvv type: func, retType:STRING args:, print=[FuncRegistry] name: print type: func, retType:VOID args:STRING , println=[FuncRegistry] name: println type: func, retType:VOID args:STRING , vvvvvv=[FuncRegistry] name: vvvvvv type: func, retType:BOOL args:, printInt=[FuncRegistry] name: printInt type: func, retType:VOID args:INT , printlnInt=[FuncRegistry] name: printlnInt type: func, retType:VOID args:INT , toString=[FuncRegistry] name: toString type: func, retType:STRING args:INT , main=[FuncRegistry] name: main type: func, retType:INT args:, getString=[FuncRegistry] name: getString type: func, retType:STRING args:, vvvvwv=[FuncRegistry] name: vvvvwv type: func, retType:VOID args:, vvwvvv=[FuncRegistry] name: vvwvvv type: func, retType:INT args:}
+ClassTable: {}
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: main type: func, retType:INT args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- FuncCallExpNode --- *
+
+type: BOOL
+
+............* --- AtomExpNode --- *
+
+type: func, retType:BOOL args:
+text: vvvvvv
+if true: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+else: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {i=[VarRegistry] INT|i}
+
+..............* --- VarDefStmtNode --- *
+
+
+................* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|i
+
+..................* --- FuncCallExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: vvwvvv
+
+..............* --- ForStmtNode --- *
+
+init: 
+condi: 
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ||
+
+..................* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+....................* --- UnaryExpNode --- *
+
+type: BOOL
+op: !
+
+......................* --- FuncCallExpNode --- *
+
+type: BOOL
+
+........................* --- AtomExpNode --- *
+
+type: func, retType:BOOL args:
+text: vvvvvv
+
+....................* --- FuncCallExpNode --- *
+
+type: BOOL
+
+......................* --- AtomExpNode --- *
+
+type: func, retType:BOOL args:
+text: vvvvvv
+
+..................* --- FuncCallExpNode --- *
+
+type: BOOL
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:BOOL args:
+text: vvvvvv
+incr: 
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: <
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: i
+
+..................* --- FuncCallExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: vvwvvv
+body: 
+
+................* --- SuiteStmtNode --- *
+
+
+..................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+....................* --- PureStmtNode --- *
+
+
+......................* --- FuncCallExpNode --- *
+
+type: VOID
+
+........................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:STRING 
+text: println
+
+........................* --- AtomExpNode --- *
+
+type: STRING
+text: "hahaha"
+
+..............* --- PureStmtNode --- *
+
+
+................* --- FuncCallExpNode --- *
+
+type: VOID
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:VOID args:
+text: vvvvwv
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- FuncCallExpNode --- *
+
+type: INT
+
+............* --- MemberExpNode --- *
+
+type: func, retType:INT args:
+
+..............* --- BinaryExpNode --- *
+
+type: STRING
+op: +
+
+................* --- FuncCallExpNode --- *
+
+type: STRING
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+................* --- FuncCallExpNode --- *
+
+type: STRING
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:INT 
+text: toString
+
+..................* --- FuncCallExpNode --- *
+
+type: INT
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: vvwvvv
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: vvvvvv type: func, retType:BOOL args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: &&
+
+............* --- BinaryExpNode --- *
+
+type: BOOL
+op: >=
+
+..............* --- FuncCallExpNode --- *
+
+type: STRING
+
+................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+..............* --- FuncCallExpNode --- *
+
+type: STRING
+
+................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+............* --- BinaryExpNode --- *
+
+type: BOOL
+op: <=
+
+..............* --- FuncCallExpNode --- *
+
+type: STRING
+
+................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+..............* --- FuncCallExpNode --- *
+
+type: STRING
+
+................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+if true: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- ReturnStmtNode --- *
+
+
+................* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+..................* --- FuncCallExpNode --- *
+
+type: STRING
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:INT 
+text: toString
+
+....................* --- FuncCallExpNode --- *
+
+type: INT
+
+......................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: vvwvvv
+
+..................* --- FuncCallExpNode --- *
+
+type: STRING
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+else: 
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: !=
+
+............* --- FuncCallExpNode --- *
+
+type: STRING
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+............* --- FuncCallExpNode --- *
+
+type: STRING
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: vvvvwv type: func, retType:VOID args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {tmp=[VarRegistry] INT|tmp}
+
+........* --- VarDefStmtNode --- *
+
+
+..........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|tmp
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: vvwvvv
+
+........* --- IfStmtNode --- *
+
+condi: 
+
+..........* --- BinaryExpNode --- *
+
+type: BOOL
+op: ||
+
+............* --- BinaryExpNode --- *
+
+type: BOOL
+op: >
+
+..............* --- BinaryExpNode --- *
+
+type: INT
+op: ^
+
+................* --- FuncCallExpNode --- *
+
+type: INT
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:INT args:
+text: vvwvvv
+
+................* --- FuncCallExpNode --- *
+
+type: INT
+
+..................* --- MemberExpNode --- *
+
+type: func, retType:INT args:
+
+....................* --- FuncCallExpNode --- *
+
+type: STRING
+
+......................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+..............* --- UnaryExpNode --- *
+
+type: INT
+op: -
+
+................* --- PrefixExpNode --- *
+
+type: INT
+op: ++
+
+..................* --- AtomExpNode --- *
+
+type: INT
+text: tmp
+
+............* --- BinaryExpNode --- *
+
+type: BOOL
+op: ==
+
+..............* --- FuncCallExpNode --- *
+
+type: BOOL
+
+................* --- AtomExpNode --- *
+
+type: func, retType:BOOL args:
+text: vvvvvv
+
+..............* --- BinaryExpNode --- *
+
+type: BOOL
+op: >=
+
+................* --- BinaryExpNode --- *
+
+type: STRING
+op: +
+
+..................* --- FuncCallExpNode --- *
+
+type: STRING
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+..................* --- FuncCallExpNode --- *
+
+type: STRING
+
+....................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+................* --- FuncCallExpNode --- *
+
+type: STRING
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+if true: 
+
+..........* --- SuiteStmtNode --- *
+
+
+............* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+..............* --- ForStmtNode --- *
+
+init: 
+condi: 
+incr: 
+body: 
+
+................* --- SuiteStmtNode --- *
+
+
+..................* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+....................* --- ControlStmtNode --- *
+
+break
+else: 
+
+........* --- ReturnStmtNode --- *
+
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: vwvvvv type: func, retType:STRING args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- FuncCallExpNode --- *
+
+type: STRING
+
+............* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: getString
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: vvwvvv type: func, retType:INT args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- BinaryExpNode --- *
+
+type: INT
+op: %
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- MemberExpNode --- *
+
+type: func, retType:INT args:
+
+................* --- FuncCallExpNode --- *
+
+type: STRING
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+
+............* --- FuncCallExpNode --- *
+
+type: INT
+
+..............* --- MemberExpNode --- *
+
+type: func, retType:INT args:
+
+................* --- FuncCallExpNode --- *
+
+type: STRING
+
+..................* --- AtomExpNode --- *
+
+type: func, retType:STRING args:
+text: vwvvvv
+[32mLog:[Track] Tracking... SemanticEngine started successfully.[0m
+[35mLog:[Report] 3[0m
+[35mLog:[Report] 3[0m
+[35mLog:[Report] 3[0m
+[35mLog:[Report] 3[0m
+[35mLog:[Report] 3[0m
+[35mLog:[Report] 3[0m
+[35mLog:[Report] 3[0m
+[35mLog:[Report] 3[0m

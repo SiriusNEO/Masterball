@@ -5,6 +5,7 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.middleend.llvmir.type.StructType;
+import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.InstVisitor;
 
@@ -16,12 +17,14 @@ public class IRGetElementPtrInst extends IRBaseInst {
 
     public IRGetElementPtrInst(String elementName, Value headPointer, IRBaseType yieldType , IRBlock parentBlock, Value... indices) {
         super(addrRename(elementName), yieldType, parentBlock);
+        assert headPointer.type instanceof PointerType;
         this.addOperand(headPointer);
         for (Value index : indices) this.addOperand(index);
     }
 
     public IRGetElementPtrInst(Value headPointer, IRBaseType yieldType , IRBlock parentBlock, Value... indices) {
         super(LLVM.GetElementPtrInst, yieldType, parentBlock);
+        assert headPointer.type instanceof PointerType;
         this.addOperand(headPointer);
         for (Value index : indices) this.addOperand(index);
     }
@@ -36,8 +39,9 @@ public class IRGetElementPtrInst extends IRBaseInst {
         return this.getOperand(0);
     }
 
-    public boolean isClassPtr() {
-        return ((PointerType) headPointer().type).pointedType instanceof StructType;
+    public boolean isGetMember() {
+        if (indicesNum() > 2) throw new UnknownError(this); // it is highly special...
+        return ((PointerType) headPointer().type).pointedType instanceof StructType && indicesNum() == 2;
     }
 
     public Value ptrMoveIndex() { return this.getIndex(0); }

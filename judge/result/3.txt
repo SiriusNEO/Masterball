@@ -1,1 +1,66 @@
-Success.
+[32mLog:[Track] Tracking... IOEngine started successfully.[0m
+[35mLog:[Report] -i: java.io.BufferedInputStream@681a9515 -llvm-o: java.io.PrintStream@404b9385 [0m
+[32mLog:[Track] Tracking... ParseEngine started successfully.[0m
+[32mLog:[Track] Tracking... ASTBuilder started building...[0m
+[35mLog:[Report] AST Printer Start Sucess[0m
+
+..* --- RootNode --- *
+
+[GlobalScope]
+VarTable: {}
+FuncTable: {getInt=[FuncRegistry] name: getInt type: func, retType:INT args:, print=[FuncRegistry] name: print type: func, retType:VOID args:STRING , println=[FuncRegistry] name: println type: func, retType:VOID args:STRING , haha=[FuncRegistry] name: haha type: func, retType:VOID args:, printInt=[FuncRegistry] name: printInt type: func, retType:VOID args:INT , printlnInt=[FuncRegistry] name: printlnInt type: func, retType:VOID args:INT , toString=[FuncRegistry] name: toString type: func, retType:STRING args:INT , main=[FuncRegistry] name: main type: func, retType:INT args:, getString=[FuncRegistry] name: getString type: func, retType:STRING args:}
+ClassTable: {}
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: haha type: func, retType:VOID args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {a=[VarRegistry] INT|a}
+
+........* --- VarDefStmtNode --- *
+
+
+..........* --- VarDefSingleNode --- *
+
+[VarRegistry] INT|a
+
+........* --- ReturnStmtNode --- *
+
+
+....* --- FuncDefNode --- *
+
+[FuncRegistry] name: main type: func, retType:INT args:
+
+......* --- SuiteNode --- *
+
+[NormalScope]
+VarTable: {}
+
+........* --- PureStmtNode --- *
+
+
+..........* --- FuncCallExpNode --- *
+
+type: VOID
+
+............* --- AtomExpNode --- *
+
+type: func, retType:VOID args:STRING 
+text: print
+
+............* --- AtomExpNode --- *
+
+type: STRING
+text: "hehe\n"
+
+........* --- ReturnStmtNode --- *
+
+
+..........* --- AtomExpNode --- *
+
+type: INT
+text: 0
+[32mLog:[Track] Tracking... SemanticEngine started successfully.[0m

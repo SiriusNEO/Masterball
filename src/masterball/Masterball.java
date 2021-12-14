@@ -19,6 +19,8 @@ public class Masterball {
 
             SemanticEngine semanticEngine = new SemanticEngine(parseEngine, ioEngine.astGenStream);
 
+            if (ioEngine.fsyntaxOnly) return;
+
             IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, ioEngine);
 
             CodeGenEngine codeGenEngine = new CodeGenEngine(irGenEngine, ioEngine);
@@ -26,10 +28,15 @@ public class Masterball {
         catch (Exception e) {
             if (e instanceof BaseError) {
                 ((BaseError) e).tell();
+                System.exit(1);
             }
-            e.printStackTrace();
-            return;
+            else {
+                e.printStackTrace();
+                System.exit(1);
+            }
         }
+
+        System.exit(0);
     }
 
 }

@@ -6,7 +6,7 @@ public class Log {
     private static int markCnt = 0;
     private static final int ReportColor = 35, TrackColor = 32, MarkColor = 33;
 
-    private static final boolean isOpen = true;
+    private static final boolean isOpen = false;
 
     private static PrintStream ps = System.out;
 

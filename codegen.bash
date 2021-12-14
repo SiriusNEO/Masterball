@@ -1,2 +1,2 @@
 set -e
-exit 1
+java -jar Masterball.jar -ast-o ast.out -llvm-o test.ll -debug-o log.txt

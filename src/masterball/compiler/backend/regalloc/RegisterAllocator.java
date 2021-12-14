@@ -346,7 +346,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         for (Register reg : spilledNodes) {
             curStackBase += 4;
             if (curStackBase > RV32I.MaxStackSize) throw new StackOverflowError();
-            reg.stackOffset = new StackOffset(curStackBase, 1);
+            reg.stackOffset = new StackOffset(curStackBase, 1, curFunc);
         }
 
         Set<Register> newTemps = new HashSet<>();

@@ -7,6 +7,7 @@ import masterball.compiler.backend.rvasm.operand.*;
 import masterball.compiler.middleend.llvmir.constant.BoolConst;
 import masterball.compiler.middleend.llvmir.constant.IntConst;
 import masterball.compiler.middleend.llvmir.Value;
+import masterball.compiler.middleend.llvmir.constant.NullptrConst;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.error.runtime.UnimplementedError;
 import masterball.compiler.share.error.runtime.UnknownError;
@@ -26,6 +27,7 @@ public class AsmCurrent {
         Integer intValue = null;
         if (value instanceof IntConst) intValue = ((IntConst) value).constData;
         else if (value instanceof BoolConst) intValue = ((BoolConst) value).constData ? 1 : 0;
+        else if (value instanceof NullptrConst) intValue = 0;
         if (intValue != null && intValue == 0) {
             value.asmOperand = PhysicalReg.reg("zero");
             return PhysicalReg.reg("zero");

@@ -24,6 +24,7 @@ public class IOEngine {
     public boolean fsyntaxOnly = false;
 
     public static String getFileName(String path) {
+        if (path == null) return "test";
         for (int i = path.length()-1; i >= 0; i--) {
             if (path.charAt(i) == '/') {
                 return path.substring(i+1, path.length());

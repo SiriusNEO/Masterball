@@ -1,5 +1,6 @@
 package masterball.compiler.backend.rvasm.operand;
 
+import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.debug.Log;
 
 import java.util.HashSet;
@@ -10,17 +11,16 @@ public class StackOffset extends Immediate {
     public static Set<StackOffset> collection = new HashSet<>();
 
     public final int level;
-    public boolean setFlag = false;
+    public final AsmFunction parentFunction;
 
-    public StackOffset(int offset, int level) {
+    public StackOffset(int offset, int level, AsmFunction parentFunction) {
         super(offset);
         this.level = level;
         collection.add(this);
+        this.parentFunction = parentFunction;
     }
 
     public void setStackBase(int basePos) {
-        if (setFlag) return;
-        this.setFlag = true;
         this.value += basePos;
         this.identifier = String.valueOf(this.value);
     }

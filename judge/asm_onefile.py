@@ -1,9 +1,12 @@
 import os
 import time
 
-command = "cp {code_file} ../local/test.mx && cp input.txt ../local/input.txt && cd ../local/ && ./llvmrun.bash < {input_file} > {output_file} && cp output.txt ../judge/output.txt && cd ../judge/"
+command = "cp {code_file} ../local/test.mx && cp input.txt ../local/test.in && cd ../local/ && timeout 120s ./ravel.bash && cp test.out ../judge/output.txt && cd ../judge/"
 
-judge_list = open("testcases/codegen/judgelist.txt").readlines()
+testcase = input("Input Testcase: ");
+
+judge_list = list()
+judge_list.append("./" + testcase)
 
 cnt = 0
 
@@ -55,6 +58,7 @@ for judge in judge_list:
     else:
         print("\033[31m[Failed] [test]: in {testpoint} \033[0m".format(testpoint = code_file + ", point " + str(cnt)))
         # print("[info]: ", info)
+        # exit(-1)
         fail_collect.append(code_file)
     
     time.sleep(1)

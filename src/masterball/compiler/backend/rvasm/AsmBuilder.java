@@ -12,6 +12,8 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.inst.*;
 import masterball.compiler.middleend.llvmir.type.IRFuncType;
+import masterball.compiler.middleend.llvmir.type.PointerType;
+import masterball.compiler.middleend.llvmir.type.StructType;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.error.runtime.UnknownError;
@@ -43,7 +45,10 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
             AsmFunction function = new AsmFunction(builtinFunc.name);
             builtinFunc.asmOperand = function;
             for (int i = 0; i < ((IRFuncType) builtinFunc.type).argTypes.size(); i++) {
-                function.arguments.add(new ArgumentReg(String.valueOf(i), builtinFunc.getArgType(i).size()));
+                ArgumentReg reg = new ArgumentReg(String.valueOf(i), builtinFunc.getArgType(i).size());
+                function.arguments.add(reg);
+                reg.stackOffset = new StackOffset(function.callStackUse, 0, function);
+                function.callStackUse += 4;
             }
         }
 
@@ -53,6 +58,8 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
             irFunc.operands.forEach(arg -> {
                 arg.asmOperand = new ArgumentReg(arg.name, arg.type.size());
                 function.arguments.add((Register) arg.asmOperand);
+                ((Register) arg.asmOperand).stackOffset = new StackOffset(function.callStackUse, 0, function);
+                function.callStackUse += 4;
             });
             module.functions.add((AsmFunction) irFunc.asmOperand);
 
@@ -92,18 +99,16 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         new AsmMvInst(fpTemp, PhysicalReg.reg("s0"), cur.func.entryBlock());
 
         // arguments 0~7
-        /*
-        for (int i = 0; i < min(cur.func.arguments.size(), RV32I.MaxArgRegNum); i++) {
+
+        for (int i = 0; i < Integer.min(cur.func.arguments.size(), RV32I.MaxArgRegNum); i++) {
             new AsmMvInst(cur.func.arguments.get(i), PhysicalReg.a(i), cur.func.entryBlock());
         }
+
         // spill to mem
-        int stackOffset = cur.func.allocaBase;
         for (int i = RV32I.MaxArgRegNum; i < cur.func.arguments.size(); i++) {
-            new AsmLoadInst(function.getOperand(i).type.size(), cur.func.arguments.get(i), PhysicalReg.reg("sp"),
-                    new StackOffset(stackOffset, false, false), cur.func.entryBlock());
-            stackOffset += 4;
+            new AsmLoadInst(function.getOperand(i).type.size(), cur.func.arguments.get(i), PhysicalReg.reg("s0"),
+                    cur.func.arguments.get(i).stackOffset, cur.func.entryBlock());
         }
-        */
 
         function.blocks.forEach(this::runOnBlock);
 
@@ -129,7 +134,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
     // AsmBuilder
     @Override
     public void visit(IRAllocaInst inst) {
-        inst.asmOperand = new StackOffset(cur.func.allocaStackUse, 1);
+        inst.asmOperand = new StackOffset(cur.func.allocaStackUse, 1, cur.func);
         cur.func.allocaStackUse += 4;
     }
 
@@ -176,23 +181,20 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
     public void visit(IRCallInst inst) {
         AsmFunction callFunc = (AsmFunction) inst.callFunc().asmOperand;
 
+        // 0~7
         for (int i = 0; i < Integer.min(inst.callFunc().getArgNum(), RV32I.MaxArgRegNum); i++) {
             if (inst.getArgs(i) instanceof GlobalValue)
                 new AsmLaInst(PhysicalReg.a(i), inst.getArgs(i).asmOperand.identifier, cur.block);
             else awesomeMove(PhysicalReg.a(i), inst.getArgs(i));
             Log.report(inst.callFunc().identifier());
-            callFunc.arguments.get(i).color = PhysicalReg.a(i);
         }
 
         // spill to mem
-        int stackOffset = 0;
         for (int i = RV32I.MaxArgRegNum; i < callFunc.arguments.size(); i++) {
-            callFunc.arguments.get(i).stackOffset = new StackOffset(stackOffset, 0);
             new AsmStoreInst(inst.getArgs(i).type.size(), PhysicalReg.reg("sp"), callFunc.arguments.get(i),
                     callFunc.arguments.get(i).stackOffset, cur.block);
-            stackOffset += 4;
         }
-        cur.func.callStackUse = max(cur.func.callStackUse, stackOffset);
+        cur.func.callStackUse = max(cur.func.callStackUse, callFunc.callStackUse);
 
         new AsmCallInst(callFunc.identifier, cur.block);
         if (!inst.callFunc().isVoid()) {
@@ -206,14 +208,16 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         // step 1. calculate address
         // only 1~2 indices presented in LLVM IR
         // 2 indices means it is a class "GetElementPtr". Then the first index must be 0
-        // index * elementSize
+        // index * elementSize (if it is array)
+        // memberOffset (if it is class)
         // do some constant folding (detail in @awesomeGEP)
 
         Register instReg = cur.toReg(inst);
-        Value index = inst.isClassPtr() ? inst.memberIndex() : inst.ptrMoveIndex();
-        int elementSize = inst.type.size();
+        Value index = inst.isGetMember() ? inst.memberIndex() : inst.ptrMoveIndex();
+        StructType classType = inst.isGetMember() ? (StructType) ((PointerType) inst.headPointer().type).pointedType : null;
+        int elementSize = ((PointerType) inst.headPointer().type).pointedType.size(); // well... quite interesting
         Register ptrReg = cur.toReg(inst.headPointer());
-        Register gepReg = awesomeGEP(ptrReg, index, elementSize);
+        Register gepReg = awesomeGEP(ptrReg, index, elementSize, classType);
         new AsmMvInst(instReg, gepReg, cur.block);
     }
 
@@ -340,6 +344,10 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         return (value instanceof IntConst && ((IntConst) value).constData >= -1 * RV32I.ImmBound && ((IntConst) value).constData <= RV32I.ImmBound) || value instanceof BoolConst;
     }
 
+    private static boolean validImm(int value) {
+        return value >= -1 * RV32I.ImmBound && value <= RV32I.ImmBound;
+    }
+
     private static boolean equalZero(Value value) {
         return value instanceof NullptrConst || (value instanceof IntConst && ((IntConst) value).constData == 0) || (value instanceof BoolConst && !((BoolConst) value).constData);
     }
@@ -400,22 +408,32 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         else new AsmMvInst(dest, cur.toReg(source), cur.block);
     }
 
-    public Register awesomeGEP(Register ptrReg, Value index, int elementSize) {
+    public Register awesomeGEP(Register ptrReg, Value index, int elementSize, StructType classType) {
         VirtualReg gepReg = new VirtualReg();
-        if (index instanceof IntConst) {
-            // constant folding
-            if (equalZero(index)) {
-                if (ptrReg instanceof GlobalReg) new AsmLaInst(gepReg, ptrReg.identifier, cur.block);
-                else new AsmMvInst(gepReg, ptrReg, cur.block);
-            }
-            else {
-                new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toImm(((IntConst) index).constData * elementSize), cur.block);
-            }
+        if (classType != null) {
+            // class member get
+            assert index instanceof IntConst;
+            int memberOffset = classType.memberOffset(((IntConst) index).constData);
+            if (validImm(memberOffset))
+                new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toImm(memberOffset), cur.block);
+            else
+                new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toReg(new IntConst(memberOffset)), cur.block);
         }
         else {
-            VirtualReg mulReg = new VirtualReg();
-            new AsmALUInst(RV32I.MulInst, mulReg, cur.toReg(index), cur.toReg(new IntConst(elementSize)), cur.block);
-            new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, mulReg, cur.block);
+            // array
+            if (index instanceof IntConst) {
+                // constant folding
+                if (equalZero(index)) {
+                    if (ptrReg instanceof GlobalReg) new AsmLaInst(gepReg, ptrReg.identifier, cur.block);
+                    else new AsmMvInst(gepReg, ptrReg, cur.block);
+                } else {
+                    new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toImm(((IntConst) index).constData * elementSize), cur.block);
+                }
+            } else {
+                VirtualReg mulReg = new VirtualReg();
+                new AsmALUInst(RV32I.MulInst, mulReg, cur.toReg(index), cur.toReg(new IntConst(elementSize)), cur.block);
+                new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, mulReg, cur.block);
+            }
         }
         return gepReg;
     }
