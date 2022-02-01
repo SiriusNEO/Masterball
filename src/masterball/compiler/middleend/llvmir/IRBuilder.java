@@ -23,7 +23,6 @@ import masterball.compiler.share.error.runtime.UnimplementedError;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.misc.Pair;
 import masterball.compiler.share.pass.ASTVisitor;
-import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.Objects;

@@ -21,23 +21,32 @@ public abstract class AsmBaseInst {
         this.rs2 = rs2;
         this.imm = imm;
         if (parentBlock != null) parentBlock.addInst(this);
-
         if (rd != null) defs.add(rd);
         if (rs1 != null) uses.add(rs1);
         if (rs2 != null) uses.add(rs2);
     }
 
     public void replaceUse(Register oldUse, Register newUse) {
-        if (uses.contains(oldUse)) {
-            uses.remove(oldUse);
-            uses.add(newUse);
+        if (rs1 == oldUse) {
+            uses.remove(rs1);
+            rs1 = newUse;
+            uses.add(rs1);
+        }
+        if (rs2 == oldUse) {
+            uses.remove(rs2);
+            rs2 = newUse;
+            uses.add(rs2);
         }
     }
 
     public void replaceDef(Register oldDef, Register newDef) {
-        if (defs.contains(oldDef)) {
-            defs.remove(oldDef);
-            defs.add(oldDef);
+        if (rd == oldDef) {
+            defs.remove(rd);
+            rd = newDef;
+            defs.add(rd);
+        }
+        else {
+            throw new UnknownError();
         }
     }
 

@@ -97,3 +97,24 @@ $$out[n] = \bigcup_{s \in succ[n]} in[s]$$
 先给 spilledStack 里所有的寄存器分配储存单元。
 
 然后给这些寄存器插入对应的 load 和 store。def 后插 store，use 前插 load。
+
+## StackHierachy
+
+三层结构：
+
+- callerArg + 0
+
+- alloca (+ callUse)
+
+- spill (+callUse + allocaUse)
+- calleeArg (+totalUse)，对接上层的 callerArg
+
+区分不同层的栈帧存于 Function 中。
+
+func call 部分取 max。
+
+#### RawStackOffset
+
+需要经过处理变成真正的栈位移。
+
+对应层结构有四种状态，分别代表不同 level 的栈位移。

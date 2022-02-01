@@ -75,6 +75,5 @@ public class IOEngine {
         Log.setPrintStream(logStream);
 
         Log.track("IOEngine started successfully.");
-        Log.report(new VarPair(redirectInput, is), new VarPair(redirectLLVMOutput, irGenStream));
     }
 }

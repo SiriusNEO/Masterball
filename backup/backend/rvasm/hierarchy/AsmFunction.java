@@ -11,11 +11,7 @@ public class AsmFunction extends BaseOperand {
     public final ArrayList<AsmBlock> blocks = new ArrayList<>();
     public final ArrayList<Register> arguments = new ArrayList<>();
 
-    public int callerArgStackUse = 0,
-               allocaStackUse = 0,
-               spillStackUse = 0,
-               calleeArgStackUse = 0,
-               totalStackUse = 0;
+    public int callStackUse = 0, allocaStackUse = 0, virtualStackUse = 0, totalStackUse = 0;
 
     public AsmFunction(String identifier) {
         super(identifier);

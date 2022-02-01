@@ -22,6 +22,8 @@ public class AsmCurrent {
         if (value.asmOperand != null) {
             return (Register) value.asmOperand;
         }
+        Log.mark();
+        Log.report(value.identifier(), VirtualReg.virtualRegNum);
         Integer intValue = null;
         if (value instanceof IntConst) intValue = ((IntConst) value).constData;
         else if (value instanceof BoolConst) intValue = ((BoolConst) value).constData ? 1 : 0;
@@ -46,7 +48,7 @@ public class AsmCurrent {
     }
 
     public Immediate toImm(Value value) {
-        if (value.asmOperand instanceof RawStackOffset) return (Immediate) value.asmOperand;
+        if (value.asmOperand instanceof StackOffset) return (Immediate) value.asmOperand;
         if (value instanceof IntConst) return new Immediate(((IntConst) value).constData);
         if (value instanceof BoolConst) return new Immediate (((BoolConst) value).constData ? 1 : 0);
         throw new UnimplementedError(this);

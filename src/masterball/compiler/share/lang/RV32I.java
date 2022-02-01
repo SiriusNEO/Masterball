@@ -6,7 +6,8 @@ import java.util.Arrays;
 public class RV32I {
     // sys config
     public static final int ImmBound = (1 << 11);
-    public static final int StackAllocUnit = 16;
+    public static final int SpLowUnit = 16;
+    public static final int I32Unit = 4;
     public static final int MaxStackSize = (1 << 12);
 
     // reg

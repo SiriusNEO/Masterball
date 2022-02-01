@@ -3,6 +3,6 @@ out/
 *.iml
 src/META-INF/
 log.txt
-lib/
+lib/antlr-4.7.2-complete.jar
 local/
 src/org/

@@ -36,8 +36,8 @@ public class LivenessAnalyzer implements AsmFuncPass {
     private void collectUsesAndDefs(AsmBlock block) {
         HashSet<Register> usesInBlock = new HashSet<>(), defsInBlock = new HashSet<>();
         for (AsmBaseInst inst : block.instructions) {
-            inst.uses.forEach(useReg -> {if (!defsInBlock.contains(useReg)) usesInBlock.add(useReg);});
             defsInBlock.addAll(inst.defs);
+            inst.uses.forEach(useReg -> {if (!defsInBlock.contains(useReg)) usesInBlock.add(useReg);});
         }
         uses.put(block, usesInBlock);
         defs.put(block, defsInBlock);
@@ -52,12 +52,11 @@ public class LivenessAnalyzer implements AsmFuncPass {
         // data flow equation (reference: Tigerbook):
         // in[n] = use[n] \cup (out[n] - def[n])
         // out[n] = \cap_{s \in suc[n]} in[s]
-
         if (finishSet.contains(block)) return;
         HashSet<Register> newLiveIn = new HashSet<>(liveOut.get(block)), newLiveOut = new HashSet<>();
         newLiveIn.removeAll(defs.get(block));
         newLiveIn.addAll(uses.get(block));
-        block.nexts.forEach(suc -> newLiveOut.addAll(liveIn.get(suc)));
+        block.nexts.forEach(suc -> newLiveOut.addAll(liveOut.get(suc)));
         if (!newLiveIn.equals(liveIn.get(block)) || !newLiveOut.equals(liveOut.get(block))) {
             liveIn.get(block).addAll(newLiveIn);
             liveOut.get(block).addAll(newLiveOut);

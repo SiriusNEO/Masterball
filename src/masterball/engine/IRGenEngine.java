@@ -5,6 +5,7 @@ import masterball.compiler.middleend.llvmir.IRPrinter;
 import masterball.compiler.middleend.ssa.SSADestructor;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
+import masterball.debug.Log;
 
 import java.io.PrintStream;
 
@@ -23,5 +24,7 @@ public class IRGenEngine {
         }
 
         this.module.functions.forEach(func -> new SSADestructor().runOnFunc(func));
+
+        Log.track("IRGenEngine started successfully.");
     }
 }
