@@ -72,4 +72,8 @@ public class InterferenceGraph {
             }
         }
     }
+
+    public void init() {
+        adjSet.clear();
+    }
 }

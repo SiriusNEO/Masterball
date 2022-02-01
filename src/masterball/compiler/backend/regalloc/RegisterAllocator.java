@@ -106,7 +106,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                 rewriteProgram();
             }
             else {
-                backupInitial.forEach(reg -> Log.report("color", reg + " " + reg.color));
+                backupInitial.forEach(reg -> Log.report("color", reg.identifier, reg.color));
                 return;
             }
         }
@@ -127,6 +127,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         frozenMoves.clear();
         worklistMoves.clear();
         activeMoves.clear();
+
+        // init the graph
+        G.init();
 
         // all physical registers are precolored
         precolored.forEach(reg -> {
@@ -397,9 +400,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         Log.report("rewrite");
 
         for (Register reg : spilledNodes) {
+            reg.stackOffset = new RawStackOffset(curFunc.spillStackUse, RawType.spill);
             curFunc.spillStackUse += 4;
             if (curFunc.spillStackUse > RV32I.MaxStackSize) throw new StackOverflowError();
-            reg.stackOffset = new RawStackOffset(curFunc.spillStackUse, RawType.spill);
         }
 
         Set<Register> newTemps = new HashSet<>();

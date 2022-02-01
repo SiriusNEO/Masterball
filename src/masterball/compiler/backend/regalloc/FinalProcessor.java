@@ -10,6 +10,7 @@ import masterball.compiler.backend.rvasm.operand.RawStackOffset;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.compiler.share.pass.AsmModulePass;
+import masterball.debug.Log;
 
 public class FinalProcessor implements AsmModulePass, AsmFuncPass {
 
@@ -75,6 +76,8 @@ public class FinalProcessor implements AsmModulePass, AsmFuncPass {
 
         if (function.totalStackUse % RV32I.SpLowUnit != 0)
             function.totalStackUse = (function.totalStackUse / RV32I.SpLowUnit + 1) * RV32I.SpLowUnit;
+
+        Log.report(function.identifier, function.totalStackUse, function.calleeArgStackUse, function.allocaStackUse, function.spillStackUse);
 
         eliminateMove(function);
         eliminateRaw(function);
