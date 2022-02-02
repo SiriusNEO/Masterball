@@ -31,7 +31,7 @@ public class FinalProcessor implements AsmModulePass, AsmFuncPass {
     }
 
     private void stackAllocate(AsmFunction function) {
-        for (AsmBlock block : function.blocks)
+        for (AsmBlock block : function.blocks) {
             for (AsmBaseInst inst : block.instructions) {
                 if (inst.imm instanceof RawStackOffset) {
                     switch (((RawStackOffset) inst.imm).level) {
@@ -45,10 +45,7 @@ public class FinalProcessor implements AsmModulePass, AsmFuncPass {
                             break;
                         }
                         case spill: {
-                            Log.report("function", function.identifier);
-                            Log.report("spill", inst.imm, inst.imm.value);
                             inst.imm = new Immediate(inst.imm.value + function.callerArgStackUse + function.allocaStackUse);
-                            Log.report("modified", inst.imm, inst.imm.value);
                             break;
                         }
                         case calleeArg: {
@@ -66,6 +63,7 @@ public class FinalProcessor implements AsmModulePass, AsmFuncPass {
                     }
                 }
             }
+        }
     }
 
     @Override

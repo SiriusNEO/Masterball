@@ -218,7 +218,9 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
                     new RawStackOffset(callFunc.arguments.get(i).stackOffset.value, RawType.callerArg),
                     cur.block);
         }
-        cur.func.callerArgStackUse = max(cur.func.callerArgStackUse, callFunc.callerArgStackUse);
+
+        // callerArg space = max calleeArg space
+        cur.func.callerArgStackUse = max(cur.func.callerArgStackUse, callFunc.calleeArgStackUse);
 
         new AsmCallInst(callFunc, cur.block);
         if (!inst.callFunc().isVoid()) {
@@ -451,7 +453,11 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
                     if (ptrReg instanceof GlobalReg) new AsmLaInst(gepReg, ptrReg.identifier, cur.block);
                     else new AsmMvInst(gepReg, ptrReg, cur.block);
                 } else {
-                    new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toImm(((IntConst) index).constData * elementSize), cur.block);
+                    int totalSize = ((IntConst) index).constData * elementSize;
+                    if (validImm(totalSize))
+                        new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toImm(totalSize), cur.block);
+                    else
+                        new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toReg(new IntConst(totalSize)), cur.block);
                 }
             } else {
                 VirtualReg mulReg = new VirtualReg();

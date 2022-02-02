@@ -9,8 +9,6 @@ import masterball.compiler.backend.rvasm.inst.AsmMvInst;
 import masterball.compiler.backend.rvasm.inst.AsmStoreInst;
 import masterball.compiler.backend.rvasm.operand.*;
 import masterball.compiler.backend.rvasm.operand.RawStackOffset.RawType;
-import masterball.compiler.share.error.runtime.StackOverflowError;
-import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.compiler.share.pass.AsmModulePass;
 import masterball.debug.Log;
@@ -80,18 +78,15 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
             Log.mark();
 
-            LivenessAnalyzer analyzer = new LivenessAnalyzer();
-            analyzer.runOnFunc(function);
-            build(analyzer);
+            new LivenessAnalyzer().runOnFunc(function);
+            build();
 
             makeWorklist();
-
             /*
             Log.report("simplify", simplifyWorklist);
             Log.report("freeze", freezeWorklist);
             Log.report("spill", spillWorklist);
             */
-
             do {
                 if (!simplifyWorklist.isEmpty()) simplify();
                 else if (!worklistMoves.isEmpty()) coalesce();
@@ -103,16 +98,21 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
             if (!spilledNodes.isEmpty()) {
                 rewriteProgram();
+
+                Log.mark("color end: turn #");
+                coloredNodes.forEach(n -> Log.report("color: ", n.identifier, n.color));
+                coalescedNodes.forEach(n -> Log.report("coalesced: ", n.identifier, n.color));
+                spilledNodes.forEach(n -> Log.report("spill: ", n.identifier, n.stackOffset.value));
             }
             else {
+                Log.mark("color end: turn #");
+                coloredNodes.forEach(n -> Log.report("color: ", n.identifier, n.color));
+                coalescedNodes.forEach(n -> Log.report("coalesced: ", n.identifier, n.color));
+                spilledNodes.forEach(n -> Log.report("spill: ", n.identifier, n.stackOffset.value));
+
                 Log.markReset("color end: turn #");
                 return;
             }
-
-            Log.mark("color end: turn #");
-            coloredNodes.forEach(n -> Log.report("color: ", n.identifier, n.color));
-            coalescedNodes.forEach(n -> Log.report("coalesced: ", n.identifier, n.color));
-            spilledNodes.forEach(n -> Log.report("spill: ", n.identifier, n.stackOffset.value));
         }
     }
 
@@ -163,7 +163,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
     }
 
-    private void build(LivenessAnalyzer analyzer) {
+    private void build() {
         /*
          * build the InterferenceGraph
          * for inst from tail to head because we start with "liveOut"
@@ -173,7 +173,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
          */
 
         for (AsmBlock block : curFunc.blocks) {
-            HashSet<Register> lives = analyzer.getLiveOut(block);
+            HashSet<Register> lives = block.liveOut;
 
             for (int i = block.instructions.size()-1; i >= 0; i--) {
                 AsmBaseInst inst = block.instructions.get(i);
@@ -451,6 +451,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                     if (def.stackOffset == null) continue;
                     if (inst.uses().contains(def)) continue; // has been considered previously
                     if (inst instanceof AsmMvInst && inst.rs1.stackOffset == null) {
+                        Log.report("rewrite1", curFunc, inst.format());
                         AsmBaseInst storeInst = new AsmStoreInst(((VirtualReg) def).size, PhysicalReg.reg("sp"), inst.rs1, def.stackOffset, null);
                         it.set(storeInst);
                     } else {

@@ -17,7 +17,7 @@ import java.util.LinkedList;
 public class IRBlock extends Value {
     public LinkedList<IRBaseInst> instructions = new LinkedList<>();
     public ArrayList<IRPhiInst> phiInsts = new ArrayList<>();
-    public HashSet<IRBlock> prevs = new HashSet<>(), nexts = new HashSet<>();
+    public ArrayList<IRBlock> prevs = new ArrayList<>(), nexts = new ArrayList<>();
     public IRFunction parentFunction;
 
     public boolean isTerminated = false;
@@ -77,7 +77,4 @@ public class IRBlock extends Value {
             linkBlock(inst.ifFalseBlock());
         }
     }
-
-
-
 }

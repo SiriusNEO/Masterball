@@ -28,7 +28,7 @@ public class Masterball {
         catch (Exception e) {
             if (e instanceof BaseError) {
                 ((BaseError) e).tell();
-                // throw new RuntimeException();
+                throw new RuntimeException();
             }
             else {
                 e.printStackTrace();

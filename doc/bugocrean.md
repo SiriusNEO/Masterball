@@ -2,4 +2,8 @@
 
 
 
-['testcases/codegen/t56.mx', 'testcases/codegen/t27.mx', 'testcases/codegen/t29.mx', 'testcases/codegen/t28.mx', 'testcases/codegen/shortest_path/dijkstra.mx']
+['testcases/codegen/t56.mx', 'testcases/codegen/t29.mx', 'testcases/codegen/t28.mx', 'testcases/codegen/shortest_path/dijkstra.mx']
+
+
+
+['testcases/codegen/t30.mx', 'testcases/codegen/t56.mx']

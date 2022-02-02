@@ -5,7 +5,7 @@ import masterball.compiler.share.error.runtime.UnknownError;
 
 public abstract class Register extends BaseOperand {
 
-    // allocated in RegisterAllocator
+    // assigned in RegisterAllocator
     public PhysicalReg color;
     // location in stack, only spill registers have (graphColor spill & function call spill)
     public RawStackOffset stackOffset;
