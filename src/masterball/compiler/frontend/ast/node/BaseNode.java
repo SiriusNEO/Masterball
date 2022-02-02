@@ -6,6 +6,7 @@ import masterball.compiler.middleend.llvmir.Value;
 
 public abstract class BaseNode {
     public CodePos codePos;
+
     // interact with IR part
     public Value value = null;
 

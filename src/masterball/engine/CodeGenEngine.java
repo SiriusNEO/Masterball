@@ -1,6 +1,7 @@
 package masterball.engine;
 
-import masterball.compiler.backend.regalloc.FinalProcessor;
+import masterball.compiler.backend.optim.BackEndOptimizer;
+import masterball.compiler.backend.regalloc.StackAllocator;
 import masterball.compiler.backend.regalloc.RegisterAllocator;
 import masterball.compiler.backend.rvasm.AsmBuilder;
 import masterball.compiler.backend.rvasm.AsmPrinter;
@@ -21,7 +22,9 @@ public class CodeGenEngine {
 
         new RegisterAllocator().runOnModule(this.module);
 
-        new FinalProcessor().runOnModule(this.module);
+        new StackAllocator().runOnModule(this.module);
+
+        new BackEndOptimizer().runOnModule(this.module);
 
         new AsmPrinter(IOEngine.getFileName(ioEngine.llvmOutputPath), ioEngine.asmGenStream).runOnModule(this.module);
 

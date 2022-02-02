@@ -37,6 +37,7 @@ public class Value {
     public Value resolveFrom = null;
     public String name;
     public String comment = null;
+
     // interact with BackEnd
     public BaseOperand asmOperand = null;
 

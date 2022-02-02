@@ -12,7 +12,7 @@ import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.compiler.share.pass.AsmModulePass;
 import masterball.debug.Log;
 
-public class FinalProcessor implements AsmModulePass, AsmFuncPass {
+public class StackAllocator implements AsmModulePass, AsmFuncPass {
 
     @Override
     public void runOnModule(AsmModule module) {

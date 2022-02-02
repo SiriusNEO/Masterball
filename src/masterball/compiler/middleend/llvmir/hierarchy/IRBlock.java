@@ -6,21 +6,28 @@ import masterball.compiler.middleend.llvmir.inst.IRBrInst;
 import masterball.compiler.middleend.llvmir.inst.IRMoveInst;
 import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.middleend.llvmir.type.LabelType;
-import masterball.debug.Log;
+import masterball.compiler.middleend.ssa.DomTreeBuilder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 
 // BasicBlock is also a Value
 
 public class IRBlock extends Value {
     public LinkedList<IRBaseInst> instructions = new LinkedList<>();
+
+    // phi inst will be eliminated by SSADestructor
     public ArrayList<IRPhiInst> phiInsts = new ArrayList<>();
-    public ArrayList<IRBlock> prevs = new ArrayList<>(), nexts = new ArrayList<>();
+
     public IRFunction parentFunction;
 
     public boolean isTerminated = false;
+
+    // control flow graph
+    public ArrayList<IRBlock> prevs = new ArrayList<>(), nexts = new ArrayList<>();
+
+    // info in DomTree
+    public DomTreeBuilder.Node node = new DomTreeBuilder.Node(this);
 
     public IRBlock(String label, IRFunction parentFunction) {
         super(label, new LabelType());
