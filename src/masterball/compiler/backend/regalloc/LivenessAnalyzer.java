@@ -6,26 +6,25 @@ import masterball.compiler.backend.rvasm.inst.AsmBaseInst;
 import masterball.compiler.backend.rvasm.operand.Register;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.debug.LivenessPrinter;
+import masterball.debug.Log;
 
 import java.util.*;
 
 public class LivenessAnalyzer implements AsmFuncPass {
 
-    private Map<AsmBlock, HashSet<Register>> uses = new HashMap<>(),
+    private final Map<AsmBlock, HashSet<Register>> uses = new HashMap<>(),
                                              defs = new HashMap<>(),
                                              liveIn = new HashMap<>(),
                                              liveOut = new HashMap<>();
 
-    private LinkedList<AsmBlock> workList = new LinkedList<>();
-    private HashSet<AsmBlock> finishSet = new HashSet<>();
+    private final HashSet<AsmBlock> finishSet = new HashSet<>();
 
     @Override
     public void runOnFunc(AsmFunction function) {
         function.blocks.forEach(this::collectUsesAndDefs);
         function.blocks.forEach(this::initLiveness);
-        workList.push(function.exitBlock());
-        while (!workList.isEmpty()) livenessAnalyze(workList.poll());
-        new LivenessPrinter(uses, defs, liveIn, liveOut).print();
+
+        livenessAnalyze(function.exitBlock());
     }
 
     public HashSet<Register> getLiveOut(AsmBlock block) {
@@ -36,8 +35,10 @@ public class LivenessAnalyzer implements AsmFuncPass {
     private void collectUsesAndDefs(AsmBlock block) {
         HashSet<Register> usesInBlock = new HashSet<>(), defsInBlock = new HashSet<>();
         for (AsmBaseInst inst : block.instructions) {
-            inst.uses.forEach(useReg -> {if (!defsInBlock.contains(useReg)) usesInBlock.add(useReg);});
-            defsInBlock.addAll(inst.defs);
+            HashSet<Register> usesInInst = inst.uses();
+            usesInInst.removeAll(defsInBlock);
+            usesInBlock.addAll(usesInInst);
+            defsInBlock.addAll(inst.defs());
         }
         uses.put(block, usesInBlock);
         defs.put(block, defsInBlock);
@@ -54,16 +55,20 @@ public class LivenessAnalyzer implements AsmFuncPass {
         // out[n] = \cap_{s \in suc[n]} in[s]
 
         if (finishSet.contains(block)) return;
-        HashSet<Register> newLiveIn = new HashSet<>(liveOut.get(block)), newLiveOut = new HashSet<>();
+        finishSet.add(block);
+
+        HashSet<Register> newLiveOut = new HashSet<>();
+        block.nexts.forEach(suc -> newLiveOut.addAll(liveIn.get(suc)));
+        HashSet<Register> newLiveIn = new HashSet<>(newLiveOut);
         newLiveIn.removeAll(defs.get(block));
         newLiveIn.addAll(uses.get(block));
-        block.nexts.forEach(suc -> newLiveOut.addAll(liveIn.get(suc)));
-        if (!newLiveIn.equals(liveIn.get(block)) || !newLiveOut.equals(liveOut.get(block))) {
+
+        if (newLiveIn.size() != liveIn.get(block).size() || newLiveOut.size() != liveOut.get(block).size()) {
             liveIn.get(block).addAll(newLiveIn);
             liveOut.get(block).addAll(newLiveOut);
             finishSet.removeAll(block.prevs);
         }
-        workList.addAll(block.prevs);
-        finishSet.add(block);
+
+        block.prevs.forEach(this::livenessAnalyze);
     }
 }

@@ -14,15 +14,9 @@ import masterball.debug.Log;
 
 public class FinalProcessor implements AsmModulePass, AsmFuncPass {
 
-    // info
-    private AsmFunction curFunc;
-
     @Override
     public void runOnModule(AsmModule module) {
-        for (AsmFunction func : module.functions) {
-            curFunc = func;
-            runOnFunc(func);
-        }
+        module.functions.forEach(this::runOnFunc);
     }
 
     private void eliminateMove(AsmFunction function) {

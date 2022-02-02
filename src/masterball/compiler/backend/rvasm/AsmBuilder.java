@@ -48,7 +48,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
             AsmFunction function = new AsmFunction(builtinFunc.name);
             builtinFunc.asmOperand = function;
             for (int i = 0; i < ((IRFuncType) builtinFunc.type).argTypes.size(); i++) {
-                ArgumentReg reg = new ArgumentReg(String.valueOf(i), builtinFunc.getArgType(i).size());
+                VirtualReg reg = new VirtualReg(builtinFunc.getArgType(i).size());
                 function.arguments.add(reg);
                 reg.stackOffset = new RawStackOffset(function.calleeArgStackUse, RawType.calleeArg);
                 function.calleeArgStackUse += RV32I.I32Unit;
@@ -59,7 +59,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
             AsmFunction function = new AsmFunction(irFunc.name);
             irFunc.asmOperand = function;
             irFunc.operands.forEach(arg -> {
-                arg.asmOperand = new ArgumentReg(arg.name, arg.type.size());
+                arg.asmOperand = new VirtualReg(arg.type.size());
                 function.arguments.add((Register) arg.asmOperand);
                 ((Register) arg.asmOperand).stackOffset = new RawStackOffset(function.calleeArgStackUse, RawType.calleeArg);
                 function.calleeArgStackUse += RV32I.I32Unit;

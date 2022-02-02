@@ -64,15 +64,16 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
     @Override
     public void runOnModule(AsmModule module) {
-        for (AsmFunction func : module.functions) {
-            curFunc = func;
-            runOnFunc(func);
-        }
+        Log.report("K", K);
+
+        module.functions.forEach(this::runOnFunc);
     }
 
     @Override
     public void runOnFunc(AsmFunction function) {
         Log.report("color func: ", function);
+
+        curFunc = function;
 
         while (true) {
             init();
@@ -138,8 +139,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         });
 
         curFunc.blocks.forEach(block -> block.instructions.forEach(inst -> {
-            initial.addAll(inst.uses);
-            initial.addAll(inst.defs);
+            initial.addAll(inst.uses());
+            initial.addAll(inst.defs());
         }));
         initial.removeAll(precolored);
         initial.forEach(reg -> {
@@ -153,8 +154,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         for (AsmBlock block : curFunc.blocks) {
             double weight = Math.pow(10, Double.min(block.prevs.size(), block.nexts.size()));
             block.instructions.forEach(inst -> {
-                inst.defs.forEach(def -> def.node.priority += weight);
-                inst.uses.forEach(use -> use.node.priority += weight);
+                inst.defs().forEach(def -> def.node.priority += weight);
+                inst.uses().forEach(use -> use.node.priority += weight);
             });
         }
     }
@@ -163,9 +164,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         /*
          * build the InterferenceGraph
          * for inst from tail to head because we start with "liveOut"
-         * for each inst, defs and lives interference.
-         * Then before move to pre inst, we do update: all defs are dead while all uses are live.
-         * Notice that for Move we have to remove their uses
+         * for each inst, defs() and lives interference.
+         * Then before move to pre inst, we do update: all defs() are dead while all uses() are live.
+         * Notice that for Move we have to remove their uses()
          */
 
         for (AsmBlock block : curFunc.blocks) {
@@ -174,24 +175,24 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             for (int i = block.instructions.size()-1; i >= 0; i--) {
                 AsmBaseInst inst = block.instructions.get(i);
                 if (inst instanceof AsmMvInst) {
-                    lives.removeAll(inst.uses);
-                    HashSet<Register> moveRelated = new HashSet<>(inst.defs);
-                    moveRelated.addAll(inst.uses);
+                    lives.removeAll(inst.uses());
+                    HashSet<Register> moveRelated = new HashSet<>(inst.defs());
+                    moveRelated.addAll(inst.uses());
                     moveRelated.forEach(reg -> reg.node.moveList.add((AsmMvInst) inst));
                     worklistMoves.add((AsmMvInst) inst);
                 }
 
                 lives.add(PhysicalReg.reg("zero"));
-                lives.addAll(inst.defs);
+                lives.addAll(inst.defs());
 
                 Log.report("lives", lives);
 
-                for (Register def : inst.defs)
+                for (Register def : inst.defs())
                     for (Register live : lives)
                         G.addEdge(new Edge(def, live));
 
-                lives.removeAll(inst.defs);
-                lives.addAll(inst.uses);
+                lives.removeAll(inst.defs());
+                lives.addAll(inst.uses());
             }
         }
     }
@@ -371,7 +372,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
     private void assignColors() {
         while (!selectStack.empty()) {
             Register reg = selectStack.pop();
-            HashSet<PhysicalReg> okColors = new HashSet<>(PhysicalReg.assignable);
+            ArrayList<PhysicalReg> okColors = new ArrayList<>(PhysicalReg.assignable);
             HashSet<Register> coloredSet = new HashSet<>(precolored);
 
             coloredSet.addAll(coloredNodes);
@@ -402,7 +403,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         for (Register reg : spilledNodes) {
             reg.stackOffset = new RawStackOffset(curFunc.spillStackUse, RawType.spill);
             curFunc.spillStackUse += 4;
-            if (curFunc.spillStackUse > RV32I.MaxStackSize) throw new StackOverflowError();
         }
 
         Set<Register> newTemps = new HashSet<>();
@@ -414,10 +414,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             while (it.hasNext()) {
                 AsmBaseInst inst = it.next();
 
-                for (Register use : inst.uses) {
+                for (Register use : inst.uses()) {
                     if (use.stackOffset == null) continue;
 
-                    if (!inst.defs.contains(use)) {
+                    if (!inst.defs().contains(use)) {
                         if (inst instanceof AsmMvInst && inst.rd.stackOffset == null) {
                             // move rd reg -> load rd stackPos(sp)
                             assert use.equals(inst.rs1);
@@ -435,7 +435,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                         }
                     }
                     else {
-                        // if it is also in defs
+                        // if it is also in defs()
                         VirtualReg temp = new VirtualReg(((VirtualReg) use).size);
                         AsmBaseInst loadInst = new AsmLoadInst(temp.size, temp, PhysicalReg.reg("sp"), use.stackOffset, null);
                         AsmBaseInst storeInst = new AsmStoreInst(temp.size, temp, PhysicalReg.reg("sp"), use.stackOffset, null);
@@ -449,9 +449,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                     }
                 }
 
-                for (Register def : inst.defs) {
+                for (Register def : inst.defs()) {
                     if (def.stackOffset == null) continue;
-                    if (inst.uses.contains(def)) continue; // has been considered previously
+                    if (inst.uses().contains(def)) continue; // has been considered previously
                     if (inst instanceof AsmMvInst && inst.rs1.stackOffset == null) {
                         AsmBaseInst storeInst = new AsmStoreInst(((VirtualReg) def).size, PhysicalReg.reg("sp"), inst.rs1, def.stackOffset, null);
                         it.set(storeInst);

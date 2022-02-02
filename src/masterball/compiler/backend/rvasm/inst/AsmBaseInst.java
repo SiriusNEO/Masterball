@@ -12,7 +12,6 @@ import java.util.ListIterator;
 public abstract class AsmBaseInst {
     public Register rd, rs1, rs2;
     public Immediate imm;
-    public HashSet<Register> uses = new HashSet<>(), defs = new HashSet<>();
 
     // the parentBlock will be "null" if this instruction will be inserted to a specific position
     public AsmBaseInst(Register rd, Register rs1, Register rs2, Immediate imm, AsmBlock parentBlock) {
@@ -21,24 +20,30 @@ public abstract class AsmBaseInst {
         this.rs2 = rs2;
         this.imm = imm;
         if (parentBlock != null) parentBlock.addInst(this);
-
-        if (rd != null) defs.add(rd);
-        if (rs1 != null) uses.add(rs1);
-        if (rs2 != null) uses.add(rs2);
     }
 
     public void replaceUse(Register oldUse, Register newUse) {
-        if (uses.contains(oldUse)) {
-            uses.remove(oldUse);
-            uses.add(newUse);
-        }
+        if (rs1 == oldUse) rs1 = newUse;
+        if (rs2 == oldUse) rs2 = newUse;
     }
 
     public void replaceDef(Register oldDef, Register newDef) {
-        if (defs.contains(oldDef)) {
-            defs.remove(oldDef);
-            defs.add(oldDef);
+        if (rd == oldDef) {
+            rd = newDef;
         }
+    }
+
+    public HashSet<Register> uses() {
+        HashSet<Register> ret = new HashSet<>();
+        if (rs1 != null) ret.add(rs1);
+        if (rs2 != null) ret.add(rs2);
+        return ret;
+    }
+
+    public HashSet<Register> defs() {
+        HashSet<Register> ret = new HashSet<>();
+        if (rd != null) ret.add(rd);
+        return ret;
     }
 
     public abstract String format();

@@ -8,7 +8,7 @@ public class RV32I {
     public static final int ImmBound = (1 << 11);
     public static final int SpLowUnit = 16;
     public static final int I32Unit = 4;
-    public static final int MaxStackSize = (1 << 12);
+    public static final int MaxStackSize = Integer.MAX_VALUE;
 
     // reg
     public static final int MaxArgRegNum = 8;
