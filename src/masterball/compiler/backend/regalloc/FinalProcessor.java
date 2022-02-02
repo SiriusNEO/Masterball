@@ -30,7 +30,7 @@ public class FinalProcessor implements AsmModulePass, AsmFuncPass {
         }
     }
 
-    private void eliminateRaw(AsmFunction function) {
+    private void stackAllocate(AsmFunction function) {
         for (AsmBlock block : function.blocks)
             for (AsmBaseInst inst : block.instructions) {
                 if (inst.imm instanceof RawStackOffset) {
@@ -40,11 +40,15 @@ public class FinalProcessor implements AsmModulePass, AsmFuncPass {
                             break;
                         }
                         case alloca: {
+                            Log.report(inst.format());
                             inst.imm = new Immediate(inst.imm.value + function.callerArgStackUse);
                             break;
                         }
                         case spill: {
+                            Log.report("function", function.identifier);
+                            Log.report("spill", inst.imm, inst.imm.value);
                             inst.imm = new Immediate(inst.imm.value + function.callerArgStackUse + function.allocaStackUse);
+                            Log.report("modified", inst.imm, inst.imm.value);
                             break;
                         }
                         case calleeArg: {
@@ -71,9 +75,9 @@ public class FinalProcessor implements AsmModulePass, AsmFuncPass {
         if (function.totalStackUse % RV32I.SpLowUnit != 0)
             function.totalStackUse = (function.totalStackUse / RV32I.SpLowUnit + 1) * RV32I.SpLowUnit;
 
-        Log.report(function.identifier, function.totalStackUse, function.calleeArgStackUse, function.allocaStackUse, function.spillStackUse);
+        Log.report(function.identifier, function.totalStackUse, function.callerArgStackUse, function.allocaStackUse, function.spillStackUse);
 
         eliminateMove(function);
-        eliminateRaw(function);
+        stackAllocate(function);
     }
 }

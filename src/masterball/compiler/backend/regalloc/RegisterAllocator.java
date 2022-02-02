@@ -77,10 +77,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
         while (true) {
             init();
-            Set<Register> backupInitial = new HashSet<>(initial);
 
             Log.mark();
-            Log.report(initial);
 
             LivenessAnalyzer analyzer = new LivenessAnalyzer();
             analyzer.runOnFunc(function);
@@ -88,9 +86,11 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
             makeWorklist();
 
+            /*
             Log.report("simplify", simplifyWorklist);
             Log.report("freeze", freezeWorklist);
             Log.report("spill", spillWorklist);
+            */
 
             do {
                 if (!simplifyWorklist.isEmpty()) simplify();
@@ -99,17 +99,20 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                 else if (!spillWorklist.isEmpty()) selectSpill();
             } while (!simplifyWorklist.isEmpty() || !worklistMoves.isEmpty() || !freezeWorklist.isEmpty() || !spillWorklist.isEmpty());
 
-            coalescedNodes.forEach(n -> Log.report("alias", n, n.node.alias));
-
             assignColors();
 
             if (!spilledNodes.isEmpty()) {
                 rewriteProgram();
             }
             else {
-                backupInitial.forEach(reg -> Log.report("color", reg.identifier, reg.color));
+                Log.markReset("color end: turn #");
                 return;
             }
+
+            Log.mark("color end: turn #");
+            coloredNodes.forEach(n -> Log.report("color: ", n.identifier, n.color));
+            coalescedNodes.forEach(n -> Log.report("coalesced: ", n.identifier, n.color));
+            spilledNodes.forEach(n -> Log.report("spill: ", n.identifier, n.stackOffset.value));
         }
     }
 
@@ -185,8 +188,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                 lives.add(PhysicalReg.reg("zero"));
                 lives.addAll(inst.defs());
 
-                Log.report("lives", lives);
-
                 for (Register def : inst.defs())
                     for (Register live : lives)
                         G.addEdge(new Edge(def, live));
@@ -205,8 +206,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         while (it.hasNext()) {
             Register reg = it.next();
             it.remove();
-            Log.report("deg", reg.identifier, reg.node.degree);
-            Log.report(reg.node.adjList);
+            // Log.report("deg", reg.identifier, reg.node.degree);
+            // Log.report(reg.node.adjList);
             if (reg.node.degree >= K) spillWorklist.add(reg);
             else if (moveRelated(reg)) freezeWorklist.add(reg);
             else simplifyWorklist.add(reg);
@@ -247,7 +248,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
          */
         var it = simplifyWorklist.iterator();
         Register reg = it.next();
-        Log.report("simplify", reg);
+        // Log.track("simplify", reg);
         it.remove();
         selectStack.push(reg);
         adjacent(reg).forEach(this::decrementDegree);
@@ -284,7 +285,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         var it = worklistMoves.iterator();
         AsmMvInst move = it.next();
         
-        Log.report("coalesce", move.rd, move.rs1);
+        // Log.track("coalesce", move.rd, move.rs1);
         
         Register rdAlias = getAlias(move.rd), rs1Alias = getAlias(move.rs1);
         Edge edge;
@@ -303,8 +304,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
         else if ((edge.u.node.precolored && georgeStrategy(edge.u, edge.v))
                  || (!edge.u.node.precolored && conservative(adjacent(edge.u, edge.v)))) { // briggs strategy
-            Log.mark();
-            Log.report(edge.u, edge.v);
 
             coalescedMoves.add(move);
             combine(edge.u, edge.v);
@@ -332,7 +331,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
     private void freeze() {
         var it = freezeWorklist.iterator();
         Register reg = it.next();
-        Log.report("freeze", reg);
+        // Log.track("freeze", reg);
         it.remove();
         simplifyWorklist.add(reg);
         freezeMoves(reg);
@@ -362,7 +361,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             }
         }
 
-        Log.report("selectSpill", minReg);
+        // Log.track("selectSpill", minReg);
 
         spillWorklist.remove(minReg);
         simplifyWorklist.add(minReg);
@@ -390,7 +389,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
 
         for (Register reg : coalescedNodes) {
-            Log.report("coales", reg, getAlias(reg));
             reg.color = getAlias(reg).color;
         }
     }
@@ -398,7 +396,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
     private void rewriteProgram() {
         // really a big job...
         // allocate stack space for these nodes
-        Log.report("rewrite");
+        // Log.track("rewrite");
 
         for (Register reg : spilledNodes) {
             reg.stackOffset = new RawStackOffset(curFunc.spillStackUse, RawType.spill);

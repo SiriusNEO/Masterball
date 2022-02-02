@@ -50,20 +50,33 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
             for (int i = 0; i < ((IRFuncType) builtinFunc.type).argTypes.size(); i++) {
                 VirtualReg reg = new VirtualReg(builtinFunc.getArgType(i).size());
                 function.arguments.add(reg);
-                reg.stackOffset = new RawStackOffset(function.calleeArgStackUse, RawType.calleeArg);
-                function.calleeArgStackUse += RV32I.I32Unit;
+
+                // spill
+                if (i >= RV32I.MaxArgRegNum) {
+                    reg.stackOffset = new RawStackOffset(function.calleeArgStackUse, RawType.calleeArg);
+                    function.calleeArgStackUse += RV32I.I32Unit;
+                }
             }
         }
 
         for (IRFunction irFunc : irModule.functions) {
             AsmFunction function = new AsmFunction(irFunc.name);
             irFunc.asmOperand = function;
-            irFunc.operands.forEach(arg -> {
-                arg.asmOperand = new VirtualReg(arg.type.size());
-                function.arguments.add((Register) arg.asmOperand);
-                ((Register) arg.asmOperand).stackOffset = new RawStackOffset(function.calleeArgStackUse, RawType.calleeArg);
-                function.calleeArgStackUse += RV32I.I32Unit;
-            });
+
+            for (int i = 0; i < irFunc.operands.size(); i++) {
+                Value arg = irFunc.operands.get(i);
+                VirtualReg reg = new VirtualReg(arg.type.size());
+                arg.asmOperand = reg;
+
+                function.arguments.add(reg);
+
+                // spill
+                if (i >= RV32I.MaxArgRegNum) {
+                    reg.stackOffset = new RawStackOffset(function.calleeArgStackUse, RawType.calleeArg);
+                    function.calleeArgStackUse += RV32I.I32Unit;
+                }
+            }
+
             module.functions.add((AsmFunction) irFunc.asmOperand);
 
             for (IRBlock irBlock : irFunc.blocks) {
@@ -197,10 +210,12 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
         // spill to mem
         for (int i = RV32I.MaxArgRegNum; i < callFunc.arguments.size(); i++) {
-            new AsmStoreInst(inst.getArgs(i).type.size(),
-                    PhysicalReg.reg("sp"),
-                    callFunc.arguments.get(i),
-                    callFunc.arguments.get(i).stackOffset,
+
+            new AsmStoreInst(inst.getArgs(i).type.size(), PhysicalReg.reg("sp"),
+                    // notice: here use the argument of CallInst, not the func
+                    // and the RawStackOffset should use caller
+                    cur.toReg(inst.getArgs(i)),
+                    new RawStackOffset(callFunc.arguments.get(i).stackOffset.value, RawType.callerArg),
                     cur.block);
         }
         cur.func.callerArgStackUse = max(cur.func.callerArgStackUse, callFunc.callerArgStackUse);

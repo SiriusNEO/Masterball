@@ -1,7 +1,7 @@
 import os
 import time
 
-command = "cp {code_file} ../local/test.mx && cp input.txt ../local/test.in && cd ../local/ && timeout 120s ./ravel.bash && cp test.out ../judge/output.txt && cd ../judge/"
+command = "timeout 30 cp {code_file} ../local/test.mx && cp input.txt ../local/test.in && cd ../local/ && timeout 120s ./ravel.bash && cp test.out ../judge/output.txt && cd ../judge/"
 
 judge_list = open("testcases/codegen/judgelist.txt").readlines()
 

@@ -7,8 +7,8 @@ public abstract class Register extends BaseOperand {
 
     // allocated in RegisterAllocator
     public PhysicalReg color;
-    // location in stack
-    public Immediate stackOffset;
+    // location in stack, only spill registers have (graphColor spill & function call spill)
+    public RawStackOffset stackOffset;
     // info in InterferenceGraph
     public InterferenceGraph.Node node = new InterferenceGraph.Node();
 
