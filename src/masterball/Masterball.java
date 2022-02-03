@@ -1,7 +1,11 @@
 package masterball;
 
-import masterball.compiler.share.error.BaseError;
-import masterball.engine.*;
+import masterball.compiler.backend.BackEnd;
+import masterball.compiler.frontend.FrontEnd;
+import masterball.compiler.middleend.MiddleEnd;
+import masterball.compiler.share.error.CompileError;
+import masterball.console.*;
+import masterball.console.error.ConsoleError;
 
 /*
  * @Masterball main entry
@@ -13,29 +17,37 @@ public class Masterball {
 
     public static void main(String[] args) throws Exception {
         try {
-            IOEngine ioEngine = new IOEngine(args);
+            Console console = new Console(args);
 
-            ParseEngine parseEngine = new ParseEngine(ioEngine);
+            if (console.showHelp || console.showVersion) return;
 
-            SemanticEngine semanticEngine = new SemanticEngine(parseEngine, ioEngine.astGenStream);
+            FrontEnd frontEnd = new FrontEnd(console);
 
-            if (ioEngine.fsyntaxOnly) return;
+            if (console.fsyntaxOnly) return;
 
-            IRGenEngine irGenEngine = new IRGenEngine(semanticEngine, ioEngine);
+            MiddleEnd middleEnd = new MiddleEnd(frontEnd, console);
 
-            CodeGenEngine codeGenEngine = new CodeGenEngine(irGenEngine, ioEngine);
+            if (console.irOnly) return;
+
+            BackEnd backEnd = new BackEnd(middleEnd, console);
         }
         catch (Exception e) {
-            if (e instanceof BaseError) {
-                ((BaseError) e).tell();
-                throw new RuntimeException();
-            }
-            else {
-                e.printStackTrace();
-            }
+            errorHandle(e);
         }
-
         System.exit(0);
     }
 
+    private static void errorHandle(Exception e) {
+        if (e instanceof CompileError) {
+            ((CompileError) e).tell();
+            throw new RuntimeException();
+        }
+        else if (e instanceof ConsoleError) {
+            ((ConsoleError) e).tell();
+            throw new RuntimeException();
+        }
+        else {
+            e.printStackTrace();
+        }
+    }
 }

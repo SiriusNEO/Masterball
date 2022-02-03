@@ -2,7 +2,7 @@ package masterball.compiler.share.error;
 
 import masterball.compiler.frontend.info.CodePos;
 
-public class SemanticError extends BaseError {
+public class SemanticError extends CompileError {
 
     public static String semanticErrorHint = "[Semantic Error]: ";
 

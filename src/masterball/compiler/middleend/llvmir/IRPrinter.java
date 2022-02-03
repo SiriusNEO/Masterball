@@ -14,16 +14,16 @@ import java.io.PrintStream;
 
 public class IRPrinter implements IRModulePass, IRFuncPass, IRBlockPass {
 
-    public static final String INDENT = "  ";
+    private static final String INDENT = "  ";
 
     // based on hierarchy
 
     private final PrintStream ps;
-    private final String mxFilePath;
+    private final String mxFileName;
 
-    public IRPrinter(String mxFilePath, PrintStream ps) {
+    public IRPrinter(String mxFileName, PrintStream ps) {
         this.ps = ps;
-        this.mxFilePath = mxFilePath;
+        this.mxFileName = mxFileName;
     }
 
     @Override
@@ -53,10 +53,8 @@ public class IRPrinter implements IRModulePass, IRFuncPass, IRBlockPass {
 
     @Override
     public void runOnModule(IRModule module) {
-        Log.report("IR Printer Start Sucess");
-
-        ps.printf("; ModuleID = '%s'%n", mxFilePath);
-        ps.printf("source_filename = \"%s\"%n", mxFilePath);
+        ps.printf("; ModuleID = '%s'%n", mxFileName);
+        ps.printf("source_filename = \"%s\"%n", mxFileName);
         ps.println(TargetInfo.dataLayout);
         ps.println(TargetInfo.triple + "\n");
 

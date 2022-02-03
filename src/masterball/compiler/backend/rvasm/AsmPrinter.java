@@ -12,24 +12,24 @@ import java.io.PrintStream;
 
 public class AsmPrinter implements AsmModulePass, AsmFuncPass, AsmBlockPass {
 
-    public final static String TAB = "\t";
+    private final static String TAB = "\t";
 
     public int funcEndCounter = 0;
 
     private final PrintStream ps;
-    private final String irFilePath;
+    private final String irFileName;
 
-    public AsmPrinter(String irFilePath, PrintStream ps) {
+    public AsmPrinter(String fileName, PrintStream ps) {
         this.ps = ps;
-        this.irFilePath = irFilePath;
+        this.irFileName = fileName;
     }
 
     @Override
     public void runOnModule(AsmModule module) {
         Log.report("Asm Printer Start Sucess");
 
+        ps.println("# fileName: " + irFileName + TAB + " compiled by @Masterball.");
         ps.println(TAB + ".text");
-        // ps.println(TAB + ".file" + TAB + irFilePath);
         module.functions.forEach(this::runOnFunc);
         module.globalVarSeg.forEach(globalVar -> {
             AsmFormatter.globalVariableFormat(globalVar).forEach(ps::println);
