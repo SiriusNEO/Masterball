@@ -85,12 +85,4 @@ public class IRBlock extends Value {
             }
         }
     }
-
-    public void linkParentBlock(IRBrInst inst) {
-        if (inst.isJump()) linkBlock(inst.destBlock());
-        else {
-            linkBlock(inst.ifTrueBlock());
-            linkBlock(inst.ifFalseBlock());
-        }
-    }
 }

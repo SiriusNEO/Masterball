@@ -19,7 +19,7 @@ public class Mem2Reg implements IRFuncPass {
 
     private final Map<String, Stack<Value>> nameStack = new HashMap<>();
 
-    private final Map<IRPhiInst, String> phiRawName = new HashMap<>();
+    private final Map<IRPhiInst, String> phiAllocaName = new HashMap<>();
 
     private void collectAllocated(IRFunction function) {
         for (IRBaseInst inst : function.entryBlock().instructions)
@@ -78,7 +78,7 @@ public class Mem2Reg implements IRFuncPass {
                     workQueue.offer(frontier);
                     Log.mark("new phi");
                     var phi = new IRPhiInst(((PointerType) allocaVar.type).pointedType, frontier);
-                    phiRawName.put(phi, Value.getRawName(allocaVar.name));
+                    phiAllocaName.put(phi, allocaVar.name);
                 }
             }
         }
@@ -101,9 +101,9 @@ public class Mem2Reg implements IRFuncPass {
         HashSet<String> rollbackRecord = new HashSet<>();
 
         for (var phi : block.phiInsts) {
-            if (phiRawName.containsKey(phi)) {
-                updateReplace(phiRawName.get(phi), phi);
-                rollbackRecord.add(phiRawName.get(phi));
+            if (phiAllocaName.containsKey(phi)) {
+                updateReplace(phiAllocaName.get(phi), phi);
+                rollbackRecord.add(phiAllocaName.get(phi));
             }
         }
 
@@ -118,7 +118,7 @@ public class Mem2Reg implements IRFuncPass {
             }
             else if (inst instanceof IRLoadInst) {
                 if (allocated.contains(((IRLoadInst) inst).loadPtr())) {
-                    String name = Value.getRawName(((IRLoadInst) inst).loadPtr().name);
+                    String name = ((IRLoadInst) inst).loadPtr().name;
                     Value replace = getReplace(name);
                     it.remove(); // remove load
                     inst.replaced(replace);
@@ -126,7 +126,7 @@ public class Mem2Reg implements IRFuncPass {
             }
             else if (inst instanceof IRStoreInst) {
                 if (allocated.contains(((IRStoreInst) inst).storePtr())) {
-                    String name = Value.getRawName(((IRStoreInst) inst).storePtr().name);
+                    String name = ((IRStoreInst) inst).storePtr().name;
                     updateReplace(name, ((IRStoreInst) inst).storeValue());
                     Log.report("replace", getReplace(name).identifier());
                     rollbackRecord.add(name);
@@ -137,8 +137,8 @@ public class Mem2Reg implements IRFuncPass {
 
         for (IRBlock suc : block.nexts) {
             for (var sucPhi : suc.phiInsts) {
-                if (phiRawName.containsKey(sucPhi)) {
-                    sucPhi.addBranch(getReplace(phiRawName.get(sucPhi)), block);
+                if (phiAllocaName.containsKey(sucPhi)) {
+                    sucPhi.addBranch(getReplace(phiAllocaName.get(sucPhi)), block);
                 }
             }
         }

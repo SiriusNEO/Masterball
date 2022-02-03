@@ -32,11 +32,6 @@ public class Value {
         return rawName.substring(0, lastAddrSuffixIndex) + LLVM.ResolveSuffix;
     }
 
-    public static String getRawName(String name) {
-        int firstSpliterIndex = name.indexOf(LLVM.Spliter);
-        return name.substring(0, firstSpliterIndex);
-    }
-
     public IRBaseType type;
     public ArrayList<User> users = new ArrayList<User>();
     public Value resolveFrom = null;

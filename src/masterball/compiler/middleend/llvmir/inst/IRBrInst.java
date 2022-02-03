@@ -10,7 +10,6 @@ public class IRBrInst extends IRBaseInst {
     public IRBrInst(IRBlock destBlock, IRBlock parentBlock) {
         super(LLVM.BrInst, new VoidType(), parentBlock);
         this.addOperand(destBlock);
-        this.parentBlock.linkParentBlock(this);
     }
 
     public IRBrInst(Value condition, IRBlock ifTrueBlock, IRBlock ifFalseBlock, IRBlock parentBlock) {
@@ -18,7 +17,6 @@ public class IRBrInst extends IRBaseInst {
         this.addOperand(condition);
         this.addOperand(ifTrueBlock);
         this.addOperand(ifFalseBlock);
-        this.parentBlock.linkParentBlock(this);
     }
 
     public boolean isJump() {

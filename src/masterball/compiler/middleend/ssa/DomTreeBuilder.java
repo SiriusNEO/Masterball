@@ -87,7 +87,7 @@ public class DomTreeBuilder implements IRFuncPass {
             if (block.prevs.size() < 2) continue;
             for (IRBlock pred : block.prevs) {
                 Node runner = pred.node;
-                while (runner != block.node.idom) {
+                while (runner != block.node.idom && runner != null) {
                     runner.domFrontier.add(block);
                     runner = runner.idom;
                 }
