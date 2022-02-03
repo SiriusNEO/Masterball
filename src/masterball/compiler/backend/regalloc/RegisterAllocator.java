@@ -87,6 +87,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             Log.report("freeze", freezeWorklist);
             Log.report("spill", spillWorklist);
             */
+
             do {
                 if (!simplifyWorklist.isEmpty()) simplify();
                 else if (!worklistMoves.isEmpty()) coalesce();
@@ -97,17 +98,20 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             assignColors();
 
             if (!spilledNodes.isEmpty()) {
+
                 rewriteProgram();
-                /*
+
                 Log.mark("color end: turn #");
+                /*
                 coloredNodes.forEach(n -> Log.report("color: ", n.identifier, n.color));
                 coalescedNodes.forEach(n -> Log.report("coalesced: ", n.identifier, n.color));
                 spilledNodes.forEach(n -> Log.report("spill: ", n.identifier, n.stackOffset.value));
                 */
             }
             else {
-                /*
+
                 Log.mark("color end: turn #");
+                /*
                 coloredNodes.forEach(n -> Log.report("color: ", n.identifier, n.color));
                 coalescedNodes.forEach(n -> Log.report("coalesced: ", n.identifier, n.color));
                 spilledNodes.forEach(n -> Log.report("spill: ", n.identifier, n.stackOffset.value));
@@ -233,8 +237,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
          * decrease the degree of reg
          * if the degree from K to K-1, then the moves of the adjacent nodes is possible to be enabled.
          */
+        int d = reg.node.degree;
         reg.node.degree--;
-        if (reg.node.degree < K) {
+        if (d == K) {
             HashSet<Register> enableMovesWorklist = new HashSet<>(adjacent(reg));
             enableMovesWorklist.add(reg);
             enableMoves(enableMovesWorklist);
@@ -270,10 +275,12 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         v.node.alias = u;
         u.node.moveList.addAll(v.node.moveList);
         enableMoves(Collections.singleton(v));
+
         for (Register t : adjacent(v)) {
             G.addEdge(new Edge(t, u));
             decrementDegree(t);
         }
+
         if (u.node.degree >= K && freezeWorklist.contains(u)) {
             freezeWorklist.remove(u);
             spillWorklist.add(u);
@@ -306,8 +313,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
         else if ((edge.u.node.precolored && georgeStrategy(edge.u, edge.v))
                  || (!edge.u.node.precolored && conservative(adjacent(edge.u, edge.v)))) { // briggs strategy
-
             coalescedMoves.add(move);
+
             combine(edge.u, edge.v);
             addWorklist(edge.u);
         }
@@ -453,7 +460,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                     if (def.stackOffset == null) continue;
                     if (inst.uses().contains(def)) continue; // has been considered previously
                     if (inst instanceof AsmMvInst && inst.rs1.stackOffset == null) {
-                        Log.report("rewrite1", curFunc, inst.format());
                         AsmBaseInst storeInst = new AsmStoreInst(((VirtualReg) def).size, PhysicalReg.reg("sp"), inst.rs1, def.stackOffset, null);
                         it.set(storeInst);
                     } else {
@@ -531,7 +537,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
          */
         if (coalescedNodes.contains(reg)) {
             var ret = getAlias(reg.node.alias);
-            ret.node.alias = ret;
+            reg.node.alias = ret;
             return ret;
         }
 
