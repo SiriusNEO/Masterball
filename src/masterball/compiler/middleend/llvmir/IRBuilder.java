@@ -595,6 +595,7 @@ public class IRBuilder implements ASTVisitor {
     }
 
     private Value memAlloca(String allocaName, IRBaseType allocaType) {
+        // allocated in entry block
         return new IRAllocaInst(allocaName, allocaType, cur.func.entryBlock());
     }
 

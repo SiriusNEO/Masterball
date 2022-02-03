@@ -19,18 +19,16 @@ public class StackAllocator implements AsmModulePass, AsmFuncPass {
         module.functions.forEach(this::runOnFunc);
     }
 
-    private void eliminateMove(AsmFunction function) {
-        for (AsmBlock block : function.blocks) {
-            var it = block.instructions.listIterator();
-            while (it.hasNext()) {
-                AsmBaseInst inst = it.next();
-                if (inst instanceof AsmMvInst && inst.rd.color == inst.rs1.color)
-                    it.remove();
-            }
-        }
-    }
+    @Override
+    public void runOnFunc(AsmFunction function) {
+        function.totalStackUse += function.callerArgStackUse + function.allocaStackUse + function.spillStackUse;
 
-    private void stackAllocate(AsmFunction function) {
+        if (function.totalStackUse % RV32I.SpLowUnit != 0)
+            function.totalStackUse = (function.totalStackUse / RV32I.SpLowUnit + 1) * RV32I.SpLowUnit;
+
+        Log.report(function.identifier, function.totalStackUse, function.callerArgStackUse, function.allocaStackUse, function.spillStackUse);
+
+        // stack allocate
         for (AsmBlock block : function.blocks) {
             for (AsmBaseInst inst : block.instructions) {
                 if (inst.imm instanceof RawStackOffset) {
@@ -64,18 +62,5 @@ public class StackAllocator implements AsmModulePass, AsmFuncPass {
                 }
             }
         }
-    }
-
-    @Override
-    public void runOnFunc(AsmFunction function) {
-        function.totalStackUse += function.callerArgStackUse + function.allocaStackUse + function.spillStackUse;
-
-        if (function.totalStackUse % RV32I.SpLowUnit != 0)
-            function.totalStackUse = (function.totalStackUse / RV32I.SpLowUnit + 1) * RV32I.SpLowUnit;
-
-        Log.report(function.identifier, function.totalStackUse, function.callerArgStackUse, function.allocaStackUse, function.spillStackUse);
-
-        eliminateMove(function);
-        stackAllocate(function);
     }
 }

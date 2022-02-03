@@ -21,15 +21,15 @@ public class Masterball {
 
             if (console.showHelp || console.showVersion) return;
 
-            FrontEnd frontEnd = new FrontEnd(console);
+            FrontEnd frontEnd = new FrontEnd();
 
             if (console.fsyntaxOnly) return;
 
-            MiddleEnd middleEnd = new MiddleEnd(frontEnd, console);
+            MiddleEnd middleEnd = new MiddleEnd(frontEnd);
 
             if (console.irOnly) return;
 
-            BackEnd backEnd = new BackEnd(middleEnd, console);
+            BackEnd backEnd = new BackEnd(middleEnd);
         }
         catch (Exception e) {
             errorHandle(e);

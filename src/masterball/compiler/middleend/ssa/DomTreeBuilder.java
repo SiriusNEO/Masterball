@@ -3,6 +3,7 @@ package masterball.compiler.middleend.ssa;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.share.pass.IRFuncPass;
+import masterball.debug.Log;
 
 import java.util.*;
 
@@ -15,20 +16,19 @@ public class DomTreeBuilder implements IRFuncPass {
         for (int i = 0; i < blocksInRPO.size(); i++)
             blocksInRPO.get(i).node.order = i;
 
-        calculateDoms(function.entryBlock().node);
+        calculateDoms(function);
         calculateDF(function);
     }
 
     public static class Node {
-        IRBlock block;
         int order;
-
+        IRBlock fromBlock;
         Node idom = null;
-
+        List<Node> sons = new ArrayList<>();
         List<IRBlock> domFrontier = new ArrayList<>();
 
-        public Node(IRBlock block) {
-            this.block = block;
+        public Node(IRBlock fromBlock) {
+            this.fromBlock = fromBlock;
         }
     }
 
@@ -54,7 +54,8 @@ public class DomTreeBuilder implements IRFuncPass {
         return u;
     }
 
-    private void calculateDoms(Node startNode) {
+    private void calculateDoms(IRFunction function) {
+        Node startNode = function.entryBlock().node;
         startNode.idom = startNode;
         boolean changed = true;
         while (changed) {
@@ -73,11 +74,17 @@ public class DomTreeBuilder implements IRFuncPass {
                 }
             }
         }
+
+        for (IRBlock block : function.blocks) {
+            if (block.node != startNode && block.node.idom != null) {
+                block.node.idom.sons.add(block.node);
+            }
+        }
     }
 
     private void calculateDF(IRFunction function) {
         for (IRBlock block : function.blocks) {
-            if (block.prevs.size() <= 2) continue;
+            if (block.prevs.size() < 2) continue;
             for (IRBlock pred : block.prevs) {
                 Node runner = pred.node;
                 while (runner != block.node.idom) {

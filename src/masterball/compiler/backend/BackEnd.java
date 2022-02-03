@@ -8,9 +8,11 @@ import masterball.compiler.backend.rvasm.AsmPrinter;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.hierarchy.AsmModule;
 import masterball.compiler.middleend.MiddleEnd;
+import masterball.console.Config;
 import masterball.debug.Log;
 import masterball.console.Console;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class BackEnd {
@@ -19,7 +21,7 @@ public class BackEnd {
 
     public final ArrayList<AsmFunction> functions = new ArrayList<>();
 
-    public BackEnd(MiddleEnd middleEnd, Console console) {
+    public BackEnd(MiddleEnd middleEnd) {
         // Assembly Builder
         this.module = new AsmBuilder(middleEnd.irModule).module;
 
@@ -33,7 +35,10 @@ public class BackEnd {
         new BackEndOptimizer().runOnModule(this.module);
 
         // ASM Printer
-        new AsmPrinter(Console.getFileName(console.asmOutputPath), console.asmOutputStream).runOnModule(this.module);
+        new AsmPrinter(
+                    Console.getFileName(Config.getPath(Config.Option.ASMOutput)),
+                    (PrintStream) Config.getArgValue(Config.Option.ASMOutput)
+                ).runOnModule(this.module);
 
         Log.track("BackEnd started successfully.");
     }

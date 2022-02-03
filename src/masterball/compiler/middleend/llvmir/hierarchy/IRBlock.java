@@ -26,7 +26,7 @@ public class IRBlock extends Value {
     // control flow graph
     public ArrayList<IRBlock> prevs = new ArrayList<>(), nexts = new ArrayList<>();
 
-    // info in DomTree
+    // info in DomTree, assigned in DomTreeBuilder
     public DomTreeBuilder.Node node = new DomTreeBuilder.Node(this);
 
     public IRBlock(String label, IRFunction parentFunction) {
@@ -36,10 +36,19 @@ public class IRBlock extends Value {
     }
 
     public void addInst(IRBaseInst inst) {
-        if (inst instanceof IRMoveInst) this.addInstBeforeTerminator(inst);
-        if (isTerminated) return;
-        if (inst instanceof IRPhiInst) phiInsts.add((IRPhiInst) inst);
-        else instructions.addLast(inst);
+        if (inst instanceof IRMoveInst) {
+            // move insert after terminator
+            this.addInstBeforeTerminator(inst);
+        }
+        else if (inst instanceof IRPhiInst) {
+            // phi insert after terminator
+            phiInsts.add((IRPhiInst) inst);
+        }
+        else if (isTerminated) return;
+        else {
+            instructions.addLast(inst);
+        }
+
         if (inst.isTerminator()) isTerminated = true;
     }
 

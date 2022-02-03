@@ -76,6 +76,7 @@ public class SSADestructor implements IRFuncPass {
             }
         }
     }
+    // turn copy to move inst
     // if there is a loop, use a mid dest to break the loop
     public void copyToMove(IRBlock block, CopyGraph copyGraph) {
         boolean loopBreak = true;

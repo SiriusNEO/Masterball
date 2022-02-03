@@ -7,3 +7,5 @@
 
 
 ['testcases/codegen/t30.mx', 'testcases/codegen/t56.mx']
+
+['testcases/codegen/t57.mx', 'testcases/codegen/t68.mx']

@@ -7,11 +7,14 @@ import masterball.compiler.frontend.parser.MxStarLexer;
 import masterball.compiler.frontend.parser.MxStarParser;
 import masterball.compiler.frontend.sema.SemanticChecker;
 import masterball.compiler.share.error.ParseErrorListener;
+import masterball.console.Config;
 import masterball.debug.Log;
-import masterball.console.Console;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+
+import java.io.InputStream;
+import java.io.PrintStream;
 
 public class FrontEnd {
     public final RootNode ASTRoot;
@@ -20,9 +23,11 @@ public class FrontEnd {
     private final MxStarParser mxStarParser;
     private final ParseTree parseTreeRoot;
 
-    public FrontEnd(Console console) throws Exception {
+    public FrontEnd() throws Exception {
         // lexer
-        mxStarLexer = new MxStarLexer(CharStreams.fromStream(console.inputStream));
+        mxStarLexer = new MxStarLexer(CharStreams.fromStream(
+                (InputStream) Config.getArgValue(Config.Option.Input)
+        ));
         mxStarLexer.removeErrorListeners();
         mxStarLexer.addErrorListener(new ParseErrorListener());
 
@@ -40,8 +45,9 @@ public class FrontEnd {
         new SemanticChecker().visit(this.ASTRoot);
 
         // AST Printer
-        if (console.astOutputStream != null)
-            new ASTPrinter(console.astOutputStream).visit(this.ASTRoot);
+        new ASTPrinter(
+                (PrintStream) Config.getArgValue(Config.Option.ASTOutput)
+        ).visit(this.ASTRoot);
 
         Log.track("FrontEnd started successfully.");
     }

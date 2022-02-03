@@ -8,12 +8,6 @@ import java.io.*;
 import java.util.Objects;
 
 public class Console {
-
-    public String inputPath, logOutputPath, astOutputPath, irOutputPath, asmOutputPath;
-
-    public InputStream inputStream;
-    public PrintStream logOutputStream, astOutputStream, irOutputStream, asmOutputStream;
-
     public boolean showVersion, showHelp, fsyntaxOnly, irOnly, optimize;
 
     public static String getFileName(String path) {
@@ -53,10 +47,7 @@ public class Console {
                                 Config.argSetting.get(option).argValue = new FileInputStream(path);
                                 break;
                             }
-                            case LogOutput:
-                            case ASTOutput:
-                            case IROutput:
-                            case ASMOutput: {
+                            case LogOutput: case ASTOutput: case IROutput: case OptOutput: case ASMOutput: {
                                 Config.argSetting.get(option).argValue = new PrintStream(path);
                                 break;
                             }
@@ -71,21 +62,6 @@ public class Console {
     }
 
     private void argMapping() {
-         inputPath = Config.argSetting.get(Config.Option.Input).argValueStr;
-         inputStream = (InputStream) Config.argSetting.get(Config.Option.Input).argValue;
-
-         logOutputPath = Config.argSetting.get(Config.Option.LogOutput).argValueStr;
-         logOutputStream = (PrintStream) Config.argSetting.get(Config.Option.LogOutput).argValue;
-
-         astOutputPath = Config.argSetting.get(Config.Option.ASTOutput).argValueStr;
-         astOutputStream = (PrintStream) Config.argSetting.get(Config.Option.ASTOutput).argValue;
-
-         irOutputPath = Config.argSetting.get(Config.Option.IROutput).argValueStr;
-         irOutputStream = (PrintStream) Config.argSetting.get(Config.Option.IROutput).argValue;
-
-         asmOutputPath = Config.argSetting.get(Config.Option.ASMOutput).argValueStr;
-         asmOutputStream = (PrintStream) Config.argSetting.get(Config.Option.ASMOutput).argValue;
-
          showHelp = (boolean) Config.argSetting.get(Config.Option.Help).argValue;
          showVersion = (boolean) Config.argSetting.get(Config.Option.Version).argValue;
          fsyntaxOnly = (boolean) Config.argSetting.get(Config.Option.FSyntaxOnly).argValue;
@@ -105,7 +81,9 @@ public class Console {
             System.out.println(CmdDoc.version());
         }
 
-        Log.setPrintStream(logOutputStream);
+        Log.setPrintStream(
+                (PrintStream) Config.getArgValue(Config.Option.LogOutput)
+        );
 
         Log.track("Console started successfully.");
     }

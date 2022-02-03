@@ -98,18 +98,20 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
             if (!spilledNodes.isEmpty()) {
                 rewriteProgram();
-
+                /*
                 Log.mark("color end: turn #");
                 coloredNodes.forEach(n -> Log.report("color: ", n.identifier, n.color));
                 coalescedNodes.forEach(n -> Log.report("coalesced: ", n.identifier, n.color));
                 spilledNodes.forEach(n -> Log.report("spill: ", n.identifier, n.stackOffset.value));
+                */
             }
             else {
+                /*
                 Log.mark("color end: turn #");
                 coloredNodes.forEach(n -> Log.report("color: ", n.identifier, n.color));
                 coalescedNodes.forEach(n -> Log.report("coalesced: ", n.identifier, n.color));
                 spilledNodes.forEach(n -> Log.report("spill: ", n.identifier, n.stackOffset.value));
-
+                */
                 Log.markReset("color end: turn #");
                 return;
             }

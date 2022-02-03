@@ -32,6 +32,11 @@ public class Value {
         return rawName.substring(0, lastAddrSuffixIndex) + LLVM.ResolveSuffix;
     }
 
+    public static String getRawName(String name) {
+        int firstSpliterIndex = name.indexOf(LLVM.Spliter);
+        return name.substring(0, firstSpliterIndex);
+    }
+
     public IRBaseType type;
     public ArrayList<User> users = new ArrayList<User>();
     public Value resolveFrom = null;
@@ -57,6 +62,17 @@ public class Value {
 
     public String identifier() {
         return "%" + name;
+    }
+
+    public void replaced(Value replace) {
+        for (User user : users) {
+            var operands = user.operands;
+            for (int i = 0; i < operands.size(); i++) {
+                if (operands.get(i) == this)
+                    operands.set(i, replace);
+            }
+            replace.users.add(user);
+        }
     }
 
     public String typedIdentifier() {
