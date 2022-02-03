@@ -1,2 +1,2 @@
 set -e
-java -jar Masterball.jar -ast-o ast.out -llvm-o test.ll -debug-o log.txt -rv-o output.s
+java -jar Masterball.jar -ast-o ast.out -ir-o test.ll -log-o log.txt -opt-o test-opt.ll -asm-o output.s
