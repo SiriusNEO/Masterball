@@ -17,6 +17,9 @@ public class MiddleEndOptimizer implements IRModulePass {
         for (IRFunction function : module.functions) {
             new CFGAnalyzer().runOnFunc(function);
             new Mem2Reg().runOnFunc(function);
+
+            //TODO
+
             new SSADestructor().runOnFunc(function);
         }
     }

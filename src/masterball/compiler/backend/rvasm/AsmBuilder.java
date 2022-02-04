@@ -367,11 +367,11 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
     // awesome asm optimize
 
     private static boolean validImm(Value value) {
-        return (value instanceof IntConst && ((IntConst) value).constData >= -1 * RV32I.ImmBound && ((IntConst) value).constData <= RV32I.ImmBound) || value instanceof BoolConst;
+        return (value instanceof IntConst && ((IntConst) value).constData >= -1 * RV32I.ImmBound && ((IntConst) value).constData < RV32I.ImmBound) || value instanceof BoolConst;
     }
 
     private static boolean validImm(int value) {
-        return value >= -1 * RV32I.ImmBound && value <= RV32I.ImmBound;
+        return value >= -1 * RV32I.ImmBound && value < RV32I.ImmBound;
     }
 
     private static boolean equalZero(Value value) {

@@ -13,7 +13,6 @@ import masterball.debug.Log;
 import java.util.*;
 
 public class Mem2Reg implements IRFuncPass {
-    // TODO: MEM2REG
 
     private final ArrayList<IRBaseInst> allocated = new ArrayList<>();
 

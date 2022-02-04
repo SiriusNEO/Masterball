@@ -29,9 +29,7 @@ public class Masterball {
 
             if (console.irOnly) return;
 
-            var start = System.currentTimeMillis();
             BackEnd backEnd = new BackEnd(middleEnd);
-            System.out.println((System.currentTimeMillis() - start));
         }
         catch (Exception e) {
             errorHandle(e);

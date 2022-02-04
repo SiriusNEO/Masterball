@@ -482,9 +482,11 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
          * return a set of adjacent nodes
          * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
          */
-        HashSet<Register> ret = new HashSet<>(reg.node.adjList);
-        selectStack.forEach(ret::remove);
-        ret.removeAll(coalescedNodes);
+        HashSet<Register> ret = new HashSet<>();
+        reg.node.adjList.forEach(node -> {
+           if (!(selectStack.contains(node) || coalescedNodes.contains(node)))
+               ret.add(node);
+        });
         return ret;
     }
 
@@ -493,8 +495,15 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
          * return a set of adjacent nodes
          * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
          */
-        HashSet<Register> ret = new HashSet<>(adjacent(reg1));
-        ret.addAll(adjacent(reg2));
+        HashSet<Register> ret = new HashSet<>();
+        reg1.node.adjList.forEach(node -> {
+            if (!(selectStack.contains(node) || coalescedNodes.contains(node)))
+                ret.add(node);
+        });
+        reg2.node.adjList.forEach(node -> {
+            if (!(selectStack.contains(node) || coalescedNodes.contains(node)))
+                ret.add(node);
+        });
         return ret;
     }
 
@@ -502,6 +511,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         /*
          * return a set of this nodes move insts
          * only those in workList or active are valid.
+         * warning: adjList < worklistMoves, so use this to make program faster
          */
 
         HashSet<AsmMvInst> ret = new HashSet<>();
