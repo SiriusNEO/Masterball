@@ -23,6 +23,7 @@ import masterball.compiler.share.error.runtime.UnimplementedError;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.misc.Pair;
 import masterball.compiler.share.pass.ASTVisitor;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -454,6 +455,7 @@ public class IRBuilder implements ASTVisitor {
     public void visit(PrefixExpNode node) {
         node.selfExpNode.accept(this);
         Value calculated = null, storePtr = node.selfExpNode.value.resolveFrom;
+
         switch (node.op) {
             case MxStar.IncrementOp:
                 calculated = new IRBinaryInst(LLVM.AddInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(1), cur.block);break;
@@ -462,6 +464,7 @@ public class IRBuilder implements ASTVisitor {
             default: throw new UnknownError(node.codePos, node);
         }
         memStore(storePtr, calculated);
+        calculated.resolveFrom = storePtr; // left value
         node.value = calculated;
     }
 

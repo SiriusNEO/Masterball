@@ -141,9 +141,6 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
                 new RawStackOffset(0, RawType.raiseSp), cur.func.exitBlock());
 
-        if (Objects.equals(cur.func.identifier, MxStar.mainKw))
-            new AsmLiInst(PhysicalReg.reg("a0"), new Immediate(0), cur.func.exitBlock());
-
         // return
         new AsmRetInst(cur.func.exitBlock());
 
