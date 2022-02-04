@@ -290,6 +290,7 @@ public class IRBuilder implements ASTVisitor {
         node.rhsExpNode.accept(this);
         memStore(node.lhsExpNode.value.resolveFrom, node.rhsExpNode.value);
         node.value = node.rhsExpNode.value;
+        node.value.resolveFrom = node.lhsExpNode.value.resolveFrom;
     }
 
     @Override
