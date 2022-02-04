@@ -371,7 +371,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         */
         var it = spillWorklist.iterator();
         var minReg = it.next();
-
         // Log.track("selectSpill", minReg);
 
         spillWorklist.remove(minReg);
@@ -504,9 +503,12 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
          * return a set of this nodes move insts
          * only those in workList or active are valid.
          */
-        HashSet<AsmMvInst> ret = new HashSet<>(activeMoves);
-        ret.addAll(worklistMoves);
-        ret.retainAll(reg.node.moveList);
+
+        HashSet<AsmMvInst> ret = new HashSet<>();
+        reg.node.moveList.forEach(move -> {
+            if (activeMoves.contains(move) || worklistMoves.contains(move))
+                ret.add(move);
+        });
         return ret;
     }
 
