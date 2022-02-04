@@ -432,7 +432,9 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
     }
 
     public void awesomeMove(Register dest, Value source) {
-        if (validImm(source)) new AsmLiInst(dest, cur.toImm(source), cur.block);
+        if (validImm(source)) {
+            new AsmLiInst(dest, cur.toImm(source), cur.block);
+        }
         else {
             new AsmMvInst(dest, cur.toReg(source), cur.block);
         }

@@ -124,8 +124,8 @@ expression
     |   expression postfixOps                                                           #postfixExp    // 2
 
     |   NewKw (builtinType | Identifier) newExpSizeDeclaration* (LeftParen RightParen)? #newExp        // 2
-    |   <asso=right> prefixOps expression                                               #prefixExp     // 2
-    |   <asso=right> unaryOps expression                                                #unaryExp      // 2
+    |   <assoc=right> prefixOps expression                                               #prefixExp     // 2
+    |   <assoc=right> unaryOps expression                                                #unaryExp      // 2
 
     |   expression mulLevelOps expression                                               #binaryExp     // 3
     |   expression addLevelOps expression                                               #binaryExp     // 4

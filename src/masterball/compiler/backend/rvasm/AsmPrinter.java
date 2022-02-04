@@ -6,6 +6,7 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmModule;
 import masterball.compiler.share.pass.AsmBlockPass;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.compiler.share.pass.AsmModulePass;
+import masterball.console.Config;
 import masterball.debug.Log;
 
 import java.io.PrintStream;
