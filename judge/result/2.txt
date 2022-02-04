@@ -1,4 +1,2 @@
-[32mLog:[Track] Tracking... IOEngine started successfully.[0m
-[35mLog:[Report] -i: java.io.BufferedInputStream@681a9515 -llvm-o: java.io.PrintStream@404b9385 [0m
-[32mLog:[Track] Tracking... ParseEngine started successfully.[0m
+[32mLog:[Track] Tracking... Console started successfully.[0m
 [32mLog:[Track] Tracking... ASTBuilder started building...[0m

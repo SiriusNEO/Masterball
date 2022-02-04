@@ -16,6 +16,7 @@ import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.middleend.llvmir.type.StructType;
 import masterball.compiler.share.lang.LLVM;
+import masterball.compiler.share.lang.MxStar;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.misc.Pair;
@@ -26,6 +27,7 @@ import masterball.compiler.share.pass.InstVisitor;
 import masterball.debug.Log;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static java.lang.Integer.max;
 
@@ -138,6 +140,9 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         // sp back
         new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
                 new RawStackOffset(0, RawType.raiseSp), cur.func.exitBlock());
+
+        if (Objects.equals(cur.func.identifier, MxStar.mainKw))
+            new AsmLiInst(PhysicalReg.reg("a0"), new Immediate(0), cur.func.exitBlock());
 
         // return
         new AsmRetInst(cur.func.exitBlock());
@@ -431,7 +436,9 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
     public void awesomeMove(Register dest, Value source) {
         if (validImm(source)) new AsmLiInst(dest, cur.toImm(source), cur.block);
-        else new AsmMvInst(dest, cur.toReg(source), cur.block);
+        else {
+            new AsmMvInst(dest, cur.toReg(source), cur.block);
+        }
     }
 
     public Register awesomeGEP(Register ptrReg, Value index, int elementSize, StructType classType) {

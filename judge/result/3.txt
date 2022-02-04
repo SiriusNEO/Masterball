@@ -1,6 +1,4 @@
-[32mLog:[Track] Tracking... IOEngine started successfully.[0m
-[35mLog:[Report] -i: java.io.BufferedInputStream@681a9515 -llvm-o: java.io.PrintStream@404b9385 [0m
-[32mLog:[Track] Tracking... ParseEngine started successfully.[0m
+[32mLog:[Track] Tracking... Console started successfully.[0m
 [32mLog:[Track] Tracking... ASTBuilder started building...[0m
 [35mLog:[Report] AST Printer Start Sucess[0m
 
@@ -63,4 +61,190 @@ text: "hehe\n"
 
 type: INT
 text: 0
-[32mLog:[Track] Tracking... SemanticEngine started successfully.[0m
+[32mLog:[Track] Tracking... FrontEnd started successfully.[0m
+; ModuleID = 'test'
+source_filename = "test"
+target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
+target triple = "riscv32"
+
+declare i8* @_bot_malloc(i32)
+declare i8* @_bot_str_cat(i8*, i8*)
+declare i1 @_bot_str_eq(i8*, i8*)
+declare i1 @_bot_str_ne(i8*, i8*)
+declare i1 @_bot_str_slt(i8*, i8*)
+declare i1 @_bot_str_sle(i8*, i8*)
+declare i1 @_bot_str_sgt(i8*, i8*)
+declare i1 @_bot_str_sge(i8*, i8*)
+declare void @print(i8*)
+declare void @println(i8*)
+declare void @printInt(i32)
+declare void @printlnInt(i32)
+declare i8* @getString()
+declare i32 @getInt()
+declare i8* @toString(i32)
+declare i32 @_str_length(i8*)
+declare i8* @_str_substring(i8*, i32, i32)
+declare i32 @_str_parseInt(i8*)
+declare i32 @_str_ord(i8*, i32)
+
+@anon.strconst = private unnamed_addr constant [6 x i8] c"hehe\0A\00", align 1
+
+define void @_glb_init() {
+entry11:
+  br label %exit11
+
+exit11:
+  ret void
+}
+
+define void @haha() {
+entry12:
+  %a.addr = alloca i32, align 4
+  br label %exit12
+
+exit12:
+  ret void
+}
+
+define i32 @main() {
+entry13:
+  %retreg.addr = alloca i32, align 4
+  call void @_glb_init()
+  store i32 0, i32* %retreg.addr, align 4
+  %getelementptr = getelementptr inbounds [6 x i8], [6 x i8]* @anon.strconst, i32 0, i32 0
+  call void @print(i8* %getelementptr)
+  store i32 0, i32* %retreg.addr, align 4
+  br label %exit13
+
+exit13:
+  %retreg.load = load i32, i32* %retreg.addr, align 4
+  ret i32 %retreg.load
+}
+
+; ModuleID = 'test'
+source_filename = "test"
+target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
+target triple = "riscv32"
+
+declare i8* @_bot_malloc(i32)
+declare i8* @_bot_str_cat(i8*, i8*)
+declare i1 @_bot_str_eq(i8*, i8*)
+declare i1 @_bot_str_ne(i8*, i8*)
+declare i1 @_bot_str_slt(i8*, i8*)
+declare i1 @_bot_str_sle(i8*, i8*)
+declare i1 @_bot_str_sgt(i8*, i8*)
+declare i1 @_bot_str_sge(i8*, i8*)
+declare void @print(i8*)
+declare void @println(i8*)
+declare void @printInt(i32)
+declare void @printlnInt(i32)
+declare i8* @getString()
+declare i32 @getInt()
+declare i8* @toString(i32)
+declare i32 @_str_length(i8*)
+declare i8* @_str_substring(i8*, i32, i32)
+declare i32 @_str_parseInt(i8*)
+declare i32 @_str_ord(i8*, i32)
+
+@anon.strconst = private unnamed_addr constant [6 x i8] c"hehe\0A\00", align 1
+
+define void @_glb_init() {
+entry11:
+  br label %exit11
+
+exit11:                                                ; preds = %entry11 
+  ret void
+}
+
+define void @haha() {
+entry12:
+  br label %exit12
+
+exit12:                                                ; preds = %entry12 
+  ret void
+}
+
+define i32 @main() {
+entry13:
+  call void @_glb_init()
+  %getelementptr = getelementptr inbounds [6 x i8], [6 x i8]* @anon.strconst, i32 0, i32 0
+  call void @print(i8* %getelementptr)
+  br label %exit13
+
+exit13:                                                ; preds = %entry13 
+  ret i32 0
+}
+
+[32mLog:[Track] Tracking... MiddleEnd started successfully.[0m
+[35mLog:[Report] K 28 [0m
+[35mLog:[Report] color func:  _glb_init [0m
+[33mLog:[Mark] mark 0[0m
+[33mLog:[Mark] mark 0[0m
+[33mLog:[Mark] mark color end: turn # 0[0m
+[35mLog:[Report] color func:  haha [0m
+[33mLog:[Mark] mark 1[0m
+[33mLog:[Mark] mark 0[0m
+[33mLog:[Mark] mark color end: turn # 0[0m
+[35mLog:[Report] color func:  main [0m
+[33mLog:[Mark] mark 2[0m
+[33mLog:[Mark] mark 0[0m
+[33mLog:[Mark] mark color end: turn # 0[0m
+[33mLog:[Mark] mark 3[0m
+[33mLog:[Mark] mark 1[0m
+[33mLog:[Mark] mark color end: turn # 1[0m
+[35mLog:[Report] _glb_init 0 0 0 0 [0m
+[35mLog:[Report] haha 0 0 0 0 [0m
+[35mLog:[Report] main 16 0 0 4 [0m
+[35mLog:[Report] Asm Printer Start Sucess[0m
+# fileName: test	 compiled by @Masterball.
+	.text
+	.globl	_glb_init
+	.p2align	1
+	.type	_glb_init,@function
+_glb_init:
+entry11:
+	addi	sp, sp, 0
+	j	exit11
+exit11:
+	addi	sp, sp, 0
+	ret
+	.size	_glb_init, .-_glb_init
+                                        # -- End function
+	.globl	haha
+	.p2align	1
+	.type	haha,@function
+haha:
+entry12:
+	addi	sp, sp, 0
+	j	exit12
+exit12:
+	addi	sp, sp, 0
+	ret
+	.size	haha, .-haha
+                                        # -- End function
+	.globl	main
+	.p2align	1
+	.type	main,@function
+main:
+entry13:
+	addi	sp, sp, -16
+	sw	ra, 0(sp)
+	call	_glb_init
+	la	a0, anon.strconst
+	call	print
+	j	exit13
+exit13:
+	li	a0, 0
+	lw	ra, 0(sp)
+	addi	sp, sp, 16
+	ret
+	.size	main, .-main
+                                        # -- End function
+	.type	anon.strconst,@object
+	.section	.rodata
+anon.strconst:
+	.asciz	"hehe\n"
+	.size	anon.strconst, 5
+
+[32mLog:[Track] Tracking... BackEnd started successfully.[0m
+53
