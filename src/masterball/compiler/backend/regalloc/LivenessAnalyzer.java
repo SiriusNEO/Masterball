@@ -6,6 +6,7 @@ import masterball.compiler.backend.rvasm.inst.AsmBaseInst;
 import masterball.compiler.backend.rvasm.operand.Register;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.debug.LivenessPrinter;
+import masterball.debug.Log;
 
 import java.util.*;
 

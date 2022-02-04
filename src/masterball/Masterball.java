@@ -31,7 +31,7 @@ public class Masterball {
 
             var start = System.currentTimeMillis();
             BackEnd backEnd = new BackEnd(middleEnd);
-            System.out.println((System.currentTimeMillis() - start) / 1000);
+            System.out.println((System.currentTimeMillis() - start));
         }
         catch (Exception e) {
             errorHandle(e);

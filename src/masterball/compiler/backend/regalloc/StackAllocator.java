@@ -38,7 +38,6 @@ public class StackAllocator implements AsmModulePass, AsmFuncPass {
                             break;
                         }
                         case alloca: {
-                            Log.report(inst.format());
                             inst.imm = new Immediate(inst.imm.value + function.callerArgStackUse);
                             break;
                         }

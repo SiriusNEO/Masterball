@@ -53,7 +53,7 @@ public class Mem2Reg implements IRFuncPass {
          * -> b2: phi [b1, val]
          */
 
-        Log.mark("phi insertion: " + function.identifier());
+        // Log.mark("phi insertion: " + function.identifier());
         /*
         function.blocks.forEach(block -> Log.report("idom: ", block.identifier(), block.node.idom.fromBlock.identifier()));
         function.blocks.forEach(block -> block.node.domFrontier.forEach(
@@ -76,7 +76,7 @@ public class Mem2Reg implements IRFuncPass {
                     visited.add(frontier);
 
                     workQueue.offer(frontier);
-                    Log.mark("new phi");
+                    // Log.mark("new phi");
                     var phi = new IRPhiInst(((PointerType) allocaVar.type).pointedType, frontier);
                     phiAllocaName.put(phi, allocaVar.name);
                 }
@@ -128,7 +128,7 @@ public class Mem2Reg implements IRFuncPass {
                 if (allocated.contains(((IRStoreInst) inst).storePtr())) {
                     String name = ((IRStoreInst) inst).storePtr().name;
                     updateReplace(name, ((IRStoreInst) inst).storeValue());
-                    Log.report("replace", getReplace(name).identifier());
+                    // Log.report("replace", getReplace(name).identifier());
                     rollbackRecord.add(name);
                     it.remove(); // remove store
                 }

@@ -9,7 +9,7 @@ import java.util.*;
 
 public class InterferenceGraph {
 
-    public static int INF = Integer.MAX_VALUE;
+    public static int INF = 1145141919;
 
     public static class Edge {
         public Register u, v;
@@ -38,7 +38,7 @@ public class InterferenceGraph {
     }
 
     public static class Node {
-        public Set<Register> adjList = new LinkedHashSet<>();
+        public HashSet<Register> adjList = new HashSet<>();
         public boolean precolored;
         public int degree;
         public double priority;

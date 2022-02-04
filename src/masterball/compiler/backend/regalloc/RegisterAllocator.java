@@ -31,14 +31,14 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * Registers in coalescedNodes and selectStack are "deleted"
      */
     private final Set<Register>
-    precolored = new LinkedHashSet<>(phyRegs.values()),
-    initial = new LinkedHashSet<>(),
-    simplifyWorklist = new LinkedHashSet<>(),
-    freezeWorklist = new LinkedHashSet<>(),
-    spillWorklist = new LinkedHashSet<>(),
-    spilledNodes = new LinkedHashSet<>(),
-    coalescedNodes = new LinkedHashSet<>(),
-    coloredNodes = new LinkedHashSet<>();
+            precolored = new LinkedHashSet<>(phyRegs.values()),
+            initial = new LinkedHashSet<>(),
+            simplifyWorklist = new LinkedHashSet<>(),
+            freezeWorklist = new LinkedHashSet<>(),
+            spillWorklist = new LinkedHashSet<>(),
+            spilledNodes = new LinkedHashSet<>(),
+            coalescedNodes = new LinkedHashSet<>(),
+            coloredNodes = new LinkedHashSet<>();
     private final Stack<Register> selectStack = new Stack<>();
 
     /* moves
@@ -48,11 +48,11 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * worklistMoves and activeMoves are moves "exists"
      */
     private final Set<AsmMvInst>
-    coalescedMoves = new LinkedHashSet<>(),
-    constrainedMoves = new LinkedHashSet<>(),
-    frozenMoves = new LinkedHashSet<>(),
-    worklistMoves = new LinkedHashSet<>(),
-    activeMoves = new LinkedHashSet<>();
+            coalescedMoves = new LinkedHashSet<>(),
+            constrainedMoves = new LinkedHashSet<>(),
+            frozenMoves = new LinkedHashSet<>(),
+            worklistMoves = new LinkedHashSet<>(),
+            activeMoves = new LinkedHashSet<>();
 
     /* graph */
     private final InterferenceGraph G = new InterferenceGraph();
@@ -212,8 +212,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         while (it.hasNext()) {
             Register reg = it.next();
             it.remove();
-            // Log.report("deg", reg.identifier, reg.node.degree);
-            // Log.report(reg.node.adjList);
             if (reg.node.degree >= K) spillWorklist.add(reg);
             else if (moveRelated(reg)) freezeWorklist.add(reg);
             else simplifyWorklist.add(reg);
@@ -293,9 +291,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
          */
         var it = worklistMoves.iterator();
         AsmMvInst move = it.next();
-        
+
         // Log.track("coalesce", move.rd, move.rs1);
-        
+
         Register rdAlias = getAlias(move.rd), rs1Alias = getAlias(move.rs1);
         Edge edge;
         if (rs1Alias.node.precolored) edge = new Edge(rs1Alias, rdAlias);
@@ -312,7 +310,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             addWorklist(edge.v);
         }
         else if ((edge.u.node.precolored && georgeStrategy(edge.u, edge.v))
-                 || (!edge.u.node.precolored && conservative(adjacent(edge.u, edge.v)))) { // briggs strategy
+                || (!edge.u.node.precolored && conservative(adjacent(edge.u, edge.v)))) { // briggs strategy
             coalescedMoves.add(move);
 
             combine(edge.u, edge.v);
@@ -347,6 +345,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
     }
 
     private void selectSpill() {
+        /*
         Register minReg = null;
         double minCost = Double.POSITIVE_INFINITY;
 
@@ -369,6 +368,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                 }
             }
         }
+        */
+        var it = spillWorklist.iterator();
+        var minReg = it.next();
 
         // Log.track("selectSpill", minReg);
 

@@ -12,7 +12,8 @@ public class PhysicalReg extends Register {
      */
     public static final HashMap<String, PhysicalReg> phyRegs = new HashMap<>() {
         {
-            RV32I.RV32Reg.forEach(regName -> put(regName, new PhysicalReg(regName)));}
+            RV32I.RV32Reg.forEach(regName -> put(regName, new PhysicalReg(regName)));
+        }
     };
 
     public static PhysicalReg reg(String regName) {return phyRegs.get(regName);}
