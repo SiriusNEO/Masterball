@@ -16,7 +16,6 @@ import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.middleend.llvmir.type.StructType;
 import masterball.compiler.share.lang.LLVM;
-import masterball.compiler.share.lang.MxStar;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.misc.Pair;
@@ -24,10 +23,8 @@ import masterball.compiler.share.pass.IRBlockPass;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.compiler.share.pass.IRModulePass;
 import masterball.compiler.share.pass.InstVisitor;
-import masterball.debug.Log;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static java.lang.Integer.max;
 
@@ -90,6 +87,8 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
                 irBlock.prevs.forEach(pre -> ((AsmBlock) irBlock.asmOperand).prevs.add((AsmBlock) pre.asmOperand));
                 irBlock.nexts.forEach(nxt -> ((AsmBlock) irBlock.asmOperand).nexts.add((AsmBlock) nxt.asmOperand));
             }
+            function.entryBlock = (AsmBlock) irFunc.entryBlock.asmOperand;
+            function.exitBlock = (AsmBlock) irFunc.exitBlock.asmOperand;
         }
 
         irModule.functions.forEach(this::runOnFunc);
@@ -102,47 +101,47 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         // lower the stack pointer
         // sp low
         AsmBaseInst inst = new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
-                new RawStackOffset(0, RawType.lowerSp), cur.func.entryBlock());
+                new RawStackOffset(0, RawType.lowerSp), cur.func.entryBlock);
 
         // backup callee
         ArrayList<Register> calleeSaveTemp = new ArrayList<Register>();
         for (PhysicalReg phyReg : PhysicalReg.calleeSaved) {
             VirtualReg rd = new VirtualReg();
             calleeSaveTemp.add(rd);
-            new AsmMvInst(rd, phyReg, cur.func.entryBlock());
+            new AsmMvInst(rd, phyReg, cur.func.entryBlock);
         }
 
         // ra
         VirtualReg raTemp = new VirtualReg();
-        new AsmMvInst(raTemp, PhysicalReg.reg("ra"), cur.func.entryBlock());
+        new AsmMvInst(raTemp, PhysicalReg.reg("ra"), cur.func.entryBlock);
 
         // move arguments 0~7 to reg
         for (int i = 0; i < Integer.min(cur.func.arguments.size(), RV32I.MaxArgRegNum); i++) {
-            new AsmMvInst(cur.func.arguments.get(i), PhysicalReg.a(i), cur.func.entryBlock());
+            new AsmMvInst(cur.func.arguments.get(i), PhysicalReg.a(i), cur.func.entryBlock);
         }
 
         // load arguments in mem to reg
         for (int i = RV32I.MaxArgRegNum; i < cur.func.arguments.size(); i++) {
             new AsmLoadInst(function.getOperand(i).type.size(), cur.func.arguments.get(i), PhysicalReg.reg("sp"),
-                    cur.func.arguments.get(i).stackOffset, cur.func.entryBlock());
+                    cur.func.arguments.get(i).stackOffset, cur.func.entryBlock);
         }
 
         function.blocks.forEach(this::runOnBlock);
 
         // callee temp back
         for (int i = 0; i < PhysicalReg.calleeSaved.size(); i++) {
-            new AsmMvInst(PhysicalReg.calleeSaved.get(i), calleeSaveTemp.get(i), cur.func.exitBlock());
+            new AsmMvInst(PhysicalReg.calleeSaved.get(i), calleeSaveTemp.get(i), cur.func.exitBlock);
         }
 
         // ra temp back
-        new AsmMvInst(PhysicalReg.reg("ra"), raTemp, cur.func.exitBlock());
+        new AsmMvInst(PhysicalReg.reg("ra"), raTemp, cur.func.exitBlock);
 
         // sp back
         new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
-                new RawStackOffset(0, RawType.raiseSp), cur.func.exitBlock());
+                new RawStackOffset(0, RawType.raiseSp), cur.func.exitBlock);
 
         // return
-        new AsmRetInst(cur.func.exitBlock());
+        new AsmRetInst(cur.func.exitBlock);
 
         VirtualReg.regNumReset();
     }

@@ -10,17 +10,19 @@ import masterball.compiler.share.lang.LLVM;
 import java.util.ArrayList;
 
 public class IRFunction extends GlobalValue {
-    public final ArrayList<IRBlock> blocks = new ArrayList<IRBlock>();
+    public final ArrayList<IRBlock> blocks = new ArrayList<>();
+
+    public IRBlock entryBlock, exitBlock;
 
     public IRFunction(String name, IRFuncType funcType) {
         // not init complete.
         // finished in IRBuilder
 
         super(name, funcType);
-        new IRBlock(LLVM.EntryBlockLabel, this);
-        new IRBlock(LLVM.ExitBlockLabel, this);
-        this.entryBlock().parentFunction = this;
-        this.exitBlock().parentFunction = this;
+        entryBlock = new IRBlock(LLVM.EntryBlockLabel, this);
+        exitBlock = new IRBlock(LLVM.ExitBlockLabel, this);
+        entryBlock.parentFunction = this;
+        exitBlock.parentFunction = this;
     }
 
     // bottom function decl
@@ -44,7 +46,4 @@ public class IRFunction extends GlobalValue {
     }
 
     // remember: here we place exit in second, not the logic order
-
-    public IRBlock entryBlock() {return blocks.get(0);}
-    public IRBlock exitBlock() {return blocks.get(1);}
 }

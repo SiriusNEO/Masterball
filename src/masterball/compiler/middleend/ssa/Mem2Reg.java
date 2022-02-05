@@ -8,9 +8,16 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.*;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.share.pass.IRFuncPass;
-import masterball.debug.Log;
 
 import java.util.*;
+
+/**
+ * implement a simple Mem2Reg algorithm
+ * eliminate AllocaInst, and remove some load/store
+ * @reference:
+ *      DomTree algorithm is based on the book "Engineering a Compiler"
+ *      variable renaming part is based on SSA Book
+ */
 
 public class Mem2Reg implements IRFuncPass {
 
@@ -21,7 +28,7 @@ public class Mem2Reg implements IRFuncPass {
     private final Map<IRPhiInst, String> phiAllocaName = new HashMap<>();
 
     private void collectAllocated(IRFunction function) {
-        for (IRBaseInst inst : function.entryBlock().instructions)
+        for (IRBaseInst inst : function.entryBlock.instructions)
             if (inst instanceof IRAllocaInst) allocated.add(inst);
     }
 
@@ -42,7 +49,7 @@ public class Mem2Reg implements IRFuncPass {
     public void runOnFunc(IRFunction function) {
         new DomTreeBuilder().runOnFunc(function);
         phiInsertion(function);
-        variableRenaming(function.entryBlock());
+        variableRenaming(function.entryBlock);
     }
 
     private void phiInsertion(IRFunction function) {

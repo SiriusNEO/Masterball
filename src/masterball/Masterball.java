@@ -7,10 +7,24 @@ import masterball.compiler.share.error.CompileError;
 import masterball.console.*;
 import masterball.console.error.ConsoleError;
 
-/*
- * @Masterball main entry
- * a Compiler for Mx* language
- * by SiriusNEO
+/**
+ * Masterball, a Compiler for Mx* language
+ * see github in: https://github.com/SiriusNEO/Masterball
+ *
+ * Actually, it is a toy compiler for course project.
+ * Therefore, many implementations are quite simple and there may be some bugs.
+ * It will compile Mx* language (a language for this project) code to RISC-V 32 Integer assembly.
+ * It is implemented in Java, JDK 11. And the lexer and parser in the FrontEnd it is supported by antlr.
+ *
+ * Main Architecture:
+ *  code            -> Console (input from stdin)
+ *  char stream     -> FrontEnd (antlr v4 parser, and custom AST builder & semantic check for Mx*)
+ *  AST             -> MiddleEnd (LLVM IR builder, and many optimizations)
+ *  IR (optimized)  -> BackEnd (assembly builder and register allocator, and some LIR optimizations)
+ *  Assembly        -> Assembler: ravel
+ *  Result          -> Judge
+ *  
+ * @author: SiriusNEO, https://github.com/SiriusNEO
  */
 
 public class Masterball {

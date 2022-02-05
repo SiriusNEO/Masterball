@@ -3,7 +3,6 @@ package masterball.compiler.middleend.ssa;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.share.pass.IRFuncPass;
-import masterball.debug.Log;
 
 import java.util.*;
 
@@ -11,7 +10,7 @@ public class DomTreeBuilder implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
-        sortByRPO(function.entryBlock());
+        sortByRPO(function.entryBlock);
         Collections.reverse(blocksInRPO);
         for (int i = 0; i < blocksInRPO.size(); i++)
             blocksInRPO.get(i).node.order = i;
@@ -55,7 +54,7 @@ public class DomTreeBuilder implements IRFuncPass {
     }
 
     private void calculateDoms(IRFunction function) {
-        Node startNode = function.entryBlock().node;
+        Node startNode = function.entryBlock.node;
         startNode.idom = startNode;
         boolean changed = true;
         while (changed) {

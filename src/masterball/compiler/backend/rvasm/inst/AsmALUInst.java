@@ -10,7 +10,7 @@ import masterball.compiler.share.lang.RV32I;
 // slt, seqz, ...
 
 public class AsmALUInst extends AsmBaseInst {
-    private final String op;
+    public final String op;
 
     public AsmALUInst(String op, Register rd, Register rs1, Register rs2, AsmBlock parentBlock) {
         super(rd, rs1, rs2, null, parentBlock);

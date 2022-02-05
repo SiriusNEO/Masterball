@@ -18,14 +18,18 @@ import java.util.*;
 
 import static masterball.compiler.backend.rvasm.operand.PhysicalReg.phyRegs;
 
+/**
+ * Register Allocator using Graph Coloring Algorithm
+ * @reference: Tiger Book
+ */
+
 public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
     private static final int K = PhysicalReg.assignable.size();
 
-    // info
     private AsmFunction curFunc;
 
-    /*
+    /**
      * reg container
      * Registers can only present in one of these
      * Registers in coalescedNodes and selectStack are "deleted"
@@ -41,7 +45,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             coloredNodes = new LinkedHashSet<>();
     private final Stack<Register> selectStack = new Stack<>();
 
-    /* moves
+    /**
+     * moves
      * coalescedMoves: have been coalesced.
      * constrainedMoves: rd and rs have an edge
      * frozenMoves: have been frozen, no need to consider it.
@@ -169,14 +174,14 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
     }
 
+    /**
+     * build the InterferenceGraph
+     * for inst from tail to head because we start with "liveOut"
+     * for each inst, defs() and lives interference.
+     * Then before move to pre inst, we do update: all defs() are dead while all uses() are live.
+     * Notice that for Move we have to remove their uses()
+     */
     private void build() {
-        /*
-         * build the InterferenceGraph
-         * for inst from tail to head because we start with "liveOut"
-         * for each inst, defs() and lives interference.
-         * Then before move to pre inst, we do update: all defs() are dead while all uses() are live.
-         * Notice that for Move we have to remove their uses()
-         */
 
         for (AsmBlock block : curFunc.blocks) {
             HashSet<Register> lives = block.liveOut;
@@ -204,10 +209,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
     }
 
+    /**
+     * dispatch the node in initial to three worklists.
+     */
     private void makeWorklist() {
-        /*
-         * dispatch the node in initial to three worklists.
-         */
         var it = initial.iterator();
         while (it.hasNext()) {
             Register reg = it.next();
@@ -218,10 +223,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
     }
 
+    /**
+     * enable a move: from activeMoves to worklist
+     */
     private void enableMoves(Set<Register> regs) {
-        /*
-         * enable a move: from activeMoves to worklist
-         */
         for (Register reg : regs)
             for (AsmMvInst move : nodeMoves(reg))
                 if (activeMoves.contains(move)) {
@@ -230,11 +235,11 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                 }
     }
 
+    /**
+     * decrease the degree of reg
+     * if the degree from K to K-1, then the moves of the adjacent nodes is possible to be enabled.
+     */
     private void decrementDegree(Register reg) {
-        /*
-         * decrease the degree of reg
-         * if the degree from K to K-1, then the moves of the adjacent nodes is possible to be enabled.
-         */
         int d = reg.node.degree;
         reg.node.degree--;
         if (d == K) {
@@ -247,10 +252,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
     }
 
+    /**
+     * delete a node in simplifyWorklist, and decrement degree of its adjacent.
+     */
     private void simplify() {
-        /*
-         * delete a node in simplifyWorklist, and decrement degree of its adjacent.
-         */
         var it = simplifyWorklist.iterator();
         Register reg = it.next();
         // Log.track("simplify", reg);
@@ -285,10 +290,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
     }
 
+    /**
+     * a union-set coalesce algorithm
+     */
     private void coalesce() {
-        /*
-         * a union-set coalesce algorithm
-         */
         var it = worklistMoves.iterator();
         AsmMvInst move = it.next();
 
@@ -344,8 +349,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         freezeMoves(reg);
     }
 
+    /**
+     * selectSpill: using simple heuristic to select
+     */
     private void selectSpill() {
-        /*
         Register minReg = null;
         double minCost = Double.POSITIVE_INFINITY;
 
@@ -368,9 +375,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                 }
             }
         }
-        */
-        var it = spillWorklist.iterator();
-        var minReg = it.next();
         // Log.track("selectSpill", minReg);
 
         spillWorklist.remove(minReg);
@@ -403,9 +407,12 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
     }
 
+    /**
+     * rewrite the program. mainly for:
+     * 1. allocate stack space for these nodes
+     * 2. insert load/store for nodes (will introduce temps in this step)
+     */
     private void rewriteProgram() {
-        // really a big job...
-        // allocate stack space for these nodes
         // Log.track("rewrite");
 
         for (Register reg : spilledNodes) {
@@ -477,11 +484,12 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
     }
 
     /* tool functions */
+
+    /**
+     * return a set of adjacent nodes
+     * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
+     */
     private HashSet<Register> adjacent(Register reg) {
-        /*
-         * return a set of adjacent nodes
-         * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
-         */
         HashSet<Register> ret = new HashSet<>();
         reg.node.adjList.forEach(node -> {
            if (!(selectStack.contains(node) || coalescedNodes.contains(node)))
@@ -490,11 +498,11 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         return ret;
     }
 
+    /**
+     * return a set of adjacent nodes
+     * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
+     */
     private HashSet<Register> adjacent(Register reg1, Register reg2) {
-        /*
-         * return a set of adjacent nodes
-         * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
-         */
         HashSet<Register> ret = new HashSet<>();
         reg1.node.adjList.forEach(node -> {
             if (!(selectStack.contains(node) || coalescedNodes.contains(node)))
@@ -507,13 +515,12 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         return ret;
     }
 
+    /**
+     * return a set of this nodes move insts
+     * only those in workList or active are valid.
+     * warning: adjList < worklistMoves, so use this to make program faster
+     */
     private HashSet<AsmMvInst> nodeMoves(Register reg) {
-        /*
-         * return a set of this nodes move insts
-         * only those in workList or active are valid.
-         * warning: adjList < worklistMoves, so use this to make program faster
-         */
-
         HashSet<AsmMvInst> ret = new HashSet<>();
         reg.node.moveList.forEach(move -> {
             if (activeMoves.contains(move) || worklistMoves.contains(move))
@@ -535,20 +542,20 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         return true;
     }
 
+    /**
+     * a conservative strategy
+     */
     private boolean conservative(HashSet<Register> regs) {
-        /*
-         * a conservative strategy
-         */
         int k = 0;
         for (Register reg : regs)
             if (reg.node.degree >= K) k++;
         return k < K;
     }
 
+    /**
+     * union-set
+     */
     private Register getAlias(Register reg) {
-        /*
-         * union-set
-         */
         if (coalescedNodes.contains(reg)) {
             var ret = getAlias(reg.node.alias);
             reg.node.alias = ret;

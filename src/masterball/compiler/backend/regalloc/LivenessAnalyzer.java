@@ -5,8 +5,6 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.inst.AsmBaseInst;
 import masterball.compiler.backend.rvasm.operand.Register;
 import masterball.compiler.share.pass.AsmFuncPass;
-import masterball.debug.LivenessPrinter;
-import masterball.debug.Log;
 
 import java.util.*;
 
@@ -23,7 +21,7 @@ public class LivenessAnalyzer implements AsmFuncPass {
         function.blocks.forEach(this::collectUsesAndDefs);
         function.blocks.forEach(this::initLiveness);
 
-        workQueue.offer(function.exitBlock());
+        workQueue.offer(function.exitBlock);
         while (!workQueue.isEmpty()) livenessAnalyze(workQueue.poll());
     }
 

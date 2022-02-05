@@ -8,6 +8,7 @@ import masterball.compiler.middleend.llvmir.inst.IRMoveInst;
 import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.IRFuncPass;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,10 +52,12 @@ public class SSADestructor implements IRFuncPass {
        function.blocks.forEach(block -> copyGraphMap.put(block, new CopyGraph()));
        for (IRBlock block : function.blocks) {
            for (IRPhiInst phi : block.phiInsts) {
-               for (int i = 0; i < phi.operandSize(); i += 2)
+               for (int i = 0; i < phi.operandSize(); i += 2) {
                    // insert in the graph of preds
+                   Log.report(block.identifier());
                    copyGraphMap.get((IRBlock) phi.getOperand(i + 1)).
                            insert(new CopyGraph.CopyEdge(phi, phi.getOperand(i)));
+               }
            }
        }
     }

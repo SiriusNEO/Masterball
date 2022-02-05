@@ -52,6 +52,10 @@ public class IRBlock extends Value {
         if (inst.isTerminator()) isTerminated = true;
     }
 
+    public IRBaseInst terminator() {
+        return instructions.getLast();
+    }
+
     public void addInstBeforeTerminator(IRBaseInst inst) {
         instructions.add(instructions.size()-1, inst);
     }

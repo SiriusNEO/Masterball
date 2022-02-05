@@ -11,6 +11,8 @@ public class AsmFunction extends BaseOperand {
     public final ArrayList<AsmBlock> blocks = new ArrayList<>();
     public final ArrayList<Register> arguments = new ArrayList<>();
 
+    public AsmBlock entryBlock, exitBlock;
+
     public int callerArgStackUse = 0,
                allocaStackUse = 0,
                spillStackUse = 0,
@@ -20,7 +22,4 @@ public class AsmFunction extends BaseOperand {
     public AsmFunction(String identifier) {
         super(identifier);
     }
-
-    public AsmBlock entryBlock() {return blocks.get(0);}
-    public AsmBlock exitBlock() {return blocks.get(1);}
 }

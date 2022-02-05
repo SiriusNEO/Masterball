@@ -22,7 +22,7 @@ public class IRCurrent {
 
     public void terminateAllBlocks() {
         for (IRBlock block : this.func.blocks)
-            if (!block.isTerminated) new IRBrInst(this.func.exitBlock(), block);
+            if (!block.isTerminated) new IRBrInst(this.func.exitBlock, block);
     }
 
     public void loopSetKeywordTarget(IRBlock contTargetBlock, IRBlock breakTargetBlock) {

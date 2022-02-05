@@ -23,7 +23,6 @@ import masterball.compiler.share.error.runtime.UnimplementedError;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.misc.Pair;
 import masterball.compiler.share.pass.ASTVisitor;
-import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -92,13 +91,13 @@ public class IRBuilder implements ASTVisitor {
         infoManager.push(node.funcRegistry.scope);
 
         cur.func = (IRFunction) node.funcRegistry.value;
-        cur.block = cur.func.entryBlock();
+        cur.block = cur.func.entryBlock;
 
         if (!node.funcRegistry.type.retType.match(MxBaseType.BuiltinType.VOID)) {
             cur.retValPtr = memAlloca(LLVM.RetReg, translator.translateAllocaType(node.funcRegistry.type.retType));
-            new IRRetInst(memLoad(cur.retValPtr, cur.func.exitBlock()), cur.func.exitBlock());
+            new IRRetInst(memLoad(cur.retValPtr, cur.func.exitBlock), cur.func.exitBlock);
         } else {
-            new IRRetInst(cur.func.exitBlock());
+            new IRRetInst(cur.func.exitBlock);
         }
 
         // main func
@@ -271,7 +270,7 @@ public class IRBuilder implements ASTVisitor {
             node.retExpNode.accept(this);
             memStore(cur.retValPtr, node.retExpNode.value);
         }
-        new IRBrInst(cur.func.exitBlock(), cur.block);
+        new IRBrInst(cur.func.exitBlock, cur.block);
     }
 
     @Override
@@ -533,11 +532,11 @@ public class IRBuilder implements ASTVisitor {
         cur.func = new IRFunction(LLVM.InitFuncName,
                 translator.translateFuncType(initRegistry.type, null));
 
-        cur.block = cur.func.entryBlock();
+        cur.block = cur.func.entryBlock;
 
         infoManager.register(initRegistry);
 
-        new IRRetInst(cur.func.exitBlock()); // return void
+        new IRRetInst(cur.func.exitBlock); // return void
         module.functions.add(cur.func);
         infoManager.queryFuncInStack(cur.func.name).value = cur.func;
     }
@@ -601,7 +600,7 @@ public class IRBuilder implements ASTVisitor {
 
     private Value memAlloca(String allocaName, IRBaseType allocaType) {
         // allocated in entry block
-        return new IRAllocaInst(allocaName, allocaType, cur.func.entryBlock());
+        return new IRAllocaInst(allocaName, allocaType, cur.func.entryBlock);
     }
 
     private Value memLoad(Value pointer, IRBlock parentBlock) {

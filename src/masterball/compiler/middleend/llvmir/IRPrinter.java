@@ -8,7 +8,6 @@ import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.share.pass.IRBlockPass;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.compiler.share.pass.IRModulePass;
-import masterball.debug.Log;
 
 import java.io.PrintStream;
 
@@ -29,13 +28,13 @@ public class IRPrinter implements IRModulePass, IRFuncPass, IRBlockPass {
     @Override
     public void runOnFunc(IRFunction function) {
         ps.println(IRFormatter.funcDefFormat(function) + " {");
-        runOnBlock(function.entryBlock());
+        runOnBlock(function.entryBlock);
         ps.print("\n");
         for (int i = 2; i < function.blocks.size(); i++) {
             runOnBlock(function.blocks.get(i));
             ps.print("\n");
         }
-        runOnBlock(function.exitBlock());
+        runOnBlock(function.exitBlock);
         ps.println("}\n");
     }
 
