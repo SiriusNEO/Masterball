@@ -43,6 +43,8 @@ public class IRFunction extends GlobalValue {
         return ((IRFuncType) this.type).argTypes.get(index);
     }
 
+    // remember: here we place exit in second, not the logic order
+
     public IRBlock entryBlock() {return blocks.get(0);}
     public IRBlock exitBlock() {return blocks.get(1);}
 }

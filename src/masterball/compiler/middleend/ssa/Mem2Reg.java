@@ -97,10 +97,11 @@ public class Mem2Reg implements IRFuncPass {
     }
 
     private void variableRenaming(IRBlock block) {
-        HashSet<String> rollbackRecord = new HashSet<>();
+        ArrayList<String> rollbackRecord = new ArrayList<>();
 
         for (var phi : block.phiInsts) {
             if (phiAllocaName.containsKey(phi)) {
+                // Log.report("phi: ", phi.format(), phiAllocaName.get(phi));
                 updateReplace(phiAllocaName.get(phi), phi);
                 rollbackRecord.add(phiAllocaName.get(phi));
             }
@@ -119,6 +120,7 @@ public class Mem2Reg implements IRFuncPass {
                 if (allocated.contains(((IRLoadInst) inst).loadPtr())) {
                     String name = ((IRLoadInst) inst).loadPtr().name;
                     Value replace = getReplace(name);
+                    // Log.report("load r", ((IRLoadInst) inst).loadPtr().identifier(), name, replace.identifier());
                     it.remove(); // remove load
                     inst.replaced(replace);
                 }
@@ -126,8 +128,8 @@ public class Mem2Reg implements IRFuncPass {
             else if (inst instanceof IRStoreInst) {
                 if (allocated.contains(((IRStoreInst) inst).storePtr())) {
                     String name = ((IRStoreInst) inst).storePtr().name;
+                    // Log.report("store r", ((IRStoreInst) inst).storeValue().identifier(), name);
                     updateReplace(name, ((IRStoreInst) inst).storeValue());
-                    // Log.report("replace", getReplace(name).identifier());
                     rollbackRecord.add(name);
                     it.remove(); // remove store
                 }

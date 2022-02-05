@@ -9,15 +9,15 @@ public class LLVM {
     // default reg & label
     public static final String Anon = "anon";
 
-    public static final String TypeAnon = "anon.type";
-    public static final String ConstAnon = "anon.const";
-    public static final String StrConstAnon = "anon.strconst";
-
-    public static final String ThisArg = "this";
-    public static final String RetReg = "retreg";
-
     public static final String Spliter = ".";
     public static final String FuncNameSpliter = "_";
+
+    public static final String TypeAnon = "anon" + Spliter + "type";
+    public static final String ConstAnon = "anon" + Spliter + "const";
+    public static final String StrConstAnon = "anon" + Spliter + "strconst";
+
+    public static final String ThisArg = "internal" + Spliter + "this";
+    public static final String RetReg = "internal" + Spliter + "ret";
 
     public static final String InitFuncName = FuncNameSpliter + "glb" + FuncNameSpliter + "init";
 

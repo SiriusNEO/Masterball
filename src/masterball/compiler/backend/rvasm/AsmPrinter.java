@@ -44,6 +44,8 @@ public class AsmPrinter implements AsmModulePass, AsmFuncPass, AsmBlockPass {
 
     @Override
     public void runOnFunc(AsmFunction function) {
+        // some invalid print in ravel
+
         AsmFormatter.functionHeaderFormat(function).forEach(ps::println);
         ps.println(function.identifier + ":");
         // ps.println(TAB + ".cfi_startproc");
