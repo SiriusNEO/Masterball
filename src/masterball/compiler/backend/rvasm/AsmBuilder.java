@@ -266,11 +266,11 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
                 break;
             case LLVM.GreaterEqualArg: // a >= b -> !(a < b)
                 awesomeALU(RV32I.SltInst, instReg, inst.lhs(), inst.rhs());
-                new AsmALUInst(RV32I.XorInst, instReg, cur.toReg(inst), cur.toImm(1), cur.block);
+                new AsmALUInst(RV32I.XorInst, instReg, instReg, cur.toImm(1), cur.block);
                 break;
             case LLVM.LessEqualArg: // a <= b -> !(b < a)
                 awesomeALU(RV32I.SltInst, instReg, inst.rhs(), inst.lhs());
-                new AsmALUInst(RV32I.XorInst, instReg, cur.toReg(inst), cur.toImm(1), cur.block);
+                new AsmALUInst(RV32I.XorInst, instReg, instReg, cur.toImm(1), cur.block);
                 break;
             case LLVM.EqualArg: { // a == b -> xor = a ^ b; seqz rd, xor
                 VirtualReg xorReg = new VirtualReg();

@@ -306,16 +306,16 @@ public class IRBuilder implements ASTVisitor {
                 cur.block = nocutBlock;
                 node.rhsExpNode.accept(this);
                 new IRBrInst(exitBlock, cur.block);
+                node.value = new IRPhiInst(IRTranslator.boolType, exitBlock, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, cur.block);
                 cur.block = exitBlock;
-                node.value = new IRPhiInst(IRTranslator.boolType, cur.block, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, nocutBlock);
             } else if (node.op.equals(MxStar.LogicAndOp)) {
                 // ret = a && b -> if (a) b; ret = phi a b
                 new IRBrInst(node.lhsExpNode.value, nocutBlock, exitBlock, cur.block);
                 cur.block = nocutBlock;
                 node.rhsExpNode.accept(this);
                 new IRBrInst(exitBlock, cur.block);
+                node.value = new IRPhiInst(IRTranslator.boolType, exitBlock, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, cur.block);
                 cur.block = exitBlock;
-                node.value = new IRPhiInst(IRTranslator.boolType, cur.block, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, nocutBlock);
             } else throw new UnknownError(node.codePos, node);
         } else {
             node.rhsExpNode.accept(this);

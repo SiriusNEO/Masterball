@@ -2486,51 +2486,14 @@ public class MxStarParser extends Parser {
 				match(RightParen);
 				}
 				break;
-			case LambdaStartSymbol:
-				{
-				_localctx = new LambdaExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(257);
-				match(LambdaStartSymbol);
-				setState(263);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==LeftParen) {
-					{
-					setState(258);
-					match(LeftParen);
-					setState(260);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntType) | (1L << BoolType) | (1L << StringType) | (1L << VoidType) | (1L << Identifier))) != 0)) {
-						{
-						setState(259);
-						funcDefArgs();
-						}
-					}
-
-					setState(262);
-					match(RightParen);
-					}
-				}
-
-				setState(265);
-				match(LambdaArrowSymbol);
-				setState(266);
-				suite();
-				setState(267);
-				funcCallArgs();
-				}
-				break;
 			case NewKw:
 				{
 				_localctx = new NewExpContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(269);
+				setState(257);
 				match(NewKw);
-				setState(272);
+				setState(260);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case IntType:
@@ -2538,47 +2501,84 @@ public class MxStarParser extends Parser {
 				case StringType:
 				case VoidType:
 					{
-					setState(270);
+					setState(258);
 					builtinType();
 					}
 					break;
 				case Identifier:
 					{
-					setState(271);
+					setState(259);
 					match(Identifier);
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(277);
+				setState(265);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(274);
+						setState(262);
 						newExpSizeDeclaration();
 						}
 						} 
 					}
-					setState(279);
+					setState(267);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 				}
-				setState(282);
+				setState(270);
 				_errHandler.sync(this);
-				switch ( getInterpreter().adaptivePredict(_input,27,_ctx) ) {
+				switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
 				case 1:
 					{
-					setState(280);
+					setState(268);
 					match(LeftParen);
-					setState(281);
+					setState(269);
 					match(RightParen);
 					}
 					break;
 				}
+				}
+				break;
+			case LambdaStartSymbol:
+				{
+				_localctx = new LambdaExpContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(272);
+				match(LambdaStartSymbol);
+				setState(278);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				if (_la==LeftParen) {
+					{
+					setState(273);
+					match(LeftParen);
+					setState(275);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+					if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntType) | (1L << BoolType) | (1L << StringType) | (1L << VoidType) | (1L << Identifier))) != 0)) {
+						{
+						setState(274);
+						funcDefArgs();
+						}
+					}
+
+					setState(277);
+					match(RightParen);
+					}
+				}
+
+				setState(280);
+				match(LambdaArrowSymbol);
+				setState(281);
+				suite();
+				setState(282);
+				funcCallArgs();
 				}
 				break;
 			case IncrementOp:
@@ -2759,7 +2759,7 @@ public class MxStarParser extends Parser {
 						_localctx = new IndexExpContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(330);
-						if (!(precpred(_ctx, 19))) throw new FailedPredicateException(this, "precpred(_ctx, 19)");
+						if (!(precpred(_ctx, 18))) throw new FailedPredicateException(this, "precpred(_ctx, 18)");
 						setState(331);
 						match(LeftBracket);
 						setState(332);
@@ -2773,7 +2773,7 @@ public class MxStarParser extends Parser {
 						_localctx = new MemberExpContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(335);
-						if (!(precpred(_ctx, 18))) throw new FailedPredicateException(this, "precpred(_ctx, 18)");
+						if (!(precpred(_ctx, 17))) throw new FailedPredicateException(this, "precpred(_ctx, 17)");
 						setState(336);
 						match(MemberOp);
 						setState(337);
@@ -2785,7 +2785,7 @@ public class MxStarParser extends Parser {
 						_localctx = new FuncCallExpContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(338);
-						if (!(precpred(_ctx, 17))) throw new FailedPredicateException(this, "precpred(_ctx, 17)");
+						if (!(precpred(_ctx, 16))) throw new FailedPredicateException(this, "precpred(_ctx, 16)");
 						setState(339);
 						funcCallArgs();
 						}
@@ -2795,7 +2795,7 @@ public class MxStarParser extends Parser {
 						_localctx = new PostfixExpContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(340);
-						if (!(precpred(_ctx, 15))) throw new FailedPredicateException(this, "precpred(_ctx, 15)");
+						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
 						setState(341);
 						postfixOps();
 						}
@@ -2909,13 +2909,13 @@ public class MxStarParser extends Parser {
 		case 10:
 			return precpred(_ctx, 1);
 		case 11:
-			return precpred(_ctx, 19);
-		case 12:
 			return precpred(_ctx, 18);
-		case 13:
+		case 12:
 			return precpred(_ctx, 17);
+		case 13:
+			return precpred(_ctx, 16);
 		case 14:
-			return precpred(_ctx, 15);
+			return precpred(_ctx, 14);
 		}
 		return true;
 	}
@@ -2940,8 +2940,8 @@ public class MxStarParser extends Parser {
 		"\3\23\3\23\3\24\3\24\3\24\3\25\5\25\u00de\n\25\3\25\3\25\3\26\3\26\3\27"+
 		"\3\27\3\27\3\27\3\27\3\27\3\27\3\27\5\27\u00ec\n\27\3\30\3\30\3\31\3\31"+
 		"\3\32\3\32\3\33\3\33\3\34\3\34\3\35\3\35\3\36\3\36\3\37\3\37\3 \3 \3 "+
-		"\3 \3 \3 \3 \3 \3 \5 \u0107\n \3 \5 \u010a\n \3 \3 \3 \3 \3 \3 \3 \5 "+
-		"\u0113\n \3 \7 \u0116\n \f \16 \u0119\13 \3 \3 \5 \u011d\n \3 \3 \3 \3"+
+		"\3 \3 \3 \3 \3 \3 \5 \u0107\n \3 \7 \u010a\n \f \16 \u010d\13 \3 \3 \5"+
+		" \u0111\n \3 \3 \3 \5 \u0116\n \3 \5 \u0119\n \3 \3 \3 \3 \3 \3 \3 \3"+
 		" \3 \3 \5 \u0125\n \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3"+
 		" \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3"+
 		" \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \7 \u0159\n \f \16 \u015c\13 \3!\3!\3!"+
@@ -3007,18 +3007,18 @@ public class MxStarParser extends Parser {
 		"\u00f8\t\b\2\2\u00f89\3\2\2\2\u00f9\u00fa\t\t\2\2\u00fa;\3\2\2\2\u00fb"+
 		"\u00fc\t\n\2\2\u00fc=\3\2\2\2\u00fd\u00fe\b \1\2\u00fe\u0125\5@!\2\u00ff"+
 		"\u0100\7\35\2\2\u0100\u0101\5> \2\u0101\u0102\7\36\2\2\u0102\u0125\3\2"+
-		"\2\2\u0103\u0109\7$\2\2\u0104\u0106\7\35\2\2\u0105\u0107\5\n\6\2\u0106"+
-		"\u0105\3\2\2\2\u0106\u0107\3\2\2\2\u0107\u0108\3\2\2\2\u0108\u010a\7\36"+
-		"\2\2\u0109\u0104\3\2\2\2\u0109\u010a\3\2\2\2\u010a\u010b\3\2\2\2\u010b"+
-		"\u010c\7%\2\2\u010c\u010d\5\30\r\2\u010d\u010e\5\f\7\2\u010e\u0125\3\2"+
-		"\2\2\u010f\u0112\7\64\2\2\u0110\u0113\5\16\b\2\u0111\u0113\7;\2\2\u0112"+
-		"\u0110\3\2\2\2\u0112\u0111\3\2\2\2\u0113\u0117\3\2\2\2\u0114\u0116\5\22"+
-		"\n\2\u0115\u0114\3\2\2\2\u0116\u0119\3\2\2\2\u0117\u0115\3\2\2\2\u0117"+
-		"\u0118\3\2\2\2\u0118\u011c\3\2\2\2\u0119\u0117\3\2\2\2\u011a\u011b\7\35"+
-		"\2\2\u011b\u011d\7\36\2\2\u011c\u011a\3\2\2\2\u011c\u011d\3\2\2\2\u011d"+
+		"\2\2\u0103\u0106\7\64\2\2\u0104\u0107\5\16\b\2\u0105\u0107\7;\2\2\u0106"+
+		"\u0104\3\2\2\2\u0106\u0105\3\2\2\2\u0107\u010b\3\2\2\2\u0108\u010a\5\22"+
+		"\n\2\u0109\u0108\3\2\2\2\u010a\u010d\3\2\2\2\u010b\u0109\3\2\2\2\u010b"+
+		"\u010c\3\2\2\2\u010c\u0110\3\2\2\2\u010d\u010b\3\2\2\2\u010e\u010f\7\35"+
+		"\2\2\u010f\u0111\7\36\2\2\u0110\u010e\3\2\2\2\u0110\u0111\3\2\2\2\u0111"+
+		"\u0125\3\2\2\2\u0112\u0118\7$\2\2\u0113\u0115\7\35\2\2\u0114\u0116\5\n"+
+		"\6\2\u0115\u0114\3\2\2\2\u0115\u0116\3\2\2\2\u0116\u0117\3\2\2\2\u0117"+
+		"\u0119\7\36\2\2\u0118\u0113\3\2\2\2\u0118\u0119\3\2\2\2\u0119\u011a\3"+
+		"\2\2\2\u011a\u011b\7%\2\2\u011b\u011c\5\30\r\2\u011c\u011d\5\f\7\2\u011d"+
 		"\u0125\3\2\2\2\u011e\u011f\5.\30\2\u011f\u0120\5> \17\u0120\u0125\3\2"+
 		"\2\2\u0121\u0122\5\62\32\2\u0122\u0123\5> \16\u0123\u0125\3\2\2\2\u0124"+
-		"\u00fd\3\2\2\2\u0124\u00ff\3\2\2\2\u0124\u0103\3\2\2\2\u0124\u010f\3\2"+
+		"\u00fd\3\2\2\2\u0124\u00ff\3\2\2\2\u0124\u0103\3\2\2\2\u0124\u0112\3\2"+
 		"\2\2\u0124\u011e\3\2\2\2\u0124\u0121\3\2\2\2\u0125\u015a\3\2\2\2\u0126"+
 		"\u0127\f\r\2\2\u0127\u0128\5\66\34\2\u0128\u0129\5> \16\u0129\u0159\3"+
 		"\2\2\2\u012a\u012b\f\f\2\2\u012b\u012c\58\35\2\u012c\u012d\5> \r\u012d"+
@@ -3030,10 +3030,10 @@ public class MxStarParser extends Parser {
 		"\u0159\5> \b\u0140\u0141\f\6\2\2\u0141\u0142\7\24\2\2\u0142\u0159\5> "+
 		"\7\u0143\u0144\f\5\2\2\u0144\u0145\7\16\2\2\u0145\u0159\5> \6\u0146\u0147"+
 		"\f\4\2\2\u0147\u0148\7\17\2\2\u0148\u0159\5> \5\u0149\u014a\f\3\2\2\u014a"+
-		"\u014b\7\27\2\2\u014b\u0159\5> \3\u014c\u014d\f\25\2\2\u014d\u014e\7\33"+
+		"\u014b\7\27\2\2\u014b\u0159\5> \3\u014c\u014d\f\24\2\2\u014d\u014e\7\33"+
 		"\2\2\u014e\u014f\5> \2\u014f\u0150\7\34\2\2\u0150\u0159\3\2\2\2\u0151"+
-		"\u0152\f\24\2\2\u0152\u0153\7\32\2\2\u0153\u0159\7;\2\2\u0154\u0155\f"+
-		"\23\2\2\u0155\u0159\5\f\7\2\u0156\u0157\f\21\2\2\u0157\u0159\5\60\31\2"+
+		"\u0152\f\23\2\2\u0152\u0153\7\32\2\2\u0153\u0159\7;\2\2\u0154\u0155\f"+
+		"\22\2\2\u0155\u0159\5\f\7\2\u0156\u0157\f\20\2\2\u0157\u0159\5\60\31\2"+
 		"\u0158\u0126\3\2\2\2\u0158\u012a\3\2\2\2\u0158\u012e\3\2\2\2\u0158\u0132"+
 		"\3\2\2\2\u0158\u0136\3\2\2\2\u0158\u013a\3\2\2\2\u0158\u013d\3\2\2\2\u0158"+
 		"\u0140\3\2\2\2\u0158\u0143\3\2\2\2\u0158\u0146\3\2\2\2\u0158\u0149\3\2"+
@@ -3041,7 +3041,7 @@ public class MxStarParser extends Parser {
 		"\u0156\3\2\2\2\u0159\u015c\3\2\2\2\u015a\u0158\3\2\2\2\u015a\u015b\3\2"+
 		"\2\2\u015b?\3\2\2\2\u015c\u015a\3\2\2\2\u015d\u015e\t\13\2\2\u015eA\3"+
 		"\2\2\2!EGRTcpy|\u0086\u008c\u008e\u0092\u009c\u00a2\u00a8\u00b7\u00c1"+
-		"\u00c6\u00ca\u00ce\u00d5\u00dd\u00eb\u0106\u0109\u0112\u0117\u011c\u0124"+
+		"\u00c6\u00ca\u00ce\u00d5\u00dd\u00eb\u0106\u010b\u0110\u0115\u0118\u0124"+
 		"\u0158\u015a";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());

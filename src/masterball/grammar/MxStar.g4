@@ -113,8 +113,9 @@ equalOps: (EqualOp | NotEqualOp);
 
 expression
     :   atom                                                                            #atomExp       // 0
-
     |   LeftParen expression RightParen                                                 #parenExp      // 1
+    |   NewKw (builtinType | Identifier) newExpSizeDeclaration* (LeftParen RightParen)? #newExp        // 1
+
     |   expression LeftBracket expression RightBracket                                  #indexExp      // 1
     |   expression MemberOp Identifier                                                  #memberExp     // 1
     |   expression funcCallArgs                                                         #funcCallExp   // 1
@@ -123,7 +124,6 @@ expression
 
     |   expression postfixOps                                                           #postfixExp    // 2
 
-    |   NewKw (builtinType | Identifier) newExpSizeDeclaration* (LeftParen RightParen)? #newExp        // 2
     |   <assoc=right> prefixOps expression                                               #prefixExp     // 2
     |   <assoc=right> unaryOps expression                                                #unaryExp      // 2
 
