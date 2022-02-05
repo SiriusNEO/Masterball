@@ -351,8 +351,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
     /**
      * selectSpill: using simple heuristic to select
+     * TODO better spill strategy
      */
     private void selectSpill() {
+        /*
         Register minReg = null;
         double minCost = Double.POSITIVE_INFINITY;
 
@@ -376,10 +378,13 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             }
         }
         // Log.track("selectSpill", minReg);
+        */
 
-        spillWorklist.remove(minReg);
-        simplifyWorklist.add(minReg);
-        freezeMoves(minReg);
+        var it = spillWorklist.iterator();
+        var chosen = it.next();
+        it.remove();
+        simplifyWorklist.add(chosen);
+        freezeMoves(chosen);
     }
 
     private void assignColors() {
