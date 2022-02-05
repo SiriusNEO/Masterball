@@ -447,6 +447,7 @@ public class IRBuilder implements ASTVisitor {
             case MxStar.DecrementOp:
                 calculated = new IRBinaryInst(LLVM.SubInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(1), cur.block);
                 break;
+            default: throw new UnknownError(node.codePos, node);
         }
         memStore(storePtr, calculated);
         node.value = node.selfExpNode.value;

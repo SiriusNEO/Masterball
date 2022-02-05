@@ -36,9 +36,9 @@ public class BackEnd {
 
         // ASM Printer
         new AsmPrinter(
-                    Console.getFileName(Config.getPath(Config.Option.ASMOutput)),
-                    (PrintStream) Config.getArgValue(Config.Option.ASMOutput)
-                ).runOnModule(this.module);
+                Console.getFileName(Config.getPath(Config.Option.ASMOutput)),
+                (PrintStream) Config.getArgValue(Config.Option.ASMOutput)
+        ).runOnModule(this.module);
 
         Log.track("BackEnd started successfully.");
     }
