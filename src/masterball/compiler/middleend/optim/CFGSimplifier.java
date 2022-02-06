@@ -43,31 +43,25 @@ public class CFGSimplifier implements IRFuncPass {
         });
 
         for (IRBlock beMerged : toMergeSet) {
-            Log.report(beMerged.identifier());
-
             IRBlock preBlock = beMerged.prevs.get(0);
+
+            Log.report("merged", preBlock.identifier(), beMerged.identifier());
 
             var preTerminator = preBlock.terminator();
 
             // 1 nexts, must be Jmp
             assert preTerminator instanceof IRBrInst && ((IRBrInst) preTerminator).isJump();
 
-            preBlock.nexts.remove(((IRBrInst) preTerminator).destBlock());
+            preBlock.nexts.remove(beMerged);
             preBlock.instructions.remove(preTerminator);
             preBlock.isTerminated = false;
 
             preBlock.nexts.addAll(beMerged.nexts);
             for (IRBlock suc : beMerged.nexts) {
-                suc.prevs.remove(beMerged);
-                suc.prevs.add(preBlock);
-                suc.phiInsts.forEach(phi -> {
-                    for (int i = 1; i < phi.operandSize(); i += 2) {
-                        if (phi.getOperand(i) == beMerged)
-                            phi.operands.set(i, preBlock);
-                    }
-                });
+                suc.redirectPreBlock(beMerged, preBlock);
             }
 
+            // terminate it also
             for (IRBaseInst inst : beMerged.instructions) inst.setParentBlock(preBlock);
 
             for (IRBaseInst phi : beMerged.phiInsts) phi.setParentBlock(preBlock);
@@ -80,7 +74,7 @@ public class CFGSimplifier implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
-        mergeBlocks(function);
         removeUnreachableBlock(function);
+        mergeBlocks(function);
     }
 }

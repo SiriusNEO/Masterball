@@ -4,7 +4,7 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.share.lang.RV32I;
 
 public class AsmJmpInst extends AsmBaseInst {
-    private final AsmBlock dest;
+    public AsmBlock dest;
 
     public AsmJmpInst(AsmBlock dest, AsmBlock parentBlock) {
         super(null, null, null, null, parentBlock);

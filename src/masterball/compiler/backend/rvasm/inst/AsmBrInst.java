@@ -8,7 +8,7 @@ import masterball.compiler.share.lang.RV32I;
 
 public class AsmBrInst extends AsmBaseInst {
     String op;
-    AsmBlock dest;
+    public AsmBlock dest;
 
     public AsmBrInst(String op, Register rs1, Register rs2, AsmBlock dest, AsmBlock parentBlock) {
         super(null, rs1, rs2, null, parentBlock);

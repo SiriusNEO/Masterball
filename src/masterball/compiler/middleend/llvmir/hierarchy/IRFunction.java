@@ -22,6 +22,8 @@ public class IRFunction extends GlobalValue {
         entryBlock = new IRBlock(LLVM.EntryBlockLabel, this);
         exitBlock = new IRBlock(LLVM.ExitBlockLabel, this);
         entryBlock.parentFunction = this;
+
+        // remember: here we place exit in second, not the logic order
         exitBlock.parentFunction = this;
     }
 
@@ -44,6 +46,4 @@ public class IRFunction extends GlobalValue {
     public IRBaseType getArgType(int index) {
         return ((IRFuncType) this.type).argTypes.get(index);
     }
-
-    // remember: here we place exit in second, not the logic order
 }

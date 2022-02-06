@@ -13,6 +13,11 @@ public class CFGBuilder implements IRFuncPass {
     @Override
     public void runOnFunc(IRFunction function) {
         for (IRBlock block : function.blocks) {
+            block.prevs.clear();
+            block.nexts.clear();
+        };
+
+        for (IRBlock block : function.blocks) {
             var terminator = block.terminator();
             if (terminator instanceof IRBrInst) {
                 if (((IRBrInst) terminator).isJump()) {

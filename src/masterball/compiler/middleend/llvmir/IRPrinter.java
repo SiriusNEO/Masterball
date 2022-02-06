@@ -28,13 +28,11 @@ public class IRPrinter implements IRModulePass, IRFuncPass, IRBlockPass {
     @Override
     public void runOnFunc(IRFunction function) {
         ps.println(IRFormatter.funcDefFormat(function) + " {");
-        runOnBlock(function.entryBlock);
         ps.print("\n");
-        for (int i = 2; i < function.blocks.size(); i++) {
+        for (int i = 0; i < function.blocks.size(); i++) {
             runOnBlock(function.blocks.get(i));
             ps.print("\n");
         }
-        runOnBlock(function.exitBlock);
         ps.println("}\n");
     }
 

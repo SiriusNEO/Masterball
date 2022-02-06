@@ -21,7 +21,7 @@ public class SSADestructor implements IRFuncPass {
     // notice: ConcurrentModificationException
     private void criticalEdgeSplit(IRFunction function) {
         ArrayList<IRBlock> midBlockLists = new ArrayList<>();
-        HashMap<IRBlock, IRBlock> relinkLists = new HashMap<>();
+        HashMap<IRBlock, IRBlock> redirectSucLists = new HashMap<>();
 
         for (IRBlock fromBlock : function.blocks) {
             var successors = fromBlock.nexts;
@@ -31,18 +31,22 @@ public class SSADestructor implements IRFuncPass {
                 if (toBlock.prevs.size() <= 1) continue;
                 // fromBlock -> midBlock -> toBlock
                 IRBlock midBlock = new IRBlock(LLVM.MidBlockLabel, null);
+                Log.report("add mid", fromBlock.identifier(), midBlock.identifier(), toBlock.identifier());
+
+                midBlock.parentFunction = function; // add manually
+
                 midBlockLists.add(midBlock);
-                relinkLists.put(toBlock, midBlock);
+                redirectSucLists.put(toBlock, midBlock);
                 new IRBrInst(toBlock, midBlock); // jump to toBlock
 
-                // revise phi fromBlocks
-                for (IRPhiInst inst : toBlock.phiInsts) {
-                    for (int i = 0; i < inst.operandSize(); i += 2)
-                        if (inst.getOperand(i+1) == fromBlock)
-                            inst.resetOperand(i+1, midBlock);
-                }
+                midBlock.prevs.add(fromBlock);
+                midBlock.nexts.add(toBlock);
+                toBlock.redirectPreBlock(fromBlock, midBlock);
             }
-            relinkLists.forEach(fromBlock::relinkBlock);
+
+            // from block suc fix
+            redirectSucLists.forEach((to, mid) -> fromBlock.redirectSucBlock(to, mid));
+            redirectSucLists.clear();
         }
         function.blocks.addAll(midBlockLists);
     }
@@ -54,7 +58,6 @@ public class SSADestructor implements IRFuncPass {
            for (IRPhiInst phi : block.phiInsts) {
                for (int i = 0; i < phi.operandSize(); i += 2) {
                    // insert in the graph of preds
-                   Log.report(block.identifier());
                    copyGraphMap.get((IRBlock) phi.getOperand(i + 1)).
                            insert(new CopyGraph.CopyEdge(phi, phi.getOperand(i)));
                }

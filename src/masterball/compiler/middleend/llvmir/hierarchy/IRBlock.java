@@ -57,14 +57,21 @@ public class IRBlock extends Value {
     }
 
     public void addInstBeforeTerminator(IRBaseInst inst) {
+        if (instructions.isEmpty()) return;
         instructions.add(instructions.size()-1, inst);
     }
 
     public void setComment() {
-        if (prevs.isEmpty()) return;
         StringBuilder ret = new StringBuilder("preds = ");
-        prevs.forEach(prevBlock -> ret.append(prevBlock.identifier()).append(", "));
-        ret.delete(ret.length()-2, ret.length()-1);
+        if (!prevs.isEmpty()) {
+            prevs.forEach(pre -> ret.append(pre.identifier()).append(", "));
+            ret.delete(ret.length() - 2, ret.length() - 1);
+        }
+        if (!nexts.isEmpty()) {
+            ret.append(" | nexts = ");
+            nexts.forEach(suc -> ret.append(suc.identifier()).append(", "));
+            ret.delete(ret.length()-2, ret.length()-1);
+        }
         comment = ret.toString();
     }
 
@@ -75,16 +82,27 @@ public class IRBlock extends Value {
         toBlock.prevs.add(this);
     }
 
-    public void relinkBlock(IRBlock oldToBlock, IRBlock newToBlock) {
-        this.nexts.remove(oldToBlock);
-        this.nexts.add(newToBlock);
+    public void redirectPreBlock(IRBlock oldPre, IRBlock newPre) {
+        this.prevs.remove(oldPre);
+        this.prevs.add(newPre);
+        for (IRPhiInst phi : this.phiInsts) {
+            for (int i = 1; i < phi.operandSize(); i += 2) {
+                if (phi.getOperand(i) == oldPre)
+                    phi.resetOperand(i, newPre);
+            }
+        }
+    }
+
+    public void redirectSucBlock(IRBlock oldSuc, IRBlock newSuc) {
+        this.nexts.remove(oldSuc);
+        this.nexts.add(newSuc);
         for (IRBaseInst inst : this.instructions) {
             if (inst instanceof IRBrInst) {
                 if (((IRBrInst) inst).isJump()) {
-                    if (((IRBrInst) inst).destBlock() == oldToBlock) ((IRBrInst) inst).resetDestBlock(newToBlock);
+                    if (((IRBrInst) inst).destBlock() == oldSuc) ((IRBrInst) inst).resetDestBlock(newSuc);
                 } else {
-                    if (((IRBrInst) inst).ifTrueBlock() == oldToBlock) ((IRBrInst) inst).resetIfTrueBlock(newToBlock);
-                    if (((IRBrInst) inst).ifFalseBlock() == oldToBlock) ((IRBrInst) inst).resetIfFalseBlock(newToBlock);
+                    if (((IRBrInst) inst).ifTrueBlock() == oldSuc) ((IRBrInst) inst).resetIfTrueBlock(newSuc);
+                    if (((IRBrInst) inst).ifFalseBlock() == oldSuc) ((IRBrInst) inst).resetIfFalseBlock(newSuc);
                 }
             }
         }
