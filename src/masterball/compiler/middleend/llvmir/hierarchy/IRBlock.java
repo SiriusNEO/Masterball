@@ -35,12 +35,11 @@ public class IRBlock extends Value {
         if (parentFunction != null) parentFunction.blocks.add(this);
     }
 
+    // only phi can add Inst after terminated
+    // for other inst add to different position, please explicitly use other methods
+
     public void addInst(IRBaseInst inst) {
-        if (inst instanceof IRMoveInst) {
-            // move insert after terminator
-            this.addInstBeforeTerminator(inst);
-        }
-        else if (inst instanceof IRPhiInst) {
+        if (inst instanceof IRPhiInst) {
             // phi insert after terminator
             phiInsts.add((IRPhiInst) inst);
         }
@@ -54,11 +53,6 @@ public class IRBlock extends Value {
 
     public IRBaseInst terminator() {
         return instructions.getLast();
-    }
-
-    public void addInstBeforeTerminator(IRBaseInst inst) {
-        if (instructions.isEmpty()) return;
-        instructions.add(instructions.size()-1, inst);
     }
 
     public void setComment() {

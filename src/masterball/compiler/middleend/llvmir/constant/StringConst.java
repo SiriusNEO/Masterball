@@ -5,6 +5,8 @@ import masterball.compiler.middleend.llvmir.type.IntType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.share.lang.LLVM;
 
+import java.util.Objects;
+
 public class StringConst extends GlobalValue {
 
     public String constData;
@@ -15,6 +17,10 @@ public class StringConst extends GlobalValue {
                 );
         this.constData = constData;
     }
+
+    @Override
+    public boolean equals(Object o) {return o instanceof StringConst && Objects.equals(constData, ((StringConst) o).constData);}
+
 
     public String constDataFormat() {
         return "c\"" +

@@ -16,6 +16,9 @@ public class IntConst extends BaseConst {
         this.constData = constData;
     }
 
+    @Override
+    public boolean equals(Object o) {return o instanceof IntConst && constData == ((IntConst) o).constData;}
+
     // constant identifier: simply a number
     @Override
     public String identifier() {

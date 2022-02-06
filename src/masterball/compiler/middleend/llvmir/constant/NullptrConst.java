@@ -9,5 +9,8 @@ public class NullptrConst extends BaseConst {
     }
 
     @Override
+    public boolean equals(Object o) {return o instanceof NullptrConst;}
+
+    @Override
     public String identifier() {return "null";}
 }

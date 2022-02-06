@@ -12,6 +12,9 @@ public class BoolConst extends BaseConst {
     }
 
     @Override
+    public boolean equals(Object o) {return o instanceof BoolConst && constData == ((BoolConst) o).constData;}
+
+    @Override
     public String identifier() {
         return constData ? "true" : "false";
     }
