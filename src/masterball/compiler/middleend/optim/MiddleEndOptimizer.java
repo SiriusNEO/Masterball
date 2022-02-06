@@ -23,7 +23,7 @@ public class MiddleEndOptimizer implements IRModulePass {
 
             //TODO
 
-            // new SCCP().runOnFunc(function);
+            new SCCP().runOnFunc(function);
             new CFGSimplifier().runOnFunc(function);
             new SSADestructor().runOnFunc(function);
         }
