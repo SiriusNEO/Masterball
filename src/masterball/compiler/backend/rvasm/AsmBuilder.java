@@ -426,6 +426,13 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
                 return;
             }
         }
+        else if (rvOp.equals(RV32I.SubInst)) {
+            if (validImm(rhs)) {
+                // not communicative
+                new AsmALUInst(RV32I.AddInst, dest, cur.toReg(lhs), cur.toImm(rhs).negative(), cur.block);
+                return;
+            }
+        }
 
         new AsmALUInst(rvOp, dest, cur.toReg(lhs), cur.toReg(rhs), cur.block);
     }

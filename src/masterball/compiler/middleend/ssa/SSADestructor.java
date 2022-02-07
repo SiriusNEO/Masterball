@@ -21,7 +21,7 @@ public class SSADestructor implements IRFuncPass {
     // notice: ConcurrentModificationException
     private void criticalEdgeSplit(IRFunction function) {
         ArrayList<IRBlock> midBlockLists = new ArrayList<>();
-        HashMap<IRBlock, IRBlock> redirectSucLists = new HashMap<>();
+        HashMap<IRBlock, IRBlock> redirectPreLists = new HashMap<>();
 
         for (IRBlock fromBlock : function.blocks) {
             var successors = fromBlock.nexts;
@@ -31,22 +31,21 @@ public class SSADestructor implements IRFuncPass {
                 if (toBlock.prevs.size() <= 1) continue;
                 // fromBlock -> midBlock -> toBlock
                 IRBlock midBlock = new IRBlock(LLVM.MidBlockLabel, null);
-                Log.report("add mid", fromBlock.identifier(), midBlock.identifier(), toBlock.identifier());
 
                 midBlock.parentFunction = function; // add manually
 
                 midBlockLists.add(midBlock);
-                redirectSucLists.put(toBlock, midBlock);
+                redirectPreLists.put(toBlock, midBlock);
                 new IRBrInst(toBlock, midBlock); // jump to toBlock
 
                 midBlock.prevs.add(fromBlock);
                 midBlock.nexts.add(toBlock);
-                toBlock.redirectPreBlock(fromBlock, midBlock);
+                toBlock.redirectSucBlock(fromBlock, midBlock);
             }
 
             // from block suc fix
-            redirectSucLists.forEach((to, mid) -> fromBlock.redirectSucBlock(to, mid));
-            redirectSucLists.clear();
+            redirectPreLists.forEach((to, mid) -> fromBlock.redirectPreBlock(to, mid));
+            redirectPreLists.clear();
         }
         function.blocks.addAll(midBlockLists);
     }

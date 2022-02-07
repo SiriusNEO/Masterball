@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.llvmir.inst;
 
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.User;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
@@ -28,6 +29,13 @@ public abstract class IRBaseInst extends User {
     public void setParentBlockAtHead(IRBlock parentBlock) {
         this.parentBlock = parentBlock;
         if (parentBlock != null) parentBlock.instructions.addFirst(this);
+    }
+
+    public void removedFromUser() {
+        for (Value value : operands) {
+            if (value != null)
+                value.users.remove(this);
+        }
     }
 
     public abstract String format();

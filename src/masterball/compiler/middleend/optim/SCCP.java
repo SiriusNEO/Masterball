@@ -25,7 +25,7 @@ import java.util.*;
 
 public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
-    private final BaseConst uncertain = new NullptrConst();
+    private final BaseConst uncertain = new BaseConst(LLVM.UncertainConst, null);
     /**
      * Three status for LatticeCell:
      *  undef: null or not in Map
@@ -64,8 +64,8 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                 if (terminator instanceof IRBrInst && !((IRBrInst) terminator).isJump()) {
                     pre.nexts.remove(toRemove);
                     IRBlock anotherDest = (((IRBrInst) terminator).ifTrueBlock() == toRemove) ?
-                                          ((IRBrInst) terminator).ifFalseBlock() :
-                                          ((IRBrInst) terminator).ifTrueBlock();
+                            ((IRBrInst) terminator).ifFalseBlock() :
+                            ((IRBrInst) terminator).ifTrueBlock();
                     IRBrInst newTerminator = new IRBrInst(anotherDest, pre); //terminated
                     pre.instructions.removeLast();
                     pre.instructions.addLast(newTerminator); // terminated, add manually
@@ -123,6 +123,34 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                     }
                 }
             }
+
+            var phiIt = block.phiInsts.iterator();
+            while (phiIt.hasNext()) {
+                var phi = phiIt.next();
+                BaseConst instConst = getConst(phi);
+                if (instConst != null && instConst != uncertain) {
+                    ret = true;
+                    phiIt.remove();
+                }
+            }
+        }
+        return ret;
+    }
+
+    private boolean rewriteBranch(IRFunction function) {
+        boolean ret = false;
+        for (IRBlock block : function.blocks) {
+            var terminator = block.terminator();
+            if (!(terminator instanceof IRBrInst && !((IRBrInst) terminator).isJump())) continue;
+            BaseConst condConst = getConst(((IRBrInst) terminator).condition());
+            if (condConst == null || condConst == uncertain) continue;
+            assert condConst instanceof BoolConst;
+
+            IRBlock realDest = (((BoolConst) condConst).constData) ? ((IRBrInst) terminator).ifTrueBlock() : ((IRBrInst) terminator).ifFalseBlock();
+            IRBrInst newTerminator = new IRBrInst(realDest, block); // terminated
+            block.instructions.removeLast();
+            block.instructions.addLast(newTerminator);
+            ret = true;
         }
         return ret;
     }
@@ -140,6 +168,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         boolean changed = true;
 
         while (changed) {
+            lattice.clear();
             executable.clear();
             executable.add(function.entryBlock);
             blockWorklist.offer(function.entryBlock);
@@ -161,7 +190,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
             }
 
             replaceUses();
-            changed = removeUnexecutableBlock(function) || removeRedundantInst(function);
+            changed = removeUnexecutableBlock(function) || removeRedundantInst(function) || rewriteBranch(function);
         }
     }
 
@@ -349,52 +378,17 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
     @Override
     public void visit(IRPhiInst inst) {
-        setUncertain(inst);
-        /*
-
-        if (getConst(inst) == uncertain) return;
-
-        // phi a(uncertain)
-        for (int i = 0; i < inst.operandSize(); i += 2) {
-            if (executable.contains(inst.getOperand(i+1)) && getConst(inst.getOperand(i)) == uncertain) {
+        BaseConst first = getConst(inst.getOperand(0));
+        for (int i = 2; i < inst.operandSize(); i += 2) {
+            BaseConst now = getConst(inst.getOperand(i));
+            if (now == null || now == uncertain || !executable.contains(inst.getOperand(i+1)) ||
+                !now.equals(first)) {
                 setUncertain(inst);
                 return;
             }
         }
-
-        // phi c1, c2 (c1 != c2)
-        for (int i = 0; i < inst.operandSize(); i += 2) {
-            for (int j = i + 2; j < inst.operandSize(); j += 2) {
-                if (executable.contains(inst.getOperand(i+1)) &&
-                    executable.contains(inst.getOperand(j+1))) {
-                    BaseConst iConst = getConst(inst.getOperand(i)),
-                              jConst = getConst(inst.getOperand(j));
-                    if (iConst != null && jConst != null && iConst != jConst) {
-                        setUncertain(inst);
-                        return;
-                    }
-                }
-            }
-        }
-
-        // phi c
-        for (int i = 0; i < inst.operandSize(); i += 2) {
-            if (executable.contains(inst.getOperand(i+1))) {
-                BaseConst iConst = getConst(inst.getOperand(i));
-                if (iConst != null) {
-                    assert iConst != uncertain;
-                    boolean check = true;
-                    for (int j = i + 2; j < inst.operandSize(); j += 2)
-                        if (executable.contains(inst.getOperand(j+1)) && inst.getOperand(i) != null)
-                            check = false;
-                    if (check) {
-                        lattice.put(inst, iConst);
-                        valueWorklist.offer(inst);
-                    }
-                }
-            }
-        }
-        */
+        lattice.put(inst, first);
+        valueWorklist.offer(inst);
     }
 
     @Override

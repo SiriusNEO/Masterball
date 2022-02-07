@@ -16,6 +16,8 @@ public class LLVM {
     public static final String ConstAnon = "anon" + Spliter + "const";
     public static final String StrConstAnon = "anon" + Spliter + "strconst";
 
+    public static final String UncertainConst = "internal" + Spliter + "uncertain";
+
     public static final String ThisArg = "internal" + Spliter + "this";
     public static final String RetReg = "internal" + Spliter + "ret";
 

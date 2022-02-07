@@ -8,6 +8,10 @@ public class Immediate extends BaseOperand {
         this.value = value;
     }
 
+    public Immediate negative() {
+        return new Immediate(-value);
+    }
+
     // for Global Addr
     protected Immediate(String identifier) {
         super(identifier);
