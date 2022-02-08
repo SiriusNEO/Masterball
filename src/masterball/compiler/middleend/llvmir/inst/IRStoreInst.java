@@ -21,6 +21,9 @@ public class IRStoreInst extends IRBaseInst {
     public void replacePtr(Value value) {this.resetOperand(1, value);}
 
     @Override
+    public boolean mayHaveSideEffects() {return true;}
+
+    @Override
     public String format() {
         // store i32 %1, i32* %i, align 4
         // nullptr has the same type with destPtr.pointedType

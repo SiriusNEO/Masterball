@@ -21,6 +21,9 @@ public class IRLoadInst extends IRBaseInst {
     public void replacePtr(Value value) {this.resetOperand(0, value);}
 
     @Override
+    public boolean mayHaveSideEffects() {return true;}
+
+    @Override
     public String format() {
         // %load = load <type>, <type*> %destPtr, align <size>
         return this.identifier() + " = " + LLVM.LoadInst + " " + this.type + ", " +

@@ -44,6 +44,9 @@ public class IRCallInst extends IRBaseInst {
     }
 
     @Override
+    public boolean mayHaveSideEffects() {return true;}
+
+    @Override
     public String format() {
         // %call = call i32 @foo(i32 1)
         StringBuilder ret = new StringBuilder((this.type.match(new VoidType())) ? "" : this.identifier() + " = ");

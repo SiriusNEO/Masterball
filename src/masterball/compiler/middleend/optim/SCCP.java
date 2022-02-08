@@ -17,9 +17,11 @@ import masterball.debug.Log;
 import java.util.*;
 
 /**
- * Sparse Condition Constant Propagation
+ * Sparse Condition Constant Propagation Pass:
+ *
  * use constant folding some dead block will be eliminated
  * (actually duplicate with part of CFGSimplifier)
+ *
  * @reference: Tiger Book chapter 19.3.3
  */
 

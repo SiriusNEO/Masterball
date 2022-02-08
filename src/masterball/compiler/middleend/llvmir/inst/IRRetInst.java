@@ -24,6 +24,9 @@ public class IRRetInst extends IRBaseInst {
     public boolean isVoid() {return this.operandSize() == 0;}
 
     @Override
+    public boolean mayHaveSideEffects() {return true;}
+
+    @Override
     public boolean isTerminator() {return true;}
 
     @Override

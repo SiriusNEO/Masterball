@@ -16,7 +16,7 @@ import masterball.compiler.share.warn.UninitiatedWarning;
 import java.util.*;
 
 /**
- * implement a simple Mem2Reg algorithm
+ * implement a simple Mem2Reg Pass
  * eliminate AllocaInst, and remove some load/store
  *
  * @requirement: CFGBuilder, DomTreeBuilder
@@ -85,7 +85,7 @@ public class Mem2Reg implements IRFuncPass {
 
             while (!workQueue.isEmpty()) {
                 var runner = workQueue.poll();
-                for (var frontier : runner.node.domFrontier) {
+                for (var frontier : runner.dtNode.domFrontier) {
                     if (visited.contains(frontier)) continue;
                     visited.add(frontier);
 
@@ -173,7 +173,7 @@ public class Mem2Reg implements IRFuncPass {
             }
         }
 
-        block.node.sons.forEach(son -> variableRenaming(son.fromBlock));
+        block.dtNode.sons.forEach(son -> variableRenaming(son.fromBlock));
 
         rollbackRecord.forEach(name -> nameStack.get(name).pop());
     }

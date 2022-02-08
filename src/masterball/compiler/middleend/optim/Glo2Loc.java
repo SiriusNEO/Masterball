@@ -20,6 +20,7 @@ import java.util.Set;
 
 /**
  * Glo2Loc Pass:
+ *
  * if a GlobalVariable is used many times in a function, localize it.
  * localize can be beneficial to optimization
  *

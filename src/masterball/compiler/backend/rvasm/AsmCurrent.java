@@ -52,7 +52,7 @@ public class AsmCurrent {
         }
 
         // const info is memorized by Li
-        if (!(value instanceof BaseConst)) value.asmOperand = ret;
+        if (!(value instanceof IntConst || value instanceof BoolConst)) value.asmOperand = ret;
         return ret;
     }
 

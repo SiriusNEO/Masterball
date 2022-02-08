@@ -22,7 +22,7 @@ public class MiddleEndOptimizer implements IRModulePass {
 
         for (IRFunction function : module.functions) {
             new CFGBuilder().runOnFunc(function);
-            // new Glo2Loc().runOnFunc(function);
+            new Glo2Loc().runOnFunc(function);
 
             new Mem2Reg().runOnFunc(function);
             //TODO

@@ -38,6 +38,8 @@ public abstract class IRBaseInst extends User {
         }
     }
 
+    public boolean mayHaveSideEffects() {return false;}
+
     public abstract String format();
 
     public boolean isTerminator() {return false;}

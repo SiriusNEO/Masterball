@@ -9,6 +9,7 @@ import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRCallInst;
 import masterball.compiler.middleend.llvmir.inst.IRStoreInst;
 import masterball.compiler.share.pass.IRModulePass;
+import masterball.debug.Log;
 
 import java.util.HashSet;
 import java.util.Stack;
@@ -26,10 +27,22 @@ public class CallAnalyzer implements IRModulePass {
         public Node(IRFunction fromFunc) {
             this.fromFunc = fromFunc;
         }
+
+        public void init() {
+            glbUses = new HashSet<>();
+            glbDefs = new HashSet<>();
+            callee = new HashSet<>();
+            cyclic = false;
+        }
     }
 
     private HashSet<IRFunction> visited = new HashSet<>();
     private Stack<IRFunction> callStack = new Stack<>();
+
+    private void init(IRModule module) {
+        module.functions.forEach(function -> function.node.init());
+        module.functions.forEach( function -> Log.report(function.node.glbUses, function.node.callee));
+    }
 
     private void callGraphBuild(IRModule module) {
         for (IRFunction function : module.functions)
@@ -78,6 +91,7 @@ public class CallAnalyzer implements IRModulePass {
 
     @Override
     public void runOnModule(IRModule module) {
+        init(module);
         callGraphBuild(module);
         for (IRFunction function : module.functions)
             if (!visited.contains(function)) callGraphAnalysis(function);

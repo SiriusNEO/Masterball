@@ -16,10 +16,11 @@ public class DomTreeBuilder implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
+        init(function);
         sortByRPO(function.entryBlock);
         Collections.reverse(blocksInRPO);
         for (int i = 0; i < blocksInRPO.size(); i++)
-            blocksInRPO.get(i).node.order = i;
+            blocksInRPO.get(i).dtNode.order = i;
 
         calculateDoms(function);
         calculateDF(function);
@@ -28,18 +29,29 @@ public class DomTreeBuilder implements IRFuncPass {
     public static class Node {
         public int order;
         public IRBlock fromBlock;
-        public Node idom = null;
-        public List<Node> sons = new ArrayList<>();
-        public List<IRBlock> domFrontier = new ArrayList<>();
+        public Node idom;
+        public List<Node> sons;
+        public List<IRBlock> domFrontier;
 
         public Node(IRBlock fromBlock) {
             this.fromBlock = fromBlock;
+        }
+
+        public void init() {
+            order = 0;
+            idom = null;
+            sons = new ArrayList<>();
+            domFrontier = new ArrayList<>();
         }
     }
 
     private final ArrayList<IRBlock> blocksInRPO = new ArrayList<>();
 
     private final HashSet<IRBlock> visited = new HashSet<>();
+
+    private void init(IRFunction function) {
+        function.blocks.forEach(block -> block.dtNode.init());
+    }
 
     private void sortByRPO(IRBlock block) {
         visited.add(block);
@@ -63,29 +75,29 @@ public class DomTreeBuilder implements IRFuncPass {
     }
 
     private void calculateDoms(IRFunction function) {
-        Node startNode = function.entryBlock.node;
+        Node startNode = function.entryBlock.dtNode;
         startNode.idom = startNode;
         boolean changed = true;
         while (changed) {
             changed = false;
             for (IRBlock block : blocksInRPO) {
-                if (block.node == startNode) continue;
+                if (block.dtNode == startNode) continue;
                 Node newIdom = null;
                 for (IRBlock pred : block.prevs) {
-                    if (pred.node.idom == null) continue;
-                    if (newIdom == null) newIdom = pred.node;
-                    else newIdom = intersect(newIdom, pred.node);
+                    if (pred.dtNode.idom == null) continue;
+                    if (newIdom == null) newIdom = pred.dtNode;
+                    else newIdom = intersect(newIdom, pred.dtNode);
                 }
-                if (block.node.idom != newIdom) {
-                    block.node.idom = newIdom;
+                if (block.dtNode.idom != newIdom) {
+                    block.dtNode.idom = newIdom;
                     changed = true;
                 }
             }
         }
 
         for (IRBlock block : function.blocks) {
-            if (block.node != startNode && block.node.idom != null) {
-                block.node.idom.sons.add(block.node);
+            if (block.dtNode != startNode && block.dtNode.idom != null) {
+                block.dtNode.idom.sons.add(block.dtNode);
             }
         }
     }
@@ -95,8 +107,8 @@ public class DomTreeBuilder implements IRFuncPass {
             var truePrevs = postDomTree ? block.nexts : block.prevs;
             if (truePrevs.size() < 2) continue;
             for (IRBlock pred : truePrevs) {
-                Node runner = pred.node;
-                while (runner != block.node.idom && runner != null) {
+                Node runner = pred.dtNode;
+                while (runner != block.dtNode.idom && runner != null) {
                     runner.domFrontier.add(block);
                     runner = runner.idom;
                 }

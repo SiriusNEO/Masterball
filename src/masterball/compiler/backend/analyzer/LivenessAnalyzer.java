@@ -4,6 +4,7 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.inst.AsmBaseInst;
 import masterball.compiler.backend.rvasm.operand.Register;
+import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.debug.Log;
 
@@ -19,12 +20,21 @@ public class LivenessAnalyzer implements AsmFuncPass {
 
     @Override
     public void runOnFunc(AsmFunction function) {
+        init(function);
         function.blocks.forEach(this::collectUsesAndDefs);
-        function.blocks.forEach(this::initLiveness);
-        Log.report(function.identifier);
-        Log.report(function.exitBlock);
+
+        // Log.report(function.identifier);
+        // Log.report(function.exitBlock);
+
         workQueue.offer(function.exitBlock);
         while (!workQueue.isEmpty()) livenessAnalyze(workQueue.poll());
+    }
+
+    private void init(AsmFunction function) {
+        for (AsmBlock block : function.blocks) {
+            block.liveIn.clear();
+            block.liveOut.clear();
+        }
     }
 
     // first collect all uses and defs in a block
@@ -38,11 +48,6 @@ public class LivenessAnalyzer implements AsmFuncPass {
         }
         blockUsesMap.put(block, blockUses);
         blockDefsMap.put(block, blockDefs);
-    }
-
-    private void initLiveness(AsmBlock block) {
-        block.liveIn.clear();
-        block.liveOut.clear();
     }
 
     private void livenessAnalyze(AsmBlock block) {

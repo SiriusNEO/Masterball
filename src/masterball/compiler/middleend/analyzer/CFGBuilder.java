@@ -7,12 +7,16 @@ import masterball.compiler.share.pass.IRFuncPass;
 
 public class CFGBuilder implements IRFuncPass {
 
-    @Override
-    public void runOnFunc(IRFunction function) {
+    private void init(IRFunction function) {
         for (IRBlock block : function.blocks) {
             block.prevs.clear();
             block.nexts.clear();
         };
+    }
+
+    @Override
+    public void runOnFunc(IRFunction function) {
+        init(function);
 
         for (IRBlock block : function.blocks) {
             var terminator = block.terminator();

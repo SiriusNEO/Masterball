@@ -26,7 +26,7 @@ public class IRBlock extends Value {
     public ArrayList<IRBlock> prevs = new ArrayList<>(), nexts = new ArrayList<>();
 
     // info in DomTree, assigned in DomTreeBuilder
-    public DomTreeBuilder.Node node = new DomTreeBuilder.Node(this);
+    public DomTreeBuilder.Node dtNode = new DomTreeBuilder.Node(this);
 
     public IRBlock(String label, IRFunction parentFunction) {
         super(label, new LabelType());
