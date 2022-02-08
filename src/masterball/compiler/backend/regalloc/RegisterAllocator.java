@@ -9,6 +9,7 @@ import masterball.compiler.backend.rvasm.inst.AsmMvInst;
 import masterball.compiler.backend.rvasm.inst.AsmStoreInst;
 import masterball.compiler.backend.rvasm.operand.*;
 import masterball.compiler.backend.rvasm.operand.RawStackOffset.RawType;
+import masterball.compiler.share.misc.UnionSet;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.compiler.share.pass.AsmModulePass;
 import masterball.debug.Log;
@@ -63,6 +64,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
     private final InterferenceGraph G = new InterferenceGraph();
 
     /* utils */
+    private final UnionSet<Register> unionSet = new UnionSet<Register>();
     private final Set<Register> introducedTemp = new HashSet<>();
 
     @Override
@@ -160,6 +162,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         initial.forEach(reg -> {
             reg.color = null;
             reg.node.init(false);
+            unionSet.remove(reg);
         });
 
         // this priority calculation is quite simple
@@ -275,7 +278,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         if (freezeWorklist.contains(v)) freezeWorklist.remove(v);
         else spillWorklist.remove(v);
         coalescedNodes.add(v);
-        v.node.alias = u;
+        unionSet.setAlias(v, u); // v -> u
         u.node.moveList.addAll(v.node.moveList);
         enableMoves(Collections.singleton(v));
 
@@ -299,7 +302,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
         // Log.track("coalesce", move.rd, move.rs1);
 
-        Register rdAlias = getAlias(move.rd), rs1Alias = getAlias(move.rs1);
+        Register rdAlias = unionSet.getAlias(move.rd), rs1Alias = unionSet.getAlias(move.rs1);
         Edge edge;
         if (rs1Alias.node.precolored) edge = new Edge(rs1Alias, rdAlias);
         else edge = new Edge(rdAlias, rs1Alias);
@@ -329,8 +332,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
     private void freezeMoves(Register u) {
         for (AsmMvInst move : nodeMoves(u)) {
             Register v;
-            if (getAlias(u) == getAlias(move.rs1)) v = getAlias(move.rd);
-            else v = getAlias(move.rs1);
+            if (unionSet.getAlias(u) == unionSet.getAlias(move.rs1)) v = unionSet.getAlias(move.rd);
+            else v = unionSet.getAlias(move.rs1);
             activeMoves.remove(move);
             frozenMoves.add(move);
             if (nodeMoves(v).isEmpty() && v.node.degree < K) {
@@ -396,8 +399,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             coloredSet.addAll(coloredNodes);
 
             for (Register neighbor : reg.node.adjList) {
-                if (coloredSet.contains(getAlias(neighbor)))
-                    okColors.remove(getAlias(neighbor).color);
+                if (coloredSet.contains(unionSet.getAlias(neighbor)))
+                    okColors.remove(unionSet.getAlias(neighbor).color);
             }
 
             if (okColors.isEmpty()) spilledNodes.add(reg);
@@ -408,7 +411,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         }
 
         for (Register reg : coalescedNodes) {
-            reg.color = getAlias(reg).color;
+            reg.color = unionSet.getAlias(reg).color;
         }
     }
 
@@ -555,18 +558,5 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         for (Register reg : regs)
             if (reg.node.degree >= K) k++;
         return k < K;
-    }
-
-    /**
-     * union-set
-     */
-    private Register getAlias(Register reg) {
-        if (coalescedNodes.contains(reg)) {
-            var ret = getAlias(reg.node.alias);
-            reg.node.alias = ret;
-            return ret;
-        }
-
-        return reg;
     }
 }

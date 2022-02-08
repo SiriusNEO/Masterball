@@ -6,3 +6,12 @@ log.txt
 lib/antlr-4.7.2-complete.jar
 local/
 src/org/
+ast.out
+test.mx
+test.ll
+test-opt.ll
+output.s
+builtin.s
+test.s
+local_history.patch
+

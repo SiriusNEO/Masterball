@@ -13,10 +13,15 @@ import masterball.compiler.share.error.runtime.UnimplementedError;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.debug.Log;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AsmCurrent {
 
     public AsmBlock block;
     public AsmFunction func;
+
+    public Map<Integer, Register> recordLi = new HashMap<>();
 
     public Register toReg(Value value) {
         if (value.asmOperand != null) {
@@ -31,11 +36,17 @@ public class AsmCurrent {
             return PhysicalReg.reg("zero");
         }
 
-        VirtualReg ret = new VirtualReg(value.type.size());
+        Register ret = null;
 
-        if (intValue != null) {
-            new AsmLiInst(ret, new Immediate(intValue), this.block);
+        if (recordLi.containsKey(intValue)) ret = recordLi.get(intValue);
+        else {
+            ret = new VirtualReg(value.type.size());
+            if (intValue != null) {
+                new AsmLiInst(ret, new Immediate(intValue), this.block);
+                recordLi.put(intValue, ret);
+            }
         }
+
         value.asmOperand = ret;
         return ret;
     }

@@ -1,4 +1,4 @@
-package masterball.compiler.middleend.ssa;
+package masterball.compiler.middleend.analyzer;
 
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
@@ -7,6 +7,12 @@ import masterball.compiler.share.pass.IRFuncPass;
 import java.util.*;
 
 public class DomTreeBuilder implements IRFuncPass {
+
+    private final boolean postDomTree;
+
+    public DomTreeBuilder(boolean postDomTree) {
+        this.postDomTree = postDomTree;
+    }
 
     @Override
     public void runOnFunc(IRFunction function) {
@@ -20,11 +26,11 @@ public class DomTreeBuilder implements IRFuncPass {
     }
 
     public static class Node {
-        int order;
-        IRBlock fromBlock;
-        Node idom = null;
-        List<Node> sons = new ArrayList<>();
-        List<IRBlock> domFrontier = new ArrayList<>();
+        public int order;
+        public IRBlock fromBlock;
+        public Node idom = null;
+        public List<Node> sons = new ArrayList<>();
+        public List<IRBlock> domFrontier = new ArrayList<>();
 
         public Node(IRBlock fromBlock) {
             this.fromBlock = fromBlock;
@@ -37,7 +43,10 @@ public class DomTreeBuilder implements IRFuncPass {
 
     private void sortByRPO(IRBlock block) {
         visited.add(block);
-        for (IRBlock suc : block.nexts)
+
+        var trueNexts = postDomTree ? block.prevs : block.nexts;
+
+        for (IRBlock suc : trueNexts)
             if (!visited.contains(suc)) sortByRPO(suc);
         blocksInRPO.add(block);
     }
@@ -83,8 +92,9 @@ public class DomTreeBuilder implements IRFuncPass {
 
     private void calculateDF(IRFunction function) {
         for (IRBlock block : function.blocks) {
-            if (block.prevs.size() < 2) continue;
-            for (IRBlock pred : block.prevs) {
+            var truePrevs = postDomTree ? block.nexts : block.prevs;
+            if (truePrevs.size() < 2) continue;
+            for (IRBlock pred : truePrevs) {
                 Node runner = pred.node;
                 while (runner != block.node.idom && runner != null) {
                     runner.domFrontier.add(block);

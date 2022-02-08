@@ -1,4 +1,4 @@
-package masterball.compiler.middleend.ssa;
+package masterball.compiler.middleend.analyzer;
 
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;

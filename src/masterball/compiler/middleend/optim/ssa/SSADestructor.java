@@ -1,4 +1,4 @@
-package masterball.compiler.middleend.ssa;
+package masterball.compiler.middleend.optim.ssa;
 
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
@@ -8,7 +8,6 @@ import masterball.compiler.middleend.llvmir.inst.IRMoveInst;
 import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.IRFuncPass;
-import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;

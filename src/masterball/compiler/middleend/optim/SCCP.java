@@ -163,6 +163,13 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         });
     }
 
+    /**
+     * Different from Tiger Book:
+     *    because in my algorithm, the executable set is constructed after the Phi visit
+     *    so when we visit Phi, if it can not be determined (has unexecutable block or null), we set it uncertain also
+     *    The real unexecutable branch in Phi will be removed when removing those blocks
+     *    if there are any changes, iterate again
+     */
     @Override
     public void runOnFunc(IRFunction function) {
         boolean changed = true;

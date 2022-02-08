@@ -149,6 +149,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
     @Override
     public void runOnBlock(IRBlock block) {
         cur.block = (AsmBlock) block.asmOperand;
+        cur.recordLi.clear();
         block.instructions.forEach(inst -> inst.accept(this));
     }
 
@@ -412,7 +413,9 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
         if (rvOp.equals(RV32I.SltInst)) {
             if (validImm(rhs)) new AsmALUInst(rvOp, dest, cur.toReg(lhs), cur.toImm(rhs), cur.block);
-            else new AsmALUInst(rvOp, dest, cur.toReg(lhs), cur.toReg(rhs), cur.block);
+            else {
+                new AsmALUInst(rvOp, dest, cur.toReg(lhs), cur.toReg(rhs), cur.block);
+            }
             return;
         }
 

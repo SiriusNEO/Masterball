@@ -1,5 +1,6 @@
-package masterball.compiler.middleend.ssa;
+package masterball.compiler.middleend.optim.ssa;
 
+import masterball.compiler.middleend.analyzer.DomTreeBuilder;
 import masterball.compiler.middleend.llvmir.User;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.NullptrConst;
@@ -14,6 +15,9 @@ import java.util.*;
 /**
  * implement a simple Mem2Reg algorithm
  * eliminate AllocaInst, and remove some load/store
+ *
+ * @requirement: CFGBuilder, DomTreeBuilder
+ *
  * @reference:
  *      DomTree algorithm is based on the book "Engineering a Compiler"
  *      variable renaming part is based on SSA Book
@@ -47,7 +51,7 @@ public class Mem2Reg implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
-        new DomTreeBuilder().runOnFunc(function);
+        new DomTreeBuilder(false).runOnFunc(function);
         phiInsertion(function);
         variableRenaming(function.entryBlock);
     }

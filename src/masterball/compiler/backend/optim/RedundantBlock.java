@@ -5,13 +5,9 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.inst.AsmBaseInst;
 import masterball.compiler.backend.rvasm.inst.AsmBrInst;
 import masterball.compiler.backend.rvasm.inst.AsmJmpInst;
-import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
+import masterball.compiler.share.misc.UnionSet;
 import masterball.compiler.share.pass.AsmFuncPass;
-import masterball.debug.Log;
-
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 /**
  * this pass intends to remove block:
@@ -22,14 +18,7 @@ import java.util.Map;
 
 public class RedundantBlock implements AsmFuncPass {
 
-    private final Map<AsmBlock, AsmBlock> aliasMap = new HashMap<>();
-
-    private AsmBlock getAlias(AsmBlock block) {
-        if (!aliasMap.containsKey(block)) return block;
-        var alias = getAlias(aliasMap.get(block));
-        aliasMap.put(block, alias);
-        return alias;
-    }
+    private final UnionSet<AsmBlock> unionSet = new UnionSet<>();
 
     private AsmBlock getOnlyDest(AsmBlock block) {
         HashSet<AsmBlock> dests = new HashSet<>();
@@ -48,15 +37,15 @@ public class RedundantBlock implements AsmFuncPass {
 
         while (changed) {
             changed = false;
-            aliasMap.clear();
+            unionSet.clear();
             // Log.mark("round");
 
             for (AsmBlock block : function.blocks) {
                 var dest = getOnlyDest(block);
                 if (dest != null) {
                     // Log.report("remove", block);
-                    var replace = getAlias(dest);
-                    aliasMap.put(block, replace);
+                    var replace = unionSet.getAlias(dest);
+                    unionSet.setAlias(block, replace);
                 }
             }
 
@@ -64,8 +53,8 @@ public class RedundantBlock implements AsmFuncPass {
 
             while (it.hasNext()) {
                 var block = it.next();
-                if (aliasMap.containsKey(block)) {
-                    var alias = getAlias(block);
+                if (unionSet.contains(block)) {
+                    var alias = unionSet.getAlias(block);
                     for (AsmBlock pre : block.prevs) {
                         for (AsmBaseInst inst : pre.instructions) {
                             if (inst instanceof AsmBrInst && ((AsmBrInst) inst).dest == block)

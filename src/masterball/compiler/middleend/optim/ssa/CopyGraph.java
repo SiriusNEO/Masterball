@@ -1,4 +1,4 @@
-package masterball.compiler.middleend.ssa;
+package masterball.compiler.middleend.optim.ssa;
 
 import masterball.compiler.middleend.llvmir.Value;
 

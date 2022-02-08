@@ -2,9 +2,9 @@ package masterball.compiler.middleend.optim;
 
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
-import masterball.compiler.middleend.ssa.CFGBuilder;
-import masterball.compiler.middleend.ssa.Mem2Reg;
-import masterball.compiler.middleend.ssa.SSADestructor;
+import masterball.compiler.middleend.analyzer.CFGBuilder;
+import masterball.compiler.middleend.optim.ssa.Mem2Reg;
+import masterball.compiler.middleend.optim.ssa.SSADestructor;
 import masterball.compiler.share.pass.IRModulePass;
 
 

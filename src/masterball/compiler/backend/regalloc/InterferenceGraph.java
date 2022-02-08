@@ -42,14 +42,12 @@ public class InterferenceGraph {
         public boolean precolored;
         public int degree;
         public double priority;
-        public Register alias;
         public Set<AsmMvInst> moveList = new LinkedHashSet<>();
 
         public void init(boolean isPrecolored) {
             this.adjList.clear();
             this.moveList.clear();
             this.priority = 0;
-            this.alias = null;
             if (isPrecolored) this.degree = INF;
             else this.degree = 0;
             this.precolored = isPrecolored;
