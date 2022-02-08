@@ -11,7 +11,6 @@ test.mx
 test.ll
 test-opt.ll
 output.s
-builtin.s
 test.s
 local_history.patch
 
