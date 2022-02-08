@@ -1,8 +1,8 @@
-package masterball.compiler.share.error.runtime;
+package masterball.compiler.share.warn;
 
 import masterball.compiler.share.error.RuntimeError;
 
-public class ZeroDivisionWarning extends RuntimeError {
+public class ZeroDivisionWarning extends Warning {
     public static final String zeroDivision = "integer division or modulo by zero";
 
     public ZeroDivisionWarning() {

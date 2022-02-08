@@ -34,20 +34,50 @@ public class IRBlock extends Value {
         if (parentFunction != null) parentFunction.blocks.add(this);
     }
 
-    // only phi can add Inst after terminated
-    // for other inst add to different position, please explicitly use other methods
+    /**
+     * Add Convention:
+     *    add before terminated, use new Inst(..., parentBlock) to automatically push back
+     *    add after terminated, use new Inst(..., null) + tAddInst, to manually add in some places
+     */
 
     public void addInst(IRBaseInst inst) {
+        if (isTerminated) return;
+
         if (inst instanceof IRPhiInst) {
-            // phi insert after terminator
             phiInsts.add((IRPhiInst) inst);
         }
-        else if (isTerminated) return;
         else {
             instructions.addLast(inst);
         }
 
         if (inst.isTerminator()) isTerminated = true;
+    }
+
+    /**
+     * "tAdd series" are used to add inst after terminated
+     * mainly used in Optimization
+     */
+
+    public void tAddFirst(IRBaseInst inst) {
+        inst.parentBlock = this;
+        instructions.addFirst(inst);
+    }
+
+    public void tAddPhi(IRPhiInst phi) {
+        phi.parentBlock = this;
+        phiInsts.add(phi);
+    }
+
+    public void tAddBeforeTerminator(IRBaseInst inst) {
+        inst.parentBlock = this;
+        if (instructions.isEmpty()) return;
+        instructions.add(instructions.size() - 1, inst);
+    }
+
+    public void tReplaceTerminator(IRBaseInst newTerminator) {
+        newTerminator.parentBlock = this;
+        instructions.removeLast();
+        instructions.addLast(newTerminator);
     }
 
     public IRBaseInst terminator() {

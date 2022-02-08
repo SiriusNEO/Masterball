@@ -6,7 +6,7 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.*;
 import masterball.compiler.middleend.llvmir.type.IntType;
-import masterball.compiler.share.error.runtime.ZeroDivisionWarning;
+import masterball.compiler.share.warn.ZeroDivisionWarning;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.IRBlockPass;
@@ -67,8 +67,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                             ((IRBrInst) terminator).ifFalseBlock() :
                             ((IRBrInst) terminator).ifTrueBlock();
                     IRBrInst newTerminator = new IRBrInst(anotherDest, pre); //terminated
-                    pre.instructions.removeLast();
-                    pre.instructions.addLast(newTerminator); // terminated, add manually
+                    pre.tReplaceTerminator(newTerminator);
                 }
             }
 
@@ -87,8 +86,8 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                     }
                     if (phi.operandSize() == 2) {
                         it.remove();
-                        IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), suc); // terminated
-                        suc.instructions.addFirst(move);
+                        IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
+                        suc.tAddFirst(move);
                     }
                 }
             }
@@ -147,9 +146,8 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
             assert condConst instanceof BoolConst;
 
             IRBlock realDest = (((BoolConst) condConst).constData) ? ((IRBrInst) terminator).ifTrueBlock() : ((IRBrInst) terminator).ifFalseBlock();
-            IRBrInst newTerminator = new IRBrInst(realDest, block); // terminated
-            block.instructions.removeLast();
-            block.instructions.addLast(newTerminator);
+            IRBrInst newTerminator = new IRBrInst(realDest, null); // terminated
+            block.tReplaceTerminator(newTerminator);
             ret = true;
         }
         return ret;

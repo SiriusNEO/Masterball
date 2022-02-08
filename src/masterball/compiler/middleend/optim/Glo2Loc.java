@@ -5,7 +5,6 @@ import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
-import masterball.compiler.middleend.llvmir.inst.IRCallInst;
 import masterball.compiler.middleend.llvmir.inst.IRLoadInst;
 import masterball.compiler.middleend.llvmir.inst.IRStoreInst;
 import masterball.compiler.share.pass.IRFuncPass;
@@ -62,9 +61,6 @@ public class Glo2Loc implements IRFuncPass {
         refTimes.forEach((global, times) -> {
             if (times >= THRESHOLD) ableSet.add(global);
         });
-
-        for (IRCallInst call : function.node.callInst)
-            call.operands.forEach(ableSet::remove);
     }
 
     @Override

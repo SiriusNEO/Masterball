@@ -87,7 +87,8 @@ public class Mem2Reg implements IRFuncPass {
 
                     workQueue.offer(frontier);
                     // Log.mark("new phi");
-                    var phi = new IRPhiInst(((PointerType) allocaVar.type).pointedType, frontier);
+                    var phi = new IRPhiInst(((PointerType) allocaVar.type).pointedType, null);
+                    frontier.tAddPhi(phi);
                     phiAllocaName.put(phi, allocaVar.name);
                 }
             }

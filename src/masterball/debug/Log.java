@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Log {
+    public static final String logHint = "<masterball log>: ";
+
     private static final Map<String, Integer> markCnt = new HashMap<>();
 
-    private static final int ReportColor = 35, TrackColor = 32, MarkColor = 33;
+    private static final int ReportColor = 35, TrackColor = 32, MarkColor = 36;
 
     private static final boolean isOpen = true;
 
@@ -25,7 +27,7 @@ public class Log {
         if (!isOpen) {
             return;
         }
-        StringBuilder info = new StringBuilder("Log:[Report] ");
+        StringBuilder info = new StringBuilder(logHint + "[Report] ");
         info.append(var.toString());
         colorPrintln(ReportColor, info.toString());
     }
@@ -34,7 +36,7 @@ public class Log {
         if (!isOpen) {
             return;
         }
-        StringBuilder info = new StringBuilder("Log:[Report] ");
+        StringBuilder info = new StringBuilder(logHint + "[Report] ");
         for (Object var : vars) {
             info.append(var.toString());
             info.append(" ");
@@ -46,7 +48,7 @@ public class Log {
         if (!isOpen) {
             return;
         }
-        StringBuilder info = new StringBuilder("Log:[Report] ");
+        StringBuilder info = new StringBuilder(logHint + "[Report] ");
         for (VarPair var : vars) {
             info.append(var.toString());
             info.append(" ");
@@ -65,7 +67,7 @@ public class Log {
                 nowCnt = markCnt.get(null);
                 markCnt.put(null, nowCnt + 1);
             }
-            colorPrintln(MarkColor, "Log:[Mark] mark " + nowCnt);
+            colorPrintln(MarkColor, logHint + "[Mark] mark " + nowCnt);
         }
     }
 
@@ -80,8 +82,8 @@ public class Log {
                 nowCnt = markCnt.get(msg);
                 markCnt.put(msg, nowCnt + 1);
             }
-            colorPrintln(MarkColor, "Log:[Mark] mark " + nowCnt);
-            colorPrintln(MarkColor, "Log:[Mark] mark " + msg + " " + nowCnt);
+            colorPrintln(MarkColor, logHint + "[Mark] mark " + nowCnt);
+            colorPrintln(MarkColor, logHint + "[Mark] mark " + msg + " " + nowCnt);
         }
     }
 
@@ -97,14 +99,14 @@ public class Log {
         if (!isOpen) {
             return;
         }
-        colorPrintln(TrackColor, "Log:[Track] Tracking... " + msg);
+        colorPrintln(TrackColor, logHint + "[Track] Tracking... " + msg);
     }
 
     public static void track(Object... vars) {
         if (!isOpen) {
             return;
         }
-        StringBuilder info = new StringBuilder("Log:[Track] Tracking... ");
+        StringBuilder info = new StringBuilder(logHint + "[Track] Tracking... ");
         for (Object var : vars) {
             info.append(var.toString());
             info.append(" ");
@@ -116,7 +118,7 @@ public class Log {
         if (!isOpen) {
             return;
         }
-        ps.println("Log:[StackTrace]");
+        ps.println(logHint + "[StackTrace]");
         throwable.printStackTrace();
     }
 }

@@ -73,10 +73,8 @@ public class SSADestructor implements IRFuncPass {
             for (var it = copyGraph.edges.iterator(); it.hasNext(); ) {
                 CopyGraph.CopyEdge nowCopy = it.next();
                 if (copyGraph.isFree(nowCopy.dest)) {
-                    var move = new IRMoveInst(nowCopy.dest, nowCopy.source, block);// terminated
-                    if (!block.instructions.isEmpty()) {
-                        block.instructions.add(block.instructions.size() - 1, move);
-                    }
+                    var move = new IRMoveInst(nowCopy.dest, nowCopy.source, null);// terminated
+                    block.tAddBeforeTerminator(move);
                     copyGraph.remove(nowCopy, it);
                     hasFreeNode = true;
                 }
@@ -99,9 +97,7 @@ public class SSADestructor implements IRFuncPass {
                 copyGraph.insert(new CopyGraph.CopyEdge(nowCopy.dest, midDest));
 
                 var move = new IRMoveInst(midDest, nowCopy.source, block); // terminated
-                if (!block.instructions.isEmpty()) {
-                    block.instructions.add(block.instructions.size() - 1, move);
-                }
+                block.tAddBeforeTerminator(move);
 
                 loopBreak = true; // after breaking the loop, the graph should be processed again
                 break;
