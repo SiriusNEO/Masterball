@@ -10,6 +10,8 @@ public class DomTreeBuilder implements IRFuncPass {
 
     private final boolean postDomTree;
 
+    private IRBlock startBlock;
+
     public DomTreeBuilder(boolean postDomTree) {
         this.postDomTree = postDomTree;
     }
@@ -17,7 +19,9 @@ public class DomTreeBuilder implements IRFuncPass {
     @Override
     public void runOnFunc(IRFunction function) {
         init(function);
-        sortByRPO(function.entryBlock);
+        startBlock = postDomTree ? function.exitBlock : function.entryBlock;
+
+        sortByRPO(startBlock);
         Collections.reverse(blocksInRPO);
         for (int i = 0; i < blocksInRPO.size(); i++)
             blocksInRPO.get(i).dtNode.order = i;
@@ -56,9 +60,9 @@ public class DomTreeBuilder implements IRFuncPass {
     private void sortByRPO(IRBlock block) {
         visited.add(block);
 
-        var trueNexts = postDomTree ? block.prevs : block.nexts;
+        var trueNext = postDomTree ? block.prevs : block.nexts;
 
-        for (IRBlock suc : trueNexts)
+        for (IRBlock suc : trueNext)
             if (!visited.contains(suc)) sortByRPO(suc);
         blocksInRPO.add(block);
     }
@@ -75,7 +79,7 @@ public class DomTreeBuilder implements IRFuncPass {
     }
 
     private void calculateDoms(IRFunction function) {
-        Node startNode = function.entryBlock.dtNode;
+        Node startNode = startBlock.dtNode;
         startNode.idom = startNode;
         boolean changed = true;
         while (changed) {
@@ -83,7 +87,8 @@ public class DomTreeBuilder implements IRFuncPass {
             for (IRBlock block : blocksInRPO) {
                 if (block.dtNode == startNode) continue;
                 Node newIdom = null;
-                for (IRBlock pred : block.prevs) {
+                var truePrevs = postDomTree ? block.nexts : block.prevs;
+                for (IRBlock pred : truePrevs) {
                     if (pred.dtNode.idom == null) continue;
                     if (newIdom == null) newIdom = pred.dtNode;
                     else newIdom = intersect(newIdom, pred.dtNode);

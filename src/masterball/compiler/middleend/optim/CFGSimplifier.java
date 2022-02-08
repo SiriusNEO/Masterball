@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
@@ -74,6 +75,7 @@ public class CFGSimplifier implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
+        new CFGBuilder().runOnFunc(function);
         removeUnreachableBlock(function);
         mergeBlocks(function);
     }

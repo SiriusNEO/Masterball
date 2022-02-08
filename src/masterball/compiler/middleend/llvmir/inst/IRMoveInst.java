@@ -7,6 +7,7 @@ import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.InstVisitor;
 
 // It is a fake instruction which can not be recognized by llc
+// It is value itself is meaningless (void inst)
 // created by SSADestructor
 
 public class IRMoveInst extends IRBaseInst {
@@ -14,6 +15,8 @@ public class IRMoveInst extends IRBaseInst {
         super(LLVM.MoveInst, IRTranslator.voidType, parentBlock);
         this.addOperand(dest);
         this.addOperand(source);
+
+        if (dest instanceof IRPhiInst) ((IRPhiInst) dest).collapsedMoves.add(this);
     }
 
     public Value dest() {

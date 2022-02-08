@@ -7,9 +7,17 @@ import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.pass.InstVisitor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 // number of PhiInst operands must be even
 
 public class IRPhiInst extends IRBaseInst {
+
+    // some IRPhiInst will deteriorate to MoveInst (e.g. see @SCCP Pass)
+    // due to MoveInst is a void inst, if a Phi deteriorated, use these to query the move
+    public Set<IRMoveInst> collapsedMoves = new HashSet<>();
+
     public IRPhiInst(IRBaseType yieldType, IRBlock parentBlock, Value... operands) {
         super(LLVM.PhiInst, yieldType, parentBlock);
 

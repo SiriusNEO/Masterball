@@ -11,7 +11,7 @@ public class Log {
 
     private static final int ReportColor = 35, TrackColor = 32, MarkColor = 36;
 
-    private static final boolean isOpen = false;
+    private static final boolean isOpen = true;
 
     private static PrintStream ps = System.out;
 

@@ -7,6 +7,7 @@ import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.optim.ssa.Mem2Reg;
 import masterball.compiler.middleend.optim.ssa.SSADestructor;
 import masterball.compiler.share.pass.IRModulePass;
+import masterball.debug.Log;
 
 
 // Mem2Reg eliminates allocate
@@ -25,9 +26,11 @@ public class MiddleEndOptimizer implements IRModulePass {
             new Glo2Loc().runOnFunc(function);
 
             new Mem2Reg().runOnFunc(function);
+
             //TODO
 
             new SCCP().runOnFunc(function);
+            new ADCE().runOnFunc(function);
             new CFGSimplifier().runOnFunc(function);
             new SSADestructor().runOnFunc(function);
         }

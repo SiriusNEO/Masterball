@@ -41,7 +41,6 @@ public class CallAnalyzer implements IRModulePass {
 
     private void init(IRModule module) {
         module.functions.forEach(function -> function.node.init());
-        module.functions.forEach( function -> Log.report(function.node.glbUses, function.node.callee));
     }
 
     private void callGraphBuild(IRModule module) {
