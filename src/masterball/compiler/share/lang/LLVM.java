@@ -1,56 +1,70 @@
 package masterball.compiler.share.lang;
 
 public class LLVM {
-    // compile environment. 64bit in my machine.
+    // --- compile environment. 64bit in my machine. ---
+
     public static final int PointerSize = 8;
 
-    public static final String CommentPrefix = "                                                ; ";
+    // --- Splitter --
 
-    // default reg & label
+    public static final String Splitter = ".";
+
+    // function name use different splitter because "." is invalid in C++ function name
+    public static final String FuncNameSplitter = "_";
+
+    // --- Default reg & label ---
+
     public static final String Anon = "anon";
+    public static final String Nullptr = "null";
 
-    public static final String Spliter = ".";
-    public static final String FuncNameSpliter = "_";
+    public static final String TypeAnon = "anon" + Splitter + "type";
+    public static final String ConstAnon = "anon" + Splitter + "const";
+    public static final String StrConstAnon = "anon" + Splitter + "strconst";
 
-    public static final String TypeAnon = "anon" + Spliter + "type";
-    public static final String ConstAnon = "anon" + Spliter + "const";
-    public static final String StrConstAnon = "anon" + Spliter + "strconst";
+    // this appears in SCCP
+    public static final String UncertainConst = "internal" + Splitter + "uncertain";
 
-    public static final String UncertainConst = "internal" + Spliter + "uncertain";
+    public static final String ThisArg = "internal" + Splitter + "this";
+    public static final String RetReg = "internal" + Splitter + "ret";
 
-    public static final String ThisArg = "internal" + Spliter + "this";
-    public static final String RetReg = "internal" + Spliter + "ret";
-
-    public static final String InitFuncName = FuncNameSpliter + "glb" + FuncNameSpliter + "init";
-
-    // prefix
-    public static final String StrMethodPrefix = FuncNameSpliter + "str" + FuncNameSpliter;
-    public static final String BottomPrefix = FuncNameSpliter + "bot" + FuncNameSpliter;
-    public static final String BottomStrFuncPrefix = FuncNameSpliter + "bot" + StrMethodPrefix;
-
-    public static final String StructPrefix = "class" + Spliter;
+    public static final String InitFuncName = FuncNameSplitter + "glb" + FuncNameSplitter + "init";
 
     public static final String EntryBlockLabel = "entry";
     public static final String ExitBlockLabel = "exit";
     public static final String MidBlockLabel = "mid";
 
-    public static final String IfTrueBlockLabel = "if" + Spliter + "true";
-    public static final String IfFalseBlockLabel = "if" + Spliter + "false";
-    public static final String IfExitBlockLabel = "if" + Spliter + "exit";
+    public static final String IfTrueBlockLabel = "if" + Splitter + "true";
+    public static final String IfFalseBlockLabel = "if" + Splitter + "false";
+    public static final String IfExitBlockLabel = "if" + Splitter + "exit";
 
-    public static final String ForCondBlockLabel = "for" + Spliter + "cond";
-    public static final String ForIncrBlockLabel = "for" + Spliter + "incr";
-    public static final String ForBodyBlockLabel = "for" + Spliter + "body";
-    public static final String ForExitBlockLabel = "for" + Spliter + "exit";
+    public static final String ForCondBlockLabel = "for" + Splitter + "cond";
+    public static final String ForIncrBlockLabel = "for" + Splitter + "incr";
+    public static final String ForBodyBlockLabel = "for" + Splitter + "body";
+    public static final String ForExitBlockLabel = "for" + Splitter + "exit";
 
-    public static final String WhCondBlockLabel = "wh" + Spliter + "cond";
-    public static final String WhBodyBlockLabel = "wh" + Spliter + "body";
-    public static final String WhExitBlockLabel = "wh" + Spliter + "exit";
+    public static final String WhCondBlockLabel = "wh" + Splitter + "cond";
+    public static final String WhBodyBlockLabel = "wh" + Splitter + "body";
+    public static final String WhExitBlockLabel = "wh" + Splitter + "exit";
 
-    public static final String LogicNoCutBlockLabel = "lg" + Spliter + "nocut";
-    public static final String LogicExitBlockLabel = "lg" + Spliter + "exit";
+    public static final String LogicNoCutBlockLabel = "lg" + Splitter + "nocut";
+    public static final String LogicExitBlockLabel = "lg" + Splitter + "exit";
 
-    // LLVM inst
+    // --- Prefix ---
+
+    public static final String StrMethodPrefix = FuncNameSplitter + "str" + FuncNameSplitter;
+    public static final String BottomPrefix = FuncNameSplitter + "bot" + FuncNameSplitter;
+    public static final String BottomStrFuncPrefix = FuncNameSplitter + "bot" + StrMethodPrefix;
+
+    public static final String StructPrefix = "class" + Splitter;
+
+    // this is for Glo2Loc
+    public static final String LocalPrefix = "local" + Splitter;
+
+    public static final String CommentPrefix = "                                                ; ";
+
+    // --- LLVM inst ---
+
+    // standard inst
     public static final String AllocaInst = "alloca";
     public static final String BitCastInst = "bitcast";
     public static final String BrInst = "br";
@@ -65,13 +79,7 @@ public class LLVM {
     public static final String ZextInst = "zext";
     public static final String MoveInst = "move";
 
-    // virtual reg suffix
-    public static final String AddrSuffix = Spliter + "addr";
-    public static final String ArrayElementSuffix = Spliter + "elem";
-    public static final String CallSuffix = Spliter + CallInst;
-    public static final String ResolveSuffix = Spliter + LoadInst;
-
-    // binary
+    // binary inst type
     public static final String AddInst = "add";
     public static final String SubInst = "sub";
     public static final String MulInst = "mul";
@@ -83,7 +91,7 @@ public class LLVM {
     public static final String OrInst = "or";
     public static final String XorInst = "xor";
 
-    // compare
+    // compare inst type
     public static final String GreaterArg = "sgt";
     public static final String GreaterEqualArg = "sge";
     public static final String LessArg = "slt";
@@ -93,4 +101,11 @@ public class LLVM {
 
     // str
     public static final String StrCatArg = "cat";
+
+    // --- Suffix ---
+
+    public static final String AddrSuffix = Splitter + "addr";
+    public static final String ArrayElementSuffix = Splitter + "elem";
+    public static final String CallSuffix = Splitter + CallInst;
+    public static final String ResolveSuffix = Splitter + LoadInst;
 }

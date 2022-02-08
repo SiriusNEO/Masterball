@@ -1,5 +1,6 @@
 package masterball.compiler.backend.regalloc;
 
+import masterball.compiler.backend.analyzer.LivenessAnalyzer;
 import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.hierarchy.AsmModule;
@@ -21,7 +22,10 @@ import static masterball.compiler.backend.rvasm.operand.PhysicalReg.phyRegs;
 
 /**
  * Register Allocator using Graph Coloring Algorithm
+ *
  * @reference: Tiger Book
+ *
+ * @requirement: LivenessAnalyzer on Asm
  */
 
 public class RegisterAllocator implements AsmModulePass, AsmFuncPass {

@@ -23,6 +23,7 @@ import masterball.compiler.share.pass.IRBlockPass;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.compiler.share.pass.IRModulePass;
 import masterball.compiler.share.pass.InstVisitor;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 

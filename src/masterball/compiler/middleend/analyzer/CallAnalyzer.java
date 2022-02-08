@@ -1,10 +1,13 @@
 package masterball.compiler.middleend.analyzer;
 
+import masterball.compiler.middleend.llvmir.Value;
+import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRCallInst;
+import masterball.compiler.middleend.llvmir.inst.IRStoreInst;
 import masterball.compiler.share.pass.IRModulePass;
 
 import java.util.HashSet;
@@ -14,7 +17,7 @@ public class CallAnalyzer implements IRModulePass {
 
     public static class Node {
         public IRFunction fromFunc;
-        public HashSet<IRCallInst> callInst = new HashSet<>();
+        public HashSet<Value> glbUses = new HashSet<>(), glbDefs = new HashSet<>();
         public HashSet<IRFunction> callee = new HashSet<>();
 
         // A call A, or A call B, B call A ...
@@ -33,10 +36,31 @@ public class CallAnalyzer implements IRModulePass {
             for (IRBlock block : function.blocks)
                 for (IRBaseInst inst : block.instructions) {
                     if (inst instanceof IRCallInst) {
-                        function.node.callInst.add((IRCallInst) inst);
                         function.node.callee.add(((IRCallInst) inst).callFunc());
                     }
+                    // glb use: load or store
+                    inst.operands.forEach(operand -> {
+                        if (operand instanceof GlobalVariable) function.node.glbUses.add(operand);
+                    });
+                    // glb def: store
+                    if (inst instanceof IRStoreInst && ((IRStoreInst) inst).storePtr() instanceof GlobalVariable)
+                        function.node.glbDefs.add(((IRStoreInst) inst).storePtr());
                 }
+
+        // my callee's use is my use
+        boolean changed = true;
+        while (changed) {
+            changed = false;
+            for (IRFunction function : module.functions)
+                for (IRFunction callee : function.node.callee)
+                    for (Value use : callee.node.glbUses)
+                        if (!function.node.glbUses.contains(use)) {
+                            function.node.glbUses.add(use);
+                            changed = true;
+                        }
+        }
+
+        // def is not necessary to propagation because it will be considered in callee
     }
 
     private void callGraphAnalysis(IRFunction function) {

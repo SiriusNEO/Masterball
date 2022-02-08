@@ -10,7 +10,7 @@ void origin(int N)
     for (i = 0; i < N; i ++ ) {
         for (j = 0; j < N; j ++ )
         make[i][j] = 0;
-    }	
+    }
 }
 
 void search(int x, int y, int z)

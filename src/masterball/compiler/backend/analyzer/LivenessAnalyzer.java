@@ -1,4 +1,4 @@
-package masterball.compiler.backend.regalloc;
+package masterball.compiler.backend.analyzer;
 
 import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;

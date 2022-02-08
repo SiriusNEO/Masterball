@@ -12,5 +12,5 @@ public class NullptrConst extends BaseConst {
     public boolean equals(Object o) {return o instanceof NullptrConst;}
 
     @Override
-    public String identifier() {return "null";}
+    public String identifier() {return LLVM.Nullptr;}
 }

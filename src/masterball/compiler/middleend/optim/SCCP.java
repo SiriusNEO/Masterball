@@ -54,7 +54,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         for (IRBlock toRemove : function.blocks) {
             if (executable.contains(toRemove) || removed.contains(toRemove)) continue;
 
-            Log.report("remove", function.identifier(), toRemove.identifier());
+            // Log.report("remove", function.identifier(), toRemove.identifier());
 
             // remove toRemove
             toRemoveSet.add(toRemove);
@@ -94,7 +94,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
             toRemove.prevs.clear();
             toRemove.nexts.clear();
-            // Log.report("removed", toRemove.identifier());
+            // // Log.report("removed", toRemove.identifier());
         }
 
         function.blocks.removeAll(toRemoveSet);
@@ -156,7 +156,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
     private void replaceUses() {
         lattice.forEach((val, con) -> {
             if (con != null && con != uncertain) {
-                val.replaced(con);
+                val.replaceAllUsesWith(con);
             }
         });
     }
@@ -183,7 +183,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                 if (!blockWorklist.isEmpty()) {
                     IRBlock block = blockWorklist.poll();
                     runOnBlock(block);
-                    Log.report("check block: ", block.identifier());
+                    // Log.report("check block: ", block.identifier());
                 }
 
                 if (!valueWorklist.isEmpty()) {
@@ -221,7 +221,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                 if (dest.type instanceof IntType) replace = new IntConst(result);
                 else replace = new BoolConst(result != 0);
                 lattice.put(dest, replace);
-                dest.replaced(replace);
+                dest.replaceAllUsesWith(replace);
                 valueWorklist.offer(dest);
             }
             else if (!getConst(dest).equals(getConst(srcConst))) {
@@ -239,7 +239,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
     private void setBlockExecutable(IRBlock block) {
         if (!executable.contains(block)) {
-            Log.report("set exe", block.identifier());
+            // Log.report("set exe", block.identifier());
             executable.add(block);
             blockWorklist.add(block);
         }
@@ -306,7 +306,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
     @Override
     public void visit(IRBrInst inst) {
         if (inst.isJump()) {
-            Log.report("direct jump", inst.format());
+            // Log.report("direct jump", inst.format());
             setBlockExecutable(inst.destBlock());
             return;
         }

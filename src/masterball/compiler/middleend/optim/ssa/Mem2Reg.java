@@ -3,12 +3,15 @@ package masterball.compiler.middleend.optim.ssa;
 import masterball.compiler.middleend.analyzer.DomTreeBuilder;
 import masterball.compiler.middleend.llvmir.User;
 import masterball.compiler.middleend.llvmir.Value;
+import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.constant.NullptrConst;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.*;
 import masterball.compiler.middleend.llvmir.type.PointerType;
+import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.IRFuncPass;
+import masterball.compiler.share.warn.UninitiatedWarning;
 
 import java.util.*;
 
@@ -74,6 +77,7 @@ public class Mem2Reg implements IRFuncPass {
 
         for (IRBaseInst allocaVar : allocated) {
             Queue<IRBlock> workQueue = new LinkedList<>();
+
             var defs = collectAllocaDefs(allocaVar);
             var visited = new HashSet<IRBlock>();
 
@@ -97,7 +101,6 @@ public class Mem2Reg implements IRFuncPass {
 
     private Value getReplace(String name) {
         if (!nameStack.containsKey(name) || nameStack.get(name).empty()) {
-            // init
             return new NullptrConst();
         }
         return nameStack.get(name).lastElement();
@@ -132,9 +135,23 @@ public class Mem2Reg implements IRFuncPass {
                 if (allocated.contains(((IRLoadInst) inst).loadPtr())) {
                     String name = ((IRLoadInst) inst).loadPtr().name;
                     Value replace = getReplace(name);
-                    // Log.report("load r", ((IRLoadInst) inst).loadPtr().identifier(), name, replace.identifier());
-                    it.remove(); // remove load
-                    inst.replaced(replace);
+                    if (replace.identifier().equals(LLVM.Nullptr)) {
+                        // use before def, there are two conditions:
+                        // 1. usage of uninitiated
+                        // 2. global localization
+
+                        // ignore Glo2Loc load inst
+                        if (!(((IRLoadInst) inst).loadPtr() instanceof GlobalVariable)) {
+                            // no global
+                            new UninitiatedWarning(Value.getRawName(name)).tell();
+                            it.remove();
+                            inst.replaceAllUsesWith(replace);
+                        }
+                    } else {
+                        // Log.report("load r", ((IRLoadInst) inst).loadPtr().identifier(), name, replace.identifier());
+                        it.remove(); // remove load
+                        inst.replaceAllUsesWith(replace);
+                    }
                 }
             }
             else if (inst instanceof IRStoreInst) {

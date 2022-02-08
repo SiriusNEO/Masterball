@@ -590,7 +590,7 @@ public class IRBuilder implements ASTVisitor {
                 declClass.memberVarTypes.add(translator.translateAllocaType(memberVar.type));
 
             for (FuncRegistry memberFunc : classRegistry.memberFuncs) {
-                IRFunction declMemberFunc = new IRFunction(declClass.structName + LLVM.Spliter + memberFunc.name,
+                IRFunction declMemberFunc = new IRFunction(declClass.structName + LLVM.Splitter + memberFunc.name,
                         translator.translateFuncType(memberFunc.type, new PointerType(declClass)));
                 module.functions.add(declMemberFunc);
                 memberFunc.value = declMemberFunc;

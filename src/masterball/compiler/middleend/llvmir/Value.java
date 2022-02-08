@@ -26,6 +26,12 @@ public class Value {
         return rawName + LLVM.AddrSuffix;
     }
 
+    public static String getRawName(String name) {
+        int firstSuffixIndex = name.indexOf(LLVM.Splitter);
+        if (firstSuffixIndex < 0) return name;
+        return name.substring(0, firstSuffixIndex);
+    }
+
     public static String resolveRename(String rawName) {
         int lastAddrSuffixIndex = rawName.lastIndexOf(LLVM.AddrSuffix);
         if (lastAddrSuffixIndex < 0) return rawName + LLVM.ResolveSuffix;
@@ -59,7 +65,8 @@ public class Value {
         return "%" + name;
     }
 
-    public void replaced(Value replace) {
+    // RAUW
+    public void replaceAllUsesWith(Value replace) {
         for (User user : users) {
             var operands = user.operands;
             for (int i = 0; i < operands.size(); i++) {

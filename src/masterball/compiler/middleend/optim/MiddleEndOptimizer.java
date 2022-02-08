@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.analyzer.CallAnalyzer;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
 import masterball.compiler.middleend.analyzer.CFGBuilder;
@@ -17,10 +18,13 @@ public class MiddleEndOptimizer implements IRModulePass {
     @Override
     public void runOnModule(IRModule module) {
 
+        new CallAnalyzer().runOnModule(module);
+
         for (IRFunction function : module.functions) {
             new CFGBuilder().runOnFunc(function);
-            new Mem2Reg().runOnFunc(function);
+            // new Glo2Loc().runOnFunc(function);
 
+            new Mem2Reg().runOnFunc(function);
             //TODO
 
             new SCCP().runOnFunc(function);

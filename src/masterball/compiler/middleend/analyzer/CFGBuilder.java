@@ -2,11 +2,8 @@ package masterball.compiler.middleend.analyzer;
 
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
-import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRBrInst;
 import masterball.compiler.share.pass.IRFuncPass;
-
-import java.util.HashSet;
 
 public class CFGBuilder implements IRFuncPass {
 

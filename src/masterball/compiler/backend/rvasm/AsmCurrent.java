@@ -4,6 +4,7 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.inst.*;
 import masterball.compiler.backend.rvasm.operand.*;
+import masterball.compiler.middleend.llvmir.constant.BaseConst;
 import masterball.compiler.middleend.llvmir.constant.BoolConst;
 import masterball.compiler.middleend.llvmir.constant.IntConst;
 import masterball.compiler.middleend.llvmir.Value;
@@ -31,14 +32,17 @@ public class AsmCurrent {
         if (value instanceof IntConst) intValue = ((IntConst) value).constData;
         else if (value instanceof BoolConst) intValue = ((BoolConst) value).constData ? 1 : 0;
         else if (value instanceof NullptrConst) intValue = 0;
+
         if (intValue != null && intValue == 0) {
             value.asmOperand = PhysicalReg.reg("zero");
             return PhysicalReg.reg("zero");
         }
 
-        Register ret = null;
+        Register ret;
 
-        if (recordLi.containsKey(intValue)) ret = recordLi.get(intValue);
+        if (recordLi.containsKey(intValue)) {
+            ret = recordLi.get(intValue);
+        }
         else {
             ret = new VirtualReg(value.type.size());
             if (intValue != null) {
@@ -47,7 +51,8 @@ public class AsmCurrent {
             }
         }
 
-        value.asmOperand = ret;
+        // const info is memorized by Li
+        if (!(value instanceof BaseConst)) value.asmOperand = ret;
         return ret;
     }
 

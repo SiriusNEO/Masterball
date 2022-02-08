@@ -18,6 +18,8 @@ public class IRStoreInst extends IRBaseInst {
     public Value storeValue() {return this.getOperand(0);}
     public Value storePtr() {return this.getOperand(1);}
 
+    public void replacePtr(Value value) {this.resetOperand(1, value);}
+
     @Override
     public String format() {
         // store i32 %1, i32* %i, align 4

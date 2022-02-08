@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RV32I {
-    // sys config
+    // --- Sys Config for RV ---
+
     public static final int ImmBound = (1 << 11);
     public static final int SpLowUnit = 16;
     public static final int I32Unit = 4;
     public static final int MaxStackSize = Integer.MAX_VALUE;
 
-    // reg
+    // --- Register Related ---
+
     public static final int MaxArgRegNum = 8;
     public static final String VirtualRegPrefix = "v";
     public static final String FuncArgRegPrefix = "a";
@@ -23,20 +25,21 @@ public class RV32I {
             "t3", "t4", "t5", "t6"
     ));
 
-    // byte width
+    // --- Byte Width Keyword ---
+
     public static final String ByteKeyword = "b";
     public static final String HalfWordKeyword = "h";
     public static final String WordKeyword = "w";
 
-    // operand
+    // --- Compare Suffix ---
 
-    // compare suffix
     public static final String GreaterEqualSuffix = "ge";
     public static final String LessSuffix = "lt";
     public static final String EqualSuffix = "eq";
     public static final String NotEqualSuffix = "ne";
 
-    // inst
+    // --- RV32 Inst ---
+
     public static final String ITypeSuffix = "i";
     public static final String BrInstPrefix = "b";
     public static final String CallInst = "call";

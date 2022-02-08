@@ -18,6 +18,8 @@ public class IRLoadInst extends IRBaseInst {
         return this.getOperand(0);
     }
 
+    public void replacePtr(Value value) {this.resetOperand(0, value);}
+
     @Override
     public String format() {
         // %load = load <type>, <type*> %destPtr, align <size>

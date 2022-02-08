@@ -1,6 +1,7 @@
 package masterball.compiler.share.lang;
 
 public class MxStar {
+    // -- KeyWord ---
     public static final String mainKw = "main";
 
     public static final String intKw = "int";
@@ -18,6 +19,7 @@ public class MxStar {
 
     public static final String thisKw = "this" ;
 
+    // --- Operator ---
     public static final String AddOp = "+";
     public static final String SubOp = "-";
     public static final String MulOp = "*";
