@@ -1,10 +1,8 @@
 # Masterball
 
-
-
-<img src="asset/big_logo.png" height="100" width="100" />
-
-
+<div align="center">
+	<img src="asset/big_logo.png" height="100" width="100" />
+</div>
 
 <img src="asset/masterball.png" style="zoom:100%;" /> Masterball, an elaborate Mx* Compiler.
 
