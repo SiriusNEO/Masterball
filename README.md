@@ -1,14 +1,22 @@
 # Masterball
 
-<img src="asset/masterball.png" style="zoom:100%;" />Masterball, an elaborate Mx* Compiler.
-
-![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success)   ![](https://img.shields.io/badge/LLVM_IR-passed-success)   ![](https://img.shields.io/badge/CodeGen-passed-success) 
 
 
+<img src="asset/big_logo.png" style="zoom:30%;" />
 
-**WARNING: Masterball use "StackNightmare" strategy for register allocation now, which is ugly but works.**
 
-**The Graph Coloring algorithm is developing...**
+
+<img src="asset/masterball.png" style="zoom:100%;" /> Masterball, an elaborate Mx* Compiler.
+
+<img src="asset/masterball.png" style="zoom:100%;" /> Actually, it is a toy compiler for course project. Therefore, many implementations are quite simple and there may be some bugs.
+
+<img src="asset/masterball.png" style="zoom:100%;" />  It will compile Mx* language (a language for this project) code to RISC-V 32 Integer assembly.
+
+<img src="asset/masterball.png" style="zoom:100%;" />  It is implemented in Java, JDK 11. And the lexer and parser in the FrontEnd are supported by antlr v4 framework.
+
+
+
+![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success)   ![](https://img.shields.io/badge/LLVM_IR-passed-success)   ![](https://img.shields.io/badge/CodeGen-passed-success)  ![](https://img.shields.io/badge/Optim-16/20-blue)
 
 
 
@@ -19,16 +27,6 @@ Mx* or MxStar is a language designed for this course.
 The grammar is defined in [AssignmentRequirement](doc/README.md)
 
 a simple syntax highlight for this language: see `hightlight/`
-
-
-
-## Feature
-
-- `masterball.debug.Log` 
-- Registry System in Semantic
-- Friendly Error(Syntax/Semantic/Runtime) Report
-- AST Printer for debugging
-- LLVM IR with use-def and def-use chain
 
 
 
@@ -46,8 +44,6 @@ Click the following links to read the project design.
 
 
 ## TO DO
-
-Now in: `ASM`
 
 
 
@@ -79,15 +75,20 @@ Now in: `ASM`
 - [x] ASM Design (RISCV-32I)
 - [x] Inst, Operand, Hierarchy
 - [x] ASMBuilder
-- [ ] RegisterAlloca (GraphColoring) 
-- [x] StackNightmare (a scary solution)
+- [x] RegisterAlloca (GraphColoring) 
 - [x] Debug (ok... it will take me a long time)
 
 
 
 ### MiddleEnd (Optimizer)
 
-Hope I will have time.
+- [x] Mem2Reg
+- [x] SSA Destructor
+- [x] CFG Simplifier
+- [x] SCCP
+- [x] Glo2Loc
+- [x] ADCE
+- [ ] Func Inliner
 
 
 
