@@ -2,7 +2,7 @@
 
 
 
-<img src="asset/big_logo.png" style="zoom:30%;" />
+<img src="asset/big_logo.png" height="100" width="100" />
 
 
 
