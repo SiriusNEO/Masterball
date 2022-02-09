@@ -11,7 +11,6 @@ import masterball.compiler.middleend.llvmir.inst.IRStoreInst;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.IRFuncPass;
-import masterball.debug.Log;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,12 +30,13 @@ import java.util.Set;
  *              ...
  *      }
  *
- * @requirement: Call Analyzer. Run before Mem2Reg because it introduces alloc
+ * @requirement: CallGraphAnalyzer. Run before Mem2Reg because it introduces alloc
  */
 
 public class Glo2Loc implements IRFuncPass {
 
-    public static final int THRESHOLD = 4;
+    // if a global variable isn't used many times, not localize it because not worthy
+    public static final int UsageThreshold = 4;
 
     private Map<GlobalVariable, Integer> refTimes = new HashMap<>();
     private Set<GlobalVariable> ableSet = new HashSet<>();
@@ -67,7 +67,7 @@ public class Glo2Loc implements IRFuncPass {
 
         for (var global : refTimes.keySet()) {
             // Log.report("ref times", global.identifier(), refTimes.get(global));
-            if (refTimes.get(global) >= THRESHOLD) {
+            if (refTimes.get(global) >= UsageThreshold) {
                 boolean check = true;
                 for (IRFunction callee : function.node.callee) {
                     if (callee.node.glbUses.contains(global)) {

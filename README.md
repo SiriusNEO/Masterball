@@ -86,7 +86,8 @@ Click the following links to read the project design.
 - [x] SCCP
 - [x] Glo2Loc
 - [x] ADCE
-- [ ] Func Inliner
+- [ ] Function Inliner
+- [ ] Loop Promotion
 
 
 

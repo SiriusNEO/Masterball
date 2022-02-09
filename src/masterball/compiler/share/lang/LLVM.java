@@ -59,6 +59,9 @@ public class LLVM {
 
     // this is for Glo2Loc
     public static final String LocalPrefix = "local" + Splitter;
+    // this is for inline
+    public static final String InlinePrefix = "inline" + Splitter;
+    public static final String SplitPrefix = "split" + Splitter;
 
     public static final String CommentPrefix = "                                                ; ";
 

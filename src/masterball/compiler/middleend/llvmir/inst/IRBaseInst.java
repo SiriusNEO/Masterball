@@ -44,5 +44,7 @@ public abstract class IRBaseInst extends User {
 
     public boolean isTerminator() {return false;}
 
+    public abstract IRBaseInst copy();
+
     public abstract void accept(InstVisitor visitor);
 }

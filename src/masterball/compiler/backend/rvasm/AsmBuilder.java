@@ -23,7 +23,6 @@ import masterball.compiler.share.pass.IRBlockPass;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.compiler.share.pass.IRModulePass;
 import masterball.compiler.share.pass.InstVisitor;
-import masterball.debug.Log;
 
 import java.util.ArrayList;
 
@@ -185,11 +184,11 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         if (inst.condition() instanceof IRICmpInst && ((IRICmpInst) inst.condition()).forBr()) {
             // coalesce cmp and br
             Pair<String, Boolean> result = AsmTranslator.translateCmpOp(((IRICmpInst) inst.condition()).op);
-            if (result.second)
-                new AsmBrInst(result.first, cur.toReg(((IRICmpInst) inst.condition()).rhs()), cur.toReg(((IRICmpInst) inst.condition()).lhs()),
+            if (result.second())
+                new AsmBrInst(result.first(), cur.toReg(((IRICmpInst) inst.condition()).rhs()), cur.toReg(((IRICmpInst) inst.condition()).lhs()),
                         (AsmBlock) inst.ifTrueBlock().asmOperand, cur.block);
             else
-                new AsmBrInst(result.first, cur.toReg(((IRICmpInst) inst.condition()).lhs()), cur.toReg(((IRICmpInst) inst.condition()).rhs()),
+                new AsmBrInst(result.first(), cur.toReg(((IRICmpInst) inst.condition()).lhs()), cur.toReg(((IRICmpInst) inst.condition()).rhs()),
                         (AsmBlock) inst.ifTrueBlock().asmOperand, cur.block);
         }
         else {
@@ -206,18 +205,18 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
         // 0~7
         for (int i = 0; i < Integer.min(inst.callFunc().getArgNum(), RV32I.MaxArgRegNum); i++) {
-            if (inst.getArgs(i) instanceof GlobalValue)
-                new AsmLaInst(PhysicalReg.a(i), inst.getArgs(i).asmOperand.identifier, cur.block);
-            else awesomeMove(PhysicalReg.a(i), inst.getArgs(i));
+            if (inst.getArg(i) instanceof GlobalValue)
+                new AsmLaInst(PhysicalReg.a(i), inst.getArg(i).asmOperand.identifier, cur.block);
+            else awesomeMove(PhysicalReg.a(i), inst.getArg(i));
         }
 
         // spill to mem
         for (int i = RV32I.MaxArgRegNum; i < callFunc.arguments.size(); i++) {
 
-            new AsmStoreInst(inst.getArgs(i).type.size(), PhysicalReg.reg("sp"),
+            new AsmStoreInst(inst.getArg(i).type.size(), PhysicalReg.reg("sp"),
                     // notice: here use the argument of CallInst, not the func
                     // and the RawStackOffset should use caller
-                    cur.toReg(inst.getArgs(i)),
+                    cur.toReg(inst.getArg(i)),
                     new RawStackOffset(callFunc.arguments.get(i).stackOffset.value, RawType.callerArg),
                     cur.block);
         }

@@ -27,9 +27,9 @@ public class Value {
     }
 
     public static String getRawName(String name) {
-        int firstSuffixIndex = name.indexOf(LLVM.Splitter);
-        if (firstSuffixIndex < 0) return name;
-        return name.substring(0, firstSuffixIndex);
+        int lastSuffixIndex = name.lastIndexOf(LLVM.Splitter);
+        if (lastSuffixIndex < 0) return name;
+        return name.substring(0, lastSuffixIndex);
     }
 
     public static String resolveRename(String rawName) {

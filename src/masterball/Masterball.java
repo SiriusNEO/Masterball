@@ -15,7 +15,7 @@ import masterball.debug.Log;
  * Actually, it is a toy compiler for course project.
  * Therefore, many implementations are quite simple and there may be some bugs.
  * It will compile Mx* language (a language for this project) code to RISC-V 32 Integer assembly.
- * It is implemented in Java, JDK 11. And the lexer and parser in the FrontEnd it is supported by antlr.
+ * It is implemented in Java, JDK 11. And the lexer and parser in the FrontEnd are supported by antlr v4 framework.
  *
  * Main Architecture:
  *  code            -> Console (input from stdin)

@@ -23,6 +23,11 @@ public class IRTruncInst extends IRBaseInst {
     }
 
     @Override
+    public IRBaseInst copy() {
+        return null;
+    }
+
+    @Override
     public void accept(InstVisitor visitor) {
         visitor.visit(this);
     }

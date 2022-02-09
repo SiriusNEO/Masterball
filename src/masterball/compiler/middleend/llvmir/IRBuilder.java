@@ -504,9 +504,9 @@ public class IRBuilder implements ASTVisitor {
             if (node.type instanceof VarType) {
                 Value varAddr;
                 Pair<VarRegistry, Boolean> result = infoManager.queryVarWithValue(node.ctx.Identifier().getText());
-                VarRegistry varRegistry = result.first;
+                VarRegistry varRegistry = result.first();
                 int memberIndex = -1;
-                if (cur.classRegistry != null && result.second)
+                if (cur.classRegistry != null && result.second())
                     memberIndex = cur.classRegistry.getMemberVarIndex(varRegistry.name);
                 if (memberIndex >= 0) {
                     // member in class scope

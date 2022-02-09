@@ -63,6 +63,11 @@ public class IRBlock extends Value {
         instructions.addFirst(inst);
     }
 
+    public void tAddLast(IRBaseInst inst) {
+        inst.parentBlock = this;
+        instructions.addLast(inst);
+    }
+
     public void tAddPhi(IRPhiInst phi) {
         phi.parentBlock = this;
         phiInsts.add(phi);

@@ -46,7 +46,7 @@ public class IRFormatter {
         // define i32 @foo(i32 %a, i64 %b)
         StringBuilder ret = new StringBuilder("define " + function.typedIdentifier() + "(");
         for (int i = 0; i < function.operandSize(); i++) {
-            ret.append(function.getOperand(i).typedIdentifier());
+            ret.append(function.getArg(i).typedIdentifier());
             if (i != function.operandSize() - 1) ret.append(", ");
         }
         ret.append(")");

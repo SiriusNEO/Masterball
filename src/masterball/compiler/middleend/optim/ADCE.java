@@ -19,6 +19,8 @@ import java.util.*;
  *  Notice: if a block is live, it's control dependencies are live
  *  Control Dependence = DF of the postDomTree
  *
+ * @requirement: DomTreeBuilder
+ *
  * @reference: LLVM project /lib/Transforms/Scalar/ADCE.cpp
  */
 
@@ -123,6 +125,6 @@ public class ADCE implements IRFuncPass {
             }
         }
 
-        Log.info("finish ADCE");
+        // Log.info("finish ADCE");
     }
 }

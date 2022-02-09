@@ -25,6 +25,11 @@ public class IRAllocaInst extends IRBaseInst {
     }
 
     @Override
+    public IRBaseInst copy() {
+        return null;
+    }
+
+    @Override
     public boolean mayHaveSideEffects() {return true;}
 
     @Override

@@ -46,6 +46,11 @@ public class IRBrInst extends IRBaseInst {
     public boolean isTerminator() {return true;}
 
     @Override
+    public IRBaseInst copy() {
+        return null;
+    }
+
+    @Override
     public String format() {
         // br i1 %comparison_result, label %A, label %B
         // br label %A

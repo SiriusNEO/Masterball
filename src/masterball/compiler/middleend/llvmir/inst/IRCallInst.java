@@ -34,7 +34,7 @@ public class IRCallInst extends IRBaseInst {
         return (IRFunction) this.getOperand(0);
     }
 
-    public Value getArgs(int index) {
+    public Value getArg(int index) {
         return this.getOperand(index+1);
     }
 
@@ -54,11 +54,16 @@ public class IRCallInst extends IRBaseInst {
         if (noaliasFlag) ret.append("noalias ");
         ret.append(this.callFunc().typedIdentifier()).append("(");
         for (int i = 0; i < this.callFunc().getArgNum(); i++) {
-            ret.append(this.callFunc().getArgType(i)).append(" ").append(this.getArgs(i).identifier());
+            ret.append(this.callFunc().getArgType(i)).append(" ").append(this.getArg(i).identifier());
             if (i != this.callFunc().getArgNum() - 1) ret.append(", ");
         }
         ret.append(")");
         return ret.toString();
+    }
+
+    @Override
+    public IRBaseInst copy() {
+        return null;
     }
 
     @Override

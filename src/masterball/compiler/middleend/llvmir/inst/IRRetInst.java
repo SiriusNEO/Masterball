@@ -30,6 +30,11 @@ public class IRRetInst extends IRBaseInst {
     public boolean isTerminator() {return true;}
 
     @Override
+    public IRBaseInst copy() {
+        return null;
+    }
+
+    @Override
     public String format() {
         // ret i32 0
         // ret void

@@ -14,12 +14,14 @@ import masterball.debug.Log;
 import java.util.HashSet;
 import java.util.Stack;
 
-public class CallAnalyzer implements IRModulePass {
+public class CallGraphAnalyzer implements IRModulePass {
 
     public static class Node {
         public IRFunction fromFunc;
         public HashSet<Value> glbUses = new HashSet<>(), glbDefs = new HashSet<>();
-        public HashSet<IRFunction> callee = new HashSet<>();
+
+        public HashSet<IRCallInst> call = new HashSet<>();
+        public HashSet<IRFunction> caller = new HashSet<>(), callee = new HashSet<>();
 
         // A call A, or A call B, B call A ...
         public boolean cyclic = false;
@@ -31,6 +33,7 @@ public class CallAnalyzer implements IRModulePass {
         public void init() {
             glbUses = new HashSet<>();
             glbDefs = new HashSet<>();
+            caller = new HashSet<>();
             callee = new HashSet<>();
             cyclic = false;
         }
@@ -48,7 +51,11 @@ public class CallAnalyzer implements IRModulePass {
             for (IRBlock block : function.blocks)
                 for (IRBaseInst inst : block.instructions) {
                     if (inst instanceof IRCallInst) {
-                        function.node.callee.add(((IRCallInst) inst).callFunc());
+                        function.node.call.add((IRCallInst) inst);
+
+                        IRFunction callee = ((IRCallInst) inst).callFunc();
+                        callee.node.caller.add(function);
+                        function.node.callee.add(callee);
                     }
                     // glb use: load or store
                     inst.operands.forEach(operand -> {
@@ -81,8 +88,10 @@ public class CallAnalyzer implements IRModulePass {
         callStack.push(function);
 
         for (IRFunction caller : callStack)
-            if (function.node.callee.contains(caller))
+            if (function.node.callee.contains(caller)) {
                 function.node.cyclic = true; // caller -> ... -> function -> caller
+                break;
+            }
 
         function.node.callee.forEach(this::callGraphAnalysis);
         callStack.pop();

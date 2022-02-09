@@ -1,13 +1,12 @@
 package masterball.compiler.middleend.optim;
 
-import masterball.compiler.middleend.analyzer.CallAnalyzer;
+import masterball.compiler.middleend.analyzer.CallGraphAnalyzer;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
 import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.optim.ssa.Mem2Reg;
 import masterball.compiler.middleend.optim.ssa.SSADestructor;
 import masterball.compiler.share.pass.IRModulePass;
-import masterball.debug.Log;
 
 
 // Mem2Reg eliminates allocate
@@ -19,7 +18,7 @@ public class MiddleEndOptimizer implements IRModulePass {
     @Override
     public void runOnModule(IRModule module) {
 
-        new CallAnalyzer().runOnModule(module);
+        new CallGraphAnalyzer().runOnModule(module);
 
         for (IRFunction function : module.functions) {
             new CFGBuilder().runOnFunc(function);

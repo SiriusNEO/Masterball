@@ -1,6 +1,6 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
-import masterball.compiler.middleend.analyzer.CallAnalyzer;
+import masterball.compiler.middleend.analyzer.CallGraphAnalyzer;
 import masterball.compiler.middleend.llvmir.IRTranslator;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.GlobalValue;
@@ -16,7 +16,7 @@ public class IRFunction extends GlobalValue {
     public IRBlock entryBlock, exitBlock;
 
     // info in CallGraph
-    public CallAnalyzer.Node node = new CallAnalyzer.Node(this);
+    public CallGraphAnalyzer.Node node = new CallGraphAnalyzer.Node(this);
 
     public IRFunction(String name, IRFuncType funcType) {
         // not init complete.
@@ -43,6 +43,10 @@ public class IRFunction extends GlobalValue {
 
     public void addArg(Value arg) {
         this.addOperand(arg);
+    }
+
+    public Value getArg(int index) {
+        return this.getOperand(index);
     }
 
     public int getArgNum() {return ((IRFuncType) this.type).argTypes.size();}
