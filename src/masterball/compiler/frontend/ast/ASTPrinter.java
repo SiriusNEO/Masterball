@@ -21,7 +21,7 @@ public class ASTPrinter implements ASTVisitor {
     @Override
     public void visit(RootNode node) {
         nowIndentNum++;
-        Log.report("AST Printer Start Sucess");
+        Log.info("AST Printer Start Sucess");
         ps.println("\n" + INDENT.repeat(nowIndentNum) +  "* --- RootNode --- *\n");
         ps.println(node.scope);
         node.sonNodes.forEach(sonnode -> sonnode.accept(this));

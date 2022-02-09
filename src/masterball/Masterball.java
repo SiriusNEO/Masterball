@@ -6,6 +6,7 @@ import masterball.compiler.middleend.MiddleEnd;
 import masterball.compiler.share.error.CompileError;
 import masterball.console.*;
 import masterball.console.error.ConsoleError;
+import masterball.debug.Log;
 
 /**
  * Masterball, a Compiler for Mx* language
@@ -35,15 +36,16 @@ public class Masterball {
 
             if (console.showHelp || console.showVersion) return;
 
-            FrontEnd frontEnd = new FrontEnd();
+            FrontEnd frontEnd = new FrontEnd(console);
 
             if (console.fsyntaxOnly) return;
 
-            MiddleEnd middleEnd = new MiddleEnd(frontEnd);
+            MiddleEnd middleEnd = new MiddleEnd(frontEnd, console);
 
             if (console.irOnly) return;
 
-            BackEnd backEnd = new BackEnd(middleEnd);
+            BackEnd backEnd = new BackEnd(middleEnd, console);
+
         }
         catch (Exception e) {
             errorHandle(e);

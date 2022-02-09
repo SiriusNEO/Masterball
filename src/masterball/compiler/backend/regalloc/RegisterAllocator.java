@@ -73,14 +73,14 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
     @Override
     public void runOnModule(AsmModule module) {
-        Log.report("K", K);
+        Log.info("K", K);
 
         module.functions.forEach(this::runOnFunc);
     }
 
     @Override
     public void runOnFunc(AsmFunction function) {
-        Log.report("color func: ", function);
+        Log.info("color func: ", function);
 
         curFunc = function;
 
@@ -321,8 +321,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             addWorklist(edge.u);
             addWorklist(edge.v);
         }
-        else if ((edge.u.node.precolored && georgeStrategy(edge.u, edge.v))
-                || (!edge.u.node.precolored && conservative(adjacent(edge.u, edge.v)))) { // briggs strategy
+        else if ((edge.u.node.precolored && georgeCriterion(edge.u, edge.v))
+                || (!edge.u.node.precolored && briggsCriterion(edge.u, edge.v))) { // briggs strategy
             coalescedMoves.add(move);
 
             combine(edge.u, edge.v);
@@ -398,13 +398,11 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         while (!selectStack.empty()) {
             Register reg = selectStack.pop();
             ArrayList<PhysicalReg> okColors = new ArrayList<>(PhysicalReg.assignable);
-            HashSet<Register> coloredSet = new HashSet<>(precolored);
-
-            coloredSet.addAll(coloredNodes);
 
             for (Register neighbor : reg.node.adjList) {
-                if (coloredSet.contains(unionSet.getAlias(neighbor)))
-                    okColors.remove(unionSet.getAlias(neighbor).color);
+                var neiborAlias = unionSet.getAlias(neighbor);
+                if (neiborAlias.node.precolored || coloredNodes.contains(neiborAlias))
+                    okColors.remove(neiborAlias.color);
             }
 
             if (okColors.isEmpty()) spilledNodes.add(reg);
@@ -432,8 +430,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             curFunc.spillStackUse += 4;
         }
 
-        Set<Register> newTemps = new HashSet<>();
-
         for (AsmBlock block : curFunc.blocks) {
             ListIterator<AsmBaseInst> it = block.instructions.listIterator();
             // instruction insert & delete, use iterator
@@ -458,7 +454,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                             it.previous();
                             it.add(loadInst);
                             it.next();
-                            newTemps.add(temp);
+                            introducedTemp.add(temp);
                         }
                     }
                     else {
@@ -472,7 +468,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                         it.add(loadInst);
                         it.next();
                         it.add(storeInst);
-                        newTemps.add(temp);
+                        introducedTemp.add(temp);
                     }
                 }
 
@@ -487,11 +483,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                         inst.replaceDef(def, temp);
                         AsmBaseInst storeInst = new AsmStoreInst(((VirtualReg) def).size, PhysicalReg.reg("sp"), temp, def.stackOffset, null);
                         it.add(storeInst);
-                        newTemps.add(temp);
+                        introducedTemp.add(temp);
                     }
                 }
             }
-            introducedTemp.addAll(newTemps);
         }
     }
 
@@ -502,28 +497,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
      */
     private HashSet<Register> adjacent(Register reg) {
-        HashSet<Register> ret = new HashSet<>();
-        reg.node.adjList.forEach(node -> {
-           if (!(selectStack.contains(node) || coalescedNodes.contains(node)))
-               ret.add(node);
-        });
-        return ret;
-    }
-
-    /**
-     * return a set of adjacent nodes
-     * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
-     */
-    private HashSet<Register> adjacent(Register reg1, Register reg2) {
-        HashSet<Register> ret = new HashSet<>();
-        reg1.node.adjList.forEach(node -> {
-            if (!(selectStack.contains(node) || coalescedNodes.contains(node)))
-                ret.add(node);
-        });
-        reg2.node.adjList.forEach(node -> {
-            if (!(selectStack.contains(node) || coalescedNodes.contains(node)))
-                ret.add(node);
-        });
+        HashSet<Register> ret = new HashSet<>(reg.node.adjList);
+        selectStack.forEach(ret::remove);
+        ret.removeAll(coloredNodes);
         return ret;
     }
 
@@ -549,7 +525,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         return t.node.degree < K || t.node.precolored || G.adjSet.contains(new Edge(t, r));
     }
 
-    private boolean georgeStrategy(Register u, Register v) {
+    private boolean georgeCriterion(Register u, Register v) {
         for (Register t : adjacent(v)) if (!ok(t, u)) return false;
         return true;
     }
@@ -557,10 +533,15 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
     /**
      * a conservative strategy
      */
-    private boolean conservative(HashSet<Register> regs) {
+    private boolean briggsCriterion(Register u, Register v) {
         int k = 0;
-        for (Register reg : regs)
-            if (reg.node.degree >= K) k++;
+
+        Set<Register> commonAdj = new HashSet<>(adjacent(u));
+        commonAdj.addAll(adjacent(u));
+
+        for (var n : commonAdj)
+            if (n.node.degree >= K) k++;
+
         return k < K;
     }
 }

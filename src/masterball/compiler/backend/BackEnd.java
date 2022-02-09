@@ -21,7 +21,7 @@ public class BackEnd {
 
     public final ArrayList<AsmFunction> functions = new ArrayList<>();
 
-    public BackEnd(MiddleEnd middleEnd) {
+    public BackEnd(MiddleEnd middleEnd, Console console) {
         // Assembly Builder
         this.module = new AsmBuilder(middleEnd.irModule).module;
 
@@ -34,13 +34,14 @@ public class BackEnd {
         // Optimize Assembly. Don't comment it directly because there are some necessary passes.
         new BackEndOptimizer().runOnModule(this.module);
 
-        // ASM Printer
-        new AsmPrinter(
-                Console.getFileName(Config.getPath(Config.Option.ASMOutput)),
-                (PrintStream) Config.getArgValue(Config.Option.ASMOutput)
-        ).runOnModule(this.module);
+        if (console.canPrintASM) {
+            // ASM Printer
+            new AsmPrinter(
+                    Console.getFileName(Config.getPath(Config.Option.ASMOutput)),
+                    (PrintStream) Config.getArgValue(Config.Option.ASMOutput)
+            ).runOnModule(this.module);
+        }
 
         Log.track("BackEnd started successfully.");
     }
-
 }

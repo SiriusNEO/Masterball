@@ -88,7 +88,9 @@ public class ADCE implements IRFuncPass {
             IRBaseInst inst = instWorklist.poll();
             markInstLive(inst);
             markBlockLive(inst.parentBlock);
-            Log.report("working...", inst.format());
+
+            // Log.report("working...", inst.format());
+
             inst.operands.forEach(operand -> {
                 if (operand instanceof IRBaseInst) {
                     if (operand instanceof IRPhiInst) markPhiInst((IRPhiInst) operand);
@@ -121,6 +123,6 @@ public class ADCE implements IRFuncPass {
             }
         }
 
-        Log.report("finish ADCE");
+        Log.info("finish ADCE");
     }
 }

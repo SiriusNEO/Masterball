@@ -5,13 +5,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Log {
-    public static final String logHint = "<masterball log>: ";
+
+    public enum Verbose {off, all, infoOnly, markOnly, trackOnly, assertOnly};
+
+    private static final String logHint = "<masterball log>: ";
 
     private static final Map<String, Integer> markCnt = new HashMap<>();
 
-    private static final int ReportColor = 35, TrackColor = 32, MarkColor = 36;
+    private static final int InfoColor = 36, TrackColor = 32, MarkColor = 35;
 
-    private static final boolean isOpen = true;
+    private static Verbose verbose;
+    private static boolean infoOpen, markOpen, trackOpen;
 
     private static PrintStream ps = System.out;
 
@@ -23,41 +27,53 @@ public class Log {
         Log.ps = ps;
     }
 
-    public static void report(Object var) {
-        if (!isOpen) {
-            return;
+    public static void setVerbose(Verbose verbose) {
+        Log.verbose = verbose;
+        if (verbose == Verbose.off) return;
+
+        if (verbose == Verbose.all) {
+            infoOpen = markOpen = trackOpen = true;
         }
-        StringBuilder info = new StringBuilder(logHint + "[Report] ");
-        info.append(var.toString());
-        colorPrintln(ReportColor, info.toString());
+        else {
+            infoOpen = markOpen = trackOpen = false;
+            switch (verbose) {
+                case infoOnly: infoOpen = true; break;
+                case markOnly: markOpen = true; break;
+                case trackOnly: trackOpen = true; break;
+            }
+        }
     }
 
-    public static void report(Object... vars) {
-        if (!isOpen) {
+    // --- info: show something ---
+
+    public static void info(Object... vars) {
+        if (!infoOpen) {
             return;
         }
-        StringBuilder info = new StringBuilder(logHint + "[Report] ");
+        StringBuilder info = new StringBuilder(logHint + "[Info] ");
         for (Object var : vars) {
             info.append(var.toString());
             info.append(" ");
         }
-        colorPrintln(ReportColor, info.toString());
+        colorPrintln(InfoColor, info.toString());
     }
 
-    public static void report(VarPair... vars) {
-        if (!isOpen) {
+    public static void info(VarPair... vars) {
+        if (!infoOpen) {
             return;
         }
-        StringBuilder info = new StringBuilder(logHint + "[Report] ");
+        StringBuilder info = new StringBuilder(logHint + "[Info] ");
         for (VarPair var : vars) {
             info.append(var.toString());
             info.append(" ");
         }
-        colorPrintln(ReportColor, info.toString());
+        colorPrintln(InfoColor, info.toString());
     }
 
+    // --- mark: place a mark ---
+
     public static void mark() {
-        if (isOpen) {
+        if (markOpen) {
             int nowCnt;
             if (!markCnt.containsKey(null)) {
                 nowCnt = 0;
@@ -72,7 +88,7 @@ public class Log {
     }
 
     public static void mark(String msg) {
-        if (isOpen) {
+        if (markOpen) {
             int nowCnt;
             if (!markCnt.containsKey(msg)) {
                 nowCnt = 0;
@@ -82,28 +98,41 @@ public class Log {
                 nowCnt = markCnt.get(msg);
                 markCnt.put(msg, nowCnt + 1);
             }
-            colorPrintln(MarkColor, logHint + "[Mark] mark " + nowCnt);
             colorPrintln(MarkColor, logHint + "[Mark] mark " + msg + " " + nowCnt);
         }
     }
 
+    public static void mark(String name, String msg) {
+        if (markOpen) {
+            mark(name + ": " + msg);
+        }
+    }
+
     public static void markReset() {
-        markCnt.remove(null);
+        if (markOpen) markCnt.remove(null);
     }
 
     public static void markReset(String msg) {
-        markCnt.remove(msg);
+        if (markOpen) markCnt.remove(msg);
     }
 
+    public static void markReset(String name, String msg) {
+        if (markOpen) {
+            markReset(name + ": " + msg);
+        }
+    }
+
+    // --- track: track the behaviour ---
+
     public static void track(String msg) {
-        if (!isOpen) {
+        if (!trackOpen) {
             return;
         }
         colorPrintln(TrackColor, logHint + "[Track] Tracking... " + msg);
     }
 
     public static void track(Object... vars) {
-        if (!isOpen) {
+        if (!trackOpen) {
             return;
         }
         StringBuilder info = new StringBuilder(logHint + "[Track] Tracking... ");
@@ -115,7 +144,7 @@ public class Log {
     }
 
     public static void stackTrace(Throwable throwable) {
-        if (!isOpen) {
+        if (Log.verbose == Verbose.off ) {
             return;
         }
         ps.println(logHint + "[StackTrace]");

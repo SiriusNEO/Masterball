@@ -6,7 +6,6 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmModule;
 import masterball.compiler.share.pass.AsmBlockPass;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.compiler.share.pass.AsmModulePass;
-import masterball.console.Config;
 import masterball.debug.Log;
 
 import java.io.PrintStream;
@@ -27,7 +26,7 @@ public class AsmPrinter implements AsmModulePass, AsmFuncPass, AsmBlockPass {
 
     @Override
     public void runOnModule(AsmModule module) {
-        Log.report("Asm Printer Start Sucess");
+        Log.info("Asm Printer Start Sucess");
 
         ps.println("# fileName: " + irFileName + TAB + " compiled by @Masterball.");
         ps.println(TAB + ".text");

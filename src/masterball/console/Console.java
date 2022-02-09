@@ -8,7 +8,10 @@ import java.io.*;
 import java.util.Objects;
 
 public class Console {
-    public boolean showVersion, showHelp, fsyntaxOnly, irOnly, optimize;
+
+    public boolean showVersion, showHelp, fsyntaxOnly, irOnly, optimize, wall, ojMode;
+
+    public boolean canPrintAST, canPrintIR, canPrintOpt, canPrintASM;
 
     public static String getFileName(String path) {
         if (path == null) return "test";
@@ -67,6 +70,8 @@ public class Console {
          fsyntaxOnly = (boolean) Config.argSetting.get(Config.Option.FSyntaxOnly).argValue;
          irOnly = (boolean) Config.argSetting.get(Config.Option.IROnly).argValue;
          optimize = (boolean) Config.argSetting.get(Config.Option.Optimize).argValue;
+         wall = (boolean) Config.argSetting.get(Config.Option.Wall).argValue;
+         ojMode = (boolean) Config.argSetting.get(Config.Option.OJMode).argValue;
     }
 
     public Console(String[] args) throws Exception {
@@ -81,9 +86,19 @@ public class Console {
             System.out.println(CmdDoc.version());
         }
 
-        Log.setPrintStream(
-                (PrintStream) Config.getArgValue(Config.Option.LogOutput)
-        );
+        if (ojMode) {
+            Log.setVerbose(Log.Verbose.off);
+            canPrintAST = canPrintOpt = false;
+            canPrintIR = true;
+            canPrintASM = true;
+        }
+        else {
+            Log.setVerbose(Log.Verbose.all);
+            Log.setPrintStream(
+                    (PrintStream) Config.getArgValue(Config.Option.LogOutput)
+            );
+            canPrintAST = canPrintIR = canPrintOpt = canPrintASM = true;
+        }
 
         Log.track("Console started successfully.");
     }

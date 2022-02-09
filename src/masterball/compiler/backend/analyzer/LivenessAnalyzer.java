@@ -10,10 +10,17 @@ import masterball.debug.Log;
 
 import java.util.*;
 
-public class LivenessAnalyzer implements AsmFuncPass {
+/**
+ * Liveness Analyzer Pass run on Assembly
+ *
+ * data flow equation:
+ *      liveIn[n] = use[n] \cup (out[n] - def[n])
+ *      liveOut[n] = \cap_{s \in suc[n]} in[s]
+ *
+ * @reference: Tiger Book
+ */
 
-    private final Map<AsmBlock, HashSet<Register>> blockUsesMap = new HashMap<>(),
-                                             blockDefsMap = new HashMap<>();
+public class LivenessAnalyzer implements AsmFuncPass {
 
     private final Queue<AsmBlock> workQueue = new LinkedList<>();
     private final HashSet<AsmBlock> finishSet = new HashSet<>();
@@ -37,13 +44,16 @@ public class LivenessAnalyzer implements AsmFuncPass {
         }
     }
 
+    private final Map<AsmBlock, HashSet<Register>> blockUsesMap = new HashMap<>(),
+                                                blockDefsMap = new HashMap<>();
+
     // first collect all uses and defs in a block
     private void collectUsesAndDefs(AsmBlock block) {
         HashSet<Register> blockUses = new HashSet<>(), blockDefs = new HashSet<>();
         for (AsmBaseInst inst : block.instructions) {
-            HashSet<Register> usesInInst = inst.uses();
-            usesInInst.removeAll(blockDefs);
-            blockUses.addAll(usesInInst);
+            inst.uses().forEach(use -> {
+                if (!blockDefs.contains(use)) blockUses.add(use);
+            });
             blockDefs.addAll(inst.defs());
         }
         blockUsesMap.put(block, blockUses);
@@ -51,23 +61,24 @@ public class LivenessAnalyzer implements AsmFuncPass {
     }
 
     private void livenessAnalyze(AsmBlock block) {
-        // data flow equation (reference: Tigerbook):
-        // in[n] = use[n] \cup (out[n] - def[n])
-        // out[n] = \cap_{s \in suc[n]} in[s]
 
         if (finishSet.contains(block)) return;
         finishSet.add(block);
 
+        // out = suc in
         HashSet<Register> newLiveOut = new HashSet<>();
         block.nexts.forEach(suc -> newLiveOut.addAll(suc.liveIn));
+
+        // in = use & (out - def)
         HashSet<Register> newLiveIn = new HashSet<>(newLiveOut);
         newLiveIn.removeAll(blockDefsMap.get(block));
         newLiveIn.addAll(blockUsesMap.get(block));
 
+        // fixed point
         if (!newLiveIn.equals(block.liveIn) || !newLiveOut.equals(block.liveOut)) {
             block.liveIn.addAll(newLiveIn);
             block.liveOut.addAll(newLiveOut);
-            finishSet.removeAll(block.prevs);
+            block.prevs.forEach(finishSet::remove);
         }
 
         // BFS
