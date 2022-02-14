@@ -14,7 +14,6 @@ public class IRCurrent {
     public IRBlock block = null;
     public IRFunction func = null;
     public ClassRegistry classRegistry = null;
-    public Value retValPtr = null;
 
     // break/continue support
     private final Stack<IRBlock> contTargetBlocks = new Stack<>(),

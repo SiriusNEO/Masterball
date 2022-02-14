@@ -27,7 +27,7 @@ public class IRBinaryInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRBinaryInst(op, type, lhs(), rhs(), null);
     }
 
     @Override

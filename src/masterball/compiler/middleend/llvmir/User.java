@@ -23,7 +23,7 @@ public class User extends Value {
     public void resetOperand(int index, Value value) {
         operands.get(index).users.remove(this);
         operands.set(index, value);
-        value.users.add(this);
+        value.addUser(this);
     }
 
     public int operandSize() {return operands.size();}

@@ -1,12 +1,12 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.analyzer.DomTreeBuilder;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRBrInst;
 import masterball.compiler.middleend.llvmir.inst.IRLoadInst;
-import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.debug.Log;
 
@@ -41,6 +41,7 @@ public class ADCE implements IRFuncPass {
     }
 
     private void init(IRFunction function) {
+        new CFGBuilder().runOnFunc(function);
         new DomTreeBuilder(true).runOnFunc(function);
         /*
         Log.mark("ADCE: " + function.identifier());
@@ -59,17 +60,16 @@ public class ADCE implements IRFuncPass {
     }
 
     private void markInstLive(IRBaseInst inst) {
-        if (!liveInst.contains(inst)) {
-            liveInst.add(inst);
-            instWorklist.offer(inst);
+        if (!inst.moveDefs.isEmpty()) {
+            instWorklist.addAll(inst.moveDefs);
+        }
+        else {
+            if (!liveInst.contains(inst)) {
+                liveInst.add(inst);
+                instWorklist.offer(inst);
+            }
         }
     }
-
-    private void markPhiInst(IRPhiInst inst) {
-        if (!inst.collapsedMoves.isEmpty()) inst.collapsedMoves.forEach(this::markInstLive);
-        else markInstLive(inst);
-    }
-
     private void markTerminator(IRBlock block) {
         markInstLive(block.terminator());
     }
@@ -84,19 +84,21 @@ public class ADCE implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
+        Log.track("ADCE", function.identifier());
+
         init(function);
 
         while (!instWorklist.isEmpty()) {
             IRBaseInst inst = instWorklist.poll();
+
+            // Log.info("working...", inst.format());
+
             markInstLive(inst);
             markBlockLive(inst.parentBlock);
 
-            // Log.report("working...", inst.format());
-
             inst.operands.forEach(operand -> {
                 if (operand instanceof IRBaseInst) {
-                    if (operand instanceof IRPhiInst) markPhiInst((IRPhiInst) operand);
-                    else markInstLive((IRBaseInst) operand);
+                    markInstLive((IRBaseInst) operand);
                 }
                 else if (operand instanceof IRBlock) markTerminator((IRBlock) operand);
             });
@@ -113,18 +115,16 @@ public class ADCE implements IRFuncPass {
                                 block.dtNode.idom != null) {
                             IRBlock newDest = block.dtNode.idom.fromBlock;
                             while (!liveBlock.contains(newDest)) newDest = newDest.dtNode.idom.fromBlock;
-                            inst.removedFromUser();
+                            inst.removedFromAllUsers();
                             var newTerminator = new IRBrInst(newDest, null);
                             block.tReplaceTerminator(newTerminator);
                         }
                     } else {
-                        inst.removedFromUser();
+                        inst.removedFromAllUsers();
                         it.remove();
                     }
                 }
             }
         }
-
-        // Log.info("finish ADCE");
     }
 }

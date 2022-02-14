@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.*;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
@@ -69,6 +70,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                             ((IRBrInst) terminator).ifFalseBlock() :
                             ((IRBrInst) terminator).ifTrueBlock();
                     IRBrInst newTerminator = new IRBrInst(anotherDest, pre); //terminated
+                    terminator.removedFromAllUsers();
                     pre.tReplaceTerminator(newTerminator);
                 }
             }
@@ -87,9 +89,9 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                         }
                     }
                     if (phi.operandSize() == 2) {
+                        // can not remove from users because its register will be saved
                         it.remove();
-                        IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
-                        suc.tAddFirst(move);
+                        phi.replaceAllUsesWith(phi.getOperand(0));
                     }
                 }
             }
@@ -149,6 +151,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
             IRBlock realDest = (((BoolConst) condConst).constData) ? ((IRBrInst) terminator).ifTrueBlock() : ((IRBrInst) terminator).ifFalseBlock();
             IRBrInst newTerminator = new IRBrInst(realDest, null); // terminated
+            terminator.removedFromAllUsers();
             block.tReplaceTerminator(newTerminator);
             ret = true;
         }
@@ -172,6 +175,10 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
      */
     @Override
     public void runOnFunc(IRFunction function) {
+        Log.track("SCCP", function.identifier());
+
+        new CFGBuilder().runOnFunc(function);
+
         boolean changed = true;
 
         while (changed) {

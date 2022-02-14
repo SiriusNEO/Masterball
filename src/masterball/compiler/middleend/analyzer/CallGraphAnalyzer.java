@@ -33,6 +33,7 @@ public class CallGraphAnalyzer implements IRModulePass {
         public void init() {
             glbUses = new HashSet<>();
             glbDefs = new HashSet<>();
+            call = new HashSet<>();
             caller = new HashSet<>();
             callee = new HashSet<>();
             cyclic = false;

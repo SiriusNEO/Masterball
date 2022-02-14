@@ -24,7 +24,7 @@ public class IRZextInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRZextInst(fromValue(), type, null);
     }
 
     @Override

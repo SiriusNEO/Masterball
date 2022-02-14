@@ -49,6 +49,8 @@ public class LLVM {
     public static final String LogicNoCutBlockLabel = "lg" + Splitter + "nocut";
     public static final String LogicExitBlockLabel = "lg" + Splitter + "exit";
 
+    public static final String SplitBlockLabel = "split";
+
     // --- Prefix ---
 
     public static final String StrMethodPrefix = FuncNameSplitter + "str" + FuncNameSplitter;
@@ -60,8 +62,7 @@ public class LLVM {
     // this is for Glo2Loc
     public static final String LocalPrefix = "local" + Splitter;
     // this is for inline
-    public static final String InlinePrefix = "inline" + Splitter;
-    public static final String SplitPrefix = "split" + Splitter;
+    public static final String InlinePrefix = "i" + Splitter;
 
     public static final String CommentPrefix = "                                                ; ";
 

@@ -9,17 +9,23 @@ import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.InstVisitor;
 
+import java.util.ArrayList;
+
 public class IRGetElementPtrInst extends IRBaseInst {
 
     // headPointer is the field (struct* or a pointer)
     // yieldType / retType is the type of the result
     // hint: move ptr: getelement type, type* ptr %a, i32 offset
 
+    private String elementName = null;
+
     public IRGetElementPtrInst(String elementName, Value headPointer, IRBaseType yieldType , IRBlock parentBlock, Value... indices) {
         super(addrRename(elementName), yieldType, parentBlock);
         assert headPointer.type instanceof PointerType;
         this.addOperand(headPointer);
         for (Value index : indices) this.addOperand(index);
+
+        this.elementName = elementName;
     }
 
     public IRGetElementPtrInst(Value headPointer, IRBaseType yieldType , IRBlock parentBlock, Value... indices) {
@@ -59,9 +65,24 @@ public class IRGetElementPtrInst extends IRBaseInst {
         return ret.toString();
     }
 
+    // GetElementPtr: indices 1 or 2
     @Override
     public IRBaseInst copy() {
-        return null;
+        if (elementName == null) {
+            if (indicesNum() == 1)
+                return new IRGetElementPtrInst(headPointer(), type, null, getIndex(0));
+            else {
+                assert indicesNum() == 2;
+                return new IRGetElementPtrInst(headPointer(), type, null, getIndex(0), getIndex(1));
+            }
+        } else {
+            if (indicesNum() == 1)
+                return new IRGetElementPtrInst(elementName, headPointer(), type, null, getIndex(0));
+            else {
+                assert indicesNum() == 2;
+                return new IRGetElementPtrInst(elementName, headPointer(), type, null, getIndex(0), getIndex(1));
+            }
+        }
     }
 
     @Override

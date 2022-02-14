@@ -24,7 +24,7 @@ public class IRTruncInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRTruncInst(fromValue(), type, null);
     }
 
     @Override

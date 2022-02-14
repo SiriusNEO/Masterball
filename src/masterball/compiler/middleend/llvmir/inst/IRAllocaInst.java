@@ -7,6 +7,7 @@ import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.InstVisitor;
 
 public class IRAllocaInst extends IRBaseInst {
+    public String allocaName;
     public IRBaseType allocaType;
 
     // PS: allocaType is the *pointedType* of this Inst
@@ -14,6 +15,7 @@ public class IRAllocaInst extends IRBaseInst {
         super(addrRename(allocaName),
               new PointerType(allocaType), parentBlock, true);
 
+        this.allocaName = allocaName;
         this.allocaType = allocaType;
     }
 
@@ -26,7 +28,7 @@ public class IRAllocaInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRAllocaInst(allocaName, allocaType, null);
     }
 
     @Override

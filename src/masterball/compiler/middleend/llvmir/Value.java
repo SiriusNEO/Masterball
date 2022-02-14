@@ -1,11 +1,14 @@
 package masterball.compiler.middleend.llvmir;
 
 import masterball.compiler.backend.rvasm.operand.BaseOperand;
+import masterball.compiler.middleend.llvmir.inst.IRMoveInst;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.share.lang.LLVM;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class Value {
@@ -43,6 +46,9 @@ public class Value {
     public Value resolveFrom = null;
     public String name;
     public String comment = null;
+
+    // a move will def a value but due to it is a void inst, use this
+    public Set<IRMoveInst> moveDefs = new HashSet<>();
 
     // interact with BackEnd
     public BaseOperand asmOperand = null;

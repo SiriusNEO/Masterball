@@ -32,7 +32,7 @@ public class IRLoadInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRLoadInst(loadPtr(), null);
     }
 
     @Override

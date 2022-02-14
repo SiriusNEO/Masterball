@@ -6,7 +6,11 @@ import masterball.compiler.middleend.llvmir.User;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.share.pass.InstVisitor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class IRBaseInst extends User {
+
     public IRBlock parentBlock;
     public String instName;
 
@@ -31,7 +35,8 @@ public abstract class IRBaseInst extends User {
         if (parentBlock != null) parentBlock.instructions.addFirst(this);
     }
 
-    public void removedFromUser() {
+    // before an instruction removed/replaced, call it
+    public void removedFromAllUsers() {
         for (Value value : operands) {
             if (value != null)
                 value.users.remove(this);
@@ -44,6 +49,8 @@ public abstract class IRBaseInst extends User {
 
     public boolean isTerminator() {return false;}
 
+    // copy method will create a copy of the original instruction
+    // the parentBlock will be set "null"
     public abstract IRBaseInst copy();
 
     public abstract void accept(InstVisitor visitor);

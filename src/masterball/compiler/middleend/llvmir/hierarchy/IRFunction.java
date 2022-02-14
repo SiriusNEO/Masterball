@@ -15,6 +15,8 @@ public class IRFunction extends GlobalValue {
 
     public IRBlock entryBlock, exitBlock;
 
+    public Value retValPtr;
+
     // info in CallGraph
     public CallGraphAnalyzer.Node node = new CallGraphAnalyzer.Node(this);
 

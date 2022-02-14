@@ -94,8 +94,8 @@ public class IRBuilder implements ASTVisitor {
         cur.block = cur.func.entryBlock;
 
         if (!node.funcRegistry.type.retType.match(MxBaseType.BuiltinType.VOID)) {
-            cur.retValPtr = memAlloca(LLVM.RetReg, translator.translateAllocaType(node.funcRegistry.type.retType));
-            new IRRetInst(memLoad(cur.retValPtr, cur.func.exitBlock), cur.func.exitBlock);
+            cur.func.retValPtr = memAlloca(LLVM.RetReg, translator.translateAllocaType(node.funcRegistry.type.retType));
+            new IRRetInst(memLoad(cur.func.retValPtr, cur.func.exitBlock), cur.func.exitBlock);
         } else {
             new IRRetInst(cur.func.exitBlock);
         }
@@ -104,7 +104,7 @@ public class IRBuilder implements ASTVisitor {
         if (Objects.equals(node.funcRegistry.name, MxStar.mainKw)) {
             // call init
             new IRCallInst((IRFunction) infoManager.queryFuncInStack(LLVM.InitFuncName).value, cur.block, new ArrayList<>());
-            memStore(cur.retValPtr, new IntConst(0));
+            memStore(cur.func.retValPtr, new IntConst(0));
         }
 
         for (int i = 0; i < cur.func.getArgNum(); i++) {
@@ -268,7 +268,7 @@ public class IRBuilder implements ASTVisitor {
     public void visit(ReturnStmtNode node) {
         if (node.retExpNode != null && !node.retExpNode.type.match(MxBaseType.BuiltinType.VOID)) {
             node.retExpNode.accept(this);
-            memStore(cur.retValPtr, node.retExpNode.value);
+            memStore(cur.func.retValPtr, node.retExpNode.value);
         }
         new IRBrInst(cur.func.exitBlock, cur.block);
     }

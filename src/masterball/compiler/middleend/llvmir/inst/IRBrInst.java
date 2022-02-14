@@ -47,7 +47,8 @@ public class IRBrInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        if (isJump()) return new IRBrInst(destBlock(), null);
+        return new IRBrInst(condition(), ifTrueBlock(), ifFalseBlock(), null);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class IRBitCastInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRBitCastInst(fromValue(), type, null);
     }
 
     @Override

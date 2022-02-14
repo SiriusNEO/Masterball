@@ -31,7 +31,8 @@ public class IRRetInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        if (isVoid()) return new IRRetInst(null);
+        return new IRRetInst(retVal(), null);
     }
 
     @Override

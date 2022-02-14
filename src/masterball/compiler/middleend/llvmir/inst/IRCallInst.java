@@ -38,6 +38,8 @@ public class IRCallInst extends IRBaseInst {
         return this.getOperand(index+1);
     }
 
+    // noalias is for LLVM IR "noalias" keyword
+
     public IRCallInst noalias() {
         noaliasFlag = true;
         return this;
@@ -63,7 +65,10 @@ public class IRCallInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        ArrayList<Value> args = new ArrayList<Value>();
+        for (int i = 0; i < this.callFunc().getArgNum(); i++)
+            args.add(getArg(i));
+        return new IRCallInst(callFunc(), null, args);
     }
 
     @Override

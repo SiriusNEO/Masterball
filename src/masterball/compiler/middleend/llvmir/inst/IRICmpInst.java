@@ -30,7 +30,7 @@ public class IRICmpInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRICmpInst(op, lhs(), rhs(), null);
     }
 
     @Override

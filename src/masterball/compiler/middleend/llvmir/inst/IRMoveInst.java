@@ -11,12 +11,13 @@ import masterball.compiler.share.pass.InstVisitor;
 // created by SSADestructor
 
 public class IRMoveInst extends IRBaseInst {
+
     public IRMoveInst(Value dest, Value source, IRBlock parentBlock) {
         super(LLVM.MoveInst, IRTranslator.voidType, parentBlock);
         this.addOperand(dest);
         this.addOperand(source);
 
-        if (dest instanceof IRPhiInst) ((IRPhiInst) dest).collapsedMoves.add(this);
+        dest.moveDefs.add(this);
     }
 
     public Value dest() {
@@ -44,7 +45,7 @@ public class IRMoveInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRMoveInst(dest(), source(), null);
     }
 
     @Override

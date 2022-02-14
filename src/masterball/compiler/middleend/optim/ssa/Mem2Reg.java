@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim.ssa;
 
+import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.analyzer.DomTreeBuilder;
 import masterball.compiler.middleend.llvmir.User;
 import masterball.compiler.middleend.llvmir.Value;
@@ -54,6 +55,7 @@ public class Mem2Reg implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
+        new CFGBuilder().runOnFunc(function);
         new DomTreeBuilder(false).runOnFunc(function);
         phiInsertion(function);
         variableRenaming(function.entryBlock);

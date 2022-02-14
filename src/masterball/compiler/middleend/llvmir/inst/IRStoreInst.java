@@ -36,7 +36,7 @@ public class IRStoreInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        return new IRStoreInst(storePtr(), storeValue(), null);
     }
 
     @Override

@@ -6,13 +6,11 @@ import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
-import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
-import masterball.compiler.middleend.llvmir.inst.IRBrInst;
-import masterball.compiler.middleend.llvmir.inst.IRCallInst;
-import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
+import masterball.compiler.middleend.llvmir.inst.*;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.lang.MxStar;
 import masterball.compiler.share.pass.IRModulePass;
+import masterball.debug.Log;
 
 import java.util.*;
 
@@ -45,14 +43,15 @@ public class FuncInliner implements IRModulePass {
     }
 
     private boolean canInline(IRFunction caller, IRFunction callee) {
-        return isNecessary(callee) &&
-               !callee.node.cyclic &&
+        return !isNecessary(callee) &&
+               callee.node.call.isEmpty() &&
                instNum.get(caller) <= CallerInstNumThreshold &&
                instNum.get(callee) <= CalleeInstNumThreshold;
     }
 
     private boolean canForceInline(IRFunction caller, IRFunction callee) {
-        return  instNum.get(caller) <= CallerInstNumThreshold &&
+        return  !isNecessary(callee) &&
+                instNum.get(caller) <= CallerInstNumThreshold &&
                 instNum.get(callee) <= CalleeInstNumThreshold;
     }
 
@@ -68,7 +67,8 @@ public class FuncInliner implements IRModulePass {
 
         for (IRFunction function : module.functions) {
             for (IRCallInst call : function.node.call)
-                if (canInline(function, call.callFunc()))
+                if ((!forced && canInline(function, call.callFunc()))
+                        || (forced && canForceInline(function, call.callFunc())))
                     inlineAbleSet.add(call);
         }
     }
@@ -89,20 +89,26 @@ public class FuncInliner implements IRModulePass {
         Map<IRBlock, IRBlock> replaceBlockMap = new HashMap<>();
 
         IRBlock inlineEntry = call.parentBlock;
-        IRBlock inlineExit = new IRBlock(LLVM.SplitPrefix + call.parentBlock.name, caller);
+        IRBlock inlineExit = new IRBlock(LLVM.SplitBlockLabel, caller);
 
         // step 1. replicate the function body
         for (IRBlock block : callee.blocks) {
             IRBlock inlinedBlock = new IRBlock(LLVM.InlinePrefix + block.name, caller);
             replaceValueMap.put(block, inlinedBlock);
             replaceBlockMap.put(block, inlinedBlock);
-            for (IRBaseInst inst : block.instructions) {
-                IRBaseInst newInst = inst.copy();
-                newInst.setParentBlock(inlinedBlock);
-            }
+
+            // phi first, because the block will be terminated after normal inst inserted
             for (IRPhiInst phi : block.phiInsts) {
                 IRPhiInst newPhi = (IRPhiInst) phi.copy();
-                newPhi.setParentBlock(block);
+                newPhi.setParentBlock(inlinedBlock);
+                replaceValueMap.put(phi, newPhi);
+            }
+
+            for (IRBaseInst inst : block.instructions) {
+                IRBaseInst newInst;
+                newInst = inst.copy();
+                newInst.setParentBlock(inlinedBlock);
+                replaceValueMap.put(inst, newInst);
             }
         }
 
@@ -131,7 +137,18 @@ public class FuncInliner implements IRModulePass {
             it.remove();
         }
 
+        // call parentBlock to inline.entry
         inlineEntry.tAddLast(new IRBrInst(replaceBlockMap.get(callee.entryBlock), null));
+
+        // ret -> move
+        IRRetInst ret = (IRRetInst) replaceBlockMap.get(callee.exitBlock).terminator();
+
+        if (!callee.isVoid()) {
+            call.replaceAllUsesWith(ret.retVal());
+        }
+
+        // ret - > jump to split
+        replaceBlockMap.get(callee.exitBlock).terminator().removedFromAllUsers();
         replaceBlockMap.get(callee.exitBlock).tReplaceTerminator(
                 new IRBrInst(inlineExit, null)
         );
@@ -141,16 +158,25 @@ public class FuncInliner implements IRModulePass {
     public void runOnModule(IRModule module) {
         this.module = module;
 
+        Log.track("start inlining");
+
         while (true) {
             new CallGraphAnalyzer().runOnModule(module);
             collectAbleSet();
+
+            Log.mark("able set: ");
+            inlineAbleSet.forEach(call -> Log.info(call.callFunc().identifier()));
+
             if (inlineAbleSet.isEmpty()) break;
+
             for (IRCallInst pendingCall : inlineAbleSet) {
                 inlining(pendingCall);
             }
         }
 
+        new CallGraphAnalyzer().runOnModule(module);
+
         // remove dead function
-        module.functions.removeIf(function -> function.node.caller.size() == 0);
+        module.functions.removeIf(function -> !isNecessary(function) && function.node.caller.size() == 0);
     }
 }

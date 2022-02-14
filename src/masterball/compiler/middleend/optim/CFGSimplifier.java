@@ -75,6 +75,7 @@ public class CFGSimplifier implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
+        Log.track("CFG Simplifier", function.identifier());
         new CFGBuilder().runOnFunc(function);
         removeUnreachableBlock(function);
         mergeBlocks(function);

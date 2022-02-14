@@ -21,17 +21,20 @@ public class MiddleEndOptimizer implements IRModulePass {
         new CallGraphAnalyzer().runOnModule(module);
 
         for (IRFunction function : module.functions) {
-            new CFGBuilder().runOnFunc(function);
             new Glo2Loc().runOnFunc(function);
-
             new Mem2Reg().runOnFunc(function);
+        }
 
-            //TODO
+        // new FuncInliner(false).runOnModule(module);
 
+        for (IRFunction function : module.functions) {
             new SCCP().runOnFunc(function);
             new ADCE().runOnFunc(function);
             new CFGSimplifier().runOnFunc(function);
             new SSADestructor().runOnFunc(function);
+            new CFGBuilder().runOnFunc(function);
         }
+
+        // new FuncInliner(true).runOnModule(module);
     }
 }

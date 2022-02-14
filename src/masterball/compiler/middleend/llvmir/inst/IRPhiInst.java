@@ -14,10 +14,6 @@ import java.util.Set;
 
 public class IRPhiInst extends IRBaseInst {
 
-    // some IRPhiInst will deteriorate to MoveInst (e.g. see @SCCP Pass)
-    // due to MoveInst is a void inst, if a Phi deteriorated, use these to query the move
-    public Set<IRMoveInst> collapsedMoves = new HashSet<>();
-
     public IRPhiInst(IRBaseType yieldType, IRBlock parentBlock, Value... operands) {
         super(LLVM.PhiInst, yieldType, parentBlock);
 
@@ -46,7 +42,10 @@ public class IRPhiInst extends IRBaseInst {
 
     @Override
     public IRBaseInst copy() {
-        return null;
+        IRPhiInst ret = new IRPhiInst(type, null);
+        for (int i = 0; i < this.operandSize(); i += 2)
+            ret.addBranch(this.getOperand(i), (IRBlock) this.getOperand(i+1));
+        return ret;
     }
 
     @Override
