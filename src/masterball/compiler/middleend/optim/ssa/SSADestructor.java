@@ -56,7 +56,7 @@ public class SSADestructor implements IRFuncPass {
        for (IRBlock block : function.blocks) {
            for (IRPhiInst phi : block.phiInsts) {
                for (int i = 0; i < phi.operandSize(); i += 2) {
-                   // insert in the graph of preds
+                   // insert in the graph of prevs
                    copyGraphMap.get((IRBlock) phi.getOperand(i + 1)).
                            insert(new CopyGraph.CopyEdge(phi, phi.getOperand(i)));
                }

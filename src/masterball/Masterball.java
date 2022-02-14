@@ -6,7 +6,7 @@ import masterball.compiler.middleend.MiddleEnd;
 import masterball.compiler.share.error.CompileError;
 import masterball.console.*;
 import masterball.console.error.ConsoleError;
-import masterball.debug.Log;
+import masterball.debug.Timer;
 
 /**
  * Masterball, a Compiler for Mx* language
@@ -32,20 +32,18 @@ public class Masterball {
 
     public static void main(String[] args) throws Exception {
         try {
-            Console console = new Console(args);
+            Timer timer = new Timer();
 
+            Console console = new Console(args);
             if (console.showHelp || console.showVersion) return;
 
             FrontEnd frontEnd = new FrontEnd(console);
-
             if (console.fsyntaxOnly) return;
-
             MiddleEnd middleEnd = new MiddleEnd(frontEnd, console);
-
             if (console.irOnly) return;
-
             BackEnd backEnd = new BackEnd(middleEnd, console);
 
+            timer.display();
         }
         catch (Exception e) {
             errorHandle(e);

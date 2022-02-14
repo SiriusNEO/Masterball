@@ -91,7 +91,8 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                     if (phi.operandSize() == 2) {
                         // can not remove from users because its register will be saved
                         it.remove();
-                        phi.replaceAllUsesWith(phi.getOperand(0));
+                        IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
+                        suc.tAddFirst(move);
                     }
                 }
             }
@@ -176,8 +177,6 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
     @Override
     public void runOnFunc(IRFunction function) {
         Log.track("SCCP", function.identifier());
-
-        new CFGBuilder().runOnFunc(function);
 
         boolean changed = true;
 

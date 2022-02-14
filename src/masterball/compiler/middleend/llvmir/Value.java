@@ -22,7 +22,7 @@ public class Value {
         if (renameCnt == null) renameCnt = 0;
         renameTable.put(rawName, renameCnt+1);
         if (renameCnt == 0) return rawName;
-        return rawName + renameCnt;
+        return rawName + LLVM.Splitter + renameCnt;
     }
 
     public static String addrRename(String rawName) {

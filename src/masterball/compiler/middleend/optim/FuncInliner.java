@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.analyzer.CallGraphAnalyzer;
 import masterball.compiler.middleend.llvmir.User;
 import masterball.compiler.middleend.llvmir.Value;
@@ -28,7 +29,7 @@ public class FuncInliner implements IRModulePass {
     private IRModule module;
     private final boolean forced;
 
-    private static final int CalleeInstNumThreshold = 400,
+    private static final int CalleeInstNumThreshold = 500,
                              CallerInstNumThreshold = 1000;
 
     private final Set<IRCallInst> inlineAbleSet = new HashSet<>();
@@ -93,7 +94,7 @@ public class FuncInliner implements IRModulePass {
 
         // step 1. replicate the function body
         for (IRBlock block : callee.blocks) {
-            IRBlock inlinedBlock = new IRBlock(LLVM.InlinePrefix + block.name, caller);
+            IRBlock inlinedBlock = new IRBlock(block.name + LLVM.InlineSuffix, caller);
             replaceValueMap.put(block, inlinedBlock);
             replaceBlockMap.put(block, inlinedBlock);
 
@@ -105,8 +106,7 @@ public class FuncInliner implements IRModulePass {
             }
 
             for (IRBaseInst inst : block.instructions) {
-                IRBaseInst newInst;
-                newInst = inst.copy();
+                IRBaseInst newInst = inst.copy();
                 newInst.setParentBlock(inlinedBlock);
                 replaceValueMap.put(inst, newInst);
             }
@@ -126,6 +126,8 @@ public class FuncInliner implements IRModulePass {
         }
 
         //step 2. relink the block
+
+        // split the parentBlock of call
         boolean splitStart = false;
         var it = inlineEntry.instructions.iterator();
 
@@ -140,9 +142,11 @@ public class FuncInliner implements IRModulePass {
         // call parentBlock to inline.entry
         inlineEntry.tAddLast(new IRBrInst(replaceBlockMap.get(callee.entryBlock), null));
 
-        // ret -> move
-        IRRetInst ret = (IRRetInst) replaceBlockMap.get(callee.exitBlock).terminator();
+        // split to inlineEntry and inlineExit, redirect the suc to inlineExit
+        inlineEntry.nexts.forEach(suc -> suc.redirectPreBlock(inlineEntry, inlineExit));
 
+        // ret -> replaceAllUses
+        IRRetInst ret = (IRRetInst) replaceBlockMap.get(callee.exitBlock).terminator();
         if (!callee.isVoid()) {
             call.replaceAllUsesWith(ret.retVal());
         }
@@ -152,6 +156,8 @@ public class FuncInliner implements IRModulePass {
         replaceBlockMap.get(callee.exitBlock).tReplaceTerminator(
                 new IRBrInst(inlineExit, null)
         );
+
+        new CFGBuilder().runOnFunc(caller);
     }
 
     @Override
@@ -164,8 +170,8 @@ public class FuncInliner implements IRModulePass {
             new CallGraphAnalyzer().runOnModule(module);
             collectAbleSet();
 
-            Log.mark("able set: ");
-            inlineAbleSet.forEach(call -> Log.info(call.callFunc().identifier()));
+            // Log.mark("able set: ");
+            // inlineAbleSet.forEach(call -> Log.info(call.callFunc().identifier()));
 
             if (inlineAbleSet.isEmpty()) break;
 

@@ -46,7 +46,8 @@ public class CFGSimplifier implements IRFuncPass {
         for (IRBlock beMerged : toMergeSet) {
             IRBlock preBlock = beMerged.prevs.get(0);
 
-            // Log.report("merged", preBlock.identifier(), beMerged.identifier());
+            // Log.info("merged", preBlock.identifier(), beMerged.identifier());
+            // beMerged.nexts.forEach(suc -> Log.info(suc.identifier()));
 
             var preTerminator = preBlock.terminator();
 

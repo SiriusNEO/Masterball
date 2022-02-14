@@ -7,6 +7,7 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRBrInst;
 import masterball.compiler.middleend.llvmir.inst.IRLoadInst;
+import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.debug.Log;
 
@@ -60,8 +61,8 @@ public class ADCE implements IRFuncPass {
     }
 
     private void markInstLive(IRBaseInst inst) {
-        if (!inst.moveDefs.isEmpty()) {
-            instWorklist.addAll(inst.moveDefs);
+        if (!inst.moveDefs.isEmpty() && inst instanceof IRPhiInst) {
+            inst.moveDefs.forEach(this::markInstLive);
         }
         else {
             if (!liveInst.contains(inst)) {
@@ -70,6 +71,7 @@ public class ADCE implements IRFuncPass {
             }
         }
     }
+
     private void markTerminator(IRBlock block) {
         markInstLive(block.terminator());
     }
@@ -91,7 +93,7 @@ public class ADCE implements IRFuncPass {
         while (!instWorklist.isEmpty()) {
             IRBaseInst inst = instWorklist.poll();
 
-            // Log.info("working...", inst.format());
+            // Log.info("working...", inst.format(), inst.parentBlock.identifier());
 
             markInstLive(inst);
             markBlockLive(inst.parentBlock);
