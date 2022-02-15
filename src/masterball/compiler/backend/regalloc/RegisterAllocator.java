@@ -361,9 +361,9 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * TODO better spill strategy
      */
     private void selectSpill() {
+        /*
         Register minReg = null;
         double minCost = Double.POSITIVE_INFINITY;
-
         for (Register reg : spillWorklist) {
             if (introducedTemp.contains(reg)) continue;
             double regCost = reg.node.priority / reg.node.degree;
@@ -372,7 +372,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
                 minCost = regCost;
             }
         }
-
         // those introduced by rewrite
         if (minReg == null) {
             for (Register reg : spillWorklist) {
@@ -384,10 +383,13 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             }
         }
         // Log.track("selectSpill", minReg);
+        */
 
-        spillWorklist.remove(minReg);
-        simplifyWorklist.add(minReg);
-        freezeMoves(minReg);
+        var it = spillWorklist.iterator();
+        var chosen = it.next();
+        it.remove();
+        simplifyWorklist.add(chosen);
+        freezeMoves(chosen);
     }
 
     private void assignColors() {
