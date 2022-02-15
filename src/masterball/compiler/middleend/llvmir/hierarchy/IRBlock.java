@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.llvmir.hierarchy;
 
+import masterball.compiler.middleend.analyzer.LoopAnalyzer;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRBrInst;
@@ -9,6 +10,7 @@ import masterball.compiler.middleend.analyzer.DomTreeBuilder;
 import masterball.compiler.share.error.runtime.InternalError;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 // BasicBlock is also a Value
@@ -28,6 +30,9 @@ public class IRBlock extends Value {
 
     // info in DomTree, assigned in DomTreeBuilder
     public DomTreeBuilder.Node dtNode = new DomTreeBuilder.Node(this);
+
+    // info in Loop
+    public HashSet<LoopAnalyzer.LoopInfo> belongLoops = new HashSet<>();
 
     public IRBlock(String label, IRFunction parentFunction) {
         super(label, new LabelType());

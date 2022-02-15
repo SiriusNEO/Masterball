@@ -4,6 +4,8 @@ import masterball.compiler.backend.rvasm.inst.AsmBaseInst;
 import masterball.compiler.backend.rvasm.operand.BaseOperand;
 import masterball.compiler.backend.rvasm.operand.Register;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
+import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
+import masterball.compiler.share.error.runtime.InternalError;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,5 +28,10 @@ public class AsmBlock extends BaseOperand {
 
     public void addInst(AsmBaseInst inst) {
         instructions.add(inst);
+    }
+
+    public AsmBaseInst terminator() {
+        if (instructions.isEmpty()) throw new InternalError("empty AsmBLock! no terminator! " + this.identifier);
+        return instructions.getLast();
     }
 }

@@ -361,7 +361,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * TODO better spill strategy
      */
     private void selectSpill() {
-        /*
         Register minReg = null;
         double minCost = Double.POSITIVE_INFINITY;
 
@@ -385,13 +384,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             }
         }
         // Log.track("selectSpill", minReg);
-        */
 
-        var it = spillWorklist.iterator();
-        var chosen = it.next();
-        it.remove();
-        simplifyWorklist.add(chosen);
-        freezeMoves(chosen);
+        spillWorklist.remove(minReg);
+        simplifyWorklist.add(minReg);
+        freezeMoves(minReg);
     }
 
     private void assignColors() {
@@ -537,7 +533,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         int k = 0;
 
         Set<Register> commonAdj = new HashSet<>(adjacent(u));
-        commonAdj.addAll(adjacent(v));
+        commonAdj.addAll(adjacent(u));
 
         for (var n : commonAdj)
             if (n.node.degree >= K) k++;

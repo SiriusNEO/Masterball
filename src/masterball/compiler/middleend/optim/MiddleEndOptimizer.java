@@ -16,6 +16,8 @@ import masterball.debug.Log;
 
 public class MiddleEndOptimizer implements IRModulePass {
 
+    private static final int OptimizeRound = 5;
+
     @Override
     public void runOnModule(IRModule module) {
 
@@ -26,16 +28,25 @@ public class MiddleEndOptimizer implements IRModulePass {
             new Mem2Reg().runOnFunc(function);
         }
 
-        new FuncInliner(false).runOnModule(module);
+        boolean forceInlined = false;
+        for (int i = 1; i <= OptimizeRound; i++) {
+            new FuncInliner(false).runOnModule(module);
 
-        for (IRFunction function : module.functions) {
-            new SCCP().runOnFunc(function);
-            new ADCE().runOnFunc(function);
-            new CFGSimplifier().runOnFunc(function);
-            new SSADestructor().runOnFunc(function);
+            for (IRFunction function : module.functions) {
+                new SCCP().runOnFunc(function);
+                new ADCE().runOnFunc(function);
+                new CFGSimplifier().runOnFunc(function);
+                new CSE().runOnFunc(function);
+            }
+
+            if (!forceInlined) {
+                new FuncInliner(true).runOnModule(module);
+                forceInlined = true;
+            }
         }
 
-        new FuncInliner(true).runOnModule(module);
+        for (IRFunction function : module.functions)
+            new SSADestructor().runOnFunc(function);
 
         for (IRFunction function : module.functions) new CFGBuilder().runOnFunc(function);
     }

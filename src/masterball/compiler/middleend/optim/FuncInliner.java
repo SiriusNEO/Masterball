@@ -62,8 +62,10 @@ public class FuncInliner implements IRModulePass {
 
         for (IRFunction function : module.functions) {
             instNum.putIfAbsent(function, 0);
-            for (IRBlock block : function.blocks)
-               instNum.put(function, instNum.get(function) + block.instructions.size());
+            for (IRBlock block : function.blocks) {
+                instNum.put(function, instNum.get(function) + block.instructions.size());
+                // Log.info("inst num", function.name, instNum.get(function));
+            }
         }
 
         for (IRFunction function : module.functions) {

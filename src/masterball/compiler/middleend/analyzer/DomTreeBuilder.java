@@ -26,14 +26,16 @@ public class DomTreeBuilder implements IRFuncPass {
         for (int i = 0; i < blocksInRPO.size(); i++)
             blocksInRPO.get(i).dtNode.order = i;
 
-        calculateDoms(function);
+        calculateIDom(function);
         calculateDF(function);
+        calculateDoms(startBlock);
     }
 
     public static class Node {
         public int order;
         public IRBlock fromBlock;
         public Node idom;
+        public HashSet<Node> doms;
         public List<Node> sons;
         public List<IRBlock> domFrontier;
 
@@ -44,6 +46,7 @@ public class DomTreeBuilder implements IRFuncPass {
         public void init() {
             order = 0;
             idom = null;
+            doms = new HashSet<>();
             sons = new ArrayList<>();
             domFrontier = new ArrayList<>();
         }
@@ -78,7 +81,7 @@ public class DomTreeBuilder implements IRFuncPass {
         return u;
     }
 
-    private void calculateDoms(IRFunction function) {
+    private void calculateIDom(IRFunction function) {
         Node startNode = startBlock.dtNode;
         startNode.idom = startNode;
         boolean changed = true;
@@ -119,5 +122,13 @@ public class DomTreeBuilder implements IRFuncPass {
                 }
             }
         }
+    }
+
+    private void calculateDoms(IRBlock block) {
+        if (block.dtNode.idom != null) {
+            block.dtNode.doms.addAll(block.dtNode.idom.doms);
+            block.dtNode.doms.add(block.dtNode.idom);
+        }
+        block.dtNode.sons.forEach(node -> calculateDoms(node.fromBlock));
     }
 }

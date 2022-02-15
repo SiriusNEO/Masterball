@@ -16,7 +16,7 @@ import java.util.HashSet;
  * directly use b1 to replace b2
  */
 
-public class RedundantBlock implements AsmFuncPass {
+public class BlockMerge implements AsmFuncPass {
 
     private final UnionSet<AsmBlock> unionSet = new UnionSet<>();
 
