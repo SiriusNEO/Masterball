@@ -5,7 +5,7 @@ import masterball.compiler.middleend.llvmir.StructProto;
 import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.constant.StringConst;
 import masterball.compiler.share.lang.LLVM;
-import masterball.compiler.share.error.runtime.UnknownError;
+import masterball.compiler.share.error.runtime.InternalError;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -54,7 +54,7 @@ public class IRModule {
             if (Objects.equals(builtinFunction.name, LLVM.BottomStrFuncPrefix + op))
                 return builtinFunction;
         }
-        throw new UnknownError(op);
+        throw new InternalError(op);
     }
 
     public StringConst getStringConst(String constData) {

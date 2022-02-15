@@ -4,15 +4,13 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.inst.*;
 import masterball.compiler.backend.rvasm.operand.*;
-import masterball.compiler.middleend.llvmir.constant.BaseConst;
 import masterball.compiler.middleend.llvmir.constant.BoolConst;
 import masterball.compiler.middleend.llvmir.constant.IntConst;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.NullptrConst;
+import masterball.compiler.share.error.runtime.InternalError;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.error.runtime.UnimplementedError;
-import masterball.compiler.share.error.runtime.UnknownError;
-import masterball.debug.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +55,7 @@ public class AsmCurrent {
     }
 
     public Immediate toImm(int value) {
-        if (value < -1 * RV32I.ImmBound || value > RV32I.ImmBound) throw new UnknownError(this);
+        if (value < -1 * RV32I.ImmBound || value > RV32I.ImmBound) throw new InternalError("invalid immediate detected");
         return new Immediate(value);
     }
 

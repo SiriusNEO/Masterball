@@ -3,12 +3,9 @@ package masterball.compiler.middleend.llvmir.inst;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
+import masterball.compiler.share.error.runtime.InternalError;
 import masterball.compiler.share.lang.LLVM;
-import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.pass.InstVisitor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 // number of PhiInst operands must be even
 
@@ -19,7 +16,7 @@ public class IRPhiInst extends IRBaseInst {
 
         for (Value operand : operands) this.addOperand(operand);
 
-        if (operands.length % 2 != 0) throw new UnknownError(this);
+        if (operands.length % 2 != 0) throw new InternalError("invalid Phi operands num");
     }
 
     public void addBranch(Value branchData, IRBlock preBlock) {

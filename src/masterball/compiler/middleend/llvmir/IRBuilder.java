@@ -17,10 +17,10 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
 import masterball.compiler.middleend.llvmir.inst.*;
 import masterball.compiler.middleend.llvmir.type.*;
+import masterball.compiler.share.error.runtime.InternalError;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.lang.MxStar;
 import masterball.compiler.share.error.runtime.UnimplementedError;
-import masterball.compiler.share.error.runtime.UnknownError;
 import masterball.compiler.share.misc.Pair;
 import masterball.compiler.share.pass.ASTVisitor;
 
@@ -315,7 +315,7 @@ public class IRBuilder implements ASTVisitor {
                 new IRBrInst(exitBlock, cur.block);
                 node.value = new IRPhiInst(IRTranslator.boolType, exitBlock, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, cur.block);
                 cur.block = exitBlock;
-            } else throw new UnknownError(node.codePos, node);
+            } else throw new InternalError("unknown IR logic op");
         } else {
             node.rhsExpNode.accept(this);
             if (node.lhsExpNode.type.match(MxBaseType.BuiltinType.STRING)) {
@@ -340,7 +340,7 @@ public class IRBuilder implements ASTVisitor {
                         cur.block
                 );
             } else {
-                throw new UnknownError(node.codePos, node);
+                throw new InternalError("unknown IR arith op");
             }
         }
     }
@@ -446,7 +446,7 @@ public class IRBuilder implements ASTVisitor {
             case MxStar.DecrementOp:
                 calculated = new IRBinaryInst(LLVM.SubInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(1), cur.block);
                 break;
-            default: throw new UnknownError(node.codePos, node);
+            default: throw new InternalError("unknown postfix op");
         }
         memStore(storePtr, calculated);
         node.value = node.selfExpNode.value;
@@ -462,7 +462,7 @@ public class IRBuilder implements ASTVisitor {
                 calculated = new IRBinaryInst(LLVM.AddInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(1), cur.block);break;
             case MxStar.DecrementOp:
                 calculated = new IRBinaryInst(LLVM.SubInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(1), cur.block);break;
-            default: throw new UnknownError(node.codePos, node);
+            default: throw new InternalError("unknown prefix op");
         }
         memStore(storePtr, calculated);
         calculated.resolveFrom = storePtr; // left value
@@ -481,7 +481,7 @@ public class IRBuilder implements ASTVisitor {
                 node.value = new IRBinaryInst(LLVM.XorInst, IRTranslator.boolType, node.selfExpNode.value, new BoolConst(true), cur.block);break;
             case MxStar.BitNotOp:
                 node.value = new IRBinaryInst(LLVM.XorInst, IRTranslator.i32Type, node.selfExpNode.value, new IntConst(-1), cur.block);break;
-            default: throw new UnknownError(node.codePos, node);
+            default: throw new InternalError("unknown unary op");
         }
     }
 

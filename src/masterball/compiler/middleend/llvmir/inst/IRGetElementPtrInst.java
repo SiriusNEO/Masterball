@@ -5,11 +5,9 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.middleend.llvmir.type.StructType;
-import masterball.compiler.share.error.runtime.UnknownError;
+import masterball.compiler.share.error.runtime.InternalError;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.InstVisitor;
-
-import java.util.ArrayList;
 
 public class IRGetElementPtrInst extends IRBaseInst {
 
@@ -46,7 +44,7 @@ public class IRGetElementPtrInst extends IRBaseInst {
     }
 
     public boolean isGetMember() {
-        if (indicesNum() > 2) throw new UnknownError(this); // it is highly special...
+        if (indicesNum() > 2) throw new InternalError("invalid getelementptr indices num"); // it is highly special...
         return ((PointerType) headPointer().type).pointedType instanceof StructType && indicesNum() == 2;
     }
 

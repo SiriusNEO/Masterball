@@ -29,8 +29,8 @@ public class FuncInliner implements IRModulePass {
     private IRModule module;
     private final boolean forced;
 
-    private static final int CalleeInstNumThreshold = 500,
-                             CallerInstNumThreshold = 1000;
+    private static final int CalleeInstNumThreshold = 200,
+                             CallerInstNumThreshold = 500;
 
     private final Set<IRCallInst> inlineAbleSet = new HashSet<>();
     private final Map<IRFunction, Integer> instNum = new HashMap<>();
@@ -90,11 +90,17 @@ public class FuncInliner implements IRModulePass {
         Map<IRBlock, IRBlock> replaceBlockMap = new HashMap<>();
 
         IRBlock inlineEntry = call.parentBlock;
-        IRBlock inlineExit = new IRBlock(LLVM.SplitBlockLabel, caller);
 
         // step 1. replicate the function body
-        for (IRBlock block : callee.blocks) {
+
+        // backup the block to avoid concurrent exception in self-recursion
+        ArrayList<IRBlock> calleeBlocks = new ArrayList<>(callee.blocks);
+
+        for (IRBlock block : calleeBlocks) {
             IRBlock inlinedBlock = new IRBlock(block.name + LLVM.InlineSuffix, caller);
+
+            // Log.info("inline", block.identifier(), inlinedBlock.identifier());
+
             replaceValueMap.put(block, inlinedBlock);
             replaceBlockMap.put(block, inlinedBlock);
 
@@ -118,6 +124,8 @@ public class FuncInliner implements IRModulePass {
         for (IRBlock oldBlock : replaceBlockMap.keySet()) {
             IRBlock newBlock = replaceBlockMap.get(oldBlock);
 
+            // Log.info("mapping", oldBlock.identifier(), newBlock.identifier());
+
             for (IRBaseInst inst : newBlock.instructions)
                 replaceOperand(inst, replaceValueMap);
 
@@ -126,6 +134,8 @@ public class FuncInliner implements IRModulePass {
         }
 
         //step 2. relink the block
+
+        IRBlock inlineExit = new IRBlock(LLVM.SplitBlockLabel, caller);
 
         // split the parentBlock of call
         boolean splitStart = false;
@@ -156,6 +166,8 @@ public class FuncInliner implements IRModulePass {
         replaceBlockMap.get(callee.exitBlock).tReplaceTerminator(
                 new IRBrInst(inlineExit, null)
         );
+
+        if (caller.exitBlock == inlineEntry) caller.exitBlock = inlineExit;
 
         new CFGBuilder().runOnFunc(caller);
     }

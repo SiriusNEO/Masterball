@@ -17,7 +17,7 @@ import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.middleend.llvmir.type.StructType;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.lang.RV32I;
-import masterball.compiler.share.error.runtime.UnknownError;
+import masterball.compiler.share.error.runtime.InternalError;
 import masterball.compiler.share.misc.Pair;
 import masterball.compiler.share.pass.IRBlockPass;
 import masterball.compiler.share.pass.IRFuncPass;
@@ -284,7 +284,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
                 new AsmALUInst(RV32I.SnezInst, instReg, xorReg, cur.block);
                 break;
             }
-            default: throw new UnknownError(this);
+            default: throw new InternalError("unknown ASM compare op");
         }
     }
 
@@ -308,7 +308,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
     @Override
     public void visit(IRPhiInst inst) {
-        throw new UnknownError(this);
+        throw new InternalError("Phi Inst appears in ASM");
     }
 
     @Override

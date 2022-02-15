@@ -1,7 +1,6 @@
 package masterball.compiler.backend.rvasm.operand;
 
 import masterball.compiler.backend.regalloc.InterferenceGraph;
-import masterball.compiler.share.error.runtime.UnknownError;
 
 public abstract class Register extends BaseOperand {
 
@@ -18,7 +17,7 @@ public abstract class Register extends BaseOperand {
     public String toString() {
         if (color == null) {
             return identifier;
-            // throw new UnknownError(this);
+            // throw new InternalError(this);
         }
         return color.identifier;
         // return identifier;

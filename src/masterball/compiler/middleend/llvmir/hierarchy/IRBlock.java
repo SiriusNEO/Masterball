@@ -6,6 +6,7 @@ import masterball.compiler.middleend.llvmir.inst.IRBrInst;
 import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.middleend.llvmir.type.LabelType;
 import masterball.compiler.middleend.analyzer.DomTreeBuilder;
+import masterball.compiler.share.error.runtime.InternalError;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -86,6 +87,7 @@ public class IRBlock extends Value {
     }
 
     public IRBaseInst terminator() {
+        if (instructions.isEmpty()) throw new InternalError("empty IRBLock! no terminator! " + this.name);
         return instructions.getLast();
     }
 
