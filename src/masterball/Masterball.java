@@ -8,6 +8,8 @@ import masterball.console.*;
 import masterball.console.error.ConsoleError;
 import masterball.debug.Timer;
 
+import java.util.concurrent.TimeoutException;
+
 /**
  * Masterball, a Compiler for Mx* language
  * see github in: https://github.com/SiriusNEO/Masterball
@@ -40,6 +42,9 @@ public class Masterball {
             FrontEnd frontEnd = new FrontEnd(console);
             if (console.fsyntaxOnly) return;
             MiddleEnd middleEnd = new MiddleEnd(frontEnd, console);
+
+            if (timer.getTime() > 20000) throw new TimeoutException();
+
             if (console.irOnly) return;
             BackEnd backEnd = new BackEnd(middleEnd, console);
 
