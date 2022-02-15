@@ -9,9 +9,10 @@ public class BackEndOptimizer implements AsmModulePass {
     public void runOnModule(AsmModule module) {
         for (AsmFunction function : module.functions) {
             new CoalesceMoves().runOnFunc(function);
-            new ArithmPeephole().runOnFunc(function);
+            new ZeroInstPeephole().runOnFunc(function);
             new BlockMerge().runOnFunc(function);
             new ReorderBlock().runOnFunc(function);
+            new InstFolding().runOnFunc(function);
         }
     }
 }

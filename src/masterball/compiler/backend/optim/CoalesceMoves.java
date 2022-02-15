@@ -14,18 +14,5 @@ public class CoalesceMoves implements AsmFuncPass {
         for (AsmBlock block : function.blocks) {
             block.instructions.removeIf(inst -> inst instanceof AsmMvInst && inst.rd.color == inst.rs1.color);
         }
-
-        for (AsmBlock block : function.blocks) {
-            HashSet<AsmBaseInst> toRemoveSet = new HashSet<>();
-
-            for (int i = 0; i < block.instructions.size()-1; i++)
-                if (block.instructions.get(i) instanceof AsmMvInst && block.instructions.get(i+1) instanceof AsmMvInst &&
-                    block.instructions.get(i).rd.color == block.instructions.get(i+1).rd.color &&
-                    block.instructions.get(i).rs1.color == block.instructions.get(i+1).rs1.color) {
-                        toRemoveSet.add(block.instructions.get(i+1));
-                }
-
-            block.instructions.removeAll(toRemoveSet);
-        }
     }
 }

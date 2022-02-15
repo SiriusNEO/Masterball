@@ -30,7 +30,7 @@ public class FuncInliner implements IRModulePass {
     private final boolean forced;
 
     private static final int CalleeInstNumThreshold = 200,
-                             CallerInstNumThreshold = 500;
+                             CallerInstNumThreshold = 1000;
 
     private final Set<IRCallInst> inlineAbleSet = new HashSet<>();
     private final Map<IRFunction, Integer> instNum = new HashMap<>();

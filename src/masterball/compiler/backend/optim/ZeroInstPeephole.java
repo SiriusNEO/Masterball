@@ -8,7 +8,7 @@ import masterball.compiler.backend.rvasm.operand.PhysicalReg;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.pass.AsmFuncPass;
 
-public class ArithmPeephole implements AsmFuncPass {
+public class ZeroInstPeephole implements AsmFuncPass {
 
     @Override
     public void runOnFunc(AsmFunction function) {
