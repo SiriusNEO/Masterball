@@ -32,7 +32,7 @@ public class IRBlock extends Value {
     public DomTreeBuilder.Node dtNode = new DomTreeBuilder.Node(this);
 
     // info in Loop
-    public HashSet<LoopAnalyzer.LoopInfo> belongLoops = new HashSet<>();
+    public int loopDepth = 0;
 
     public IRBlock(String label, IRFunction parentFunction) {
         super(label, new LabelType());

@@ -1,6 +1,7 @@
 package masterball.compiler.middleend.optim;
 
 import masterball.compiler.middleend.analyzer.CallGraphAnalyzer;
+import masterball.compiler.middleend.analyzer.LoopAnalyzer;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.hierarchy.IRModule;
 import masterball.compiler.middleend.analyzer.CFGBuilder;
@@ -37,6 +38,6 @@ public class MiddleEndOptimizer implements IRModulePass {
 
         new FuncInliner(true).runOnModule(module);
 
-        for (IRFunction function : module.functions) new CFGBuilder().runOnFunc(function);
+        for (IRFunction function : module.functions) new LoopAnalyzer().runOnFunc(function);
     }
 }

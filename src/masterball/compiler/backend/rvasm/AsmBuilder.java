@@ -79,7 +79,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
             module.functions.add((AsmFunction) irFunc.asmOperand);
 
             for (IRBlock irBlock : irFunc.blocks) {
-                AsmBlock block = new AsmBlock(irBlock.name);
+                AsmBlock block = new AsmBlock(irBlock.name, irBlock.loopDepth);
                 irBlock.asmOperand = block;
                 function.blocks.add(block);
             }
