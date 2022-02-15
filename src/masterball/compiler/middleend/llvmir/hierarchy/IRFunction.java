@@ -9,9 +9,10 @@ import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.share.lang.LLVM;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class IRFunction extends GlobalValue {
-    public final ArrayList<IRBlock> blocks = new ArrayList<>();
+    public final LinkedList<IRBlock> blocks = new LinkedList<>();
 
     public IRBlock entryBlock, exitBlock;
 

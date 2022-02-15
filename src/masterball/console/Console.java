@@ -89,7 +89,7 @@ public class Console {
         if (ojMode) {
             Log.setVerbose(Log.Verbose.off);
             canPrintAST = canPrintOpt = false;
-            canPrintIR = true;
+            canPrintIR = false;
             canPrintASM = true;
         }
         else {
