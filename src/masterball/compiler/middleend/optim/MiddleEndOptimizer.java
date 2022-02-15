@@ -38,6 +38,6 @@ public class MiddleEndOptimizer implements IRModulePass {
 
         new FuncInliner(true).runOnModule(module);
 
-        for (IRFunction function : module.functions) new LoopAnalyzer().runOnFunc(function);
+        for (IRFunction function : module.functions) new CFGBuilder().runOnFunc(function);
     }
 }

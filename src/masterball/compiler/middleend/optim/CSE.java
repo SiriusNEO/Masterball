@@ -22,7 +22,6 @@ public class CSE implements IRFuncPass {
 
     private static boolean effectMatch(IRBaseInst inst1, IRBaseInst inst2) {
         if (inst1.getClass() != inst2.getClass()) return false;
-
         if (inst1 instanceof IRBinaryInst) {
             assert inst2 instanceof IRBinaryInst;
             if (Objects.equals(((IRBinaryInst) inst1).op, ((IRBinaryInst) inst2).op)) {

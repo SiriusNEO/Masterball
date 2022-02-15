@@ -22,12 +22,11 @@ public class AsmBlock extends BaseOperand {
     // liveIn and LiveOut in block, assigned in LivenessAnalyzer
     public HashSet<Register> liveIn = new HashSet<>(), liveOut = new HashSet<>();
 
-    // loopDepth from IRBlock
-    public final int loopDepth;
+    // from IRBlock
+    public int loopDepth = 0;
 
-    public AsmBlock(String label, int loopDepth) {
+    public AsmBlock(String label) {
         super(label);
-        this.loopDepth = loopDepth;
     }
 
     public void addInst(AsmBaseInst inst) {

@@ -21,6 +21,7 @@ import java.util.Set;
  * Glo2Loc Pass:
  *
  * if a GlobalVariable is used many times in a function, localize it.
+ * also, if a GlobalVariable will not be modified in the program,
  * localize can be beneficial to optimization
  *
  * works well in the following case:

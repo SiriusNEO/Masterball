@@ -173,7 +173,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         // every reg's priority = sigma (use+def)*10^(the level of the block)
 
         for (AsmBlock block : curFunc.blocks) {
-            double weight = Math.pow(10, block.loopDepth);
+            double weight = Math.pow(10, Double.min(block.prevs.size(), block.nexts.size()));
             block.instructions.forEach(inst -> {
                 inst.defs().forEach(def -> def.node.priority += weight);
                 inst.uses().forEach(use -> use.node.priority += weight);
@@ -361,6 +361,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * TODO better spill strategy
      */
     private void selectSpill() {
+        /*
         Register minReg = null;
         double minCost = Double.POSITIVE_INFINITY;
         for (Register reg : spillWorklist) {
@@ -382,10 +383,13 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             }
         }
         // Log.track("selectSpill", minReg);
+        */
 
-        spillWorklist.remove(minReg);
-        simplifyWorklist.add(minReg);
-        freezeMoves(minReg);
+        var it = spillWorklist.iterator();
+        var chosen = it.next();
+        it.remove();
+        simplifyWorklist.add(chosen);
+        freezeMoves(chosen);
     }
 
     private void assignColors() {
