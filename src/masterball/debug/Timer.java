@@ -2,17 +2,17 @@ package masterball.debug;
 
 public class Timer {
 
-    private final long startTime;
+    private static long startTime;
 
-    public Timer() {
-        this.startTime = System.currentTimeMillis();
+    public static void start() {
+        startTime = System.currentTimeMillis();
     }
 
-    public long getTime() {
+    public static long getTime() {
         return System.currentTimeMillis() - startTime;
     }
 
-    public void display() {
+    public static void display() {
         System.out.println("total time: " + (System.currentTimeMillis() - startTime) + " (ms)");
     }
 

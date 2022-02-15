@@ -34,7 +34,7 @@ public class Masterball {
 
     public static void main(String[] args) throws Exception {
         try {
-            Timer timer = new Timer();
+            Timer.start();
 
             Console console = new Console(args);
             if (console.showHelp || console.showVersion) return;
@@ -43,12 +43,10 @@ public class Masterball {
             if (console.fsyntaxOnly) return;
             MiddleEnd middleEnd = new MiddleEnd(frontEnd, console);
 
-            if (timer.getTime() > 20000) throw new TimeoutException();
-
             if (console.irOnly) return;
             BackEnd backEnd = new BackEnd(middleEnd, console);
 
-            timer.display();
+            Timer.display();
         }
         catch (Exception e) {
             errorHandle(e);

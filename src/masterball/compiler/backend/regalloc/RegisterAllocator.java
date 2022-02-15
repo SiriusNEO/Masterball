@@ -537,7 +537,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         int k = 0;
 
         Set<Register> commonAdj = new HashSet<>(adjacent(u));
-        commonAdj.addAll(adjacent(u));
+        commonAdj.addAll(adjacent(v));
 
         for (var n : commonAdj)
             if (n.node.degree >= K) k++;
