@@ -22,6 +22,8 @@ import java.util.*;
  * use constant folding some dead block will be eliminated
  * (actually duplicate with part of CFGSimplifier)
  *
+ * some algebra simplify: a*0 = 0, a&0 = 0, a<=a = true ...
+ *
  * @reference: Tiger Book chapter 19.3.3
  */
 
@@ -257,13 +259,34 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
     @Override
     public void visit(IRBinaryInst inst) {
-        if (getConst(inst.lhs()) == uncertain || getConst(inst.rhs()) == uncertain) {
-            setUncertain(inst);
-            return;
-        }
+        BaseConst replace = null;
         BaseConst lhsConst = getConst(inst.lhs()), rhsConst = getConst(inst.rhs());
-        if (lhsConst != null && rhsConst != null && getConst(inst) == null) {
-            BaseConst replace = null;
+
+        if (lhsConst == uncertain || rhsConst == uncertain) {
+            if (Objects.equals(inst.op, LLVM.MulInst) || Objects.equals(inst.op, LLVM.AndInst)) {
+                if ((lhsConst instanceof IntConst && ((IntConst) lhsConst).constData == 0) ||
+                     (rhsConst instanceof IntConst && ((IntConst) rhsConst).constData == 0)) {
+                        replace = new IntConst(0);
+                }
+
+                if ((lhsConst instanceof BoolConst && !((BoolConst) lhsConst).constData) ||
+                        (rhsConst instanceof BoolConst && !((BoolConst) rhsConst).constData)) {
+                    replace = new BoolConst(false);
+                }
+            }
+
+            if (Objects.equals(inst.op, LLVM.ShiftRightInst)) {
+                if (rhsConst instanceof IntConst && ((IntConst) rhsConst).constData >= 31)
+                    replace = new IntConst(0);
+            }
+
+            if (replace == null) {
+                setUncertain(inst);
+                return;
+            }
+        }
+
+        else if (lhsConst != null && rhsConst != null && getConst(inst) == null) {
             if (lhsConst instanceof IntConst) {
                 assert rhsConst instanceof IntConst;
                 int lhsNum = ((IntConst) lhsConst).constData, rhsNum = ((IntConst) rhsConst).constData;
@@ -300,9 +323,10 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                 }
                 replace = new BoolConst(result);
             }
-            lattice.put(inst, replace);
-            valueWorklist.offer(inst);
         }
+
+        lattice.put(inst, replace);
+        valueWorklist.offer(inst);
     }
 
     @Override
@@ -343,12 +367,25 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
     @Override
     public void visit(IRICmpInst inst) {
-        if (getConst(inst.lhs()) == uncertain || getConst(inst.rhs()) == uncertain) {
-            setUncertain(inst);
-            return;
-        }
+        BaseConst replace = null;
         BaseConst lhsConst = getConst(inst.lhs()), rhsConst = getConst(inst.rhs());
-        if (lhsConst != null && rhsConst != null && getConst(inst) == null) {
+
+        if (lhsConst == uncertain || rhsConst == uncertain) {
+
+            if (Objects.equals(inst.op, LLVM.EqualArg) || Objects.equals(inst.op, LLVM.GreaterEqualArg) || Objects.equals(inst.op, LLVM.LessEqualArg)) {
+                if (inst.lhs().equals(inst.rhs())) replace = new BoolConst(true);
+            }
+
+            if (Objects.equals(inst.op, LLVM.NotEqualArg)) {
+                if (inst.lhs().equals(inst.rhs())) replace = new BoolConst(false);
+            }
+
+            if (replace == null) {
+                setUncertain(inst);
+                return;
+            }
+        }
+        else if (lhsConst != null && rhsConst != null && getConst(inst) == null) {
             boolean result = false;
             if (lhsConst instanceof IntConst) {
                 assert rhsConst instanceof IntConst;
@@ -377,10 +414,11 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                     case LLVM.NotEqualArg: result = !lhsConst.equals(rhsConst); break;
                 }
             }
-            var replace = new BoolConst(result);
-            lattice.put(inst, replace);
-            valueWorklist.offer(inst);
+            replace = new BoolConst(result);
         }
+
+        lattice.put(inst, replace);
+        valueWorklist.offer(inst);
     }
 
     @Override

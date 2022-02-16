@@ -37,7 +37,7 @@ import java.util.Set;
 public class Glo2Loc implements IRFuncPass {
 
     // if a global variable isn't used many times, not localize it because not worthy
-    public static final int UsageThreshold = 4;
+    public static final int UsageThreshold = 2;
 
     private Map<GlobalVariable, Integer> refTimes = new HashMap<>();
     private Set<GlobalVariable> ableSet = new HashSet<>();

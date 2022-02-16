@@ -292,15 +292,25 @@ public class IRBuilder implements ASTVisitor {
         node.value.resolveFrom = node.lhsExpNode.value.resolveFrom;
     }
 
+    /**
+     *  Note: for continuous logic:
+     *      a && b && c
+     *  reuse the block!
+     *
+     *  no cut: means there is no logic-cut
+     *  exit:   means logic-cut happen, directly jump to exit
+     */
     @Override
     public void visit(BinaryExpNode node) {
         node.lhsExpNode.accept(this);
         if (Objects.equals(node.opType, MxStar.logicOpType)) {
-            IRBlock tempNowBlock = cur.block,
-                    nocutBlock = new IRBlock(LLVM.LogicNoCutBlockLabel, cur.func),
-                    exitBlock = new IRBlock(LLVM.LogicExitBlockLabel, cur.func);
+            IRBlock tempNowBlock = cur.block;
             if (node.op.equals(MxStar.LogicOrOp)) {
                 // ret = a || b -> if (!a) b; ret = phi a b
+
+                IRBlock nocutBlock = new IRBlock(LLVM.LogicNoCutBlockLabel, cur.func),
+                        exitBlock = new IRBlock(LLVM.LogicExitBlockLabel, cur.func);
+
                 new IRBrInst(node.lhsExpNode.value, exitBlock, nocutBlock, cur.block);
                 cur.block = nocutBlock;
                 node.rhsExpNode.accept(this);
@@ -309,6 +319,10 @@ public class IRBuilder implements ASTVisitor {
                 cur.block = exitBlock;
             } else if (node.op.equals(MxStar.LogicAndOp)) {
                 // ret = a && b -> if (a) b; ret = phi a b
+
+                IRBlock nocutBlock = new IRBlock(LLVM.LogicNoCutBlockLabel, cur.func),
+                        exitBlock = new IRBlock(LLVM.LogicExitBlockLabel, cur.func);
+
                 new IRBrInst(node.lhsExpNode.value, nocutBlock, exitBlock, cur.block);
                 cur.block = nocutBlock;
                 node.rhsExpNode.accept(this);

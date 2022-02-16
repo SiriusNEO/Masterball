@@ -39,7 +39,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * Registers can only present in one of these
      * Registers in coalescedNodes and selectStack are "deleted"
      */
-    private final Set<Register>
+    private final HashSet<Register>
             precolored = new LinkedHashSet<>(phyRegs.values()),
             initial = new LinkedHashSet<>(),
             simplifyWorklist = new LinkedHashSet<>(),
@@ -57,7 +57,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * frozenMoves: have been frozen, no need to consider it.
      * worklistMoves and activeMoves are moves "exists"
      */
-    private final Set<AsmMvInst>
+    private final HashSet<AsmMvInst>
             coalescedMoves = new LinkedHashSet<>(),
             constrainedMoves = new LinkedHashSet<>(),
             frozenMoves = new LinkedHashSet<>(),
@@ -173,7 +173,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
         // every reg's priority = sigma (use+def)*10^(the level of the block)
 
         for (AsmBlock block : curFunc.blocks) {
-            double weight = Math.pow(10, Double.min(block.prevs.size(), block.nexts.size()));
+            double weight = Math.pow(10, block.loopDepth);
             block.instructions.forEach(inst -> {
                 inst.defs().forEach(def -> def.node.priority += weight);
                 inst.uses().forEach(use -> use.node.priority += weight);
@@ -361,7 +361,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * TODO better spill strategy
      */
     private void selectSpill() {
-        /*
+
         Register minReg = null;
         double minCost = Double.POSITIVE_INFINITY;
         for (Register reg : spillWorklist) {
@@ -383,13 +383,10 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             }
         }
         // Log.track("selectSpill", minReg);
-        */
 
-        var it = spillWorklist.iterator();
-        var chosen = it.next();
-        it.remove();
-        simplifyWorklist.add(chosen);
-        freezeMoves(chosen);
+        spillWorklist.remove(minReg);
+        simplifyWorklist.add(minReg);
+        freezeMoves(minReg);
     }
 
     private void assignColors() {
