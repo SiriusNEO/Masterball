@@ -43,35 +43,42 @@ public class CFGSimplifier implements IRFuncPass {
             }
         });
 
-        for (IRBlock beMerged : toMergeSet) {
-            IRBlock preBlock = beMerged.prevs.get(0);
+        while (!toMergeSet.isEmpty()) {
+            var it = toMergeSet.iterator();
+            while (it.hasNext()) {
+                var beMerged = it.next();
+                IRBlock preBlock = beMerged.prevs.get(0);
+                if (toMergeSet.contains(preBlock)) continue;
 
-            // Log.info("merged", preBlock.identifier(), beMerged.identifier());
-            // beMerged.nexts.forEach(suc -> Log.info(suc.identifier()));
+                // Log.info("merged", preBlock.identifier(), beMerged.identifier());
+                // beMerged.nexts.forEach(suc -> Log.info(suc.identifier()));
 
-            var preTerminator = preBlock.terminator();
+                var preTerminator = preBlock.terminator();
 
-            // 1 nexts, must be Jmp
-            assert preTerminator instanceof IRBrInst && ((IRBrInst) preTerminator).isJump();
+                // 1 nexts, must be Jmp
+                assert preTerminator instanceof IRBrInst && ((IRBrInst) preTerminator).isJump();
 
-            preBlock.nexts.remove(beMerged);
-            preBlock.instructions.remove(preTerminator);
-            preBlock.isTerminated = false;
+                preBlock.nexts.remove(beMerged);
+                preBlock.instructions.remove(preTerminator);
+                preBlock.isTerminated = false;
 
-            preBlock.nexts.addAll(beMerged.nexts);
-            for (IRBlock suc : beMerged.nexts) {
-                suc.redirectPreBlock(beMerged, preBlock);
+                preBlock.nexts.addAll(beMerged.nexts);
+                for (IRBlock suc : beMerged.nexts) {
+                    suc.redirectPreBlock(beMerged, preBlock);
+                }
+
+                // will it has phi?
+                for (IRBaseInst phi : beMerged.phiInsts) phi.setParentBlock(preBlock);
+
+                // terminate it also
+                for (IRBaseInst inst : beMerged.instructions) inst.setParentBlock(preBlock);
+
+                if (function.exitBlock == beMerged) function.exitBlock = preBlock;
+
+                function.blocks.remove(beMerged);
+                it.remove();
             }
-
-            // terminate it also
-            for (IRBaseInst inst : beMerged.instructions) inst.setParentBlock(preBlock);
-
-            for (IRBaseInst phi : beMerged.phiInsts) phi.setParentBlock(preBlock);
-
-            if (function.exitBlock == beMerged) function.exitBlock = preBlock;
         }
-
-        function.blocks.removeAll(toMergeSet);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.*;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
@@ -52,13 +53,31 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         return lattice.get(value);
     }
 
+    private void removePhiBranch(IRBlock block, IRBlock remove) {
+        var it = block.phiInsts.iterator();
+        while (it.hasNext()) {
+            var phi = it.next();
+            for (int i = 1; i < phi.operandSize(); i += 2) {
+                if (phi.getOperand(i) == remove) {
+                    // remove the branch
+                    phi.operands.remove(i-1);
+                    phi.operands.remove(remove);
+                }
+            }
+            if (phi.operandSize() == 2) {
+                // can not remove from users because its register will be saved
+                it.remove();
+                IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
+                block.tAddFirst(move);
+            }
+        }
+    }
+
     private boolean removeUnexecutableBlock(IRFunction function) {
         HashSet<IRBlock> toRemoveSet = new HashSet<>();
 
         for (IRBlock toRemove : function.blocks) {
             if (executable.contains(toRemove) || removed.contains(toRemove)) continue;
-
-            // Log.report("remove", function.identifier(), toRemove.identifier());
 
             // remove toRemove
             toRemoveSet.add(toRemove);
@@ -78,24 +97,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
             for (IRBlock suc : toRemove.nexts) {
                 suc.prevs.remove(toRemove);
-                var it = suc.phiInsts.iterator();
-                while (it.hasNext()) {
-                    var phi = it.next();
-                    for (int i = 1; i < phi.operandSize(); i += 2) {
-                        if (phi.getOperand(i) == toRemove) {
-                            // remove the branch
-                            phi.operands.remove(i-1);
-                            phi.operands.remove(toRemove);
-                            break;
-                        }
-                    }
-                    if (phi.operandSize() == 2) {
-                        // can not remove from users because its register will be saved
-                        it.remove();
-                        IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
-                        suc.tAddFirst(move);
-                    }
-                }
+                removePhiBranch(suc, toRemove);
             }
 
             toRemove.prevs.clear();
@@ -147,14 +149,19 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         for (IRBlock block : function.blocks) {
             var terminator = block.terminator();
             if (!(terminator instanceof IRBrInst && !((IRBrInst) terminator).isJump())) continue;
+
             BaseConst condConst = getConst(((IRBrInst) terminator).condition());
             if (condConst == null || condConst == uncertain) continue;
             assert condConst instanceof BoolConst;
 
             IRBlock realDest = (((BoolConst) condConst).constData) ? ((IRBrInst) terminator).ifTrueBlock() : ((IRBrInst) terminator).ifFalseBlock();
+            IRBlock anotherDest = ((BoolConst) condConst).constData ? ((IRBrInst) terminator).ifFalseBlock() : ((IRBrInst) terminator).ifTrueBlock();
             IRBrInst newTerminator = new IRBrInst(realDest, null); // terminated
             terminator.removedFromAllUsers();
             block.tReplaceTerminator(newTerminator);
+
+            removePhiBranch(anotherDest, block);
+
             ret = true;
         }
         return ret;
@@ -182,6 +189,8 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         boolean changed = true;
 
         while (changed) {
+            new CFGBuilder().runOnFunc(function);
+
             lattice.clear();
             executable.clear();
             executable.add(function.entryBlock);
@@ -205,6 +214,16 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
             replaceUses();
             changed = removeUnexecutableBlock(function) || removeRedundantInst(function) || rewriteBranch(function);
+            /*
+            Log.mark("const");
+            lattice.entrySet().forEach(entry -> {
+                if (entry.getValue() != null)
+                Log.info(entry.getKey().identifier(), entry.getValue().identifier());
+            });
+
+            Log.mark("execuatble");
+            executable.forEach(block -> Log.info(block.identifier()));
+            */
         }
     }
 

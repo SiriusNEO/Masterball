@@ -1,12 +1,15 @@
 package masterball.compiler.middleend.llvmir;
 
 import masterball.compiler.frontend.info.registry.ClassRegistry;
+import masterball.compiler.middleend.llvmir.constant.BoolConst;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.IRBrInst;
 import masterball.compiler.share.lang.MxStar;
 import masterball.compiler.share.error.runtime.InternalError;
+import masterball.compiler.share.misc.Pair;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class IRCurrent {
@@ -18,6 +21,7 @@ public class IRCurrent {
     // break/continue support
     private final Stack<IRBlock> contTargetBlocks = new Stack<>(),
                                     breakTargetBlocks = new Stack<>();
+
 
     public void terminateAllBlocks() {
         for (IRBlock block : this.func.blocks)

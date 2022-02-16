@@ -305,31 +305,41 @@ public class IRBuilder implements ASTVisitor {
         node.lhsExpNode.accept(this);
         if (Objects.equals(node.opType, MxStar.logicOpType)) {
             IRBlock tempNowBlock = cur.block;
-            if (node.op.equals(MxStar.LogicOrOp)) {
-                // ret = a || b -> if (!a) b; ret = phi a b
 
-                IRBlock nocutBlock = new IRBlock(LLVM.LogicNoCutBlockLabel, cur.func),
-                        exitBlock = new IRBlock(LLVM.LogicExitBlockLabel, cur.func);
-
-                new IRBrInst(node.lhsExpNode.value, exitBlock, nocutBlock, cur.block);
-                cur.block = nocutBlock;
+            if (funcDetect(node.rhsExpNode)) {
                 node.rhsExpNode.accept(this);
-                new IRBrInst(exitBlock, cur.block);
-                node.value = new IRPhiInst(IRTranslator.boolType, exitBlock, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, cur.block);
-                cur.block = exitBlock;
-            } else if (node.op.equals(MxStar.LogicAndOp)) {
-                // ret = a && b -> if (a) b; ret = phi a b
+                node.value = new IRBinaryInst(IRTranslator.logic2Bit(node.op),
+                                            IRTranslator.boolType,
+                                            node.lhsExpNode.value,
+                                            node.rhsExpNode.value, cur.block);
+            }
+            else {
+                if (node.op.equals(MxStar.LogicOrOp)) {
+                    // ret = a || b -> if (!a) b; ret = phi a b
 
-                IRBlock nocutBlock = new IRBlock(LLVM.LogicNoCutBlockLabel, cur.func),
-                        exitBlock = new IRBlock(LLVM.LogicExitBlockLabel, cur.func);
+                    IRBlock nocutBlock = new IRBlock(LLVM.LogicNoCutBlockLabel, cur.func),
+                            exitBlock = new IRBlock(LLVM.LogicExitBlockLabel, cur.func);
 
-                new IRBrInst(node.lhsExpNode.value, nocutBlock, exitBlock, cur.block);
-                cur.block = nocutBlock;
-                node.rhsExpNode.accept(this);
-                new IRBrInst(exitBlock, cur.block);
-                node.value = new IRPhiInst(IRTranslator.boolType, exitBlock, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, cur.block);
-                cur.block = exitBlock;
-            } else throw new InternalError("unknown IR logic op");
+                    new IRBrInst(node.lhsExpNode.value, exitBlock, nocutBlock, cur.block);
+                    cur.block = nocutBlock;
+                    node.rhsExpNode.accept(this);
+                    new IRBrInst(exitBlock, cur.block);
+                    node.value = new IRPhiInst(IRTranslator.boolType, exitBlock, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, cur.block);
+                    cur.block = exitBlock;
+                } else if (node.op.equals(MxStar.LogicAndOp)) {
+                    // ret = a && b -> if (a) b; ret = phi a b
+
+                    IRBlock nocutBlock = new IRBlock(LLVM.LogicNoCutBlockLabel, cur.func),
+                            exitBlock = new IRBlock(LLVM.LogicExitBlockLabel, cur.func);
+
+                    new IRBrInst(node.lhsExpNode.value, nocutBlock, exitBlock, cur.block);
+                    cur.block = nocutBlock;
+                    node.rhsExpNode.accept(this);
+                    new IRBrInst(exitBlock, cur.block);
+                    node.value = new IRPhiInst(IRTranslator.boolType, exitBlock, node.lhsExpNode.value, tempNowBlock, node.rhsExpNode.value, cur.block);
+                    cur.block = exitBlock;
+                } else throw new InternalError("unknown IR logic op");
+            }
         } else {
             node.rhsExpNode.accept(this);
             if (node.lhsExpNode.type.match(MxBaseType.BuiltinType.STRING)) {
@@ -661,7 +671,9 @@ public class IRBuilder implements ASTVisitor {
                     bodyBlock = new IRBlock(LLVM.WhBodyBlockLabel, cur.func),
                     exitBlock = new IRBlock(LLVM.WhExitBlockLabel, cur.func);
 
-            IRPhiInst curDimPtr = new IRPhiInst(arrHeadPointer.type, null, arrHeadPointer, cur.block);
+            IRPhiInst curDimPtr = new IRPhiInst(arrHeadPointer.type, null);
+            curDimPtr.addBranch(arrHeadPointer, cur.block); // initial branch
+
             Value tailDimPtr = new IRGetElementPtrInst(arrHeadPointer, arrHeadPointer.type, cur.block, eachDimLengths.get(curDim));
             IRBaseInst incrPtr = new IRGetElementPtrInst(curDimPtr, curDimPtr.type, null, new IntConst(1));
 
@@ -687,5 +699,15 @@ public class IRBuilder implements ASTVisitor {
     private Value classMalloc(StructType classType) {
         Value mallocPtr = new IRCallInst(module.getMalloc(), cur.block, new IntConst(classType.size())).noalias();
         return new IRBitCastInst(mallocPtr, new PointerType(classType), cur.block);
+    }
+
+    private boolean funcDetect(ExpBaseNode node) {
+        if (node instanceof AtomExpNode) {
+            return !(node.type instanceof MxFuncType);
+        }
+        if (node instanceof BinaryExpNode) {
+            return funcDetect(((BinaryExpNode) node).lhsExpNode) && funcDetect(((BinaryExpNode) node).rhsExpNode);
+        }
+        return false;
     }
 }

@@ -48,6 +48,14 @@ public class IRTranslator {
         return translateOp(mxOp);
     }
 
+    public static String logic2Bit(String mxOp) {
+        switch (mxOp) {
+            case MxStar.LogicAndOp: return LLVM.AndInst;
+            case MxStar.LogicOrOp: return LLVM.OrInst;
+        }
+        return "";
+    }
+
     // to translate types, you must instantiate a Translator to support translate CLASS
     private GlobalScope globalScope;
 
