@@ -4,6 +4,7 @@ import masterball.compiler.middleend.analyzer.LoopAnalyzer;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRBrInst;
+import masterball.compiler.middleend.llvmir.inst.IRMoveInst;
 import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.middleend.llvmir.type.LabelType;
 import masterball.compiler.middleend.analyzer.DomTreeBuilder;
@@ -89,6 +90,26 @@ public class IRBlock extends Value {
         newTerminator.parentBlock = this;
         instructions.removeLast();
         instructions.addLast(newTerminator);
+    }
+
+    public void removePhiBranch(IRBlock remove) {
+        var it = this.phiInsts.iterator();
+        while (it.hasNext()) {
+            var phi = it.next();
+            for (int i = 1; i < phi.operandSize(); i += 2) {
+                if (phi.getOperand(i) == remove) {
+                    // remove the branch
+                    phi.operands.remove(i-1);
+                    phi.operands.remove(remove);
+                }
+            }
+            if (phi.operandSize() == 2) {
+                // can not remove from users because its register will be saved
+                it.remove();
+                IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
+                this.tAddFirst(move);
+            }
+        }
     }
 
     public IRBaseInst terminator() {

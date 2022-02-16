@@ -306,7 +306,7 @@ public class IRBuilder implements ASTVisitor {
         if (Objects.equals(node.opType, MxStar.logicOpType)) {
             IRBlock tempNowBlock = cur.block;
 
-            if (funcDetect(node.rhsExpNode)) {
+            if (funcDetect(node)) {
                 node.rhsExpNode.accept(this);
                 node.value = new IRBinaryInst(IRTranslator.logic2Bit(node.op),
                                             IRTranslator.boolType,

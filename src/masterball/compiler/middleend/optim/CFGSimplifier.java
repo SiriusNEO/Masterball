@@ -5,6 +5,7 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRBrInst;
+import masterball.compiler.middleend.llvmir.inst.IRRetInst;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.debug.Log;
 
@@ -19,7 +20,11 @@ public class CFGSimplifier implements IRFuncPass {
             removed = false;
             for (IRBlock block : function.blocks) {
                 if (block == function.entryBlock) continue;
+
+                // Log.info("removeUnreachable", block.identifier());
+
                 if (toRemoveSet.contains(block)) continue;
+
                 if (block.prevs.isEmpty()) {
                     toRemoveSet.add(block);
                     for (IRBlock suc : block.nexts) {
@@ -30,7 +35,19 @@ public class CFGSimplifier implements IRFuncPass {
             }
         }
 
-        toRemoveSet.forEach(function.blocks::remove);
+        for (IRBlock toRemove : toRemoveSet) {
+            assert toRemove != function.exitBlock;
+
+            function.blocks.remove(toRemove);
+
+            for (IRBlock suc : toRemove.nexts) {
+                suc.prevs.remove(toRemove);
+                suc.removePhiBranch(toRemove);
+            }
+
+            toRemove.prevs.clear();
+            toRemove.nexts.clear();
+        }
     }
 
     private void mergeBlocks(IRFunction function) {
@@ -85,7 +102,7 @@ public class CFGSimplifier implements IRFuncPass {
     public void runOnFunc(IRFunction function) {
         Log.track("CFG Simplifier", function.identifier());
         new CFGBuilder().runOnFunc(function);
-        removeUnreachableBlock(function);
         mergeBlocks(function);
+        removeUnreachableBlock(function);
     }
 }

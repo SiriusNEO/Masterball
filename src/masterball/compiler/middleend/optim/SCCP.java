@@ -53,26 +53,6 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         return lattice.get(value);
     }
 
-    private void removePhiBranch(IRBlock block, IRBlock remove) {
-        var it = block.phiInsts.iterator();
-        while (it.hasNext()) {
-            var phi = it.next();
-            for (int i = 1; i < phi.operandSize(); i += 2) {
-                if (phi.getOperand(i) == remove) {
-                    // remove the branch
-                    phi.operands.remove(i-1);
-                    phi.operands.remove(remove);
-                }
-            }
-            if (phi.operandSize() == 2) {
-                // can not remove from users because its register will be saved
-                it.remove();
-                IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
-                block.tAddFirst(move);
-            }
-        }
-    }
-
     private boolean removeUnexecutableBlock(IRFunction function) {
         HashSet<IRBlock> toRemoveSet = new HashSet<>();
 
@@ -97,12 +77,12 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
             for (IRBlock suc : toRemove.nexts) {
                 suc.prevs.remove(toRemove);
-                removePhiBranch(suc, toRemove);
+                suc.removePhiBranch(toRemove);
             }
 
             toRemove.prevs.clear();
             toRemove.nexts.clear();
-            // // Log.report("removed", toRemove.identifier());
+            // Log.report("removed", toRemove.identifier());
         }
 
         function.blocks.removeAll(toRemoveSet);
@@ -160,7 +140,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
             terminator.removedFromAllUsers();
             block.tReplaceTerminator(newTerminator);
 
-            removePhiBranch(anotherDest, block);
+            anotherDest.removePhiBranch(block);
 
             ret = true;
         }
@@ -201,7 +181,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                 if (!blockWorklist.isEmpty()) {
                     IRBlock block = blockWorklist.poll();
                     runOnBlock(block);
-                    // Log.report("check block: ", block.identifier());
+                    // Log.info("check block: ", block.identifier());
                 }
 
                 if (!valueWorklist.isEmpty()) {
@@ -301,10 +281,11 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
             if (replace == null) {
                 setUncertain(inst);
-                return;
+            } else if (getConst(inst) == null) {
+                lattice.put(inst, replace);
+                valueWorklist.offer(inst);
             }
         }
-
         else if (lhsConst != null && rhsConst != null && getConst(inst) == null) {
             if (lhsConst instanceof IntConst) {
                 assert rhsConst instanceof IntConst;
@@ -342,10 +323,10 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                 }
                 replace = new BoolConst(result);
             }
-        }
 
-        lattice.put(inst, replace);
-        valueWorklist.offer(inst);
+            lattice.put(inst, replace);
+            valueWorklist.offer(inst);
+        }
     }
 
     @Override
@@ -390,7 +371,6 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         BaseConst lhsConst = getConst(inst.lhs()), rhsConst = getConst(inst.rhs());
 
         if (lhsConst == uncertain || rhsConst == uncertain) {
-
             if (Objects.equals(inst.op, LLVM.EqualArg) || Objects.equals(inst.op, LLVM.GreaterEqualArg) || Objects.equals(inst.op, LLVM.LessEqualArg)) {
                 if (inst.lhs().equals(inst.rhs())) replace = new BoolConst(true);
             }
@@ -401,7 +381,10 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
 
             if (replace == null) {
                 setUncertain(inst);
-                return;
+            }
+            else if (getConst(inst) == null) {
+                lattice.put(inst, replace);
+                valueWorklist.offer(inst);
             }
         }
         else if (lhsConst != null && rhsConst != null && getConst(inst) == null) {
@@ -434,10 +417,10 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                 }
             }
             replace = new BoolConst(result);
-        }
 
-        lattice.put(inst, replace);
-        valueWorklist.offer(inst);
+            lattice.put(inst, replace);
+            valueWorklist.offer(inst);
+        }
     }
 
     @Override
