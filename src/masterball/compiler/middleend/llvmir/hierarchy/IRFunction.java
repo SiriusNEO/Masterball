@@ -8,7 +8,7 @@ import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.share.lang.LLVM;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class IRFunction extends GlobalValue {
@@ -20,6 +20,9 @@ public class IRFunction extends GlobalValue {
 
     // info in CallGraph
     public CallGraphAnalyzer.Node node = new CallGraphAnalyzer.Node(this);
+
+    // info in Loop
+    public HashSet<Loop> topLevelLoops = new HashSet<>();
 
     public IRFunction(String name, IRFuncType funcType) {
         // not init complete.

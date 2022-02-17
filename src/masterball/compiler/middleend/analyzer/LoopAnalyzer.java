@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.analyzer;
 
+import masterball.compiler.middleend.llvmir.hierarchy.Loop;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.share.misc.Pair;
@@ -10,18 +11,14 @@ import java.util.*;
 
 public class LoopAnalyzer implements IRFuncPass {
 
-    public static class Loop {
-        public HashSet<IRBlock> blocks = new HashSet<>();
-        public HashSet<Loop> nestedLoops = new HashSet<>();
-    }
-
     // <head, tail>
-    private Map<IRBlock, Loop> headLoop = new HashMap<>();
+    private Map<IRBlock, Loop> headToLoopMap = new HashMap<>();
     private ArrayList<Pair<IRBlock, IRBlock> > backEdge = new ArrayList<>();
 
     private void init(IRFunction function) {
         new CFGBuilder().runOnFunc(function);
         new DomTreeBuilder(false).runOnFunc(function);
+        function.topLevelLoops.clear();
         function.blocks.forEach(block -> block.loopDepth = 0);
     }
 
@@ -37,9 +34,9 @@ public class LoopAnalyzer implements IRFuncPass {
     }
 
     private void buildNaturalLoop(IRBlock edgeHead, IRBlock edgeTail) {
-        headLoop.putIfAbsent(edgeHead, new Loop());
-        headLoop.get(edgeHead).blocks.add(edgeHead);
-        headLoop.get(edgeHead).blocks.add(edgeTail);
+        headToLoopMap.putIfAbsent(edgeHead, new Loop(edgeHead));
+        headToLoopMap.get(edgeHead).blocks.add(edgeHead);
+        headToLoopMap.get(edgeHead).blocks.add(edgeTail);
 
         Queue<IRBlock> workQueue = new LinkedList<>();
         workQueue.offer(edgeTail);
@@ -47,8 +44,8 @@ public class LoopAnalyzer implements IRFuncPass {
         while (!workQueue.isEmpty()) {
             IRBlock nowBlock = workQueue.poll();
             for (IRBlock pre : nowBlock.prevs)
-                if (!headLoop.get(edgeHead).blocks.contains(pre)) {
-                    headLoop.get(edgeHead).blocks.add(pre);
+                if (!headToLoopMap.get(edgeHead).blocks.contains(pre)) {
+                    headToLoopMap.get(edgeHead).blocks.add(pre);
                     workQueue.offer(pre);
                 }
         }
@@ -57,7 +54,7 @@ public class LoopAnalyzer implements IRFuncPass {
     private Stack<Loop> loopStack = new Stack<>();
     private HashSet<IRBlock> visited = new HashSet<>();
 
-    private void buildLoopNestTree(IRBlock block) {
+    private void buildLoopNestTree(IRFunction function, IRBlock block) {
         if (visited.contains(block)) return;
         visited.add(block);
 
@@ -77,14 +74,20 @@ public class LoopAnalyzer implements IRFuncPass {
             }
         }
 
-        if (headLoop.containsKey(block)) {
-            if (outerLoop != null) outerLoop.nestedLoops.add(headLoop.get(block));
-            loopStack.push(headLoop.get(block));
+        if (headToLoopMap.containsKey(block)) {
+            var nowLoop = headToLoopMap.get(block);
+            if (outerLoop != null) {
+                outerLoop.nestedLoops.add(nowLoop);
+            }
+            else {
+                function.topLevelLoops.add(nowLoop);
+            }
+            loopStack.push(nowLoop);
         }
 
         block.loopDepth = loopStack.size();
 
-        for (IRBlock suc : block.nexts) buildLoopNestTree(suc);
+        for (IRBlock suc : block.nexts) buildLoopNestTree(function, suc);
     }
 
     @Override
@@ -94,7 +97,7 @@ public class LoopAnalyzer implements IRFuncPass {
         init(function);
         collectBackEdge(function);
         backEdge.forEach(edge -> buildNaturalLoop(edge.first(), edge.second()));
-        buildLoopNestTree(function.entryBlock);
+        buildLoopNestTree(function, function.entryBlock);
 
         // backEdge.forEach(edge -> Log.info("back edge", edge.first().identifier(), edge.second().identifier()));
 
@@ -104,5 +107,4 @@ public class LoopAnalyzer implements IRFuncPass {
         });
         */
     }
-
 }

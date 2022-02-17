@@ -13,6 +13,7 @@ import masterball.compiler.share.error.runtime.InternalError;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 // BasicBlock is also a Value
 
@@ -84,6 +85,11 @@ public class IRBlock extends Value {
         inst.parentBlock = this;
         if (instructions.isEmpty()) return;
         instructions.add(instructions.size() - 1, inst);
+    }
+
+    public void tAddByIterator(IRBaseInst inst, ListIterator<IRBaseInst> it) {
+        inst.parentBlock = this;
+        it.add(inst);
     }
 
     public void tReplaceTerminator(IRBaseInst newTerminator) {

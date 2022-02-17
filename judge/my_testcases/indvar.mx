@@ -1,0 +1,15 @@
+int N = 10;
+int M = 1;
+
+int main() {
+    int cnt = 2;
+    for (int i = 8; i >= 1; i=i-3)
+        for (int j = M; j <= 8; j=j+4) {
+            cnt ++;
+            printlnInt(N * i);
+            printlnInt(j * N);
+            printlnInt(cnt * i);
+            printlnInt(cnt * N);
+        }
+
+}
