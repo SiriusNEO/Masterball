@@ -84,7 +84,7 @@ public class CFGSimplifier implements IRFuncPass {
                     suc.redirectPreBlock(beMerged, preBlock);
                 }
 
-                // will it has phi?
+                // will it have phi?
                 for (IRBaseInst phi : beMerged.phiInsts) phi.setParentBlock(preBlock);
 
                 // terminate it also

@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  *  Common Subexpression Elimination Pass
  *
- *  just in a Block now
+ *  just in a Block now, not used
  */
 
 public class CSE implements IRFuncPass {

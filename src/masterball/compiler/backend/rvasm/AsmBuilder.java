@@ -23,6 +23,7 @@ import masterball.compiler.share.pass.IRBlockPass;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.compiler.share.pass.IRModulePass;
 import masterball.compiler.share.pass.InstVisitor;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 
@@ -245,8 +246,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         Value index = inst.isGetMember() ? inst.memberIndex() : inst.ptrMoveIndex();
         StructType classType = inst.isGetMember() ? (StructType) ((PointerType) inst.headPointer().type).pointedType : null;
         int elementSize = ((PointerType) inst.headPointer().type).pointedType.size(); // well... quite interesting
-        Register ptrReg = cur.toReg(inst.headPointer());
-        Register gepReg = awesomeGEP(ptrReg, index, elementSize, classType);
+        Register gepReg = awesomeGEP(inst.headPointer(), index, elementSize, classType);
         new AsmMvInst(instReg, gepReg, cur.block);
     }
 
@@ -406,6 +406,19 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         }
     }
 
+    // check an immediate: whether it is a valid two power, return imm log2
+    // if not a valid 2power immediate, return null
+    private static Immediate twoPowerCheck(Value value) {
+        if (!(value instanceof IntConst)) return null;
+        int log2 = 0, valData = ((IntConst) value).constData;
+        while (valData > 1) {
+            if (valData % 2 != 0) return null;
+            valData >>= 1;
+            log2++;
+        }
+        return new Immediate(log2);
+    }
+
     private void awesomeALU(String rvOp, Register dest, Value lhs, Value rhs) {
         // now support:
         // slt optimize
@@ -418,6 +431,19 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
                 new AsmALUInst(rvOp, dest, cur.toReg(lhs), cur.toReg(rhs), cur.block);
             }
             return;
+        }
+
+        // div can not use this optimize because of negative num problem
+        if (rvOp.equals(RV32I.MulInst)) {
+            Immediate lhsLog2 = twoPowerCheck(lhs), rhsLog2 = twoPowerCheck(rhs);
+            if (lhsLog2 != null) {
+                new AsmALUInst(RV32I.ShiftLeftInst, dest, cur.toReg(rhs), lhsLog2, cur.block);
+                return;
+            }
+            else if (rhsLog2 != null) {
+                new AsmALUInst(RV32I.ShiftLeftInst, dest, cur.toReg(lhs), rhsLog2, cur.block);
+                return;
+            }
         }
 
         if (hasIType(rvOp)) {
@@ -450,35 +476,31 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         }
     }
 
-    public Register awesomeGEP(Register ptrReg, Value index, int elementSize, StructType classType) {
+    public Register awesomeGEP(Value ptrPos, Value index, int elementSize, StructType classType) {
         VirtualReg gepReg = new VirtualReg();
         if (classType != null) {
             // class member get
             assert index instanceof IntConst;
             int memberOffset = classType.memberOffset(((IntConst) index).constData);
-            if (validImm(memberOffset))
-                new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toImm(memberOffset), cur.block);
-            else
-                new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toReg(new IntConst(memberOffset)), cur.block);
+            awesomeALU(RV32I.AddInst, gepReg, ptrPos, new IntConst(memberOffset));
         }
         else {
             // array
             if (index instanceof IntConst) {
                 // constant folding
                 if (equalZero(index)) {
+                    Register ptrReg = cur.toReg(ptrPos);
                     if (ptrReg instanceof GlobalReg) new AsmLaInst(gepReg, ptrReg.identifier, cur.block);
                     else new AsmMvInst(gepReg, ptrReg, cur.block);
                 } else {
                     int totalSize = ((IntConst) index).constData * elementSize;
-                    if (validImm(totalSize))
-                        new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toImm(totalSize), cur.block);
-                    else
-                        new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, cur.toReg(new IntConst(totalSize)), cur.block);
+                    awesomeALU(RV32I.AddInst, gepReg, ptrPos, new IntConst(totalSize));
                 }
             } else {
                 VirtualReg mulReg = new VirtualReg();
-                new AsmALUInst(RV32I.MulInst, mulReg, cur.toReg(index), cur.toReg(new IntConst(elementSize)), cur.block);
-                new AsmALUInst(RV32I.AddInst, gepReg, ptrReg, mulReg, cur.block);
+                awesomeALU(RV32I.MulInst, mulReg, index, new IntConst(elementSize));
+                // this not use awesomeALU because it can not be optimized
+                new AsmALUInst(RV32I.AddInst, gepReg, cur.toReg(ptrPos), mulReg, cur.block);
             }
         }
         return gepReg;
