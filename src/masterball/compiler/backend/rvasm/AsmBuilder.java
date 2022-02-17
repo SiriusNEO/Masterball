@@ -411,6 +411,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
     private static Immediate twoPowerCheck(Value value) {
         if (!(value instanceof IntConst)) return null;
         int log2 = 0, valData = ((IntConst) value).constData;
+        if (valData <= 0) return null;
         while (valData > 1) {
             if (valData % 2 != 0) return null;
             valData >>= 1;
