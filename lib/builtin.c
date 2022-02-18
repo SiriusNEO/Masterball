@@ -1,4 +1,4 @@
-// LLVM IR extern link lib for @Masterball.
+// extern link lib for @Masterball.
 
 /*
 declaration list:
@@ -32,14 +32,21 @@ typedef bool i1;
 typedef char i8;
 typedef int i32;
 
-const int IO_BUFFER_SIZE = 1024, NUM_BUFFER_SIZE = 20;
+/*
+ *  IO_BUFFER_SIZE is the max length of string read in getString()
+ *  NUM_BUFFER_SIZE is the max length of number turned to string
+ * 
+ *  WARNING: for performance, these arguments can be modified, but it may affect the stability  
+ */
+
+const int IO_BUFFER_SIZE = 256, NUM_BUFFER_SIZE = 20;
 
 i8* _bot_malloc(i32 mallocSize) {
     return malloc(mallocSize);
 }
 
 i8* _bot_str_cat(i8* str1, i8* str2) {
-    i8* ret = malloc(strlen(str1) + strlen(str2) + 4);
+    i8* ret = malloc(strlen(str1) + strlen(str2) + 1);
     strcpy(ret, str1);
     strcat(ret, str2);
     return ret;
