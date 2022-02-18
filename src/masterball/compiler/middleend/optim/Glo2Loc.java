@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.llvmir.User;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
@@ -11,17 +12,15 @@ import masterball.compiler.middleend.llvmir.inst.IRStoreInst;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.IRFuncPass;
+import masterball.debug.Log;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Glo2Loc Pass:
  *
  * if a GlobalVariable is used many times in a function, localize it.
- * also, if a GlobalVariable will not be modified in the program,
+ * also, if a GlobalVariable will not be modified in the program, replace it with a constant
  * localize can be beneficial to optimization
  *
  * works well in the following case:
@@ -40,7 +39,18 @@ public class Glo2Loc implements IRFuncPass {
     public static final int UsageThreshold = 4;
 
     private Map<GlobalVariable, Integer> refTimes = new HashMap<>();
-    private Set<GlobalVariable> ableSet = new HashSet<>();
+    private Set<GlobalVariable> ableSet = new HashSet<>(), constAbleSet = new HashSet<>();
+
+    private boolean constantDetect(GlobalVariable global) {
+        if (global.initValue == null) return false;
+        for (User use : global.users) {
+            if (use instanceof IRStoreInst &&
+                !Objects.equals(((IRStoreInst) use).parentBlock.parentFunction.name, LLVM.InitFuncName)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private void collectAbleSet(IRFunction function) {
 
@@ -67,8 +77,10 @@ public class Glo2Loc implements IRFuncPass {
         //  and that causes side effects.
 
         for (var global : refTimes.keySet()) {
-            // Log.report("ref times", global.identifier(), refTimes.get(global));
-            if (refTimes.get(global) >= UsageThreshold) {
+            // Log.info("ref times", global.identifier(), refTimes.get(global));
+
+            if (constantDetect(global)) constAbleSet.add(global);
+            else if (refTimes.get(global) >= UsageThreshold) {
                 boolean check = true;
                 for (IRFunction callee : function.node.callee) {
                     if (callee.node.glbUses.contains(global)) {
@@ -89,7 +101,8 @@ public class Glo2Loc implements IRFuncPass {
         collectAbleSet(function);
 
         // Log.mark("able set: " + function.identifier());
-        // ableSet.forEach(glb -> Log.report(glb.identifier()));
+        // ableSet.forEach(glb -> Log.info(glb.identifier()));
+        // constAbleSet.forEach(glb -> Log.info(glb.identifier()));
 
         for (GlobalVariable global : ableSet) {
             IRBaseInst initLoad = new IRLoadInst(global, null),
@@ -125,6 +138,17 @@ public class Glo2Loc implements IRFuncPass {
                         ((IRStoreInst) inst).replacePtr(initAlloc);
                     }
                 }
+        }
+
+        for (GlobalVariable global : constAbleSet) {
+            // replace all load with initValue, remove all loads
+            // remove the only store
+
+            for (User use : global.users) {
+                assert use instanceof IRBaseInst;
+                if (use instanceof IRLoadInst) use.replaceAllUsesWith(global.initValue);
+                ((IRBaseInst) use).parentBlock.instructions.remove(use);
+            }
         }
     }
 }

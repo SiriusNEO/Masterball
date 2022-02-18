@@ -13,12 +13,12 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- *  Common Subexpression Elimination Pass
+ *  Global Value Numbering Pass
  *
  *  just in a Block now, not used
  */
 
-public class CSE implements IRFuncPass {
+public class GVN implements IRFuncPass {
 
     private static boolean effectMatch(IRBaseInst inst1, IRBaseInst inst2) {
         if (inst1.getClass() != inst2.getClass()) return false;
@@ -82,7 +82,7 @@ public class CSE implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
-        Log.track("CSE", function.identifier());
+        Log.track("GVN", function.identifier());
         function.blocks.forEach(this::eliminate);
     }
 }

@@ -152,11 +152,22 @@ public class IRBuilder implements ASTVisitor {
         if (node.initExpNode != null) {
             node.initExpNode.accept(this);
             memStore(allocaPtr, node.initExpNode.value);
+
+            if (allocaPtr instanceof GlobalVariable && (node.initExpNode.value instanceof IntConst || node.initExpNode.value instanceof BoolConst))
+                ((GlobalVariable) allocaPtr).initValue = node.initExpNode.value;
         }
         else if (node.varRegistry.type.match(MxBaseType.BuiltinType.CLASS) || node.varRegistry.type.isArray()) {
             // array type & class should be initialized with null
             // string no need
             memStore(allocaPtr, new NullptrConst());
+        }
+        else {
+            if (allocaPtr instanceof GlobalVariable) {
+                if (((GlobalVariable) allocaPtr).pointedType().match(IRTranslator.i32Type))
+                    ((GlobalVariable) allocaPtr).initValue = new IntConst(0);
+                else if (((GlobalVariable) allocaPtr).pointedType().match(IRTranslator.boolType))
+                    ((GlobalVariable) allocaPtr).initValue = new BoolConst(false);
+            }
         }
     }
 

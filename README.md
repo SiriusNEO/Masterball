@@ -3,8 +3,7 @@
 <div align="center">
 	<img src="asset/big_logo.png" height="100" width="100" />
 </div>
-
-<img src="asset/masterball.png" style="zoom:100%;" /> Masterball, an elaborate Mx* Compiler.
+<img src="asset/masterball.png" style="zoom:100%;" /> Masterball, an elaborate Mx* Compiler. Passed all testcases in Online Judge.
 
 <img src="asset/masterball.png" style="zoom:100%;" /> Actually, it is a toy compiler for course project. Therefore, many implementations are quite simple and there may be some bugs.
 
@@ -14,7 +13,7 @@
 
 
 
-![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success)   ![](https://img.shields.io/badge/LLVM_IR-passed-success)   ![](https://img.shields.io/badge/CodeGen-passed-success)  ![](https://img.shields.io/badge/Optim-16/20-blue)
+![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success)   ![](https://img.shields.io/badge/LLVM_IR-passed-success)   ![](https://img.shields.io/badge/CodeGen-passed-success)  ![](https://img.shields.io/badge/Optim-20/20-success)
 
 
 
@@ -86,8 +85,9 @@ Click the following links to read the project design.
 - [x] SCCP
 - [x] Glo2Loc
 - [x] ADCE
-- [ ] Function Inliner
-- [ ] Loop Promotion
+- [x] Function Inliner
+- [x] Induction Variable Strength Reduction
+- [ ] GVN or CSE
 
 
 
