@@ -34,14 +34,14 @@ public class MiddleEndOptimizer implements IRModulePass {
             new ADCE().runOnFunc(function);
             new CFGSimplifier().runOnFunc(function);
             new IVTrans().runOnFunc(function);
-            new SSADestructor().runOnFunc(function);
         }
 
         new FuncInliner(true).runOnModule(module);
 
         // re-analyze info for asm
         for (IRFunction function : module.functions) {
-            new CFGBuilder().runOnFunc(function);
+            new SSADestructor().runOnFunc(function);
+            new CFGSimplifier().runOnFunc(function);
             new LoopAnalyzer().runOnFunc(function);
         }
     }
