@@ -29,7 +29,8 @@ public class FuncInliner implements IRModulePass {
     private IRModule module;
     private final boolean forced;
 
-    private static final int CalleeInstNumThreshold = 200,
+    private static final int CalleeInstNumThreshold = 600,
+                             ForcedCalleeInstNumThreshold = 200,
                              CallerInstNumThreshold = 1000;
 
     private final Set<IRCallInst> inlineAbleSet = new HashSet<>();
@@ -53,7 +54,7 @@ public class FuncInliner implements IRModulePass {
     private boolean canForceInline(IRFunction caller, IRFunction callee) {
         return  !isNecessary(callee) &&
                 instNum.get(caller) <= CallerInstNumThreshold &&
-                instNum.get(callee) <= CalleeInstNumThreshold;
+                instNum.get(callee) <= ForcedCalleeInstNumThreshold;
     }
 
     private void collectAbleSet() {
@@ -188,6 +189,8 @@ public class FuncInliner implements IRModulePass {
             // inlineAbleSet.forEach(call -> Log.info(call.callFunc().identifier()));
 
             if (inlineAbleSet.isEmpty()) break;
+
+            Log.info("call size", inlineAbleSet.size());
 
             for (IRCallInst pendingCall : inlineAbleSet) {
                 inlining(pendingCall);

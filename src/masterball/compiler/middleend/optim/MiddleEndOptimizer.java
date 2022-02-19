@@ -27,13 +27,15 @@ public class MiddleEndOptimizer implements IRModulePass {
             new Mem2Reg().runOnFunc(function);
         }
 
-        new FuncInliner(false).runOnModule(module);
+        for (int i = 1; i < 3; i++) {
+            new FuncInliner(false).runOnModule(module);
 
-        for (IRFunction function : module.functions) {
-            new SCCP().runOnFunc(function);
-            new ADCE().runOnFunc(function);
-            new CFGSimplifier().runOnFunc(function);
-            new IVTrans().runOnFunc(function);
+            for (IRFunction function : module.functions) {
+                new SCCP().runOnFunc(function);
+                new ADCE().runOnFunc(function);
+                new CFGSimplifier().runOnFunc(function);
+                new IVTrans().runOnFunc(function);
+            }
         }
 
         new FuncInliner(true).runOnModule(module);
