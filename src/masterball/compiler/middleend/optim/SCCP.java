@@ -367,7 +367,7 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
         BaseConst lhsConst = getConst(inst.lhs()), rhsConst = getConst(inst.rhs());
 
         if (lhsConst == uncertain || rhsConst == uncertain) {
-            /*
+
             if (Objects.equals(inst.op, LLVM.EqualArg) || Objects.equals(inst.op, LLVM.GreaterEqualArg) || Objects.equals(inst.op, LLVM.LessEqualArg)) {
                 if (inst.lhs().equals(inst.rhs())) replace = new BoolConst(true);
             }
@@ -375,7 +375,6 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
             if (Objects.equals(inst.op, LLVM.NotEqualArg)) {
                 if (inst.lhs().equals(inst.rhs())) replace = new BoolConst(false);
             }
-            */
 
             if (replace == null) {
                 setUncertain(inst);
