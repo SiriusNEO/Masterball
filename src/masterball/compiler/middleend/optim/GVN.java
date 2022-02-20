@@ -14,18 +14,23 @@ import java.util.*;
 /**
  *  Global Value Numbering Pass
  *
+ *  numbering every value with special hashCode
+ *  numbering Inst with the hashCode of the ArrayList
+ *  do some simple load eliminate
+ *
  *  @requirement: DomTreeBuilder
  */
 
 public class GVN implements IRFuncPass {
 
-    private boolean numberTarget(IRBaseInst inst) {
-        return inst instanceof IRBinaryInst ||
-               inst instanceof IRBitCastInst ||
-               inst instanceof IRICmpInst ||
-               inst instanceof IRTruncInst ||
-               inst instanceof IRZextInst ||
-               inst instanceof IRLoadInst;
+    private static boolean numberTarget(Value value) {
+        return value instanceof IRBinaryInst ||
+               value instanceof IRBitCastInst ||
+               value instanceof IRICmpInst ||
+               value instanceof IRTruncInst ||
+               value instanceof IRZextInst ||
+               value instanceof IRGetElementPtrInst ||
+               value instanceof IRLoadInst;
     }
 
     private static class ValueNumber {
@@ -33,9 +38,11 @@ public class GVN implements IRFuncPass {
         ArrayList<ValueNumber> operandNum;
 
         static HashMap<Value, ValueNumber> value2NumMap = new HashMap<>();
+        static HashSet<IRLoadInst> invalidatedLoads = new HashSet<>();
 
         static void init() {
             value2NumMap.clear();
+            invalidatedLoads.clear();
         }
 
         static ValueNumber getNumber(Value value) {
@@ -53,7 +60,7 @@ public class GVN implements IRFuncPass {
 
         public ValueNumber(Value value) {
             this.value = value;
-            if (value instanceof IRBaseInst && !(value instanceof IRPhiInst)) {
+            if (GVN.numberTarget(value)) {
                 this.operandNum = new ArrayList<>();
                 for (Value operand : ((IRBaseInst) value).operands)
                     this.operandNum.add(getNumber(operand));
@@ -64,7 +71,7 @@ public class GVN implements IRFuncPass {
         public int hashCode() {
             // instance of inst
             if (this.operandNum != null) {
-                return this.operandNum.hashCode();
+                return 233; // map to the same code, use equals to judge
             }
             return this.value.hashCode();
         }
@@ -73,7 +80,14 @@ public class GVN implements IRFuncPass {
         public boolean equals(Object o) {
             if (!(o instanceof ValueNumber)) return false;
 
-            if (!(this.value instanceof IRBaseInst && ((ValueNumber) o).value instanceof IRBaseInst)) return false;
+            if (!numberTarget(this.value) || !numberTarget(((ValueNumber) o).value)) {
+                return this.value.equals(((ValueNumber) o).value);
+            }
+
+            if (this.operandNum.size() != ((ValueNumber) o).operandNum.size()) return false;
+
+            for (int i = 0; i < this.operandNum.size(); i++)
+                if (!this.operandNum.get(i).equals(((ValueNumber) o).operandNum.get(i))) return false;
 
             IRBaseInst inst1 = (IRBaseInst) this.value;
             IRBaseInst inst2 = (IRBaseInst) ((ValueNumber) o).value;
@@ -97,8 +111,11 @@ public class GVN implements IRFuncPass {
             else if (inst1 instanceof IRZextInst) {
                 return inst1.type.match(inst2.type);
             }
-            else if (inst1 instanceof IRLoadInst) {
+            else if (inst1 instanceof IRGetElementPtrInst) {
                 return true;
+            }
+            else if (inst1 instanceof IRLoadInst) {
+                return !invalidatedLoads.contains(inst1) && !invalidatedLoads.contains(inst2);
             }
 
             return false;
@@ -108,6 +125,7 @@ public class GVN implements IRFuncPass {
     private static class NumberScope {
 
         HashMap<ValueNumber, Value> num2ValueMap = new HashMap<>();
+        static ArrayList<ValueNumber> loadCollection = new ArrayList<>();
 
         void set(Value value) {
             num2ValueMap.put(ValueNumber.getNumber(value), value);
@@ -115,22 +133,31 @@ public class GVN implements IRFuncPass {
             if (value instanceof IRBinaryInst && IRTranslator.isCommunicative(((IRBinaryInst) value).op)) {
                 IRBaseInst newInst = ((IRBinaryInst) value).copy();
                 Collections.reverse(newInst.operands);
-                num2ValueMap.put(ValueNumber.getNumber(newInst), newInst);
+                // notice: this is for mapping "add a b" and "add b a" to the same value
+                // so newInst is just for indexing, not used as a value
+                num2ValueMap.put(ValueNumber.getNumber(newInst), value);
             }
             else if (value instanceof IRICmpInst && IRTranslator.isCommunicative(((IRICmpInst) value).op)) {
                 IRBaseInst newInst = ((IRICmpInst) value).copy();
                 Collections.reverse(newInst.operands);
-                num2ValueMap.put(ValueNumber.getNumber(newInst), newInst);
+                num2ValueMap.put(ValueNumber.getNumber(newInst), value);
             }
+
+            if (value instanceof IRLoadInst) loadCollection.add(ValueNumber.getNumber(value));
         }
 
         Value getValue(ValueNumber number) {
-            if (!num2ValueMap.containsKey(number)) return null;
+            if (!num2ValueMap.containsKey(number)) {
+                return null;
+            }
             return num2ValueMap.get(number);
         }
 
-        void removeAll() {
-            num2ValueMap.clear();
+        void removeAllLoads() {
+            loadCollection.forEach(load -> {
+                num2ValueMap.remove(load);
+                ValueNumber.invalidatedLoads.add((IRLoadInst) load.value);
+            });
         }
     }
 
@@ -146,6 +173,13 @@ public class GVN implements IRFuncPass {
         }
 
         return ret;
+    }
+
+    private void invalidateLoad() {
+        for (int i = scopeStack.size() - 1; i >= 0; i--) {
+            scopeStack.get(i).removeAllLoads();
+        }
+        NumberScope.loadCollection.clear();
     }
 
     private void eliminate(IRBlock block) {
@@ -164,11 +198,12 @@ public class GVN implements IRFuncPass {
                         it.remove();
                         inst.replaceAllUsesWith(vInst);
                     } else {
+                        // Log.info("null", inst.format());
                         curScope.set(inst);
                     }
                 }
             } else {
-                curScope.removeAll();
+                invalidateLoad();
             }
         }
 
