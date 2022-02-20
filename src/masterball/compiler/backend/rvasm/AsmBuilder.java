@@ -381,31 +381,6 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         return value instanceof NullptrConst || (value instanceof IntConst && ((IntConst) value).constData == 0) || (value instanceof BoolConst && !((BoolConst) value).constData);
     }
 
-    private static boolean isCommunicative(String rvOp) {
-        switch (rvOp) {
-            case RV32I.SubInst:
-            case RV32I.DivInst:
-            case RV32I.ModInst:
-            case RV32I.ShiftLeftInst:
-            case RV32I.ShiftRightInst:
-                return false;
-            default:
-                return true;
-        }
-    }
-
-    private static boolean hasIType(String rvOp) {
-        switch (rvOp) {
-            case RV32I.SubInst:
-            case RV32I.MulInst:
-            case RV32I.DivInst:
-            case RV32I.ModInst:
-                return false;
-            default:
-                return true;
-        }
-    }
-
     // check an immediate: whether it is a valid two power, return imm log2
     // if not a valid 2power immediate, return null
     private static Immediate twoPowerCheck(Value value) {
@@ -426,14 +401,6 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         // binary arithm calculate
         // remember this calculate only support two IR Value
 
-        if (rvOp.equals(RV32I.SltInst)) {
-            if (validImm(rhs)) new AsmALUInst(rvOp, dest, cur.toReg(lhs), cur.toImm(rhs), cur.block);
-            else {
-                new AsmALUInst(rvOp, dest, cur.toReg(lhs), cur.toReg(rhs), cur.block);
-            }
-            return;
-        }
-
         // div can not use this optimize because of negative num problem
         if (rvOp.equals(RV32I.MulInst)) {
             Immediate lhsLog2 = twoPowerCheck(lhs), rhsLog2 = twoPowerCheck(rhs);
@@ -447,12 +414,12 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
             }
         }
 
-        if (hasIType(rvOp)) {
+        if (AsmTranslator.hasIType(rvOp)) {
             if (validImm(rhs)) {
                 new AsmALUInst(rvOp, dest, cur.toReg(lhs), cur.toImm(rhs), cur.block);
                 return;
             }
-            else if (isCommunicative(rvOp) && validImm(lhs)) {
+            else if (AsmTranslator.isCommunicative(rvOp) && validImm(lhs)) {
                 new AsmALUInst(rvOp, dest, cur.toReg(rhs), cur.toImm(lhs), cur.block);
                 return;
             }

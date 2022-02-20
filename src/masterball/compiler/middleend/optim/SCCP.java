@@ -428,6 +428,12 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
     @Override
     public void visit(IRPhiInst inst) {
         BaseConst first = getConst(inst.getOperand(0));
+
+        if (first == uncertain) {
+            setUncertain(inst);
+            return;
+        }
+
         for (int i = 2; i < inst.operandSize(); i += 2) {
             BaseConst now = getConst(inst.getOperand(i));
             if (now == null || now == uncertain || !executable.contains(inst.getOperand(i+1)) ||
@@ -436,8 +442,11 @@ public class SCCP implements IRFuncPass, IRBlockPass, InstVisitor {
                 return;
             }
         }
-        lattice.put(inst, first);
-        valueWorklist.offer(inst);
+
+        if (first != null && getConst(inst) == null) {
+            lattice.put(inst, first);
+            valueWorklist.offer(inst);
+        }
     }
 
     @Override

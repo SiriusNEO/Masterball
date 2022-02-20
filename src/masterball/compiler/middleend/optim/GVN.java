@@ -1,9 +1,11 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.*;
 import masterball.compiler.share.misc.Pair;
+import masterball.compiler.share.misc.UnionSet;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.debug.Log;
 
@@ -19,6 +21,20 @@ import java.util.Objects;
  */
 
 public class GVN implements IRFuncPass {
+
+    private static class ValueNumber {
+        Value value;
+
+        static UnionSet<Value> moveAlias = new UnionSet<>();
+
+        static HashMap<ValueNumber, Value> num2ValueMap = new HashMap<>();
+
+        static void init() {
+            moveAlias.clear();
+            num2ValueMap.clear();
+        }
+
+    }
 
     private static boolean effectMatch(IRBaseInst inst1, IRBaseInst inst2) {
         if (inst1.getClass() != inst2.getClass()) return false;

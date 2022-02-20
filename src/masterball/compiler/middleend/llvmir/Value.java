@@ -73,6 +73,8 @@ public class Value {
 
     // RAUW
     public void replaceAllUsesWith(Value replace) {
+        if (this == replace) return;
+
         for (User user : users) {
             var operands = user.operands;
             for (int i = 0; i < operands.size(); i++) {

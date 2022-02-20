@@ -36,4 +36,30 @@ public class AsmTranslator {
             default: return new Pair<>(irOp, false);
         }
     }
+
+    public static boolean isCommunicative(String rvOp) {
+        switch (rvOp) {
+            case RV32I.SubInst:
+            case RV32I.DivInst:
+            case RV32I.ModInst:
+            case RV32I.ShiftLeftInst:
+            case RV32I.ShiftRightInst:
+            case RV32I.SltInst:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    public static boolean hasIType(String rvOp) {
+        switch (rvOp) {
+            case RV32I.SubInst:
+            case RV32I.MulInst:
+            case RV32I.DivInst:
+            case RV32I.ModInst:
+                return false;
+            default:
+                return true;
+        }
+    }
 }

@@ -9,6 +9,7 @@ import masterball.compiler.middleend.llvmir.inst.IRPhiInst;
 import masterball.compiler.middleend.llvmir.type.LabelType;
 import masterball.compiler.middleend.analyzer.DomTreeBuilder;
 import masterball.compiler.share.error.runtime.InternalError;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -112,8 +113,10 @@ public class IRBlock extends Value {
             if (phi.operandSize() == 2) {
                 // can not remove from users because its register will be saved
                 it.remove();
-                IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
-                this.tAddFirst(move);
+                // IRMoveInst move = new IRMoveInst(phi, phi.getOperand(0), null); // terminated
+                // this.tAddFirst(move);
+                // Log.info(phi.format());
+                phi.replaceAllUsesWith(phi.getOperand(0));
             }
         }
     }
