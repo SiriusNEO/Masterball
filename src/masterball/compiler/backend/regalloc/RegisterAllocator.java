@@ -39,7 +39,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * Registers can only present in one of these
      * Registers in coalescedNodes and selectStack are "deleted"
      */
-    private final Set<Register>
+    private final HashSet<Register>
             precolored = new LinkedHashSet<>(phyRegs.values()),
             initial = new LinkedHashSet<>(),
             simplifyWorklist = new LinkedHashSet<>(),
@@ -57,7 +57,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * frozenMoves: have been frozen, no need to consider it.
      * worklistMoves and activeMoves are moves "exists"
      */
-    private final Set<AsmMvInst>
+    private final HashSet<AsmMvInst>
             coalescedMoves = new LinkedHashSet<>(),
             constrainedMoves = new LinkedHashSet<>(),
             frozenMoves = new LinkedHashSet<>(),
