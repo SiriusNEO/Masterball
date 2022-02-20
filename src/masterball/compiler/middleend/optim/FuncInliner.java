@@ -46,7 +46,7 @@ public class FuncInliner implements IRModulePass {
 
     private boolean canInline(IRFunction caller, IRFunction callee) {
         return !isNecessary(callee) &&
-               callee.node.call.isEmpty() &&
+               !callee.node.cyclic &&
                instNum.get(caller) <= CallerInstNumThreshold &&
                instNum.get(callee) <= CalleeInstNumThreshold;
     }

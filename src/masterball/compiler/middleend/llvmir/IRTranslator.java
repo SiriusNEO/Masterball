@@ -7,6 +7,7 @@ import masterball.compiler.frontend.info.type.VarType;
 import masterball.compiler.middleend.llvmir.type.*;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.lang.MxStar;
+import masterball.compiler.share.lang.RV32I;
 
 import java.util.Objects;
 
@@ -107,5 +108,22 @@ public class IRTranslator {
             ret = new PointerType(ret);
 
         return ret;
+    }
+
+    public static boolean isCommunicative(String irOp) {
+        switch (irOp) {
+            case LLVM.SubInst:
+            case LLVM.DivInst:
+            case LLVM.ModInst:
+            case LLVM.ShiftLeftInst:
+            case LLVM.ShiftRightInst:
+            case LLVM.GreaterArg:
+            case LLVM.GreaterEqualArg:
+            case LLVM.LessArg:
+            case LLVM.LessEqualArg:
+                return false;
+            default:
+                return true;
+        }
     }
 }

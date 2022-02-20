@@ -31,6 +31,7 @@ public class MiddleEndOptimizer implements IRModulePass {
             new FuncInliner(false).runOnModule(module);
 
             for (IRFunction function : module.functions) {
+                // new GVN().runOnFunc(function);
                 new SCCP().runOnFunc(function);
                 new ADCE().runOnFunc(function);
                 new CFGSimplifier().runOnFunc(function);
