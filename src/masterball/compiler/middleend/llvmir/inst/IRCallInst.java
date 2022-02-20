@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public class IRCallInst extends IRBaseInst {
 
-    static int globalTimeStamp = 0;
-
     private boolean noaliasFlag = false;
 
     public boolean isTailCall = false;
