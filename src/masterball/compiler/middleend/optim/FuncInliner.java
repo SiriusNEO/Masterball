@@ -29,11 +29,11 @@ public class FuncInliner implements IRModulePass {
     private IRModule module;
     private final boolean forced;
 
-    private static final int CalleeInstNumThreshold = 600,
+    private static final int CalleeInstNumThreshold = 500,
                              ForcedCalleeInstNumThreshold = 200,
                              CallerInstNumThreshold = 1000;
 
-    private final Set<IRCallInst> inlineAbleSet = new HashSet<>();
+    private final ArrayList<IRCallInst> inlineAbleSet = new ArrayList<>();
     private final Map<IRFunction, Integer> instNum = new HashMap<>();
 
     public FuncInliner(boolean forced) {
@@ -183,6 +183,8 @@ public class FuncInliner implements IRModulePass {
         Log.track("start inlining");
 
         while (true) {
+            // Log.mark("round #");
+
             new CallGraphAnalyzer().runOnModule(module);
             collectAbleSet();
 
@@ -191,10 +193,18 @@ public class FuncInliner implements IRModulePass {
 
             if (inlineAbleSet.isEmpty()) break;
 
-            Log.info("call size", inlineAbleSet.size());
+            // Log.info("call size", inlineAbleSet.size());
+
+
+            // notice: pending the normal call first
+            for (IRCallInst pendingCall : inlineAbleSet) {
+                if (pendingCall.callFunc() != pendingCall.parentBlock.parentFunction)
+                inlining(pendingCall);
+            }
 
             for (IRCallInst pendingCall : inlineAbleSet) {
-                inlining(pendingCall);
+                if (pendingCall.callFunc() == pendingCall.parentBlock.parentFunction)
+                    inlining(pendingCall);
             }
         }
 

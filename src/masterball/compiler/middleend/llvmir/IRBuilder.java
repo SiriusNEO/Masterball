@@ -279,6 +279,10 @@ public class IRBuilder implements ASTVisitor {
     public void visit(ReturnStmtNode node) {
         if (node.retExpNode != null && !node.retExpNode.type.match(MxBaseType.BuiltinType.VOID)) {
             node.retExpNode.accept(this);
+
+            if (node.retExpNode.value instanceof IRCallInst)
+                ((IRCallInst) node.retExpNode.value).isTailCall = true;
+
             memStore(cur.func.retValPtr, node.retExpNode.value);
         }
         new IRBrInst(cur.func.exitBlock, cur.block);
