@@ -19,7 +19,10 @@ public class LoopAnalyzer implements IRFuncPass {
         new CFGBuilder().runOnFunc(function);
         new DomTreeBuilder(false).runOnFunc(function);
         function.topLevelLoops.clear();
-        function.blocks.forEach(block -> block.loopDepth = 0);
+        function.blocks.forEach(block -> {
+            block.loopDepth = 0;
+            block.belongLoop = null;
+        });
     }
 
     private void collectBackEdge(IRFunction function) {
@@ -36,8 +39,8 @@ public class LoopAnalyzer implements IRFuncPass {
     private void buildNaturalLoop(IRBlock edgeHead, IRBlock edgeTail) {
         headToLoopMap.putIfAbsent(edgeHead, new Loop(edgeHead));
         headToLoopMap.get(edgeHead).tailers.add(edgeTail);
-        headToLoopMap.get(edgeHead).blocks.add(edgeHead);
-        headToLoopMap.get(edgeHead).blocks.add(edgeTail);
+        headToLoopMap.get(edgeHead).addBlock(edgeHead);
+        headToLoopMap.get(edgeHead).addBlock(edgeTail);
 
         Queue<IRBlock> workQueue = new LinkedList<>();
         workQueue.offer(edgeTail);
@@ -46,7 +49,7 @@ public class LoopAnalyzer implements IRFuncPass {
             IRBlock nowBlock = workQueue.poll();
             for (IRBlock pre : nowBlock.prevs)
                 if (!headToLoopMap.get(edgeHead).blocks.contains(pre)) {
-                    headToLoopMap.get(edgeHead).blocks.add(pre);
+                    headToLoopMap.get(edgeHead).addBlock(pre);
                     workQueue.offer(pre);
                 }
         }

@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.analyzer.AliasAnalyzer;
 import masterball.compiler.middleend.analyzer.LoopAnalyzer;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
@@ -19,46 +20,20 @@ import java.util.HashSet;
  */
 
 public class LICM implements IRFuncPass, IRLoopPass {
+
+    private final AliasAnalyzer analyzer = new AliasAnalyzer();
+
     @Override
     public void runOnFunc(IRFunction function) {
         Log.info("LICM", function.identifier());
-
+        analyzer.runOnFunc(function);
         new LoopAnalyzer().runOnFunc(function);
         function.topLevelLoops.forEach(this::runOnLoop);
     }
 
     // no strict alias
     private boolean mayAlias(Value addr1, Value addr2) {
-        Log.info(addr1.type);
-        Log.info(addr2.type);
         return addr1.type.match(addr2.type);
-    }
-
-    private boolean isInstInvariant(IRBaseInst inst, Loop loop) {
-        if ((inst.mayHaveSideEffects() && !(inst instanceof IRLoadInst)) || !inst.isValueSelf()) return false;
-
-        for (Value operand : inst.operands) {
-            if (!loop.isInvariant(operand)) {
-                // Log.mark("not invariant");
-                // Log.info(inst.format());
-                // Log.info(operand.identifier());
-                return false;
-            }
-        }
-
-        if (inst instanceof IRLoadInst) {
-            for (IRBlock block : loop.blocks)
-                for (IRBaseInst inst1 : block.instructions)
-                    if (inst1 instanceof IRStoreInst &&
-                            mayAlias(((IRLoadInst) inst).loadPtr(), ((IRStoreInst) inst1).storePtr())) {
-                        Log.mark("may alias");
-                        Log.info("load: ", ((IRLoadInst) inst).loadPtr().typedIdentifier());
-                        Log.info("store", ((IRStoreInst) inst1).storePtr().typedIdentifier());
-                        return false;
-                    }
-        }
-
-        return true;
     }
 
     private void createPreHeader(Loop loop) {
@@ -81,12 +56,12 @@ public class LICM implements IRFuncPass, IRLoopPass {
         preHeader.nexts.add(loop.header);
     }
 
-    private HashSet<IRBaseInst> motionAble = new HashSet<>();
+    private final HashSet<IRBaseInst> motionAble = new HashSet<>();
 
     private void collectMotionAble(Loop loop) {
         for (IRBlock block : loop.blocks)
             for (IRBaseInst inst : block.instructions)
-                if (isInstInvariant(inst, loop)) motionAble.add(inst);
+                if (loop.isInstInvariant(inst, analyzer)) motionAble.add(inst);
     }
 
     private void motionInst(Loop loop) {

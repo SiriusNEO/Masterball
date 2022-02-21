@@ -36,6 +36,7 @@ public class IRBlock extends Value {
 
     // info in Loop
     public int loopDepth = 0;
+    public Loop belongLoop = null;
 
     public IRBlock(String label, IRFunction parentFunction) {
         super(label, new LabelType());

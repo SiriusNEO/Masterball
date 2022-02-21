@@ -36,7 +36,7 @@ public class MiddleEndOptimizer implements IRModulePass {
                 new ADCE().runOnFunc(function);
                 new CFGSimplifier().runOnFunc(function);
                 new IVTrans().runOnFunc(function);
-                // new LICM().runOnFunc(function);
+                new LICM().runOnFunc(function);
             }
         }
 

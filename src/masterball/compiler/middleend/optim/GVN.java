@@ -25,12 +25,12 @@ public class GVN implements IRFuncPass {
 
     private static boolean numberTarget(Value value) {
         return value instanceof IRBinaryInst ||
-               value instanceof IRBitCastInst ||
-               value instanceof IRICmpInst ||
-               value instanceof IRTruncInst ||
-               value instanceof IRZextInst ||
-               value instanceof IRGetElementPtrInst ||
-               value instanceof IRLoadInst;
+                value instanceof IRBitCastInst ||
+                value instanceof IRICmpInst ||
+                value instanceof IRTruncInst ||
+                value instanceof IRZextInst ||
+                value instanceof IRGetElementPtrInst ||
+                value instanceof IRLoadInst;
     }
 
     private static class ValueNumber {

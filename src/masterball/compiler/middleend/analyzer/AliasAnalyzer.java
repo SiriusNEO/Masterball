@@ -1,17 +1,21 @@
 package masterball.compiler.middleend.analyzer;
 
 import masterball.compiler.middleend.llvmir.Value;
+import masterball.compiler.middleend.llvmir.constant.IntConst;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 import masterball.compiler.middleend.llvmir.inst.IRBitCastInst;
 import masterball.compiler.middleend.llvmir.inst.IRCallInst;
+import masterball.compiler.middleend.llvmir.inst.IRGetElementPtrInst;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.share.misc.UnionSet;
 import masterball.compiler.share.pass.IRFuncPass;
+import masterball.debug.Log;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * simple alias analyzer implemented
@@ -63,9 +67,29 @@ public class AliasAnalyzer implements IRFuncPass {
         addr1 = bitcastUnion.getAlias(addr1);
         addr2 = bitcastUnion.getAlias(addr2);
 
-        if (certain.contains(addr1) && certain.contains(addr2)) return addr1.equals(addr2);
+        if (certain.contains(addr1) && certain.contains(addr2)) {
+            return addr1.equals(addr2);
+        }
 
-        // if (addr1)
-        return false;
+        if (addr1 instanceof IRGetElementPtrInst) {
+            if (addr2 instanceof IRGetElementPtrInst) {
+                boolean ret = mayAlias(((IRGetElementPtrInst) addr1).headPointer(), ((IRGetElementPtrInst) addr2).headPointer());
+                if (((IRGetElementPtrInst) addr1).indicesNum() == 1 && ((IRGetElementPtrInst) addr2).indicesNum() == 1) {
+                    Value index1 = ((IRGetElementPtrInst) addr1).ptrMoveIndex();
+                    Value index2 = ((IRGetElementPtrInst) addr2).ptrMoveIndex();
+
+                    if (index1 instanceof IntConst && index2 instanceof IntConst && ((IntConst) index1).constData != ((IntConst) index2).constData) {
+                        return false;
+                    }
+                }
+                return ret;
+            }
+            else return mayAlias(((IRGetElementPtrInst) addr1).headPointer(), addr2);
+        }
+
+        if (addr2 instanceof IRGetElementPtrInst)
+            return mayAlias(addr2, addr1);
+
+        return addr1.type.match(addr2.type);
     }
 }
