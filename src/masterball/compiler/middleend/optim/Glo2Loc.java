@@ -11,6 +11,7 @@ import masterball.compiler.middleend.llvmir.inst.IRLoadInst;
 import masterball.compiler.middleend.llvmir.inst.IRStoreInst;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.share.lang.LLVM;
+import masterball.compiler.share.lang.MxStar;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.debug.Log;
 
@@ -36,7 +37,7 @@ import java.util.*;
 public class Glo2Loc implements IRFuncPass {
 
     // if a global variable isn't used many times, not localize it because not worthy
-    public static final int UsageThreshold = 2;
+    public static final int UsageThreshold = 1;
 
     private Map<GlobalVariable, Integer> refTimes = new HashMap<>();
     private Set<GlobalVariable> ableSet = new HashSet<>(), constAbleSet = new HashSet<>();
@@ -84,6 +85,7 @@ public class Glo2Loc implements IRFuncPass {
                 boolean check = true;
                 for (IRFunction callee : function.node.callee) {
                     if (callee.node.glbUses.contains(global)) {
+                        Log.info("can not", global.identifier(), callee.identifier());
                         check = false;
                         break;
                     }
@@ -100,9 +102,9 @@ public class Glo2Loc implements IRFuncPass {
 
         collectAbleSet(function);
 
-        // Log.mark("able set: " + function.identifier());
-        // ableSet.forEach(glb -> Log.info(glb.identifier()));
-        // constAbleSet.forEach(glb -> Log.info(glb.identifier()));
+        Log.mark("glo2loc able set: " + function.identifier());
+        ableSet.forEach(glb -> Log.info(glb.identifier()));
+        constAbleSet.forEach(glb -> Log.info(glb.identifier()));
 
         for (GlobalVariable global : ableSet) {
             IRBaseInst initLoad = new IRLoadInst(global, null),
@@ -118,6 +120,7 @@ public class Glo2Loc implements IRFuncPass {
             function.entryBlock.tAddFirst(initStore);
             function.entryBlock.tAddFirst(initLoad);
             function.entryBlock.tAddFirst(initAlloc);
+
             IRBaseInst writeBackLoad = null, writeBackStore = null;
             // if the function doesn't modify it, there is no need to store back
             if (function.node.glbDefs.contains(global)) {

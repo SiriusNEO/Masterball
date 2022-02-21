@@ -103,6 +103,7 @@ public class IRBuilder implements ASTVisitor {
         // main func
         if (Objects.equals(node.funcRegistry.name, MxStar.mainKw)) {
             // call init
+            // push to block in GLo2Loc
             new IRCallInst((IRFunction) infoManager.queryFuncInStack(LLVM.InitFuncName).value, cur.block, new ArrayList<>());
             memStore(cur.func.retValPtr, new IntConst(0));
         }

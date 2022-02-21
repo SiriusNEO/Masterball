@@ -13,7 +13,7 @@ public class Timer {
     }
 
     public static void display() {
-        System.out.println("total time: " + (System.currentTimeMillis() - startTime) + " (ms)");
+        Log.info("#timer#   total time: " + (System.currentTimeMillis() - startTime) + " (ms)");
     }
 
 }

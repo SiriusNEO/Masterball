@@ -6,6 +6,7 @@ import masterball.compiler.middleend.MiddleEnd;
 import masterball.compiler.share.error.CompileError;
 import masterball.console.*;
 import masterball.console.error.ConsoleError;
+import masterball.debug.Statistics;
 import masterball.debug.Timer;
 
 import java.util.concurrent.TimeoutException;
@@ -47,6 +48,8 @@ public class Masterball {
             BackEnd backEnd = new BackEnd(middleEnd, console);
 
             Timer.display();
+
+            Statistics.show("spill");
         }
         catch (Exception e) {
             errorHandle(e);

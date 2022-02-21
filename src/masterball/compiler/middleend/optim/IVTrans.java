@@ -62,15 +62,15 @@ public class IVTrans implements IRFuncPass, IRLoopPass {
 
     @Override
     public void runOnLoop(Loop loop) {
-        Log.mark("run loop");
-        loop.blocks.forEach(block -> Log.info(block.identifier()));
+        // Log.mark("run loop");
+        // loop.blocks.forEach(block -> Log.info(block.identifier()));
 
         collectBasicIndVar(loop);
-        Log.mark("collect basic finish");
-        basicIV.keySet().forEach(value -> Log.info(value.identifier(), basicIV.get(value).invariant.identifier(), basicIV.get(value).op));
+        // Log.mark("collect basic finish");
+        // basicIV.keySet().forEach(value -> Log.info(value.identifier(), basicIV.get(value).invariant.identifier(), basicIV.get(value).op));
         collectDerivedIndVar(loop);
-        Log.mark("collect derived finish");
-        derivedIV.keySet().forEach(value -> Log.info(value.identifier(), derivedIV.get(value).invariant.identifier(), derivedIV.get(value).op));
+        // Log.mark("collect derived finish");
+        // derivedIV.keySet().forEach(value -> Log.info(value.identifier(), derivedIV.get(value).invariant.identifier(), derivedIV.get(value).op));
         strengthReduction(loop);
         loop.nestedLoops.forEach(this::runOnLoop);
     }

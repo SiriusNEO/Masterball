@@ -15,6 +15,7 @@ import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.compiler.share.pass.AsmModulePass;
 import masterball.debug.Log;
 import masterball.compiler.backend.regalloc.InterferenceGraph.Edge;
+import masterball.debug.Statistics;
 
 import java.util.*;
 
@@ -358,7 +359,6 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
     /**
      * selectSpill: using simple heuristic to select
-     * TODO better spill strategy
      */
     private void selectSpill() {
 
@@ -383,6 +383,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
             }
         }
         // Log.track("selectSpill", minReg);
+
+        Statistics.plus("spill");
 
         spillWorklist.remove(minReg);
         simplifyWorklist.add(minReg);

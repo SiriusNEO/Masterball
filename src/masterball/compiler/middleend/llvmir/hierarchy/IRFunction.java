@@ -4,6 +4,7 @@ import masterball.compiler.middleend.analyzer.CallGraphAnalyzer;
 import masterball.compiler.middleend.llvmir.IRTranslator;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.GlobalValue;
+import masterball.compiler.middleend.llvmir.inst.IRCallInst;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.IRFuncType;
 import masterball.compiler.share.lang.LLVM;

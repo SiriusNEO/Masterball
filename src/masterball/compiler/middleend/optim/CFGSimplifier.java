@@ -12,7 +12,7 @@ import masterball.debug.Log;
 import java.util.HashSet;
 
 public class CFGSimplifier implements IRFuncPass {
-    private void removeUnreachableBlock(IRFunction function) {
+    private boolean removeUnreachableBlock(IRFunction function) {
         HashSet<IRBlock> toRemoveSet = new HashSet<>();
 
         boolean removed = true;
@@ -48,9 +48,11 @@ public class CFGSimplifier implements IRFuncPass {
             toRemove.prevs.clear();
             toRemove.nexts.clear();
         }
+
+        return toRemoveSet.size() > 1;
     }
 
-    private void mergeBlocks(IRFunction function) {
+    private boolean mergeBlocks(IRFunction function) {
         HashSet<IRBlock> toMergeSet = new HashSet<>(); // merge with pre
 
         function.blocks.forEach(block -> {
@@ -59,6 +61,8 @@ public class CFGSimplifier implements IRFuncPass {
                 toMergeSet.add(block);
             }
         });
+
+        boolean changed = false;
 
         while (!toMergeSet.isEmpty()) {
             var it = toMergeSet.iterator();
@@ -94,15 +98,23 @@ public class CFGSimplifier implements IRFuncPass {
 
                 function.blocks.remove(beMerged);
                 it.remove();
+
+                changed = true;
             }
         }
+
+        return changed;
     }
 
     @Override
     public void runOnFunc(IRFunction function) {
         Log.track("CFG Simplifier", function.identifier());
-        new CFGBuilder().runOnFunc(function);
-        mergeBlocks(function);
-        removeUnreachableBlock(function);
+        boolean changed = true;
+
+        while (changed) {
+            new CFGBuilder().runOnFunc(function);
+            changed = mergeBlocks(function);
+            changed |= removeUnreachableBlock(function);
+        }
     }
 }
