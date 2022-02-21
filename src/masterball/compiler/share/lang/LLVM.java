@@ -50,6 +50,7 @@ public class LLVM {
     public static final String LogicExitBlockLabel = "lg" + Splitter + "exit";
 
     public static final String SplitBlockLabel = "split";
+    public static final String PreHeaderBlockLabel = "ph";
 
     // --- Prefix ---
 

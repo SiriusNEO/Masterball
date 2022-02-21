@@ -46,6 +46,9 @@ public class IRBrInst extends IRBaseInst {
     public boolean isTerminator() {return true;}
 
     @Override
+    public boolean isValueSelf() {return false;}
+
+    @Override
     public IRBaseInst copy() {
         if (isJump()) return new IRBrInst(destBlock(), null);
         return new IRBrInst(condition(), ifTrueBlock(), ifFalseBlock(), null);

@@ -82,7 +82,7 @@ public class IVTrans implements IRFuncPass, IRLoopPass {
      */
     private void collectBasicIndVar(Loop loop) {
         basicIV.clear();
-        for (IRPhiInst phi : loop.head.phiInsts) {
+        for (IRPhiInst phi : loop.header.phiInsts) {
             if (phi.operandSize() != 4) continue;
             int bodyIndex = (loop.blocks.contains(phi.getOperand(1))) ? 1 : 3;
             int initIndex = 4 - bodyIndex;
@@ -183,7 +183,7 @@ public class IVTrans implements IRFuncPass, IRLoopPass {
 
             biv.incr.parentBlock.tAddByIterator(newIncr, it);
             newPhi.addBranch(newIncr, newIncr.parentBlock);
-            loop.head.tAddPhi(newPhi);
+            loop.header.tAddPhi(newPhi);
 
             key.replaceAllUsesWith(newPhi);
             key.parentBlock.instructions.remove(key);

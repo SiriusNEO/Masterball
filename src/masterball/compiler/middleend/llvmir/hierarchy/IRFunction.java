@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class IRFunction extends GlobalValue {
+    public IRModule parentModule;
+
     public final LinkedList<IRBlock> blocks = new LinkedList<>();
 
     public IRBlock entryBlock, exitBlock;
@@ -25,7 +27,7 @@ public class IRFunction extends GlobalValue {
     // info in Loop
     public HashSet<Loop> topLevelLoops = new HashSet<>();
 
-    public IRFunction(String name, IRFuncType funcType) {
+    public IRFunction(String name, IRFuncType funcType, IRModule parentModule) {
         // not init complete.
         // finished in IRBuilder
 
@@ -36,6 +38,8 @@ public class IRFunction extends GlobalValue {
 
         // remember: here we place exit in second, not the logic order
         exitBlock.parentFunction = this;
+
+        this.parentModule = parentModule;
     }
 
     // bottom function decl

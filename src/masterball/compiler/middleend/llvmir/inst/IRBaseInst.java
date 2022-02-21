@@ -49,6 +49,8 @@ public abstract class IRBaseInst extends User {
 
     public boolean isTerminator() {return false;}
 
+    public boolean isValueSelf() {return true;}
+
     // copy method will create a copy of the original instruction
     // the parentBlock will be set "null"
     public abstract IRBaseInst copy();

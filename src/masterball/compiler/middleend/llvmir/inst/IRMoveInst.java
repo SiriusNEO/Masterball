@@ -49,6 +49,9 @@ public class IRMoveInst extends IRBaseInst {
     }
 
     @Override
+    public boolean isValueSelf() {return false;}
+
+    @Override
     public void accept(InstVisitor visitor) {
         visitor.visit(this);
     }

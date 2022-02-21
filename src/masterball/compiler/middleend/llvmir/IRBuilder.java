@@ -570,7 +570,8 @@ public class IRBuilder implements ASTVisitor {
         initRegistry.isBuiltin = false; // declare a FuncRegistry directly will be seen as builtin. close it.
 
         cur.func = new IRFunction(LLVM.InitFuncName,
-                translator.translateFuncType(initRegistry.type, null));
+                translator.translateFuncType(initRegistry.type, null),
+                module);
 
         cur.block = cur.func.entryBlock;
 
@@ -583,7 +584,8 @@ public class IRBuilder implements ASTVisitor {
 
     private void funcDecl(FuncDefNode node) {
         IRFunction declFunc = new IRFunction(node.funcRegistry.name,
-                translator.translateFuncType(node.funcRegistry.type, null));
+                translator.translateFuncType(node.funcRegistry.type, null),
+                module);
 
         module.functions.add(declFunc);
         node.funcRegistry.value = declFunc;
@@ -596,7 +598,8 @@ public class IRBuilder implements ASTVisitor {
         // global functions
         for (FuncRegistry builtinFuncRegistry : node.scope.builtinFuncList) {
             IRFunction builtinFunc = new IRFunction(builtinFuncRegistry.name,
-                    translator.translateFuncType(builtinFuncRegistry.type, null));
+                    translator.translateFuncType(builtinFuncRegistry.type, null),
+                    module);
 
             module.builtinFunctions.add(builtinFunc);
             builtinFuncRegistry.value = builtinFunc;
@@ -605,7 +608,8 @@ public class IRBuilder implements ASTVisitor {
         // string methods
         for (FuncRegistry builtinFuncRegistry : StringBuiltinMethods.scope.builtinFuncList) {
             IRFunction builtinFunc = new IRFunction(LLVM.StrMethodPrefix + builtinFuncRegistry.name,
-                    translator.translateFuncType(builtinFuncRegistry.type, IRTranslator.stringType));
+                    translator.translateFuncType(builtinFuncRegistry.type, IRTranslator.stringType),
+                    module);
 
             module.builtinFunctions.add(builtinFunc);
             builtinFuncRegistry.value = builtinFunc;
@@ -630,8 +634,10 @@ public class IRBuilder implements ASTVisitor {
                 declClass.memberVarTypes.add(translator.translateAllocaType(memberVar.type));
 
             for (FuncRegistry memberFunc : classRegistry.memberFuncs) {
-                IRFunction declMemberFunc = new IRFunction(declClass.structName + LLVM.Splitter + memberFunc.name,
-                        translator.translateFuncType(memberFunc.type, new PointerType(declClass)));
+                IRFunction declMemberFunc =
+                        new IRFunction(declClass.structName + LLVM.Splitter + memberFunc.name,
+                        translator.translateFuncType(memberFunc.type, new PointerType(declClass)),
+                        module);
                 module.functions.add(declMemberFunc);
                 memberFunc.value = declMemberFunc;
             }

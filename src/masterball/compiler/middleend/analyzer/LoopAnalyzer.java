@@ -35,6 +35,7 @@ public class LoopAnalyzer implements IRFuncPass {
 
     private void buildNaturalLoop(IRBlock edgeHead, IRBlock edgeTail) {
         headToLoopMap.putIfAbsent(edgeHead, new Loop(edgeHead));
+        headToLoopMap.get(edgeHead).tailers.add(edgeTail);
         headToLoopMap.get(edgeHead).blocks.add(edgeHead);
         headToLoopMap.get(edgeHead).blocks.add(edgeTail);
 

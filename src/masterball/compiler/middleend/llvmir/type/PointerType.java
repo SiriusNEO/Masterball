@@ -20,7 +20,7 @@ public class PointerType extends IRBaseType {
         if (other instanceof PointerType) {
             return (
                     (((PointerType) other).dimension == dimension && ((PointerType) other).pointedType.match(pointedType))
-                    || other.match(IRTranslator.nullType)
+                    || other.equals(IRTranslator.nullType)
             );
         }
         else if (other instanceof ArrayType) {

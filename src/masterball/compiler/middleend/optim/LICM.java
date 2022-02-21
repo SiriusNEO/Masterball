@@ -1,16 +1,116 @@
 package masterball.compiler.middleend.optim;
 
 import masterball.compiler.middleend.analyzer.LoopAnalyzer;
+import masterball.compiler.middleend.llvmir.Value;
+import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
+import masterball.compiler.middleend.llvmir.hierarchy.Loop;
+import masterball.compiler.middleend.llvmir.inst.*;
+import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.IRFuncPass;
+import masterball.compiler.share.pass.IRLoopPass;
+import masterball.debug.Log;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  *  Loop Invariant Code Motion
  */
 
-public class LICM implements IRFuncPass {
+public class LICM implements IRFuncPass, IRLoopPass {
     @Override
     public void runOnFunc(IRFunction function) {
+        Log.info("LICM", function.identifier());
+
         new LoopAnalyzer().runOnFunc(function);
+        function.topLevelLoops.forEach(this::runOnLoop);
+    }
+
+    // no strict alias
+    private boolean mayAlias(Value addr1, Value addr2) {
+        Log.info(addr1.type);
+        Log.info(addr2.type);
+        return addr1.type.match(addr2.type);
+    }
+
+    private boolean isInstInvariant(IRBaseInst inst, Loop loop) {
+        if ((inst.mayHaveSideEffects() && !(inst instanceof IRLoadInst)) || !inst.isValueSelf()) return false;
+
+        for (Value operand : inst.operands) {
+            if (!loop.isInvariant(operand)) {
+                // Log.mark("not invariant");
+                // Log.info(inst.format());
+                // Log.info(operand.identifier());
+                return false;
+            }
+        }
+
+        if (inst instanceof IRLoadInst) {
+            for (IRBlock block : loop.blocks)
+                for (IRBaseInst inst1 : block.instructions)
+                    if (inst1 instanceof IRStoreInst &&
+                            mayAlias(((IRLoadInst) inst).loadPtr(), ((IRStoreInst) inst1).storePtr())) {
+                        Log.mark("may alias");
+                        Log.info("load: ", ((IRLoadInst) inst).loadPtr().typedIdentifier());
+                        Log.info("store", ((IRStoreInst) inst1).storePtr().typedIdentifier());
+                        return false;
+                    }
+        }
+
+        return true;
+    }
+
+    private void createPreHeader(Loop loop) {
+        var preHeader = new IRBlock(LLVM.PreHeaderBlockLabel, loop.header.parentFunction);
+        loop.preHeader = preHeader;
+        ArrayList<IRBlock> headerPrevs = new ArrayList<>(loop.header.prevs);
+
+        for (var pre : headerPrevs) {
+            if (loop.tailers.contains(pre)) continue;
+            // this block must be one?
+
+            preHeader.prevs.add(pre);
+            loop.header.prevs.remove(pre);
+
+            pre.redirectSucBlock(loop.header, preHeader);
+            loop.header.redirectPreBlock(pre, preHeader);
+        }
+
+        new IRBrInst(loop.header, preHeader);
+        preHeader.nexts.add(loop.header);
+    }
+
+    private HashSet<IRBaseInst> motionAble = new HashSet<>();
+
+    private void collectMotionAble(Loop loop) {
+        for (IRBlock block : loop.blocks)
+            for (IRBaseInst inst : block.instructions)
+                if (isInstInvariant(inst, loop)) motionAble.add(inst);
+    }
+
+    private void motionInst(Loop loop) {
+        for (IRBaseInst inst : motionAble) {
+            Log.info("motion: ", inst.format());
+
+            inst.parentBlock.instructions.remove(inst);
+            loop.preHeader.tAddBeforeTerminator(inst);
+        }
+
+        motionAble.clear();
+    }
+
+    @Override
+    public void runOnLoop(Loop loop) {
+        Log.info("now run loop", loop.header.identifier());
+
+        // motion children first
+        loop.nestedLoops.forEach(this::runOnLoop);
+        createPreHeader(loop);
+        while (true) {
+            collectMotionAble(loop);
+            if (motionAble.isEmpty()) break;
+            motionInst(loop);
+        }
     }
 }
