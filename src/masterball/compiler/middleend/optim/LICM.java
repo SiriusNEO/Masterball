@@ -14,6 +14,7 @@ import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 /**
  *  Loop Invariant Code Motion
@@ -29,11 +30,6 @@ public class LICM implements IRFuncPass, IRLoopPass {
         analyzer.runOnFunc(function);
         new LoopAnalyzer().runOnFunc(function);
         function.topLevelLoops.forEach(this::runOnLoop);
-    }
-
-    // no strict alias
-    private boolean mayAlias(Value addr1, Value addr2) {
-        return addr1.type.match(addr2.type);
     }
 
     private void createPreHeader(Loop loop) {
@@ -56,7 +52,7 @@ public class LICM implements IRFuncPass, IRLoopPass {
         preHeader.nexts.add(loop.header);
     }
 
-    private final HashSet<IRBaseInst> motionAble = new HashSet<>();
+    private final HashSet<IRBaseInst> motionAble = new LinkedHashSet<>();
 
     private void collectMotionAble(Loop loop) {
         for (IRBlock block : loop.blocks)

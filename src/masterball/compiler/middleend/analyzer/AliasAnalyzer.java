@@ -2,6 +2,7 @@ package masterball.compiler.middleend.analyzer;
 
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.IntConst;
+import masterball.compiler.middleend.llvmir.constant.StringConst;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
@@ -13,9 +14,7 @@ import masterball.compiler.share.misc.UnionSet;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.debug.Log;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
 
 /**
  * simple alias analyzer implemented
@@ -68,7 +67,7 @@ public class AliasAnalyzer implements IRFuncPass {
         addr1 = bitcastUnion.getAlias(addr1);
         addr2 = bitcastUnion.getAlias(addr2);
 
-        if (certain.contains(addr1) && certain.contains(addr2)) {
+        if (certain.contains(addr1) || certain.contains(addr2)) {
             return addr1.equals(addr2);
         }
 
