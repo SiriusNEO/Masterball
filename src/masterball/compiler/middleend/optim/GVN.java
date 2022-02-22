@@ -1,5 +1,6 @@
 package masterball.compiler.middleend.optim;
 
+import masterball.compiler.middleend.analyzer.AliasAnalyzer;
 import masterball.compiler.middleend.analyzer.DomTreeBuilder;
 import masterball.compiler.middleend.llvmir.IRTranslator;
 import masterball.compiler.middleend.llvmir.Value;
@@ -18,10 +19,16 @@ import java.util.*;
  *  numbering Inst with the hashCode of the ArrayList
  *  do some simple load eliminate
  *
+ *  WARNING:
+ *      this load elimination may cross-block, and I use checkLoad() to
+ *    achieve the correctness. If any wrong happened, just remove the load part
+ *
  *  @requirement: DomTreeBuilder
  */
 
 public class GVN implements IRFuncPass {
+
+    private AliasAnalyzer analyzer = new AliasAnalyzer();
 
     private static boolean numberTarget(Value value) {
         return value instanceof IRBinaryInst ||
@@ -175,6 +182,12 @@ public class GVN implements IRFuncPass {
         return ret;
     }
 
+    private boolean checkLoad(IRBaseInst inst) {
+        if (!(inst instanceof IRLoadInst)) return true;
+        if (inst.parentBlock.belongLoop == null) return true;
+        return inst.parentBlock.belongLoop.isInstInvariant(inst, analyzer);
+    }
+
     private void invalidateLoad() {
         for (int i = scopeStack.size() - 1; i >= 0; i--) {
             scopeStack.get(i).removeAllLoads();
@@ -194,7 +207,7 @@ public class GVN implements IRFuncPass {
             if (!inst.mayHaveSideEffects() || inst instanceof IRLoadInst) {
                 if (numberTarget(inst)) {
                     var vInst = getAlias(inst);
-                    if (vInst != null) {
+                    if (vInst != null && checkLoad(inst)) {
                         it.remove();
                         inst.replaceAllUsesWith(vInst);
                     } else {
@@ -215,6 +228,7 @@ public class GVN implements IRFuncPass {
     @Override
     public void runOnFunc(IRFunction function) {
         Log.track("GVN", function.identifier());
+        analyzer.runOnFunc(function);
         ValueNumber.init();
         new DomTreeBuilder(false).runOnFunc(function);
         eliminate(function.entryBlock);
