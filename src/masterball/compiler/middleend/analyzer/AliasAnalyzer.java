@@ -53,6 +53,7 @@ public class AliasAnalyzer implements IRFuncPass {
     public void runOnFunc(IRFunction function) {
 
         certain.addAll(function.parentModule.globalVarSeg);
+        certain.addAll(function.parentModule.stringConstSeg);
 
         for (IRBlock block : function.blocks)
             for (IRBaseInst inst : block.instructions) {
