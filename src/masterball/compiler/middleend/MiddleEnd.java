@@ -1,6 +1,7 @@
 package masterball.compiler.middleend;
 
 import masterball.compiler.frontend.FrontEnd;
+import masterball.compiler.middleend.analyzer.GPMark;
 import masterball.compiler.middleend.llvmir.IRBuilder;
 import masterball.compiler.middleend.llvmir.IRPrinter;
 import masterball.compiler.middleend.llvmir.Value;
@@ -33,6 +34,9 @@ public class MiddleEnd {
 
         // Optimize IR. Don't comment it directly because there are some necessary passes.
         new MiddleEndOptimizer().runOnModule(this.irModule);
+
+        // this will analyze loop
+        new GPMark().runOnModule(this.irModule);
 
         if (console.canPrintOpt) {
             // IR Printer (after optimized)

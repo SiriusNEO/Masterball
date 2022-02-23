@@ -10,6 +10,8 @@ public class GlobalVariable extends GlobalValue {
     // for constant replace
     public Value initValue;
 
+    public int dimension = 0;
+
     public GlobalVariable(String name, IRBaseType type) {
         super(name, new PointerType(type));
     }

@@ -207,8 +207,14 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
         // 0~7
         for (int i = 0; i < Integer.min(inst.callFunc().getArgNum(), RV32I.MaxArgRegNum); i++) {
-            if (inst.getArg(i) instanceof GlobalValue)
-                new AsmLaInst(PhysicalReg.a(i), inst.getArg(i).asmOperand.identifier, cur.block);
+            if (inst.getArg(i) instanceof GlobalValue) {
+                if (((GlobalValue) inst.getArg(i)).gpRegMark) {
+                    new AsmMvInst(PhysicalReg.a(i), PhysicalReg.reg("gp"), cur.block);
+                }
+                else {
+                    new AsmLaInst(PhysicalReg.a(i), inst.getArg(i).asmOperand.identifier, cur.block);
+                }
+            }
             else awesomeMove(PhysicalReg.a(i), inst.getArg(i));
         }
 
@@ -292,11 +298,16 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
     @Override
     public void visit(IRLoadInst inst) {
         Register instReg = cur.toReg(inst);
-        if (inst.loadPtr() instanceof GlobalVariable) {
-            VirtualReg luiReg = new VirtualReg();
-            GlobalReg globalReg = (GlobalReg) cur.toReg(inst.loadPtr());
-            new AsmLuiInst(luiReg, new GlobalAddr(globalReg, GlobalAddr.HiLo.hi), cur.block);
-            new AsmLoadInst(inst.type.size(), instReg, luiReg, new GlobalAddr(globalReg, GlobalAddr.HiLo.lo), cur.block);
+        if (inst.loadPtr() instanceof GlobalValue) {
+            if (((GlobalValue) inst.loadPtr()).gpRegMark) {
+                new AsmMvInst(instReg, PhysicalReg.reg("gp"), cur.block);
+            }
+            else {
+                VirtualReg luiReg = new VirtualReg();
+                GlobalReg globalReg = (GlobalReg) cur.toReg(inst.loadPtr());
+                new AsmLuiInst(luiReg, new GlobalAddr(globalReg, GlobalAddr.HiLo.hi), cur.block);
+                new AsmLoadInst(inst.type.size(), instReg, luiReg, new GlobalAddr(globalReg, GlobalAddr.HiLo.lo), cur.block);
+            }
         } else {
             // if it is not global, it must be loaded from stack, right?
             if (inst.loadPtr().asmOperand instanceof RawStackOffset) {
@@ -320,11 +331,16 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
     @Override
     public void visit(IRStoreInst inst) {
-        if (inst.storePtr() instanceof GlobalVariable) {
-            VirtualReg luiReg = new VirtualReg();
-            GlobalReg globalReg = (GlobalReg) cur.toReg(inst.storePtr());
-            new AsmLuiInst(luiReg, new GlobalAddr(globalReg, GlobalAddr.HiLo.hi), cur.block);
-            new AsmStoreInst(inst.storeValue().type.size(), luiReg, cur.toReg(inst.storeValue()), new GlobalAddr(globalReg, GlobalAddr.HiLo.lo), cur.block);
+        if (inst.storePtr() instanceof GlobalValue) {
+            if (((GlobalValue) inst.storePtr()).gpRegMark) {
+                new AsmMvInst(PhysicalReg.reg("gp"), cur.toReg(inst.storeValue()) ,cur.block);
+            }
+            else {
+                VirtualReg luiReg = new VirtualReg();
+                GlobalReg globalReg = (GlobalReg) cur.toReg(inst.storePtr());
+                new AsmLuiInst(luiReg, new GlobalAddr(globalReg, GlobalAddr.HiLo.hi), cur.block);
+                new AsmStoreInst(inst.storeValue().type.size(), luiReg, cur.toReg(inst.storeValue()), new GlobalAddr(globalReg, GlobalAddr.HiLo.lo), cur.block);
+            }
         } else {
             if (inst.storePtr().asmOperand instanceof RawStackOffset) {
                 // must be stack
@@ -458,7 +474,14 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
                 // constant folding
                 if (equalZero(index)) {
                     Register ptrReg = cur.toReg(ptrPos);
-                    if (ptrReg instanceof GlobalReg) new AsmLaInst(gepReg, ptrReg.identifier, cur.block);
+                    if (ptrPos instanceof GlobalValue) {
+                        if (((GlobalValue) ptrPos).gpRegMark) {
+                            new AsmMvInst(gepReg, PhysicalReg.reg("gp"), cur.block);
+                        }
+                        else {
+                            new AsmLaInst(gepReg, ptrReg.identifier, cur.block);
+                        }
+                    }
                     else new AsmMvInst(gepReg, ptrReg, cur.block);
                 } else {
                     int totalSize = ((IntConst) index).constData * elementSize;

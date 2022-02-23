@@ -471,6 +471,7 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
 
                 for (Register def : inst.defs()) {
                     if (def.stackOffset == null) continue;
+
                     if (inst.uses().contains(def)) continue; // has been considered previously
                     if (inst instanceof AsmMvInst && inst.rs1.stackOffset == null) {
                         AsmBaseInst storeInst = new AsmStoreInst(((VirtualReg) def).size, PhysicalReg.reg("sp"), inst.rs1, def.stackOffset, null);
