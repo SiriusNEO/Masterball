@@ -21,7 +21,7 @@ import java.util.*;
  *
  *  WARNING:
  *      this load elimination may cross-block, and I use checkLoad() to
- *      achieve the correctness. If any wrong happened, just remove the load part
+ *      achieve the correctness. If any wrong happened, just remove the load part (use LocalMO)
  *
  *  @requirement: DomTreeBuilder
  */

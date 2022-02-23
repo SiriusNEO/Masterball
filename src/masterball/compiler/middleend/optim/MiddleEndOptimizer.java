@@ -27,7 +27,7 @@ public class MiddleEndOptimizer implements IRModulePass {
             new Mem2Reg().runOnFunc(function);
         }
 
-        for (int i = 1; i < 50; i++) {
+        for (int i = 1; i < 3; i++) {
             new FuncInliner(false).runOnModule(module);
 
             for (IRFunction function : module.functions) {
@@ -37,6 +37,7 @@ public class MiddleEndOptimizer implements IRModulePass {
                 new CFGSimplifier().runOnFunc(function);
                 new IVTrans().runOnFunc(function);
                 new LICM().runOnFunc(function);
+                new LocalMO().runOnFunc(function);
             }
         }
 
