@@ -87,7 +87,11 @@ Click the following links to read the project design.
 - [x] ADCE
 - [x] Function Inliner
 - [x] Induction Variable Strength Reduction
-- [ ] GVN or CSE
+- [x] GVN or CSE
+- [x] LICM
+- [x] TCO & TRO
+- [ ] Local LS
+- [ ] Inst Adapter
 
 
 

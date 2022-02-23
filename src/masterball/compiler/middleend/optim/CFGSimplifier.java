@@ -11,6 +11,15 @@ import masterball.debug.Log;
 
 import java.util.HashSet;
 
+/**
+ *  This pass simplifies CFG (control flow graph) by:
+ *
+ *  1. remove unreachable block
+ *  2. merge blocks
+ *
+ * @requirement: CFGBuilder
+ */
+
 public class CFGSimplifier implements IRFuncPass {
     private boolean removeUnreachableBlock(IRFunction function) {
         HashSet<IRBlock> toRemoveSet = new HashSet<>();
