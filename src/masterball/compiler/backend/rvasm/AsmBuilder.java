@@ -1,5 +1,6 @@
 package masterball.compiler.backend.rvasm;
 
+import masterball.compiler.backend.optim.TRO;
 import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.hierarchy.AsmModule;
@@ -101,11 +102,11 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
         // lower the stack pointer
         // sp low
-        AsmBaseInst inst = new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
+        new AsmALUInst(RV32I.AddInst, PhysicalReg.reg("sp"), PhysicalReg.reg("sp"),
                 new RawStackOffset(0, RawType.lowerSp), cur.func.entryBlock);
 
         // backup callee
-        ArrayList<Register> calleeSaveTemp = new ArrayList<Register>();
+        ArrayList<Register> calleeSaveTemp = new ArrayList<>();
         for (PhysicalReg phyReg : PhysicalReg.calleeSaved) {
             VirtualReg rd = new VirtualReg();
             calleeSaveTemp.add(rd);
@@ -472,5 +473,4 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         }
         return gepReg;
     }
-
 }

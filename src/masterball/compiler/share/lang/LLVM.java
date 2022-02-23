@@ -26,6 +26,7 @@ public class LLVM {
 
     public static final String ThisArg = "internal" + Splitter + "this";
     public static final String RetReg = "internal" + Splitter + "ret";
+    public static final String TParaReg = "internal" + Splitter + "tpara";
 
     public static final String InitFuncName = FuncNameSplitter + "glb" + FuncNameSplitter + "init";
 
@@ -51,6 +52,7 @@ public class LLVM {
 
     public static final String SplitBlockLabel = "split";
     public static final String PreHeaderBlockLabel = "ph";
+    public static final String TRNewHeaderBlockLabel = "trnew";
 
     // --- Prefix ---
 

@@ -46,6 +46,7 @@ public class MiddleEndOptimizer implements IRModulePass {
         for (IRFunction function : module.functions) {
             new SSADestructor().runOnFunc(function);
             new CFGSimplifier().runOnFunc(function);
+            new TRO().runOnFunc(function);
             new LoopAnalyzer().runOnFunc(function);
         }
     }

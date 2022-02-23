@@ -70,10 +70,11 @@ public class FuncInliner implements IRModulePass {
             }
         }
 
+        // TR will be optimized, so no need to inline
         for (IRFunction function : module.functions) {
             for (IRCallInst call : function.node.call)
-                if ((!forced && canInline(function, call.callFunc()))
-                        || (forced && canForceInline(function, call.callFunc())))
+                if (!call.isTailRecursive() && ((!forced && canInline(function, call.callFunc()))
+                        || (forced && canForceInline(function, call.callFunc()))))
                     inlineAbleSet.add(call);
         }
     }

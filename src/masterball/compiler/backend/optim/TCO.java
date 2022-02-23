@@ -18,6 +18,8 @@ import java.util.Queue;
  *     (so that this optimization must be executed after "exitBlock" is not used any more)
  *
  *  2. make a call tail. remove the "call", and replace the ret with tail inst
+ *
+ *  WARNING: long assembly! (adjust depthLimit)
  */
 
 public class TCO implements AsmFuncPass {

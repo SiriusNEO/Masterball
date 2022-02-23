@@ -50,6 +50,11 @@ public class IRCallInst extends IRBaseInst {
     @Override
     public boolean mayHaveSideEffects() {return true;}
 
+    public boolean isTailRecursive() {
+    //    return false;
+        return isTailCall && callFunc() == this.parentBlock.parentFunction;
+    }
+
     @Override
     public String format() {
         // %call = call i32 @foo(i32 1)
