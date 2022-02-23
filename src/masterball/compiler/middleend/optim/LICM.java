@@ -1,6 +1,7 @@
 package masterball.compiler.middleend.optim;
 
 import masterball.compiler.middleend.analyzer.AliasAnalyzer;
+import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.analyzer.LoopAnalyzer;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
@@ -18,6 +19,8 @@ import java.util.LinkedHashSet;
 
 /**
  *  Loop Invariant Code Motion
+ *
+ *  fix: some strange problem
  */
 
 public class LICM implements IRFuncPass, IRLoopPass {
@@ -28,6 +31,7 @@ public class LICM implements IRFuncPass, IRLoopPass {
     public void runOnFunc(IRFunction function) {
         Log.info("LICM", function.identifier());
         analyzer.runOnFunc(function);
+        new CFGBuilder().runOnFunc(function);
         new LoopAnalyzer().runOnFunc(function);
         function.topLevelLoops.forEach(this::runOnLoop);
     }

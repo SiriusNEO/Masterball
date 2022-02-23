@@ -36,9 +36,16 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
 
     private Value recordMatch(IRBaseInst inst) {
         if (inst instanceof IRLoadInst) {
+            // storeRecord.forEach(st -> Log.info(st.format()));
+
             for (IRLoadInst load : loadRecord)
                 if (load.loadPtr() == ((IRLoadInst) inst).loadPtr())
                     return load;
+            for (IRStoreInst store : storeRecord) {
+                // Log.info(store.format());
+                if (store.storePtr() == ((IRLoadInst) inst).loadPtr())
+                    return store.storeValue();
+            }
         }
         else if (inst instanceof IRStoreInst) {
             for (IRStoreInst store : storeRecord)
@@ -92,7 +99,7 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
         }
 
         var it = block.instructions.listIterator();
-
+        // Log.info(block.identifier());
         while (it.hasNext()) {
             IRBaseInst inst = it.next();
 

@@ -1,7 +1,9 @@
 package masterball.compiler.middleend.optim;
 
 import masterball.compiler.middleend.analyzer.AliasAnalyzer;
+import masterball.compiler.middleend.analyzer.CFGBuilder;
 import masterball.compiler.middleend.analyzer.DomTreeBuilder;
+import masterball.compiler.middleend.analyzer.LoopAnalyzer;
 import masterball.compiler.middleend.llvmir.IRTranslator;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
@@ -230,7 +232,9 @@ public class GVN implements IRFuncPass {
         Log.track("GVN", function.identifier());
         analyzer.runOnFunc(function);
         ValueNumber.init();
+        new CFGBuilder().runOnFunc(function);
         new DomTreeBuilder(false).runOnFunc(function);
+        new LoopAnalyzer().runOnFunc(function);
         eliminate(function.entryBlock);
     }
 }
