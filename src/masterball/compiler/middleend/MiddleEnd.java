@@ -36,7 +36,7 @@ public class MiddleEnd {
         new MiddleEndOptimizer().runOnModule(this.irModule);
 
         // this will analyze loop
-        new GPMark().runOnModule(this.irModule);
+        // new GPMark().runOnModule(this.irModule);
 
         if (console.canPrintOpt) {
             // IR Printer (after optimized)
