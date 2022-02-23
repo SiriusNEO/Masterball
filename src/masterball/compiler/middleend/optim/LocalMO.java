@@ -1,6 +1,8 @@
 package masterball.compiler.middleend.optim;
 
 import masterball.compiler.middleend.analyzer.AliasAnalyzer;
+import masterball.compiler.middleend.analyzer.CFGBuilder;
+import masterball.compiler.middleend.analyzer.DomTreeBuilder;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
@@ -26,7 +28,9 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
     AliasAnalyzer analyzer = new AliasAnalyzer();
 
     // load match load, store match store
-    // load invalidate store, store invalidate load
+    // invaildate:
+    // if there is a store, invalidate store and load.
+    // load: write after read, store: write after write
     HashSet<IRLoadInst> loadRecord = new HashSet<>();
     HashSet<IRStoreInst> storeRecord = new HashSet<>();
 
@@ -47,17 +51,15 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
     }
 
     private void invalidate(IRBaseInst inst) {
-        if (inst instanceof IRLoadInst) {
-            HashSet<IRStoreInst> toRemove = new HashSet<>();
-            for (IRStoreInst store : storeRecord)
-                if (analyzer.mayAlias(inst, store)) toRemove.add(store);
-            storeRecord.removeAll(toRemove);
-        }
-        else if (inst instanceof IRStoreInst) {
-            HashSet<IRLoadInst> toRemove = new HashSet<>();
+        if (inst instanceof IRStoreInst) {
+            HashSet<IRLoadInst> toRemoveL = new HashSet<>();
+            HashSet<IRStoreInst> toRemoveS = new HashSet<>();
             for (IRLoadInst load : loadRecord)
-                if (analyzer.mayAlias(inst, load)) toRemove.add(load);
-            loadRecord.removeAll(toRemove);
+                if (analyzer.mayAlias(((IRStoreInst) inst).storePtr(), load.loadPtr())) toRemoveL.add(load);
+            for (IRStoreInst store : storeRecord)
+                if (analyzer.mayAlias(store.storePtr(), ((IRStoreInst) inst).storePtr())) toRemoveS.add(store);
+            loadRecord.removeAll(toRemoveL);
+            storeRecord.removeAll(toRemoveS);
         }
         else if (inst instanceof IRCallInst) {
             loadRecord.clear();
@@ -70,11 +72,25 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
         Log.track("local mem opt", function.identifier());
 
         analyzer.runOnFunc(function);
+        new CFGBuilder().runOnFunc(function);
+        new DomTreeBuilder(false).runOnFunc(function);
+
         function.blocks.forEach(this::runOnBlock);
     }
 
     @Override
     public void runOnBlock(IRBlock block) {
+        loadRecord.clear();
+        storeRecord.clear();
+
+        if (block.prevs.size() == 1 && block.prevs.get(0).dtNode.doms.contains(block.dtNode)) {
+            for (IRBaseInst inst : block.instructions) {
+                invalidate(inst);
+                if (inst instanceof IRLoadInst) loadRecord.add((IRLoadInst) inst);
+                else if (inst instanceof IRStoreInst) storeRecord.add((IRStoreInst) inst);
+            }
+        }
+
         var it = block.instructions.listIterator();
 
         while (it.hasNext()) {
@@ -87,7 +103,7 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
                     inst.replaceAllUsesWith(replace);
                 }
                 else {
-                    invalidate(inst);
+                    loadRecord.add((IRLoadInst) inst);
                 }
             }
             else if (inst instanceof IRStoreInst) {
@@ -97,6 +113,7 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
                 }
                 else {
                     invalidate(inst);
+                    storeRecord.add((IRStoreInst) inst);
                 }
             }
             else if (inst instanceof IRCallInst) {
