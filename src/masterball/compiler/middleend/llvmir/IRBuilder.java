@@ -23,6 +23,7 @@ import masterball.compiler.share.lang.MxStar;
 import masterball.compiler.share.error.runtime.UnimplementedError;
 import masterball.compiler.share.misc.Pair;
 import masterball.compiler.share.pass.ASTVisitor;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -281,8 +282,10 @@ public class IRBuilder implements ASTVisitor {
         if (node.retExpNode != null && !node.retExpNode.type.match(MxBaseType.BuiltinType.VOID)) {
             node.retExpNode.accept(this);
 
-            if (node.retExpNode.value instanceof IRCallInst)
+            if (node.retExpNode.value instanceof IRCallInst) {
                 ((IRCallInst) node.retExpNode.value).isTailCall = true;
+                Log.info("tail call detected: ", ((IRCallInst) node.retExpNode.value).callFunc().identifier());
+            }
 
             memStore(cur.func.retValPtr, node.retExpNode.value);
         }

@@ -11,6 +11,11 @@ public class AsmLiInst extends AsmBaseInst {
     }
 
     @Override
+    public AsmBaseInst copy() {
+        return new AsmLiInst(rd, imm, null);
+    }
+
+    @Override
     public String format() {
         return String.format("%s\t%s, %s", RV32I.LiInst, rd, imm);
     }

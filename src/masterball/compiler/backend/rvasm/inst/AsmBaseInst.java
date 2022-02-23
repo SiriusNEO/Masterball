@@ -4,6 +4,7 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.operand.Immediate;
 import masterball.compiler.backend.rvasm.operand.Register;
 import masterball.compiler.middleend.llvmir.Value;
+import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,6 +47,9 @@ public abstract class AsmBaseInst {
         if (rd != null) ret.add(rd);
         return ret;
     }
+
+    // copy method will create a copy of the original instruction
+    public abstract AsmBaseInst copy();
 
     public abstract String format();
 

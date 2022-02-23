@@ -54,6 +54,7 @@ public class RV32I {
     public static final String SltInst = "slt";
     public static final String SeqzInst = "seqz";
     public static final String SnezInst = "snez";
+    public static final String TailInst = "tail";
 
     public static final String AddInst = "add";
     public static final String SubInst = "sub";

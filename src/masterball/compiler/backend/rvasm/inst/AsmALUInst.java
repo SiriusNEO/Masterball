@@ -28,6 +28,13 @@ public class AsmALUInst extends AsmBaseInst {
     }
 
     @Override
+    public AsmBaseInst copy() {
+        if (imm != null)
+            return new AsmALUInst(op, rd, rs1, imm, null);
+        return new AsmALUInst(op, rd, rs1, rs2, null);
+    }
+
+    @Override
     public String format() {
         // add rd, rs1, rs2
         // addi rd, rs1, imm

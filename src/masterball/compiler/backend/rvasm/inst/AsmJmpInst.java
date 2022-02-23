@@ -12,6 +12,11 @@ public class AsmJmpInst extends AsmBaseInst {
     }
 
     @Override
+    public AsmBaseInst copy() {
+        return new AsmJmpInst(dest, null);
+    }
+
+    @Override
     public String format() {
         // j offset
         return String.format("%s\t%s", RV32I.JmpInstPrefix, dest);

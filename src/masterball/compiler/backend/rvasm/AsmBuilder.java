@@ -225,7 +225,7 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
         // callerArg space = max calleeArg space
         cur.func.callerArgStackUse = max(cur.func.callerArgStackUse, callFunc.calleeArgStackUse);
 
-        new AsmCallInst(callFunc, cur.block);
+        new AsmCallInst(callFunc, cur.block, inst.isTailCall);
         if (!inst.callFunc().isVoid()) {
             // return value
             new AsmMvInst(cur.toReg(inst), PhysicalReg.reg("a0"), cur.block);

@@ -8,15 +8,13 @@ import masterball.compiler.share.lang.RV32I;
 
 import java.util.HashSet;
 
-public class AsmCallInst extends AsmBaseInst {
-    public final AsmFunction callFunc;
+public class AsmTailInst extends AsmBaseInst {
 
-    public boolean isTailCall;
+    private final AsmFunction callFunc;
 
-    public AsmCallInst(AsmFunction callFunc, AsmBlock parentBlock, boolean isTailCall) {
+    public AsmTailInst(AsmFunction callFunc, AsmBlock parentBlock) {
         super(null, null, null, null, parentBlock);
         this.callFunc = callFunc;
-        this.isTailCall = isTailCall;
     }
 
     @Override
@@ -34,12 +32,13 @@ public class AsmCallInst extends AsmBaseInst {
 
     @Override
     public AsmBaseInst copy() {
-        return new AsmCallInst(callFunc, null, isTailCall);
+        return new AsmTailInst(callFunc, null);
     }
 
     @Override
     public String format() {
-        // call symbol
-        return String.format("%s\t%s", RV32I.CallInst, callFunc.identifier);
+        // tail symbol
+        return String.format("%s\t%s", RV32I.TailInst, callFunc.identifier);
     }
+
 }

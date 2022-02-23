@@ -15,6 +15,11 @@ public class AsmLoadInst extends AsmBaseInst {
     }
 
     @Override
+    public AsmBaseInst copy() {
+        return new AsmLoadInst(byteWidth, rd, rs1, imm, null);
+    }
+
+    @Override
     public String format() {
         // lw rd, offset(rs1)
         return String.format("%s\t%s, %s(%s)",

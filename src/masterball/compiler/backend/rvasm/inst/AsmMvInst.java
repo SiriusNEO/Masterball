@@ -10,6 +10,11 @@ public class AsmMvInst extends AsmBaseInst {
     }
 
     @Override
+    public AsmBaseInst copy() {
+        return new AsmMvInst(rd, rs1, null);
+    }
+
+    @Override
     public String format() {
         // mv rd, rs1
         return String.format("%s\t%s, %s", RV32I.MvInst, rd, rs1);

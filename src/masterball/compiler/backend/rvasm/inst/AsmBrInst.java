@@ -17,6 +17,11 @@ public class AsmBrInst extends AsmBaseInst {
     }
 
     @Override
+    public AsmBaseInst copy() {
+        return new AsmBrInst(op, rs1, rs2, dest, null);
+    }
+
+    @Override
     public String format() {
         // beq rs1, rs2, dest
         return String.format("%s\t%s, %s, %s", RV32I.BrInstPrefix + op, rs1, rs2, dest);

@@ -17,11 +17,11 @@ import java.util.*;
  *
  *  numbering every value with special hashCode
  *  numbering Inst with the hashCode of the ArrayList
- *  do some simple load eliminate
+ *  do some simple load eliminate (if no side effect before or in this Loop)
  *
  *  WARNING:
  *      this load elimination may cross-block, and I use checkLoad() to
- *    achieve the correctness. If any wrong happened, just remove the load part
+ *      achieve the correctness. If any wrong happened, just remove the load part
  *
  *  @requirement: DomTreeBuilder
  */
