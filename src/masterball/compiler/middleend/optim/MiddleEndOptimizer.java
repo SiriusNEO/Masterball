@@ -26,9 +26,11 @@ public class MiddleEndOptimizer implements IRModulePass {
         }
 
         for (int i = 1; i <= 5; i++) {
+
             new FuncInliner(false).runOnModule(module);
 
             for (IRFunction function : module.functions) {
+                new CFGSimplifier().runOnFunc(function);
                 new GVN().runOnFunc(function);
                 new SCCP().runOnFunc(function);
                 new ADCE().runOnFunc(function);
@@ -36,10 +38,18 @@ public class MiddleEndOptimizer implements IRModulePass {
                 new IVTrans().runOnFunc(function);
                 new LICM().runOnFunc(function);
                 new LocalMO().runOnFunc(function);
+                new CFGSimplifier().runOnFunc(function);
             }
         }
 
         new FuncInliner(true).runOnModule(module);
+
+        for (IRFunction function : module.functions) {
+            new GVN().runOnFunc(function);
+            new CFGSimplifier().runOnFunc(function);
+            new ADCE().runOnFunc(function);
+            new CFGSimplifier().runOnFunc(function);
+        }
 
         // re-analyze info for asm
         for (IRFunction function : module.functions) {

@@ -403,9 +403,11 @@ public class IRBuilder implements ASTVisitor {
         // this
         if (((IRFuncType) node.callExpNode.value.type).methodFrom != null) {
             if (node.callExpNode instanceof MemberExpNode) {
+                // out of class, method call
                 argsValue.add(((MemberExpNode) node.callExpNode).superExpNode.value);
             }
             else {
+                // in class def
                 assert cur.classRegistry != null;
                 argsValue.add(cur.getThis());
             }

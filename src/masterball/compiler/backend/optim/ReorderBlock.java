@@ -4,6 +4,7 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmBlock;
 import masterball.compiler.backend.rvasm.hierarchy.AsmFunction;
 import masterball.compiler.backend.rvasm.inst.AsmJmpInst;
 import masterball.compiler.share.pass.AsmFuncPass;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 

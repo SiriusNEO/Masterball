@@ -30,8 +30,9 @@ public class FuncInliner implements IRModulePass {
     private final boolean forced;
 
     private static final int CalleeInstNumThreshold = 500,
-                             ForcedCalleeInstNumThreshold = 200,
-                             CallerInstNumThreshold = 1000;
+                             ForcedCalleeInstNumThreshold = 300,
+                             CallerInstNumThreshold = 1000,
+                             BlockNumThreshold = 300;
 
     private final ArrayList<IRCallInst> inlineAbleSet = new ArrayList<>();
     private final Map<IRFunction, Integer> instNum = new HashMap<>();
@@ -49,13 +50,17 @@ public class FuncInliner implements IRModulePass {
                // this is for correct order of inlining, do not use cyclic
                callee.node.call.isEmpty() &&
                instNum.get(caller) <= CallerInstNumThreshold &&
-               instNum.get(callee) <= CalleeInstNumThreshold;
+               instNum.get(callee) <= CalleeInstNumThreshold &&
+               caller.blocks.size() <= BlockNumThreshold &&
+               callee.blocks.size() <= BlockNumThreshold;
     }
 
     private boolean canForceInline(IRFunction caller, IRFunction callee) {
         return  !isNecessary(callee) &&
                 instNum.get(caller) <= CallerInstNumThreshold &&
-                instNum.get(callee) <= ForcedCalleeInstNumThreshold;
+                instNum.get(callee) <= ForcedCalleeInstNumThreshold &&
+                caller.blocks.size() <= BlockNumThreshold &&
+                callee.blocks.size() <= BlockNumThreshold;
     }
 
     private void collectAbleSet() {
@@ -90,6 +95,9 @@ public class FuncInliner implements IRModulePass {
     private void inlining(IRCallInst call) {
         IRFunction caller = call.parentBlock.parentFunction,
                    callee = call.callFunc();
+
+        if ((forced && !canForceInline(caller, callee)) || (!forced && !canInline(caller, callee)))
+            return;
 
         Map<Value, Value> replaceValueMap = new HashMap<>();
         Map<IRBlock, IRBlock> replaceBlockMap = new HashMap<>();
@@ -181,7 +189,7 @@ public class FuncInliner implements IRModulePass {
     public void runOnModule(IRModule module) {
         this.module = module;
 
-        Log.track("start inlining");
+        Log.track("start inlining. forced: ", forced);
 
         while (true) {
             // Log.mark("round #");
@@ -194,8 +202,7 @@ public class FuncInliner implements IRModulePass {
 
             if (inlineAbleSet.isEmpty()) break;
 
-            // Log.info("call size", inlineAbleSet.size());
-
+            Log.info("call size", inlineAbleSet.size());
 
             // notice: pending the normal call first
             for (IRCallInst pendingCall : inlineAbleSet) {

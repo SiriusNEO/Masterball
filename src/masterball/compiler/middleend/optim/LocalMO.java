@@ -90,7 +90,7 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
         loadRecord.clear();
         storeRecord.clear();
 
-        if (block.prevs.size() == 1 && block.dtNode.idom.fromBlock == block.prevs.get(0)) {
+        if (block.prevs.size() == 1 && (block.dtNode.idom != null && block.dtNode.idom.fromBlock == block.prevs.get(0))) {
             // Log.info(block.identifier(), block.dtNode.idom.fromBlock.identifier());
 
             for (IRBaseInst inst : block.dtNode.idom.fromBlock.instructions) {

@@ -3,6 +3,7 @@ package masterball.compiler.middleend.analyzer;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.hierarchy.IRFunction;
 import masterball.compiler.share.pass.IRFuncPass;
+import masterball.debug.Log;
 
 import java.util.*;
 

@@ -99,7 +99,9 @@ public class LoopAnalyzer implements IRFuncPass {
         Log.track("loop analyse", function.identifier());
 
         init(function);
+
         collectBackEdge(function);
+
         backEdge.forEach(edge -> buildNaturalLoop(edge.first(), edge.second()));
         buildLoopNestTree(function, function.entryBlock);
 

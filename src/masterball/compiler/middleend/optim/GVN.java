@@ -93,6 +93,8 @@ public class GVN implements IRFuncPass {
                 return this.value.equals(((ValueNumber) o).value);
             }
 
+            if (this.value.getClass() != ((ValueNumber) o).value.getClass()) return false;
+
             if (this.operandNum.size() != ((ValueNumber) o).operandNum.size()) return false;
 
             for (int i = 0; i < this.operandNum.size(); i++)
@@ -203,6 +205,8 @@ public class GVN implements IRFuncPass {
         var curScope = new NumberScope();
         scopeStack.push(curScope);
 
+        Log.info(block.identifier());
+
         while (it.hasNext()) {
             IRBaseInst inst = it.next();
 
@@ -229,7 +233,7 @@ public class GVN implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
-        Log.track("GVN", function.identifier());
+        Log.track("GVN", function.identifier(), function.blocks.size());
         analyzer.runOnFunc(function);
         ValueNumber.init();
         new CFGBuilder().runOnFunc(function);
