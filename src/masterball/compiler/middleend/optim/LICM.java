@@ -30,7 +30,6 @@ public class LICM implements IRFuncPass, IRLoopPass {
     @Override
     public void runOnFunc(IRFunction function) {
         Log.info("LICM", function.identifier());
-        analyzer.runOnFunc(function);
         new CFGBuilder().runOnFunc(function);
         new LoopAnalyzer().runOnFunc(function);
         function.topLevelLoops.forEach(this::runOnLoop);
@@ -54,6 +53,15 @@ public class LICM implements IRFuncPass, IRLoopPass {
 
         new IRBrInst(loop.header, preHeader);
         preHeader.nexts.add(loop.header);
+
+        Loop curFa = loop.fatherLoop;
+        while (curFa != null) {
+            curFa.blocks.add(loop.preHeader);
+            curFa = curFa.fatherLoop;
+        }
+
+        if (loop.header.parentFunction.entryBlock == loop.header)
+            loop.header.parentFunction.entryBlock = preHeader;
     }
 
     private final HashSet<IRBaseInst> motionAble = new LinkedHashSet<>();
@@ -66,7 +74,7 @@ public class LICM implements IRFuncPass, IRLoopPass {
 
     private void motionInst(Loop loop) {
         for (IRBaseInst inst : motionAble) {
-            Log.info("motion: ", inst.format());
+            // Log.info("motion: ", inst.format());
 
             inst.parentBlock.instructions.remove(inst);
             loop.preHeader.tAddBeforeTerminator(inst);
@@ -77,13 +85,20 @@ public class LICM implements IRFuncPass, IRLoopPass {
 
     @Override
     public void runOnLoop(Loop loop) {
-        Log.info("now run loop", loop.header.identifier());
-
         // motion children first
         loop.nestedLoops.forEach(this::runOnLoop);
+
+        // Log.info("now run loop", loop.header.identifier());
+        // loop.blocks.forEach(b -> Log.info(b.identifier()));
+
         createPreHeader(loop);
         while (true) {
+            analyzer.runOnFunc(loop.header.parentFunction);
             collectMotionAble(loop);
+
+            // Log.mark("motion able");
+            // motionAble.forEach(i -> Log.info(i.format()));
+
             if (motionAble.isEmpty()) break;
             motionInst(loop);
         }

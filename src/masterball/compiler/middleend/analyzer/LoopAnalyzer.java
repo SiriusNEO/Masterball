@@ -81,7 +81,7 @@ public class LoopAnalyzer implements IRFuncPass {
         if (headToLoopMap.containsKey(block)) {
             var nowLoop = headToLoopMap.get(block);
             if (outerLoop != null) {
-                outerLoop.nestedLoops.add(nowLoop);
+                outerLoop.addNestedLoop(nowLoop);
             }
             else {
                 function.topLevelLoops.add(nowLoop);

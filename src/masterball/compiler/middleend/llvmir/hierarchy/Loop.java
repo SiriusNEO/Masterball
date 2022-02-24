@@ -12,6 +12,8 @@ public class Loop {
     public IRBlock header;
     public HashSet<IRBlock> tailers = new HashSet<>();
     public HashSet<IRBlock> blocks = new HashSet<>();
+
+    public Loop fatherLoop;
     public HashSet<Loop> nestedLoops = new HashSet<>();
 
     public Loop(IRBlock header) {
@@ -21,6 +23,11 @@ public class Loop {
     public void addBlock(IRBlock block) {
         block.belongLoop = this;
         this.blocks.add(block);
+    }
+
+    public void addNestedLoop(Loop subLoop) {
+        this.nestedLoops.add(subLoop);
+        subLoop.fatherLoop = this;
     }
 
     public boolean isInvariant(Value value) {

@@ -50,7 +50,10 @@ public class AliasAnalyzer implements IRFuncPass {
 
     @Override
     public void runOnFunc(IRFunction function) {
+        Log.info("alias analyzer", function.identifier());
 
+        certain.clear();
+        bitcastUnion.clear();
         certain.addAll(function.parentModule.globalVarSeg);
         certain.addAll(function.parentModule.stringConstSeg);
 
@@ -58,14 +61,21 @@ public class AliasAnalyzer implements IRFuncPass {
             for (IRBaseInst inst : block.instructions) {
                 if (inst instanceof IRCallInst && ((IRCallInst) inst).callFunc() == function.parentModule.getMalloc())
                     certain.add(inst);
-                if (inst instanceof IRBitCastInst && ((IRBitCastInst) inst).fromValue().type instanceof PointerType)
-                    bitcastUnion.setAlias(((IRBitCastInst) inst).fromValue(), inst);
+                if (inst instanceof IRBitCastInst && ((IRBitCastInst) inst).fromValue().type instanceof PointerType) {
+                    // Log.info("bslink", inst.format());
+                    bitcastUnion.setAlias(inst, ((IRBitCastInst) inst).fromValue());
+                    // Log.info("tryget", bitcastUnion.getAlias(inst).identifier());
+                }
             }
     }
 
     public boolean mayAlias(Value addr1, Value addr2) {
+        // Log.info("alias", addr1.identifier(), addr2.identifier());
+
         addr1 = bitcastUnion.getAlias(addr1);
         addr2 = bitcastUnion.getAlias(addr2);
+
+        // Log.info("bitcast", addr1.identifier(), addr2.identifier());
 
         if (certain.contains(addr1) || certain.contains(addr2)) {
             return addr1.equals(addr2);
