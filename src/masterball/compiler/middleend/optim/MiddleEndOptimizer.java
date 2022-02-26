@@ -60,6 +60,7 @@ public class MiddleEndOptimizer implements IRModulePass {
             new LocalMO().runOnFunc(function);
             new TRO().runOnFunc(function);
             new LoopAnalyzer().runOnFunc(function);
+            new InstAdapter().runOnFunc(function);
         }
     }
 }

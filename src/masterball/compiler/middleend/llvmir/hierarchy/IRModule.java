@@ -50,6 +50,16 @@ public class IRModule {
         return builtinFunctions.get(0);
     }
 
+    public IRFunction getBuiltinFunction(String name) {
+        for (IRFunction builtinFunction : builtinFunctions) {
+            if (Objects.equals(builtinFunction.name, LLVM.BottomStrFuncPrefix + name))
+                return builtinFunction;
+            if (Objects.equals(builtinFunction.name, name))
+                return builtinFunction;
+        }
+        throw new InternalError(name);
+    }
+
     public IRFunction getStrMethod(String op) {
         for (IRFunction builtinFunction : builtinFunctions) {
             if (Objects.equals(builtinFunction.name, LLVM.BottomStrFuncPrefix + op))

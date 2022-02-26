@@ -94,6 +94,11 @@ public class IRBlock extends Value {
         it.add(inst);
     }
 
+    public void tSetByIterator(IRBaseInst inst, ListIterator<IRBaseInst> it) {
+        inst.parentBlock = this;
+        it.set(inst);
+    }
+
     public void tReplaceTerminator(IRBaseInst newTerminator) {
         newTerminator.parentBlock = this;
         instructions.removeLast();
