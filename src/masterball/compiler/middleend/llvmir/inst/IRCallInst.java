@@ -50,6 +50,9 @@ public class IRCallInst extends IRBaseInst {
     @Override
     public boolean mayHaveSideEffects() {return true;}
 
+    @Override
+    public boolean isValueSelf() {return !callFunc().isVoid();}
+
     public boolean isTailRecursive() {
     //    return false;
         return isTailCall && callFunc() == this.parentBlock.parentFunction;

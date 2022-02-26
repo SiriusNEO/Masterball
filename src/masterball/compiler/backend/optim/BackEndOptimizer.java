@@ -8,12 +8,12 @@ public class BackEndOptimizer implements AsmModulePass {
     @Override
     public void runOnModule(AsmModule module) {
         for (AsmFunction function : module.functions) {
-            // new TCO().runOnFunc(function);
+            new TCO().runOnFunc(function);
             new CoalesceMoves().runOnFunc(function);
             new ZeroInstPeephole().runOnFunc(function);
             new BlockMerge().runOnFunc(function);
             new ReorderBlock().runOnFunc(function);
-            new InstFolding().runOnFunc(function);
+            new RedundantInst().runOnFunc(function);
         }
     }
 }

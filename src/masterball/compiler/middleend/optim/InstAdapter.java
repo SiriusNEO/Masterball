@@ -60,7 +60,6 @@ public class InstAdapter implements IRFuncPass, IRBlockPass {
 
             if (inst instanceof IRCallInst && ((IRCallInst) inst).callFunc() == module.getBuiltinFunction("toString")) {
                 if (inst.users.size() == 1 && inst.users.get(0) instanceof IRCallInst) {
-                    Log.info("hit", inst.format());
                     if (((IRCallInst) inst.users.get(0)).callFunc() == module.getBuiltinFunction("print")) {
                         inst.removedFromAllUsers();
                         block.tSetByIterator(new IRCallInst(module.getBuiltinFunction("printInt"), null, ((IRCallInst) inst).getArg(0)),
