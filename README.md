@@ -7,9 +7,9 @@
 
 <img src="asset/masterball.png" style="zoom:100%;" /> Actually, it is a toy compiler for course project. Therefore, many implementations are quite simple and there may be some bugs.
 
-<img src="asset/masterball.png" style="zoom:100%;" />  It will compile Mx* language (a language for this project) code to RISC-V 32 Integer assembly.
+<img src="asset/masterball.png" style="zoom:100%;" /> It will compile Mx* language (a language for this project) code to RISC-V 32 Integer assembly.
 
-<img src="asset/masterball.png" style="zoom:100%;" />  It is implemented in Java, JDK 11. And the lexer and parser in the FrontEnd are supported by antlr v4 framework.
+<img src="asset/masterball.png" style="zoom:100%;" /> It is implemented in Java, JDK 11. And the lexer and parser in the FrontEnd are supported by antlr v4 framework.
 
 
 
