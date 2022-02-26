@@ -205,7 +205,7 @@ public class GVN implements IRFuncPass {
         var curScope = new NumberScope();
         scopeStack.push(curScope);
 
-        Log.info(block.identifier());
+        // Log.info(block.identifier());
 
         while (it.hasNext()) {
             IRBaseInst inst = it.next();

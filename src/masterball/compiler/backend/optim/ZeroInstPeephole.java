@@ -33,7 +33,6 @@ public class ZeroInstPeephole implements AsmFuncPass {
                                 if (inst.imm != null && inst.imm.value == 0) it.remove();
                                 if (inst.rs2 != null && inst.rs2.color == PhysicalReg.reg("zero")) it.remove();
                             }
-                            break;
                         }
                     }
                 }

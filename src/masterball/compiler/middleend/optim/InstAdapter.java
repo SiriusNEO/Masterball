@@ -12,6 +12,7 @@ import masterball.compiler.share.pass.IRFuncPass;
  *  InstAdapter Pass
  *
  *  this pass intends to modify instructions so that it is faster in BackEnd
+ *  e.g. <= -> <, by let the rhs+1, because <= costs two instructions
  *
  */
 
@@ -23,5 +24,27 @@ public class InstAdapter implements IRFuncPass, IRBlockPass {
     }
 
     @Override
-    public void runOnBlock(IRBlock block) {}
+    public void runOnBlock(IRBlock block) {
+        var it = block.instructions.listIterator();
+
+        while (it.hasNext()) {
+            var inst = it.next();
+
+            if (inst instanceof IRICmpInst && (((IRICmpInst) inst).lhs() instanceof IntConst || ((IRICmpInst) inst).rhs() instanceof IntConst)) {
+                if (((IRICmpInst) inst).op.equals(LLVM.LessEqualArg)) {
+                    ((IRICmpInst) inst).op = LLVM.LessArg;
+                    if (((IRICmpInst) inst).rhs() instanceof IntConst)
+                        ((IntConst) ((IRICmpInst) inst).rhs()).constData += 1;
+                    else
+                        ((IntConst) ((IRICmpInst) inst).lhs()).constData -= 1;
+                } else if (((IRICmpInst) inst).op.equals(LLVM.GreaterEqualArg)) {
+                    ((IRICmpInst) inst).op = LLVM.GreaterArg;
+                    if (((IRICmpInst) inst).rhs() instanceof IntConst)
+                        ((IntConst) ((IRICmpInst) inst).rhs()).constData -= 1;
+                    else
+                        ((IntConst) ((IRICmpInst) inst).lhs()).constData += 1;
+                }
+            }
+        }
+    }
 }
