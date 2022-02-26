@@ -494,8 +494,8 @@ public class RegisterAllocator implements AsmModulePass, AsmFuncPass {
      * return a set of adjacent nodes
      * notice that here we should move nodes in selectStack and coalescedNodes (which is considered to be deleted)
      */
-    private HashSet<Register> adjacent(Register reg) {
-        HashSet<Register> ret = new HashSet<>(reg.node.adjList);
+    private LinkedHashSet<Register> adjacent(Register reg) {
+        LinkedHashSet<Register> ret = new LinkedHashSet<>(reg.node.adjList);
         selectStack.forEach(ret::remove);
         ret.removeAll(coloredNodes);
         return ret;

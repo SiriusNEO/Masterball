@@ -8,6 +8,7 @@ judge_list = open("testcases/optim/judgelist.txt").readlines()
 cnt = 0
 
 fail_collect = list()
+running_time = dict()
 
 for judge in judge_list:
     cnt += 1
@@ -57,7 +58,17 @@ for judge in judge_list:
         # print("[info]: ", info)
         # exit(-1)
         fail_collect.append(code_file)
+
+    running_status_file = open("../local/runinfo")
+    running_info = running_status_file.readlines()
+
+    for line in running_info:
+        if line.find("time") != -1:
+            running_time[code_file] = line
     
     time.sleep(1)
 
 print(fail_collect)
+
+for testcase in running_time:
+    print("["+testcase+"]  ", running_time[testcase].replace('\n', ''))

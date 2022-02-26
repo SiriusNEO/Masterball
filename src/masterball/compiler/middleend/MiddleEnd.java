@@ -38,10 +38,6 @@ public class MiddleEnd {
         // this will analyze loop
         // new GPMark().runOnModule(this.irModule);
 
-        irModule.functions.forEach(function -> function.blocks.forEach(block -> block.instructions.forEach(inst -> {
-            assert !inst.isValueSelf() || inst.users.size() > 0;
-        })));
-
         if (console.canPrintOpt) {
             // IR Printer (after optimized)
             new IRPrinter(

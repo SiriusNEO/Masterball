@@ -38,7 +38,7 @@ public class InterferenceGraph {
     }
 
     public static class Node {
-        public HashSet<Register> adjList = new HashSet<>();
+        public HashSet<Register> adjList = new LinkedHashSet<>();
         public boolean precolored;
         public int degree;
         public double priority;

@@ -1,0 +1,27 @@
+[testcases/optim/binary_tree.mx]   time: 530907528
+[testcases/optim/dijkstra.mx]   time: 501288997
+[testcases/optim/humble.mx]   time: 3077129062
+[testcases/optim/kruskal.mx]   time: 300285206
+[testcases/optim/lca.mx]   time: 178989031
+[testcases/optim/maxflow.mx]   time: 44091416
+[testcases/optim/pi.mx]   time: 48367820
+[testcases/optim/sha_1.mx]   time: 2033471266
+
+[testcases/optim/binary_tree.mx]   time: 530254810
+[testcases/optim/dijkstra.mx]   time: 498128805
+[testcases/optim/humble.mx]   time: 3077129062
+[testcases/optim/kruskal.mx]   time: 300174775
+[testcases/optim/lca.mx]   time: 178989031
+[testcases/optim/maxflow.mx]   time: 44091416
+[testcases/optim/pi.mx]   time: 48367820
+[testcases/optim/sha_1.mx]   time: 2047267483
+
+['testcases/optim/kruskal.mx']
+[testcases/optim/binary_tree.mx]   time: 530254810
+[testcases/optim/dijkstra.mx]   time: 498128805
+[testcases/optim/humble.mx]   time: 3077129062
+[testcases/optim/kruskal.mx]   time: 295589019
+[testcases/optim/lca.mx]   time: 178989031
+[testcases/optim/maxflow.mx]   time: 44091416
+[testcases/optim/pi.mx]   time: 48367820
+[testcases/optim/sha_1.mx]   time: 2047267483
