@@ -14,7 +14,10 @@ import masterball.compiler.share.pass.IRBlockPass;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.debug.Log;
 
+import javax.management.Query;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  *  Local Memory-related Optimization Pass
@@ -90,6 +93,20 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
         loadRecord.clear();
         storeRecord.clear();
 
+        HashSet<IRBlock> domeds = new HashSet<>();
+        HashSet<IRBlock> visited = new HashSet<>();
+        Queue<IRBlock> workQueue = new LinkedList<>(block.nexts);
+
+        while (!workQueue.isEmpty()) {
+            var qHead = workQueue.poll();
+            if (visited.contains(qHead)) continue;
+            visited.add(qHead);
+            if (qHead.dtNode.doms.contains(block.dtNode)) {
+                domeds.add(qHead);
+                qHead.nexts.forEach(workQueue::offer);
+            }
+        }
+
         if (block.prevs.size() == 1 && (block.dtNode.idom != null && block.dtNode.idom.fromBlock == block.prevs.get(0))) {
             // Log.info(block.identifier(), block.dtNode.idom.fromBlock.identifier());
 
@@ -127,6 +144,32 @@ public class LocalMO implements IRFuncPass, IRBlockPass {
             }
             else if (inst instanceof IRCallInst) {
                 invalidate(inst);
+            }
+        }
+
+        // very, very, conservative
+        domeds.forEach(domed -> domed.instructions.forEach(
+                inst -> {
+                    if (inst instanceof IRStoreInst || inst instanceof IRCallInst) {
+                        invalidate(inst);
+                    }
+                }
+        ));
+
+        for (IRBlock domed : domeds) {
+            it = domed.instructions.listIterator();
+            while (it.hasNext()) {
+                IRBaseInst inst = it.next();
+                if (inst instanceof IRLoadInst) {
+                    var replace = recordMatch(inst);
+                    if (replace != null) {
+                        it.remove();
+                        inst.replaceAllUsesWith(replace);
+                    }
+                }
+                else if (inst instanceof IRStoreInst || inst instanceof IRCallInst) {
+                    break;
+                }
             }
         }
     }

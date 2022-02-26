@@ -189,7 +189,7 @@ public class GVN implements IRFuncPass {
     private boolean checkLoad(IRBaseInst inst) {
         if (!(inst instanceof IRLoadInst)) return true;
         if (inst.parentBlock.belongLoop == null) return true;
-        return inst.parentBlock.belongLoop.isInstInvariant(inst, analyzer);
+        return inst.parentBlock.belongLoop.notModified((IRLoadInst) inst, analyzer);
     }
 
     private void invalidateLoad() {

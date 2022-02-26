@@ -4,6 +4,7 @@ import masterball.compiler.middleend.analyzer.AliasAnalyzer;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.BaseConst;
 import masterball.compiler.middleend.llvmir.inst.*;
+import masterball.debug.Log;
 
 import java.util.HashSet;
 
@@ -47,6 +48,22 @@ public class Loop {
         return true;
     }
 
+    public boolean notModified(IRLoadInst inst, AliasAnalyzer analyzer) {
+        for (IRBlock block : this.blocks)
+            for (IRBaseInst inst1 : block.instructions) {
+                if (inst1 instanceof IRStoreInst &&
+                        analyzer.mayAlias(inst.loadPtr(), ((IRStoreInst) inst1).storePtr())) {
+                    // Log.mark("may alias " + inst.parentBlock.identifier() + " " + block.identifier());
+                    // Log.info("load: ", inst.loadPtr().typedIdentifier());
+                    // Log.info("store: ", ((IRStoreInst) inst1).storePtr().typedIdentifier());
+                    return false;
+                }
+
+                if (inst1 instanceof IRCallInst) return false;
+            }
+        return true;
+    }
+
     public boolean isInstInvariant(IRBaseInst inst, AliasAnalyzer analyzer) {
         if ((inst.mayHaveSideEffects() && !(inst instanceof IRLoadInst)) || !inst.isValueSelf()) return false;
 
@@ -60,18 +77,7 @@ public class Loop {
         }
 
         if (inst instanceof IRLoadInst) {
-            for (IRBlock block : this.blocks)
-                for (IRBaseInst inst1 : block.instructions) {
-                    if (inst1 instanceof IRStoreInst &&
-                            analyzer.mayAlias(((IRLoadInst) inst).loadPtr(), ((IRStoreInst) inst1).storePtr())) {
-                        // Log.mark("may alias");
-                        // Log.info("load: ", ((IRLoadInst) inst).loadPtr().typedIdentifier());
-                        // Log.info("store", ((IRStoreInst) inst1).storePtr().typedIdentifier());
-                        return false;
-                    }
-
-                    if (inst1 instanceof IRCallInst) return false;
-                }
+            return notModified((IRLoadInst) inst, analyzer);
         }
 
         return true;
