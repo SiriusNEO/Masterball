@@ -17,6 +17,30 @@
 
 
 
+## Usage
+
+run this compiler by
+
+```
+$ java -jar Masterball (...args)
+```
+
+see the help doc by run compiler with `-h` argument
+
+```
+$ java -jar Masterball -h
+```
+
+
+
+## Performance
+
+close to gcc O2 
+
+(with some testcases surpass)
+
+
+
 ## Mx*
 
 Mx* or MxStar is a language designed for this course.
@@ -90,8 +114,9 @@ Click the following links to read the project design.
 - [x] GVN or CSE
 - [x] LICM
 - [x] TCO & TRO
-- [ ] Local LS
-- [ ] Inst Adapter
+- [x] Local MO
+- [x] Inst Adapter
+- [ ] Unrolling
 
 
 

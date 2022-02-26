@@ -1,6 +1,7 @@
 package masterball.console;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Config {
@@ -23,7 +24,7 @@ public class Config {
 
     public enum Option {Version, Help, Input, LogOutput, ASTOutput, IROutput, OptOutput, ASMOutput, FSyntaxOnly, IROnly, Optimize, Wall, OJMode};
 
-    public static Map<Option, Setting> argSetting = new HashMap<>();
+    public static Map<Option, Setting> argSetting = new LinkedHashMap<>();
 
     static {
         argSetting.put(Option.Version, new Setting("-v", false, false));

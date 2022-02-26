@@ -21,22 +21,22 @@ public class CmdDoc {
         ret.append("Options\n");
 
         for (Config.Option option : Config.argSetting.keySet()) {
-            ret.append(TAB + Config.argSetting.get(option).argName + TAB);
+            ret.append(TAB).append(Config.argSetting.get(option).argName).append(TAB.repeat(3));
             switch (option) {
                 case Help: {
-                    ret.append("Display this information.\n");
+                    ret.append("Display this information\n");
                     break;
                 }
                 case Version: {
-                    ret.append("Display the version of the compiler.\n");
+                    ret.append("Display the version of the compiler\n");
                     break;
                 }
                 case Input: {
-                    ret.append("Redirect the input of the compiler.\n");
+                    ret.append("Redirect the input of the compiler\n");
                     break;
                 }
                 case ASTOutput: {
-                    ret.append("Redirect the AST output path of the compiler.\n");
+                    ret.append("Redirect the AST output path of the compiler\n");
                     break;
                 }
                 case IROutput: {
@@ -47,20 +47,35 @@ public class CmdDoc {
                     ret.append("Redirect the RV32I Assembly output path of the compiler\n");
                     break;
                 }
+                case OptOutput: {
+                    ret.append("Redirect the optimized LLVM IR output path of the compiler\n");
+                    break;
+                }
+                case LogOutput: {
+                    ret.append("Redirect the log output path of the compiler\n");
+                    break;
+                }
                 case FSyntaxOnly: {
-                    ret.append("Do the semantic check only.\n");
+                    ret.append("Do the semantic check only\n");
                     break;
                 }
                 case IROnly: {
-                    ret.append("Only Generate LLVM IR, no assembly.\n");
+                    ret.append("Only Generate LLVM IR, no assembly\n");
                     break;
                 }
                 case Optimize: {
-                    ret.append("Do optimization.\n");
+                    ret.append("Do optimization\n");
+                    break;
+                }
+                case Wall: {
+                    ret.append("Display the warning information when compiling\n");
+                    break;
+                }
+                case OJMode: {
+                    ret.append("Automatically fitted to Online Judge\n");
                     break;
                 }
             }
-
         }
         return ret.toString();
     }
