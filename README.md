@@ -39,9 +39,12 @@ $ java -jar Masterball -h
 
 
 
-## Performance
+## Feature
 
-close to gcc O2 (with some testcases surpass)
+- High Performance. Close to gcc O2 (with some testcases surpass).
+- Standard LLVM implemented. (validated by llc)
+- [Elegant Design](doc/Feature.md) in many parts. 
+- Some syntactic sugar implemented. (e.g. `for (int i=1; i<=n; i++)`)
 
 
 
@@ -49,6 +52,8 @@ close to gcc O2 (with some testcases surpass)
 
 - The load part of GVN. The correctness is not sure.
 - backend/optim/TRO. May cause too long assembly.
+- Induction Variable can do better. (even can calculate 1+2+...+n).
+- use simple Liveness Analysis in Alias Analysis may work better. (but actually not too much)
 
 
 
@@ -86,6 +91,12 @@ Click the following links to read the project design in detail.
 - [MiddleEnd Design](doc/IRDesign.md)
 - [BackEnd Design](doc/BackEndDesign.md)
 - [Register Allocation Algorithm](doc/RegisterAllocation.md)
+
+
+
+The optimizations Masterball uses:
+
+- [Optimization](doc/Optimization.md)
 
 
 
