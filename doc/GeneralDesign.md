@@ -49,10 +49,11 @@ src
 - masterball
     - compiler (core)
       - frontend
+      - middleend
       - backend
-      - optimizer
-    - debugger
-    - engine
+    - console  
+    - debug
     - grammar
-      - g4  
+      - g4 
+    - Masterball.java  
 ```

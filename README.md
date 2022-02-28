@@ -1,8 +1,14 @@
+
+
 # Masterball
 
 <div align="center">
 	<img src="asset/big_logo.png" height="100" width="100" />
 </div>
+
+
+
+
 <img src="asset/masterball.png" style="zoom:100%;" /> Masterball, an elaborate Mx* Compiler. Passed all testcases in Online Judge.
 
 <img src="asset/masterball.png" style="zoom:100%;" /> Actually, it is a toy compiler for course project. Therefore, many implementations are quite simple and there may be some bugs.
@@ -35,9 +41,14 @@ $ java -jar Masterball -h
 
 ## Performance
 
-close to gcc O2 
+close to gcc O2 (with some testcases surpass)
 
-(with some testcases surpass)
+
+
+## Pitfall
+
+- The load part of GVN. The correctness is not sure.
+- backend/optim/TRO. May cause too long assembly.
 
 
 
@@ -53,7 +64,21 @@ a simple syntax highlight for this language: see `hightlight/`
 
 ## Design
 
-Click the following links to read the project design.
+Masterball Project contains three main parts.
+
+- masterball compiler  `package masterball.compiler`
+  - core of the project, consists of FrontEnd, MiddleEnd and BackEnd.
+  - receive the input stream from console and emit the assembly.
+- masterball console  `package masterball.console`
+  - provides a simple CLI for the user / online judge.
+  - parse the arguments and control the compiler. 
+  - simple help document and version information.
+- masterball log  `package masterball.debug`
+  - some debug kits for the developer of this compiler (=me)
+
+
+
+Click the following links to read the project design in detail.
 
 - [General Design](doc/GeneralDesign.md)
 - [Grammar Design](src/masterball/grammar/MxStar.g4)
