@@ -1,3 +1,6 @@
 [submodule "src/darksword"]
 	path = src/darksword
 	url = git@github.com:SiriusNEO/DarkSwordVM.git
+[submodule "darkswordvm"]
+	path = darkswordvm
+	url = git@github.com:SiriusNEO/DarkSwordVM.git
