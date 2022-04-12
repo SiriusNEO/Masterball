@@ -13,4 +13,5 @@ test-opt.ll
 output.s
 test.s
 local_history.patch
+src/darksword/
 

@@ -1,0 +1,8 @@
+./binary_tree.mx
+./dijkstra.mx
+./humble.mx
+./kruskal.mx
+./lca.mx
+./maxflow.mx
+./pi.mx
+./sha_1.mx
