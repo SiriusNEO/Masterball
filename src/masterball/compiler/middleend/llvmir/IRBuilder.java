@@ -75,6 +75,7 @@ public class IRBuilder implements ASTVisitor {
 
         cur.classRegistry = node.classRegistry;
 
+        // need to define member variables (used in member methods)
         node.varDefStmtNodes.forEach(sonnode -> sonnode.accept(this));
 
         assert node.constructorDefNode != null;
@@ -142,9 +143,15 @@ public class IRBuilder implements ASTVisitor {
 
         // global variable
         if (Objects.equals(cur.func.name, LLVM.InitFuncName)) {
-           allocaPtr = new GlobalVariable(node.varRegistry.name,
+           if (cur.classRegistry != null) {
+               allocaPtr = new GlobalVariable(cur.classRegistry.name + LLVM.Splitter + node.varRegistry.name,
                        translator.translateAllocaType(node.varRegistry.type));
-           module.globalVarSeg.add((GlobalVariable) allocaPtr);
+           }
+           else {
+               allocaPtr = new GlobalVariable(node.varRegistry.name,
+                       translator.translateAllocaType(node.varRegistry.type));
+               module.globalVarSeg.add((GlobalVariable) allocaPtr);
+           }
         } else {
             allocaPtr = memAlloca(node.varRegistry.name, translator.translateAllocaType(node.varRegistry.type));
         }
