@@ -41,9 +41,14 @@ $ java -jar Masterball -h
 
 ## Feature
 
-- High Performance. Close to gcc O2 (with some testcases surpass).
+- High Performance. Close to gcc O2 (with some testcases surpass). Average store: 98.45. 
+
+  ![](asset/performance.png)
+
 - Standard LLVM implemented. (validated by llc)
+
 - [Elegant Design](doc/Feature.md) in many parts. 
+
 - Some syntactic sugar implemented. (e.g. `for (int i=1; i<=n; i++)`)
 
 
