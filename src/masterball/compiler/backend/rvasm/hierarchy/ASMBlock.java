@@ -3,13 +3,10 @@ package masterball.compiler.backend.rvasm.hierarchy;
 import masterball.compiler.backend.rvasm.inst.AsmBaseInst;
 import masterball.compiler.backend.rvasm.operand.BaseOperand;
 import masterball.compiler.backend.rvasm.operand.Register;
-import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
-import masterball.compiler.middleend.llvmir.inst.IRBaseInst;
-import masterball.compiler.share.error.runtime.InternalError;
+import masterball.compiler.share.error.codegen.InternalError;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 public class AsmBlock extends BaseOperand {

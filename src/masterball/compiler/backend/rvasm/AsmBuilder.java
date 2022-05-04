@@ -18,13 +18,12 @@ import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.middleend.llvmir.type.StructType;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.lang.RV32I;
-import masterball.compiler.share.error.runtime.InternalError;
+import masterball.compiler.share.error.codegen.InternalError;
 import masterball.compiler.share.misc.Pair;
 import masterball.compiler.share.pass.IRBlockPass;
 import masterball.compiler.share.pass.IRFuncPass;
 import masterball.compiler.share.pass.IRModulePass;
 import masterball.compiler.share.pass.InstVisitor;
-import masterball.debug.Log;
 
 import java.util.ArrayList;
 

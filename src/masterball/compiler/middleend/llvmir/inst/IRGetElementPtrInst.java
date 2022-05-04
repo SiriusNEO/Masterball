@@ -5,9 +5,11 @@ import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
 import masterball.compiler.middleend.llvmir.type.PointerType;
 import masterball.compiler.middleend.llvmir.type.StructType;
-import masterball.compiler.share.error.runtime.InternalError;
+import masterball.compiler.share.error.codegen.InternalError;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.InstVisitor;
+
+import java.util.ArrayList;
 
 public class IRGetElementPtrInst extends IRBaseInst {
 
@@ -27,6 +29,13 @@ public class IRGetElementPtrInst extends IRBaseInst {
     }
 
     public IRGetElementPtrInst(Value headPointer, IRBaseType yieldType , IRBlock parentBlock, Value... indices) {
+        super(LLVM.GetElementPtrInst, yieldType, parentBlock);
+        assert headPointer.type instanceof PointerType;
+        this.addOperand(headPointer);
+        for (Value index : indices) this.addOperand(index);
+    }
+
+    public IRGetElementPtrInst(Value headPointer, IRBaseType yieldType , IRBlock parentBlock, ArrayList<Value> indices) {
         super(LLVM.GetElementPtrInst, yieldType, parentBlock);
         assert headPointer.type instanceof PointerType;
         this.addOperand(headPointer);

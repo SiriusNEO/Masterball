@@ -6,14 +6,10 @@ import masterball.compiler.backend.rvasm.hierarchy.AsmModule;
 import masterball.compiler.backend.rvasm.inst.AsmBaseInst;
 import masterball.compiler.backend.rvasm.operand.Immediate;
 import masterball.compiler.backend.rvasm.operand.RawStackOffset;
-import masterball.compiler.share.error.runtime.StackOverflowError;
-import masterball.compiler.share.lang.MxStar;
+import masterball.compiler.share.error.codegen.StackOverflowError;
 import masterball.compiler.share.lang.RV32I;
 import masterball.compiler.share.pass.AsmFuncPass;
 import masterball.compiler.share.pass.AsmModulePass;
-import masterball.debug.Log;
-
-import java.util.Objects;
 
 public class StackAllocator implements AsmModulePass, AsmFuncPass {
 

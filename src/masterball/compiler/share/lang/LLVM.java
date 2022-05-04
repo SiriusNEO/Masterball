@@ -3,7 +3,7 @@ package masterball.compiler.share.lang;
 public class LLVM {
     // --- compile environment. 64bit in my machine. ---
 
-    public static final int PointerSize = 8;
+    public static final int PointerSize = 4;
 
     // --- Splitter --
 

@@ -2,15 +2,15 @@ package masterball.compiler.share.error;
 
 import masterball.compiler.frontend.info.CodePos;
 
-public class RuntimeError extends CompileError {
-    public static String runtimeErrorHint = "[Runtime Error]: ";
+public class CodegenError extends CompileError {
+    public static String runtimeErrorHint = "[Codegen Error]: ";
 
-    public RuntimeError(CodePos codePos, String message) {
+    public CodegenError(CodePos codePos, String message) {
         super(runtimeErrorHint + message + codePos);
     }
 
     // unable to target local
-    public RuntimeError(String message) {
+    public CodegenError(String message) {
         super(runtimeErrorHint + message);
     }
 }

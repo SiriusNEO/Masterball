@@ -4,9 +4,8 @@ import masterball.compiler.middleend.llvmir.IRTranslator;
 import masterball.compiler.middleend.llvmir.StructProto;
 import masterball.compiler.middleend.llvmir.constant.GlobalVariable;
 import masterball.compiler.middleend.llvmir.constant.StringConst;
-import masterball.compiler.middleend.llvmir.inst.IRCallInst;
 import masterball.compiler.share.lang.LLVM;
-import masterball.compiler.share.error.runtime.InternalError;
+import masterball.compiler.share.error.codegen.InternalError;
 
 import java.util.ArrayList;
 import java.util.Objects;

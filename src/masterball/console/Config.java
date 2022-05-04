@@ -31,6 +31,7 @@ public class Config {
         argSetting.put(Option.Help, new Setting("-h", false, false));
 
         argSetting.put(Option.Input, new Setting("-i", true, System.in));
+
         argSetting.put(Option.LogOutput, new Setting("-log-o", true, System.out));
         argSetting.put(Option.ASTOutput, new Setting("-ast-o", true, System.out));
         argSetting.put(Option.IROutput, new Setting("-ir-o", true, System.out));

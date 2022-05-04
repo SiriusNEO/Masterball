@@ -3,7 +3,7 @@ package masterball.compiler.middleend.llvmir.inst;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.hierarchy.IRBlock;
 import masterball.compiler.middleend.llvmir.type.IRBaseType;
-import masterball.compiler.share.error.runtime.InternalError;
+import masterball.compiler.share.error.codegen.InternalError;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.InstVisitor;
 

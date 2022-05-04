@@ -29,13 +29,16 @@ public class Log {
 
     public static void setVerbose(Verbose verbose) {
         Log.verbose = verbose;
-        if (verbose == Verbose.off) return;
+        infoOpen = markOpen = trackOpen = false;
+
+        if (verbose == Verbose.off) {
+            return;
+        }
 
         if (verbose == Verbose.all) {
             infoOpen = markOpen = trackOpen = true;
         }
         else {
-            infoOpen = markOpen = trackOpen = false;
             switch (verbose) {
                 case infoOnly: infoOpen = true; break;
                 case markOnly: markOpen = true; break;

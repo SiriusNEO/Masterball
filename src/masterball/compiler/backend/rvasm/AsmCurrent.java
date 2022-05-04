@@ -8,9 +8,9 @@ import masterball.compiler.middleend.llvmir.constant.BoolConst;
 import masterball.compiler.middleend.llvmir.constant.IntConst;
 import masterball.compiler.middleend.llvmir.Value;
 import masterball.compiler.middleend.llvmir.constant.NullptrConst;
-import masterball.compiler.share.error.runtime.InternalError;
+import masterball.compiler.share.error.codegen.InternalError;
 import masterball.compiler.share.lang.RV32I;
-import masterball.compiler.share.error.runtime.UnimplementedError;
+import masterball.compiler.share.error.codegen.UnimplementedError;
 
 import java.util.HashMap;
 import java.util.Map;
