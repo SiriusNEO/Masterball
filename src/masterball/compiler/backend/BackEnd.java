@@ -24,7 +24,9 @@ public class BackEnd {
 
     public BackEnd(MiddleEnd middleEnd, Console console) {
         // Assembly Builder
-        this.module = new AsmBuilder(middleEnd.irModule).module;
+        AsmBuilder builder = new AsmBuilder();
+        builder.runOnModule(middleEnd.irModule);
+        this.module = builder.module;
 
         // Graph Coloring
         new RegisterAllocator().runOnModule(this.module);

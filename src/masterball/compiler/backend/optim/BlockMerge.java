@@ -22,7 +22,7 @@ public class BlockMerge implements AsmFuncPass {
 
     private AsmBlock getOnlyDest(AsmBlock block) {
         HashSet<AsmBlock> dests = new HashSet<>();
-        for (AsmBaseInst inst :block.instructions) {
+        for (AsmBaseInst inst : block.instructions) {
             if (!(inst instanceof AsmBrInst || inst instanceof AsmJmpInst)) return null;
             if (inst instanceof AsmBrInst) dests.add(((AsmBrInst) inst).dest);
             else dests.add(((AsmJmpInst) inst).dest);

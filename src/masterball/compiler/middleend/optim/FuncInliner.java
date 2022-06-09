@@ -42,7 +42,7 @@ public class FuncInliner implements IRModulePass {
     }
 
     private boolean isNecessary(IRFunction function) {
-        return function.name.equals(MxStar.mainKw) || module.builtinFunctions.contains(function);
+        return function.name.equals("main") || module.builtinFunctions.contains(function);
     }
 
     private boolean canInline(IRFunction caller, IRFunction callee) {

@@ -12,6 +12,11 @@ public class Statistics {
         cnt.put(name, cnt.get(name)+1);
     }
 
+    public static void plus(String name, int value) {
+        cnt.putIfAbsent(name, 0);
+        cnt.put(name, cnt.get(name)+value);
+    }
+
     public static void show(String name) {
 
         if (!cnt.containsKey(name))

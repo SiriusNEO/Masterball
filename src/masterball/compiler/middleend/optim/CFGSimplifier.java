@@ -30,8 +30,6 @@ public class CFGSimplifier implements IRFuncPass {
             for (IRBlock block : function.blocks) {
                 if (block == function.entryBlock) continue;
 
-                // Log.info("removeUnreachable", block.identifier());
-
                 if (toRemoveSet.contains(block)) continue;
 
                 if (block.prevs.isEmpty()) {
@@ -46,6 +44,8 @@ public class CFGSimplifier implements IRFuncPass {
 
         for (IRBlock toRemove : toRemoveSet) {
             assert toRemove != function.exitBlock;
+
+            // Log.info("removeUnreachable", toRemove.identifier());
 
             function.blocks.remove(toRemove);
 

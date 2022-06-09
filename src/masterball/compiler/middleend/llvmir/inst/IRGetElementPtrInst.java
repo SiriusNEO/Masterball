@@ -8,6 +8,7 @@ import masterball.compiler.middleend.llvmir.type.StructType;
 import masterball.compiler.share.error.codegen.InternalError;
 import masterball.compiler.share.lang.LLVM;
 import masterball.compiler.share.pass.InstVisitor;
+import masterball.debug.Log;
 
 import java.util.ArrayList;
 

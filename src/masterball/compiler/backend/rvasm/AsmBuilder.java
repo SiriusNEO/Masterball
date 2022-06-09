@@ -40,11 +40,9 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
 
     private final AsmCurrent cur = new AsmCurrent();
 
-    public AsmBuilder(IRModule irModule) {this.runOnModule(irModule);}
+    public AsmBuilder() {}
 
-    // Builder
-    @Override
-    public void runOnModule(IRModule irModule) {
+    public void buildModuleSkeleton(IRModule irModule) {
         globalDecl(irModule);
 
         for (IRFunction builtinFunc : irModule.builtinFunctions) {
@@ -95,7 +93,12 @@ public class AsmBuilder implements IRModulePass, IRFuncPass, IRBlockPass, InstVi
             function.entryBlock = (AsmBlock) irFunc.entryBlock.asmOperand;
             function.exitBlock = (AsmBlock) irFunc.exitBlock.asmOperand;
         }
+    }
 
+    // Builder
+    @Override
+    public void runOnModule(IRModule irModule) {
+        buildModuleSkeleton(irModule);
         irModule.functions.forEach(this::runOnFunc);
     }
 
