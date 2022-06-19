@@ -1,0 +1,33 @@
+
+int get200() {
+    return 200;
+}
+
+int get233() {
+    return 233;
+}
+
+int get666() {
+    return get233() + get233() + get200();
+}
+
+int get666233() {
+    int ret = 0;
+    for (int i = 1; i <= 1000; ++i) {
+        ret = ret + get666();
+    }
+    return ret + get233();
+}
+
+int main() {
+
+    int ret = 0;
+    for (int i = 1; i <= 100; ++i) {
+        if (i % 4 == 0) ret = ret + get200();
+        else if (i % 4 == 1) ret = ret + get233();
+        else if (i % 4 == 2) ret = ret + get666();
+        else if (i % 4 == 3) ret = ret + get666233();
+    }
+
+    return ret;
+}

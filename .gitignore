@@ -2,6 +2,7 @@
 out/
 *.iml
 src/META-INF/
+src/META-INF-DS/
 log.txt
 lib/antlr-4.7.2-complete.jar
 local/
@@ -14,4 +15,3 @@ output.s
 test.s
 local_history.patch
 src/darksword/
-

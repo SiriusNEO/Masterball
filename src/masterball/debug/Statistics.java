@@ -17,6 +17,13 @@ public class Statistics {
         cnt.put(name, cnt.get(name)+value);
     }
 
+    public static int get(String name) {
+        if (!cnt.containsKey(name)) {
+            return 0;
+        }
+        return cnt.get(name);
+    }
+
     public static void show(String name) {
 
         if (!cnt.containsKey(name))

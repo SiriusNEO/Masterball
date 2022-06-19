@@ -74,6 +74,73 @@ a simple syntax highlight for this language: see `hightlight/`
 
 ## Design
 
+- Masterball Architecure
+
+```mermaid
+graph TD
+A[src: .mx file]
+B[ParseTree]
+C[AST]
+D[IR]
+E[optimized IR]
+F[Assembly]
+G[optimized Assembly]
+H[.ast file]
+I[.ll file]
+J[.ll file]
+K[.s file]
+A ==FrontEnd:Antlr v4==> B
+B ==FrontEnd:ASTBuilder==>C
+C ==MiddleEnd:IRBuilder==>D
+D ==MiddleEnd:Optimizer==>E
+E ==BackEnd:AsmBulder==>F
+F ==BackEnd:Optimizer==>G
+C ==FrontEnd:ASTPrinter==>H
+D ==MiddleEnd:IRPrinter==>I
+E ==MiddleEnd:IRPrinter==>J
+G ==MiddleEnd:AsmPrinter==>K
+```
+
+
+
+- Optimizer
+
+```mermaid
+graph LR
+A[IR]
+B[IR]
+C[IR]
+D[IR]
+E[IR]
+F[IR]
+G[IR]
+H[IR]
+I[IR]
+J[IR]
+K[IR]
+L[IR]
+M[IR]
+N[optimized IR]
+A ==Glo2Loc==> B
+B ==Mem2Reg==> C
+C ==Func Inliner==> D
+D ==CFGSimplifier==> E
+E ==GVN==> F
+F==SCCP==> G
+G==ADCE==> H
+H==IVTrans==> I
+I==LICM==> J
+J==LocalMO==> K
+K ==Forced Func Inliner==> D
+K ==SSA Destructor==> L
+L ==TRO==> M
+M ==InstAdapter==> N
+```
+
+
+
+
+
 Masterball Project contains three main parts.
 
 - masterball compiler  `package masterball.compiler`
