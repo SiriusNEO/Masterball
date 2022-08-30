@@ -19,7 +19,22 @@
 
 
 
-![](https://img.shields.io/badge/implementation-Java-red)  ![](https://img.shields.io/badge/semantic-passed-success)   ![](https://img.shields.io/badge/LLVM_IR-passed-success)   ![](https://img.shields.io/badge/CodeGen-passed-success)  ![](https://img.shields.io/badge/Optim-20/20-success)
+---
+
+
+
+Development:  ![](https://img.shields.io/badge/Implementation-Java-yellow)  ![](https://img.shields.io/badge/Environment-JDK11-red?logo=OpenJDK)  ![](https://img.shields.io/badge/Parser-AntlrV4-blue)  ![](https://img.shields.io/badge/Simulator-ravel-orange)
+
+Language:  ![](https://img.shields.io/badge/Source-Mx*-pink)  ![](https://img.shields.io/badge/MIR-LLVM-lightblue?logo=LLVM)  ![](https://img.shields.io/badge/LIR-RISCV-purple)
+
+
+Status: ![](https://img.shields.io/badge/Semantic-passed-success)   ![](https://img.shields.io/badge/IRTest-passed-success)   ![](https://img.shields.io/badge/CodeGen-passed-success)   ![](https://img.shields.io/badge/Optim-20/20-success)  ![](https://img.shields.io/badge/OptimLevel-O2-success)
+
+Sub-Project: ![](https://img.shields.io/badge/🗡DarkSword-TestPassed(experimenting)-black?logo=sword)
+
+
+
+---
 
 
 
@@ -50,6 +65,10 @@ $ java -jar Masterball -h
 - [Elegant Design](doc/Feature.md) in many parts. 
 
 - Some syntactic sugar implemented. (e.g. `for (int i=1; i<=n; i++)`)
+
+- Errors and Warnings System.
+
+- [DarkSword](https://github.com/SiriusNEO/DarkSwordVM) (a LLVM-IR virtual machine with experimenting Just-In-Time compilation.)
 
 
 
